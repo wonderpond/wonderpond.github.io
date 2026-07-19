@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lily pad leap - Wonder Pond</title>
+<meta name="description" content="Help Hop the frog skip count across the pond. A free classroom game from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --pad:#2E8B57;
+  --pad-light:#5DBB7F;
+  --amber:#F5C84C;
+  --red:#E24B4A;
+  --cream:#FBF9F0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--sky) 45%,var(--water) 45%,var(--water-deep) 100%);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+
+.topbar{
+  display:flex;align-items:center;gap:12px;padding:12px 18px;
+}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 16px 30px}
+.screen{width:100%;max-width:960px;text-align:center}
+.hidden{display:none !important}
+
+/* Start screen */
+.title-card{
+  background:rgba(255,255,255,.92);border-radius:28px;padding:36px 28px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.title-card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.title-card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 26px}
+.choose-label{font-weight:700;font-size:1.05rem;margin-bottom:12px;display:block}
+.modes{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.mode-btn{
+  font-size:1.3rem;font-weight:700;padding:16px 26px;min-width:120px;
+  border-radius:18px;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  cursor:pointer;transition:transform .12s ease;
+}
+.mode-btn:hover{transform:translateY(-3px)}
+.mode-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.big-btn{
+  font-size:1.5rem;font-weight:700;padding:18px 48px;border-radius:999px;
+  border:none;background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+
+/* Game HUD */
+.hud{
+  display:flex;justify-content:center;gap:14px;margin-bottom:8px;flex-wrap:wrap;
+}
+.hud .chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.15rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.4rem,3.4vw,2rem);
+  font-weight:700;color:var(--teal-dark);margin:6px 0 4px;
+  background:rgba(255,255,255,.85);display:inline-block;padding:8px 26px;border-radius:999px;
+}
+
+/* Pond */
+.pond{
+  position:relative;height:250px;margin:12px auto 6px;max-width:940px;width:100%;
+}
+.pad{
+  position:absolute;bottom:26px;width:15%;max-width:130px;min-width:76px;
+  transform:translateX(-50%);
+}
+.pad .leaf{
+  width:100%;aspect-ratio:2/1;background:var(--pad-light);
+  border-radius:50%;position:relative;border:4px solid var(--pad);
+}
+.pad .leaf::after{
+  content:"";position:absolute;right:-4px;top:50%;transform:translateY(-50%);
+  border-top:12px solid transparent;border-bottom:12px solid transparent;
+  border-right:26px solid var(--water);
+}
+.pad .num{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:"Baloo 2",sans-serif;font-weight:700;
+  font-size:clamp(1.4rem,3.2vw,2rem);color:#0B3D2A;
+}
+.pad.mystery .leaf{background:var(--amber);border-color:#C99A17}
+.pad.mystery .num{color:#5A4407}
+.pad.landed .leaf{background:var(--pad-light)}
+@keyframes wobble{0%,100%{transform:translateX(-50%) rotate(0)}25%{transform:translateX(-50%) rotate(-4deg)}75%{transform:translateX(-50%) rotate(4deg)}}
+.pad.wobble{animation:wobble .4s ease}
+
+#frog{
+  position:absolute;bottom:78px;width:84px;transform:translateX(-50%);
+  transition:left .55s cubic-bezier(.4,0,.5,1);
+  will-change:left;
+}
+@keyframes hopArc{
+  0%{bottom:78px}
+  50%{bottom:160px}
+  100%{bottom:78px}
+}
+#frog.hopping{animation:hopArc .55s cubic-bezier(.4,0,.5,1)}
+@keyframes splashPop{
+  0%{opacity:1;transform:translateX(-50%) scale(.4)}
+  80%{opacity:1;transform:translateX(-50%) scale(1.15)}
+  100%{opacity:0;transform:translateX(-50%) scale(1.3)}
+}
+.splash{
+  position:absolute;bottom:60px;width:90px;transform:translateX(-50%);
+  animation:splashPop .6s ease forwards;pointer-events:none;
+}
+
+/* Choices */
+.choices{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.choice{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;
+  min-width:130px;min-height:86px;padding:10px 30px;
+  border-radius:22px;border:none;background:#fff;color:var(--teal-dark);
+  cursor:pointer;box-shadow:0 6px 0 rgba(18,64,58,.25);
+  transition:transform .12s ease;
+}
+.choice:hover:enabled{transform:translateY(-3px)}
+.choice:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.25)}
+.choice.correct{background:var(--green-light);color:#fff;box-shadow:0 6px 0 var(--green)}
+.choice.wrong{background:var(--red);color:#fff;opacity:.85}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.choice.shake{animation:shake .35s ease}
+.choice:disabled{cursor:default}
+
+/* End screen */
+.end-card{
+  background:rgba(255,255,255,.94);border-radius:28px;padding:36px 28px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.end-card h2{font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark);margin:10px 0 4px}
+.end-card .score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:8px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 20px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+
+.decor-reed{position:fixed;bottom:0;width:70px;opacity:.9;pointer-events:none}
+.reed-l{left:8px}
+.reed-r{right:8px;transform:scaleX(-1)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+@media (max-width:640px){
+  .pond{height:200px}
+  #frog{width:64px;bottom:66px}
+  @keyframes hopArc{0%{bottom:66px}50%{bottom:130px}100%{bottom:66px}}
+  .decor-reed{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="title-card">
+      <svg width="120" height="100" viewBox="0 0 120 100" aria-hidden="true" style="margin:0 auto 6px">
+        <ellipse cx="60" cy="88" rx="52" ry="9" fill="#BFE3F2"/>
+        <ellipse cx="60" cy="86" rx="34" ry="10" fill="#5DBB7F"/>
+        <g>
+          <ellipse cx="60" cy="62" rx="26" ry="20" fill="#4FB06A"/>
+          <ellipse cx="42" cy="76" rx="10" ry="6" fill="#3F9457"/>
+          <ellipse cx="78" cy="76" rx="10" ry="6" fill="#3F9457"/>
+          <circle cx="50" cy="40" r="10" fill="#4FB06A"/>
+          <circle cx="70" cy="40" r="10" fill="#4FB06A"/>
+          <circle cx="50" cy="40" r="6.5" fill="#fff"/>
+          <circle cx="70" cy="40" r="6.5" fill="#fff"/>
+          <circle cx="51" cy="41" r="3" fill="#22303B"/>
+          <circle cx="71" cy="41" r="3" fill="#22303B"/>
+          <path d="M48 66 Q60 76 72 66" stroke="#1F5B36" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <path d="M97 14 L100 22 L108 25 L100 28 L97 36 L94 28 L86 25 L94 22 Z" fill="#F5C84C"/>
+      </svg>
+      <h1 id="gameTitle">Lily pad leap</h1>
+      <p class="sub">Help Hop cross the pond. What number comes next?</p>
+      <span class="choose-label" id="modeLabel">Count by...</span>
+      <div class="modes" role="group" aria-labelledby="modeLabel">
+        <button class="mode-btn" data-step="1" aria-pressed="false" onclick="chooseMode(this)">1s</button>
+        <button class="mode-btn" data-step="2" aria-pressed="true" onclick="chooseMode(this)">2s</button>
+        <button class="mode-btn" data-step="5" aria-pressed="false" onclick="chooseMode(this)">5s</button>
+        <button class="mode-btn" data-step="10" aria-pressed="false" onclick="chooseMode(this)">10s</button>
+        <button class="mode-btn" data-step="mix" aria-pressed="false" onclick="chooseMode(this)">Mix it up</button>
+      </div>
+      <button class="big-btn" onclick="startGame()">Let's leap!</button>
+    </div>
+  </section>
+
+  <!-- Game screen -->
+  <section class="screen hidden" id="gameScreen">
+    <div class="hud">
+      <span class="chip" id="roundChip">Round 1 of 10</span>
+      <span class="chip" id="scoreChip">Score 0</span>
+      <span class="chip" id="stepChip">Counting by 2s</span>
+    </div>
+    <p class="prompt" id="prompt">What number comes next?</p>
+
+    <div class="pond" id="pond" aria-hidden="true">
+      <svg id="frog" viewBox="0 0 120 100">
+        <ellipse cx="60" cy="62" rx="26" ry="20" fill="#4FB06A"/>
+        <ellipse cx="42" cy="76" rx="10" ry="6" fill="#3F9457"/>
+        <ellipse cx="78" cy="76" rx="10" ry="6" fill="#3F9457"/>
+        <circle cx="50" cy="40" r="10" fill="#4FB06A"/>
+        <circle cx="70" cy="40" r="10" fill="#4FB06A"/>
+        <circle cx="50" cy="40" r="6.5" fill="#fff"/>
+        <circle cx="70" cy="40" r="6.5" fill="#fff"/>
+        <circle cx="51" cy="41" r="3" fill="#22303B"/>
+        <circle cx="71" cy="41" r="3" fill="#22303B"/>
+        <path d="M48 66 Q60 76 72 66" stroke="#1F5B36" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="choices" id="choices" role="group" aria-label="Answer choices"></div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="end-card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle">Great leaping!</h2>
+      <p class="score-line" id="finalScore">You got 10 out of 10 on the first try.</p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="startGame()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change counting</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<svg class="decor-reed reed-l" viewBox="0 0 70 160" aria-hidden="true">
+  <rect x="18" y="40" width="6" height="120" rx="3" fill="#2E7D46"/>
+  <ellipse cx="21" cy="34" rx="9" ry="20" fill="#7A5230"/>
+  <rect x="44" y="70" width="6" height="90" rx="3" fill="#2E7D46"/>
+  <ellipse cx="47" cy="62" rx="8" ry="17" fill="#7A5230"/>
+</svg>
+<svg class="decor-reed reed-r" viewBox="0 0 70 160" aria-hidden="true">
+  <rect x="18" y="40" width="6" height="120" rx="3" fill="#2E7D46"/>
+  <ellipse cx="21" cy="34" rx="9" ry="20" fill="#7A5230"/>
+  <rect x="44" y="70" width="6" height="90" rx="3" fill="#2E7D46"/>
+  <ellipse cx="47" cy="62" rx="8" ry="17" fill="#7A5230"/>
+</svg>
+
+<div aria-live="polite" class="hidden" id="srStatus"></div>
+
+<script>
+var TOTAL_ROUNDS = 10;
+var PAD_POSITIONS = [10, 30, 50, 70, 90];
+
+var mode = 2;
+var round = 0;
+var score = 0;
+var firstTry = true;
+var answer = 0;
+var busy = false;
+var soundOn = true;
+var audioCtx = null;
+
+function $(id){ return document.getElementById(id); }
+
+function chooseMode(btn){
+  document.querySelectorAll('.mode-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  mode = btn.dataset.step === 'mix' ? 'mix' : parseInt(btn.dataset.step, 10);
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+
+function beep(freqs, dur){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.18, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndHop(){ beep([420], 0.09); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function startGame(){
+  round = 0;
+  score = 0;
+  $('startScreen').classList.add('hidden');
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.remove('hidden');
+  nextRound();
+}
+
+function backToStart(){
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.add('hidden');
+  $('startScreen').classList.remove('hidden');
+}
+
+function currentStep(){
+  if (mode !== 'mix') return mode;
+  var opts = [1, 2, 5, 10];
+  return opts[Math.floor(Math.random() * opts.length)];
+}
+
+function makeRound(step){
+  var start;
+  if (step === 1) start = 1 + Math.floor(Math.random() * 15);
+  else if (step === 2) start = 2 * (1 + Math.floor(Math.random() * 8));
+  else if (step === 5) start = 5 * (1 + Math.floor(Math.random() * 8));
+  else start = 10 * (1 + Math.floor(Math.random() * 5));
+  var seq = [];
+  for (var i = 0; i < 5; i++) seq.push(start + step * i);
+  return seq;
+}
+
+function makeChoices(step, ans){
+  var set = new Set([ans]);
+  var candidates = [ans - step, ans + step, ans + 1, ans - 1, ans + step * 2, ans + Math.ceil(step / 2)];
+  candidates.sort(function(){ return Math.random() - 0.5; });
+  for (var i = 0; i < candidates.length && set.size < 3; i++) {
+    var c = candidates[i];
+    if (c > 0 && !set.has(c)) set.add(c);
+  }
+  var arr = Array.from(set);
+  arr.sort(function(){ return Math.random() - 0.5; });
+  return arr;
+}
+
+function buildPond(seq){
+  var pond = $('pond');
+  pond.querySelectorAll('.pad, .splash').forEach(function(el){ el.remove(); });
+  seq.forEach(function(n, i){
+    var pad = document.createElement('div');
+    pad.className = 'pad' + (i === 4 ? ' mystery' : '');
+    pad.style.left = PAD_POSITIONS[i] + '%';
+    pad.id = 'pad' + i;
+    pad.innerHTML = '<div class="leaf"></div><span class="num">' + (i === 4 ? '?' : n) + '</span>';
+    pond.appendChild(pad);
+  });
+}
+
+function moveFrog(i, hop){
+  var frog = $('frog');
+  frog.style.left = PAD_POSITIONS[i] + '%';
+  if (hop) {
+    frog.classList.remove('hopping');
+    void frog.offsetWidth;
+    frog.classList.add('hopping');
+    sndHop();
+  }
+}
+
+function nextRound(){
+  round++;
+  if (round > TOTAL_ROUNDS) { endGame(); return; }
+  busy = true;
+  firstTry = true;
+  var step = currentStep();
+  var seq = makeRound(step);
+  answer = seq[4];
+
+  $('roundChip').textContent = 'Round ' + round + ' of ' + TOTAL_ROUNDS;
+  $('scoreChip').textContent = 'Score ' + score;
+  $('stepChip').textContent = 'Counting by ' + step + (step === 1 ? '' : 's');
+  $('prompt').textContent = 'What number comes next?';
+  $('srStatus').textContent = 'Counting by ' + step + '. Sequence: ' + seq.slice(0, 4).join(', ') + ', blank.';
+
+  buildPond(seq);
+
+  var frog = $('frog');
+  frog.style.transition = 'none';
+  frog.style.left = PAD_POSITIONS[0] + '%';
+  void frog.offsetWidth;
+  frog.style.transition = '';
+
+  var choicesBox = $('choices');
+  choicesBox.innerHTML = '';
+
+  var hopIndex = 1;
+  var hopTimer = setInterval(function(){
+    moveFrog(hopIndex, true);
+    hopIndex++;
+    if (hopIndex > 3) {
+      clearInterval(hopTimer);
+      setTimeout(function(){ showChoices(step); busy = false; }, 350);
+    }
+  }, 620);
+}
+
+function showChoices(step){
+  var box = $('choices');
+  box.innerHTML = '';
+  makeChoices(step, answer).forEach(function(n, i){
+    var b = document.createElement('button');
+    b.className = 'choice';
+    b.textContent = n;
+    b.dataset.key = (i + 1);
+    b.onclick = function(){ pick(b, n); };
+    box.appendChild(b);
+  });
+}
+
+function pick(btn, n){
+  if (busy) return;
+  if (n === answer) {
+    busy = true;
+    btn.classList.add('correct');
+    document.querySelectorAll('.choice').forEach(function(b){ b.disabled = true; });
+    if (firstTry) score++;
+    $('scoreChip').textContent = 'Score ' + score;
+    sndGood();
+    moveFrog(4, true);
+    setTimeout(function(){
+      var pad4 = $('pad4');
+      pad4.classList.remove('mystery');
+      pad4.classList.add('landed');
+      pad4.querySelector('.num').textContent = answer;
+      var splash = document.createElement('div');
+      splash.className = 'splash';
+      splash.style.left = PAD_POSITIONS[4] + '%';
+      splash.innerHTML = '<svg viewBox="0 0 90 60"><circle cx="20" cy="40" r="6" fill="#BFE3F2"/><circle cx="45" cy="20" r="9" fill="#BFE3F2"/><circle cx="70" cy="38" r="6" fill="#BFE3F2"/></svg>';
+      $('pond').appendChild(splash);
+      $('prompt').textContent = 'Yes! ' + answer + ' comes next.';
+      $('srStatus').textContent = 'Correct. ' + answer + ' comes next.';
+    }, 560);
+    setTimeout(nextRound, 1900);
+  } else {
+    firstTry = false;
+    btn.classList.add('wrong', 'shake');
+    btn.disabled = true;
+    sndBad();
+    var pad4 = $('pad4');
+    pad4.classList.add('wobble');
+    setTimeout(function(){ pad4.classList.remove('wobble'); }, 450);
+    $('srStatus').textContent = 'Not quite. Try again.';
+  }
+}
+
+function endGame(){
+  $('gameScreen').classList.add('hidden');
+  $('endScreen').classList.remove('hidden');
+  var msg, stars;
+  if (score >= 9) { msg = 'Amazing leaping!'; stars = 3; }
+  else if (score >= 7) { msg = 'Great leaping!'; stars = 2; }
+  else { msg = 'Nice hopping. Keep practicing!'; stars = 1; }
+  $('endTitle').textContent = msg;
+  $('finalScore').textContent = 'You got ' + score + ' out of ' + TOTAL_ROUNDS + ' on the first try.';
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = msg + ' Final score ' + score + ' out of ' + TOTAL_ROUNDS + '.';
+  sndWin();
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key >= '1' && e.key <= '3') {
+    var b = document.querySelector('.choice[data-key="' + e.key + '"]');
+    if (b && !b.disabled) b.click();
+  }
+});
+</script>
+</body>
+</html>
