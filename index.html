@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wonder Pond - Free learning games for elementary classrooms</title>
+<meta name="description" content="Wonder Pond is a free playground of learning games for elementary classrooms. No ads, no sign-ups, no installs. Made by a teacher, built for big screens and little hands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --sky-deep:#BFE3F2;
+  --cream:#FBF9F0;
+  --sand:#EFE9D8;
+  --amber:#F5C84C;
+  --card-line:#E4E0D2;
+  --radius-lg:20px;
+  --radius-md:14px;
+  --radius-pill:999px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:var(--cream);
+  line-height:1.6;
+}
+h1,h2,h3,.display{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.2}
+a{color:var(--teal)}
+img,svg{display:block;max-width:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:"Baloo 2",sans-serif;font-weight:600;font-size:1rem;
+  border-radius:var(--radius-pill);padding:12px 24px;border:2px solid transparent;
+  cursor:pointer;text-decoration:none;transition:transform .15s ease,background .15s ease;
+}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-primary:hover{background:var(--teal-dark)}
+.btn-ghost{background:#fff;color:var(--teal);border-color:#9EC9C2}
+.btn-ghost:hover{background:var(--sky)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:6px}
+
+/* Header */
+header{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(6px);border-bottom:1px solid var(--card-line);
+}
+.nav{display:flex;align-items:center;gap:18px;padding:10px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-name{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.3rem}
+.brand-name .w1{color:var(--teal)}
+.brand-name .w2{color:var(--green)}
+.nav-links{display:flex;gap:20px;margin-left:auto;align-items:center}
+.nav-links a{font-weight:700;font-size:.95rem;text-decoration:none;color:var(--teal)}
+.nav-links a:hover{color:var(--teal-dark);text-decoration:underline}
+.picker-btn{padding:9px 18px;font-size:.95rem}
+.menu-toggle{display:none}
+
+/* Hero */
+.hero{background:var(--sky);overflow:hidden}
+.hero-inner{
+  display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;
+  padding:56px 0 72px;
+}
+.hero h1{font-size:clamp(2.1rem,4.5vw,3.2rem);font-weight:700;margin-bottom:14px}
+.hero p{font-size:1.1rem;color:var(--ink-soft);max-width:34rem;margin-bottom:24px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero-art{justify-self:center}
+.wave{display:block;width:100%;height:60px;margin-top:-59px}
+
+/* Promise pills */
+.promises{background:var(--cream);padding:26px 0 8px}
+.promise-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.pill{
+  display:inline-flex;align-items:center;gap:8px;background:#fff;
+  border:1px solid #BFDDD6;border-radius:var(--radius-pill);
+  padding:9px 18px;font-weight:700;font-size:.95rem;color:var(--teal-dark);
+}
+.pill svg{width:18px;height:18px}
+
+/* Sections */
+section{padding:48px 0}
+.section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.section-head h2{font-size:1.7rem;font-weight:700}
+.section-head p{color:var(--ink-soft)}
+
+/* Subject cards */
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.subject{
+  display:flex;align-items:center;gap:14px;background:#fff;
+  border:1px solid var(--card-line);border-radius:var(--radius-md);
+  padding:16px;text-decoration:none;color:inherit;
+  transition:transform .15s ease,border-color .15s ease;
+}
+.subject:hover{transform:translateY(-3px);border-color:var(--teal)}
+.subject-icon{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+}
+.subject b{display:block;font-family:"Baloo 2",sans-serif;font-size:1.05rem}
+.subject small{color:#6E8C86;font-size:.85rem}
+
+/* Game cards */
+.game-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.game{
+  background:#fff;border:1px solid var(--card-line);border-radius:var(--radius-md);
+  overflow:hidden;text-decoration:none;color:inherit;
+  transition:transform .15s ease,border-color .15s ease;
+}
+.game:hover{transform:translateY(-3px);border-color:var(--teal)}
+.game-thumb{height:120px;display:flex;align-items:center;justify-content:center}
+.game-body{padding:14px 16px}
+.game-body b{display:block;font-family:"Baloo 2",sans-serif;font-size:1.1rem}
+.game-body p{font-size:.9rem;color:#6E8C86;margin:2px 0 10px}
+.tag{
+  display:inline-block;font-size:.75rem;font-weight:700;
+  border-radius:var(--radius-pill);padding:3px 11px;margin-right:5px;
+}
+.tag-k2{background:#E1F5EE;color:#0F6E56}
+.tag-35{background:#FAEEDA;color:#854F0B}
+.tag-sub{background:#F1EFE8;color:#5F5E5A}
+.soon{
+  display:inline-block;font-size:.75rem;font-weight:700;
+  background:var(--amber);color:#5A4407;border-radius:var(--radius-pill);padding:3px 11px;
+}
+
+/* Teacher note */
+.teacher{background:var(--sand)}
+.teacher-inner{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+.teacher h2{font-size:1.5rem;margin-bottom:8px}
+.teacher p{color:var(--ink-soft);max-width:46rem}
+
+/* Footer */
+footer{background:var(--ink);color:#CDE7E1;padding:26px 0}
+.foot{display:flex;gap:18px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.foot a{color:#9FD6CC;font-weight:700;text-decoration:none}
+.foot a:hover{text-decoration:underline}
+.foot .spacer{flex:1}
+
+/* Picker dialog */
+dialog{
+  border:none;border-radius:var(--radius-lg);padding:26px;max-width:420px;width:92vw;
+  box-shadow:0 20px 60px rgba(18,64,58,.25);
+}
+dialog::backdrop{background:rgba(18,64,58,.45)}
+dialog h3{font-size:1.3rem;margin-bottom:4px}
+dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
+.field{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.field label{font-weight:700;font-size:.95rem}
+.field input{
+  width:90px;padding:8px 10px;font:inherit;text-align:center;
+  border:1px solid #BFDDD6;border-radius:10px;
+}
+.picker-actions{display:flex;gap:10px;margin:14px 0 6px}
+.results{display:flex;gap:8px;flex-wrap:wrap;min-height:44px;margin-top:8px}
+.bubble{
+  width:42px;height:42px;border-radius:50%;background:var(--green-light);color:#fff;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  animation:pop .3s ease;
+}
+.picked-note{font-size:.8rem;color:#6E8C86;margin-top:10px}
+.close-x{
+  position:absolute;top:14px;right:14px;background:none;border:none;
+  font-size:1.4rem;cursor:pointer;color:#6E8C86;line-height:1;
+}
+
+/* Motion */
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes twinkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.82)}}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.bob-a{animation:bob 3.2s ease-in-out infinite}
+.bob-b{animation:bob 3.2s ease-in-out 1.4s infinite}
+.twinkle{animation:twinkle 2.6s ease-in-out infinite;transform-origin:center}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  html{scroll-behavior:auto}
+}
+
+/* Responsive */
+@media (max-width:760px){
+  .hero-inner{grid-template-columns:1fr;text-align:center;padding:40px 0 64px}
+  .hero p{margin-left:auto;margin-right:auto}
+  .hero-ctas{justify-content:center}
+  .hero-art{order:-1;width:min(70vw,280px)}
+  .nav-links{display:none}
+  .nav-links.open{
+    display:flex;flex-direction:column;position:absolute;top:100%;right:0;left:0;
+    background:#fff;padding:16px 20px;border-bottom:1px solid var(--card-line);gap:14px;
+  }
+  .menu-toggle{
+    display:block;margin-left:auto;background:none;border:1px solid #BFDDD6;
+    border-radius:10px;padding:6px 12px;font-size:1.1rem;cursor:pointer;color:var(--teal);
+  }
+  .teacher-inner{grid-template-columns:1fr;text-align:center;justify-items:center}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Wonder Pond home">
+      <!-- Logo mark: two frogs peeking from the pond -->
+      <svg width="38" height="38" viewBox="0 0 60 60" aria-hidden="true">
+        <circle cx="30" cy="30" r="27" fill="#DFF2FA" stroke="#1F6E68" stroke-width="3"/>
+        <ellipse cx="30" cy="37" rx="17" ry="12" fill="#4FB06A"/>
+        <circle cx="23" cy="24" r="6" fill="#4FB06A"/><circle cx="37" cy="24" r="6" fill="#4FB06A"/>
+        <circle cx="23" cy="24" r="3.8" fill="#fff"/><circle cx="37" cy="24" r="3.8" fill="#fff"/>
+        <circle cx="23.5" cy="24.5" r="1.9" fill="#22303B"/><circle cx="37.5" cy="24.5" r="1.9" fill="#22303B"/>
+        <path class="twinkle" d="M46 9 L48 14 L53 16 L48 18 L46 23 L44 18 L39 16 L44 14 Z" fill="#F5C84C"/>
+      </svg>
+      <span class="brand-name"><span class="w1">Wonder</span> <span class="w2">Pond</span></span>
+    </a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="navLinks" onclick="toggleMenu(this)">Menu</button>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="#subjects">Games</a>
+      <a href="#favorites">Favorites</a>
+      <a href="#teachers">For teachers</a>
+      <button class="btn btn-primary picker-btn" onclick="openPicker()">Random picker</button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <h1>Where curiosity comes to play</h1>
+        <p>Free learning games for elementary classrooms, made for big screens and little hands. Jump in with Edie, Hop, and Skip.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#subjects">Play now</a>
+          <a class="btn btn-ghost" href="#favorites">Browse games</a>
+        </div>
+      </div>
+
+      <!-- Edie with Hop and Skip -->
+      <svg class="hero-art" width="330" height="280" viewBox="0 0 240 204" role="img" aria-label="Edie, a smiling child, holding two friendly frogs named Hop and Skip above a pond">
+        <ellipse cx="120" cy="188" rx="96" ry="12" fill="#BFE3F2"/>
+        <ellipse cx="52" cy="186" rx="26" ry="8" fill="#7FC98B"/>
+        <ellipse cx="192" cy="190" rx="24" ry="8" fill="#7FC98B"/>
+        <path d="M78 112 L38 90" stroke="#F6C9A2" stroke-width="11" stroke-linecap="round"/>
+        <path d="M162 112 L202 90" stroke="#F6C9A2" stroke-width="11" stroke-linecap="round"/>
+        <rect x="106" y="158" width="9" height="24" rx="4.5" fill="#F6C9A2"/>
+        <rect x="125" y="158" width="9" height="24" rx="4.5" fill="#F6C9A2"/>
+        <ellipse cx="110" cy="184" rx="10" ry="5" fill="#7A1B2E"/>
+        <ellipse cx="130" cy="184" rx="10" ry="5" fill="#7A1B2E"/>
+        <rect x="95" y="102" width="50" height="18" rx="8" fill="#FFF5E6"/>
+        <rect x="96" y="112" width="48" height="52" rx="12" fill="#BA0C2F"/>
+        <rect x="102" y="102" width="7" height="19" rx="3" fill="#BA0C2F"/>
+        <rect x="131" y="102" width="7" height="19" rx="3" fill="#BA0C2F"/>
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+        <circle cx="36" cy="88" r="9" fill="#F6C9A2"/>
+        <circle cx="204" cy="88" r="9" fill="#F6C9A2"/>
+        <g class="bob-a">
+          <ellipse cx="32" cy="70" rx="17" ry="13" fill="#4FB06A"/>
+          <circle cx="26" cy="55" r="6" fill="#4FB06A"/><circle cx="38" cy="55" r="6" fill="#4FB06A"/>
+          <circle cx="26" cy="55" r="3.6" fill="#fff"/><circle cx="38" cy="55" r="3.6" fill="#fff"/>
+          <circle cx="26.5" cy="55.5" r="1.7" fill="#22303B"/><circle cx="38.5" cy="55.5" r="1.7" fill="#22303B"/>
+          <path d="M25 72 Q32 78 39 72" stroke="#1F5B36" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="bob-b">
+          <ellipse cx="208" cy="70" rx="17" ry="13" fill="#3FA7A3"/>
+          <circle cx="202" cy="55" r="6" fill="#3FA7A3"/><circle cx="214" cy="55" r="6" fill="#3FA7A3"/>
+          <circle cx="202" cy="55" r="3.6" fill="#fff"/><circle cx="214" cy="55" r="3.6" fill="#fff"/>
+          <circle cx="202.5" cy="55.5" r="1.7" fill="#22303B"/><circle cx="214.5" cy="55.5" r="1.7" fill="#22303B"/>
+          <path d="M201 72 Q208 78 215 72" stroke="#175E5B" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <path class="twinkle" d="M120 2 L123 10 L131 13 L123 16 L120 24 L117 16 L109 13 L117 10 Z" fill="#F5C84C"/>
+      </svg>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 30 Q120 0 240 30 Q360 60 480 30 Q600 0 720 30 Q840 60 960 30 Q1080 0 1200 30 Q1320 60 1440 30 L1440 60 L0 60 Z" fill="#FBF9F0"/>
+  </svg>
+
+  <!-- The four promises -->
+  <div class="promises">
+    <div class="wrap promise-row" role="list" aria-label="Our promises">
+      <span class="pill" role="listitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="6" y1="6" x2="18" y2="18"/></svg>No ads</span>
+      <span class="pill" role="listitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="6" y1="6" x2="18" y2="18"/></svg>No sign-ups</span>
+      <span class="pill" role="listitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="6" y1="6" x2="18" y2="18"/></svg>No installs</span>
+      <span class="pill" role="listitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 21 C7 17 3 13.5 3 9.5 C3 6.5 5.5 4.5 8 4.5 C9.6 4.5 11.1 5.3 12 6.6 C12.9 5.3 14.4 4.5 16 4.5 C18.5 4.5 21 6.5 21 9.5 C21 13.5 17 17 12 21 Z"/></svg>Free forever</span>
+    </div>
+  </div>
+
+  <!-- Subjects -->
+  <section id="subjects">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Explore the pond</h2>
+        <p>Every corner of the pond holds a different subject.</p>
+      </div>
+      <div class="subject-grid">
+        <a class="subject" href="#favorites">
+          <span class="subject-icon" style="background:#E1F5EE;color:#0F6E56" aria-hidden="true">&#43;</span>
+          <span><b>Math lily pads</b><small>Counting, operations, fractions</small></span>
+        </a>
+        <a class="subject" href="#favorites">
+          <span class="subject-icon" style="background:#FAEEDA;color:#854F0B" aria-hidden="true">Aa</span>
+          <span><b>Reading reeds</b><small>Sight words, spelling, vocabulary</small></span>
+        </a>
+        <a class="subject" href="#favorites">
+          <span class="subject-icon" style="background:#E6F1FB;color:#185FA5" aria-hidden="true">&#9679;</span>
+          <span><b>Science springs</b><small>Sorting, cycles, observation</small></span>
+        </a>
+        <a class="subject" href="#favorites">
+          <span class="subject-icon" style="background:#EAF3DE;color:#3B6D11" aria-hidden="true">&#9673;</span>
+          <span><b>Social studies shore</b><small>Maps, states, communities</small></span>
+        </a>
+        <a class="subject" href="#favorites">
+          <span class="subject-icon" style="background:#FBEAF0;color:#993556" aria-hidden="true">&#9834;</span>
+          <span><b>Music marsh</b><small>Rhythm, notes, listening</small></span>
+        </a>
+        <a class="subject" href="#favorites">
+          <span class="subject-icon" style="background:#F1EFE8;color:#5F5E5A" aria-hidden="true">&#9866;</span>
+          <span><b>Class tools</b><small>Timer, random picker, scoreboard</small></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Favorites -->
+  <section id="favorites">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>This week's favorites</h2>
+        <p>First games hatching soon. Check back!</p>
+      </div>
+      <div class="game-grid">
+        <a class="game" href="games/lily-pad-leap/" aria-label="Lily pad leap, a skip counting game for grades K to 2, coming soon">
+          <div class="game-thumb" style="background:#9FE1CB">
+            <svg width="90" height="60" viewBox="0 0 90 60" aria-hidden="true">
+              <ellipse cx="45" cy="40" rx="34" ry="14" fill="#0F6E56"/>
+              <path d="M45 40 L79 33 L79 47 Z" fill="#9FE1CB"/>
+              <circle cx="45" cy="17" r="9" fill="#F5C84C"/>
+            </svg>
+          </div>
+          <div class="game-body">
+            <b>Lily pad leap</b>
+            <p>Skip counting on the pond</p>
+            <span class="tag tag-k2">Grades K to 2</span><span class="tag tag-sub">Math</span><span class="soon">Coming soon</span>
+          </div>
+        </a>
+        <a class="game" href="games/word-splash/" aria-label="Word splash, a team spelling game for grades 3 to 5, coming soon">
+          <div class="game-thumb" style="background:#FAC775">
+            <svg width="90" height="60" viewBox="0 0 90 60" aria-hidden="true">
+              <circle cx="32" cy="31" r="15" fill="#854F0B"/>
+              <circle cx="60" cy="22" r="10" fill="#fff"/>
+              <circle cx="67" cy="43" r="6" fill="#fff"/>
+            </svg>
+          </div>
+          <div class="game-body">
+            <b>Word splash</b>
+            <p>Team spelling showdown</p>
+            <span class="tag tag-35">Grades 3 to 5</span><span class="tag tag-sub">Spelling</span><span class="soon">Coming soon</span>
+          </div>
+        </a>
+        <a class="game" href="games/time-to-ribbit/" aria-label="Time to ribbit, a clock reading game for grades K to 2, coming soon">
+          <div class="game-thumb" style="background:#B5D4F4">
+            <svg width="90" height="60" viewBox="0 0 90 60" aria-hidden="true">
+              <circle cx="45" cy="30" r="21" fill="#fff"/>
+              <path d="M45 30 L45 16 M45 30 L55 35" stroke="#185FA5" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="game-body">
+            <b>Time to ribbit</b>
+            <p>Read the clock, beat the frogs</p>
+            <span class="tag tag-k2">Grades K to 2</span><span class="tag tag-sub">Math</span><span class="soon">Coming soon</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teacher note -->
+  <section class="teacher" id="teachers">
+    <div class="wrap teacher-inner">
+      <svg width="90" height="90" viewBox="0 0 60 60" aria-hidden="true">
+        <circle cx="30" cy="30" r="28" fill="#DFF2FA" stroke="#1F6E68" stroke-width="3"/>
+        <ellipse cx="30" cy="37" rx="17" ry="12" fill="#4FB06A"/>
+        <circle cx="23" cy="24" r="6" fill="#4FB06A"/><circle cx="37" cy="24" r="6" fill="#4FB06A"/>
+        <circle cx="23" cy="24" r="3.8" fill="#fff"/><circle cx="37" cy="24" r="3.8" fill="#fff"/>
+        <circle cx="23.5" cy="24.5" r="1.9" fill="#22303B"/><circle cx="37.5" cy="24.5" r="1.9" fill="#22303B"/>
+      </svg>
+      <div>
+        <h2>Made by a teacher</h2>
+        <p>Wonder Pond games are built for real classrooms: one round takes about a minute, works great on interactive whiteboards, and there is nothing to set up. Perfect for the ten minutes before the bell. Have an idea for a game? I would love to hear it.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>Made by a teacher, free for every classroom.</span>
+    <span class="spacer"></span>
+    <a href="#" aria-label="Wonder Pond on GitHub">Open source</a>
+    <a href="#" aria-label="Support Wonder Pond">Buy me a coffee</a>
+  </div>
+</footer>
+
+<!-- Random student picker -->
+<dialog id="picker" aria-labelledby="pickerTitle">
+  <button class="close-x" onclick="document.getElementById('picker').close()" aria-label="Close">&times;</button>
+  <h3 id="pickerTitle">Random picker</h3>
+  <p class="hint">Numbers already picked stay out until you reset.</p>
+  <div class="field">
+    <label for="totalN">How many students?</label>
+    <input type="number" id="totalN" min="1" max="60" value="24">
+  </div>
+  <div class="field">
+    <label for="pickN">How many to pick?</label>
+    <input type="number" id="pickN" min="1" max="10" value="1">
+  </div>
+  <div class="picker-actions">
+    <button class="btn btn-primary" onclick="pickNumbers()">Pick</button>
+    <button class="btn btn-ghost" onclick="resetPicker()">Reset</button>
+  </div>
+  <div class="results" id="pickResults" aria-live="polite"></div>
+  <p class="picked-note" id="pickedNote"></p>
+</dialog>
+
+<script>
+var pickedSet = new Set();
+
+function toggleMenu(btn){
+  var links = document.getElementById('navLinks');
+  var open = links.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+function openPicker(){
+  document.getElementById('picker').showModal();
+}
+
+function pickNumbers(){
+  var total = Math.max(1, Math.min(60, parseInt(document.getElementById('totalN').value, 10) || 1));
+  var count = Math.max(1, Math.min(10, parseInt(document.getElementById('pickN').value, 10) || 1));
+  var pool = [];
+  for (var i = 1; i <= total; i++) {
+    if (!pickedSet.has(i)) pool.push(i);
+  }
+  var note = document.getElementById('pickedNote');
+  if (pool.length === 0) {
+    note.textContent = 'Everyone has been picked! Press reset to start over.';
+    return;
+  }
+  var results = document.getElementById('pickResults');
+  results.innerHTML = '';
+  var n = Math.min(count, pool.length);
+  for (var j = 0; j < n; j++) {
+    var idx = Math.floor(Math.random() * pool.length);
+    var num = pool.splice(idx, 1)[0];
+    pickedSet.add(num);
+    var b = document.createElement('span');
+    b.className = 'bubble';
+    b.textContent = num;
+    results.appendChild(b);
+  }
+  note.textContent = 'Picked so far: ' + Array.from(pickedSet).sort(function(a, b){ return a - b; }).join(', ');
+}
+
+function resetPicker(){
+  pickedSet.clear();
+  document.getElementById('pickResults').innerHTML = '';
+  document.getElementById('pickedNote').textContent = '';
+}
+
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click', function(){
+    var links = document.getElementById('navLinks');
+    links.classList.remove('open');
+    var t = document.querySelector('.menu-toggle');
+    if (t) t.setAttribute('aria-expanded', 'false');
+  });
+});
+</script>
+</body>
+</html>
