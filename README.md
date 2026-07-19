@@ -4,7 +4,7 @@ Where curiosity comes to play.
 
 Wonder Pond is a free playground of learning games for elementary classrooms, made for big screens and little hands. Jump in with Edie, Hop, and Skip.
 
-Play now: https://hyeonhoyu.github.io/wonderpond/
+Play now: https://wonderpond.github.io
 
 Our four promises
 
