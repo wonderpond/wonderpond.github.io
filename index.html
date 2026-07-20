@@ -135,6 +135,14 @@ section{padding:48px 0}
   background:var(--amber);color:#5A4407;border-radius:var(--radius-pill);padding:3px 11px;
 }
 
+.show-all{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.95rem;
+  background:var(--sky);border:1px solid #9EC9C2;border-radius:var(--radius-pill);
+  padding:7px 16px;cursor:pointer;color:var(--teal-dark);
+}
+.show-all:hover{background:#fff}
+.hidden-btn{display:none}
+
 /* Teacher note */
 .teacher{background:var(--sand)}
 .teacher-inner{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
@@ -312,31 +320,31 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
         <p>Every corner of the pond holds a different subject.</p>
       </div>
       <div class="subject-grid">
-        <a class="subject" href="#favorites">
+        <a class="subject" href="#favorites" onclick="filterGames('math')">
           <span class="subject-icon" style="background:#E1F5EE;color:#0F6E56" aria-hidden="true">&#43;</span>
           <span><b>Math lily pads</b><small>Counting, operations, fractions</small></span>
         </a>
-        <a class="subject" href="#favorites">
+        <a class="subject" href="#favorites" onclick="filterGames('reading')">
           <span class="subject-icon" style="background:#FAEEDA;color:#854F0B" aria-hidden="true">Aa</span>
           <span><b>Reading reeds</b><small>Sight words, spelling, vocabulary</small></span>
         </a>
-        <a class="subject" href="#favorites">
+        <a class="subject" href="#favorites" onclick="filterGames('science')">
           <span class="subject-icon" style="background:#E6F1FB;color:#185FA5" aria-hidden="true">&#9679;</span>
           <span><b>Science springs</b><small>Sorting, cycles, observation</small></span>
         </a>
-        <a class="subject" href="#favorites">
+        <a class="subject" href="#favorites" onclick="filterGames('social')">
           <span class="subject-icon" style="background:#EAF3DE;color:#3B6D11" aria-hidden="true">&#9673;</span>
           <span><b>Social studies shore</b><small>Maps, states, communities</small></span>
         </a>
-        <a class="subject" href="#favorites">
+        <a class="subject" href="#favorites" onclick="filterGames('music')">
           <span class="subject-icon" style="background:#FBEAF0;color:#993556" aria-hidden="true">&#9834;</span>
           <span><b>Music marsh</b><small>Rhythm, notes, listening</small></span>
         </a>
-        <a class="subject" href="#favorites">
+        <a class="subject" href="#favorites" onclick="filterGames('movement')">
           <span class="subject-icon" style="background:#DFF3EC;color:#0F6E7E" aria-hidden="true">Go</span>
           <span><b>Movement meadow</b><small>Brain breaks, stretches, dances</small></span>
         </a>
-        <a class="subject" href="#favorites">
+        <a class="subject" href="#favorites" onclick="filterGames('tools')">
           <span class="subject-icon" style="background:#F1EFE8;color:#5F5E5A" aria-hidden="true">&#9866;</span>
           <span><b>Class tools</b><small>Timer, random picker, scoreboard</small></span>
         </a>
@@ -348,11 +356,13 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
   <section id="favorites">
     <div class="wrap">
       <div class="section-head">
-        <h2>This week's favorites</h2>
-        <p>Fresh from the pond. More hatching soon!</p>
+        <h2 id="gamesHeading">This week's favorites</h2>
+        <p id="gamesSub">Fresh from the pond. More hatching soon!</p>
+        <button id="showAllBtn" class="show-all hidden-btn" onclick="filterGames('all')">Show all games</button>
       </div>
+      <p id="emptyNote" style="display:none;color:var(--ink-soft);font-size:1.05rem;margin-bottom:14px;">No games in this corner of the pond yet. New games hatch all the time, check back soon!</p>
       <div class="game-grid">
-        <a class="game" href="games/lily-pad-leap/" aria-label="Lily pad leap, a skip counting game for grades K to 2, coming soon">
+        <a class="game" data-subject="math" href="games/lily-pad-leap/" aria-label="Lily pad leap, a skip counting game for grades K to 2, coming soon">
           <div class="game-thumb" style="background:#9FE1CB">
             <svg width="90" height="60" viewBox="0 0 90 60" aria-hidden="true">
               <ellipse cx="45" cy="40" rx="34" ry="14" fill="#0F6E56"/>
@@ -366,7 +376,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
             <span class="tag tag-k2">Grades K to 2</span><span class="tag tag-sub">Math</span>
           </div>
         </a>
-        <a class="game" href="games/word-splash/" aria-label="Word splash, a team spelling game for grades 3 to 5, coming soon">
+        <a class="game" data-subject="reading" href="games/word-splash/" aria-label="Word splash, a team spelling game for grades 3 to 5, coming soon">
           <div class="game-thumb" style="background:#FAC775">
             <svg width="90" height="60" viewBox="0 0 90 60" aria-hidden="true">
               <circle cx="32" cy="31" r="15" fill="#854F0B"/>
@@ -380,7 +390,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
             <span class="tag tag-35">Grades 3 to 5</span><span class="tag tag-sub">Spelling</span>
           </div>
         </a>
-        <a class="game" href="games/time-to-ribbit/" aria-label="Time to ribbit, a clock reading game for grades K to 2">
+        <a class="game" data-subject="math" href="games/time-to-ribbit/" aria-label="Time to ribbit, a clock reading game for grades K to 2">
           <div class="game-thumb" style="background:#B5D4F4">
             <svg width="90" height="60" viewBox="0 0 90 60" aria-hidden="true">
               <circle cx="45" cy="30" r="21" fill="#fff"/>
@@ -393,7 +403,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
             <span class="tag tag-k2">Grades K to 2</span><span class="tag tag-sub">Math</span>
           </div>
         </a>
-        <a class="game" href="games/ribbit-recess/" aria-label="Ribbit recess, a whole class movement break for grades K to 5">
+        <a class="game" data-subject="movement" href="games/ribbit-recess/" aria-label="Ribbit recess, a whole class movement break for grades K to 5">
           <div class="game-thumb" style="background:#9FE1CB">
             <svg width="90" height="60" viewBox="0 0 90 60" aria-hidden="true">
               <ellipse cx="45" cy="40" rx="16" ry="12" fill="#0F6E56"/>
@@ -408,7 +418,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
             <span class="tag tag-k2">Grades K to 5</span><span class="tag tag-sub">Movement</span>
           </div>
         </a>
-        <a class="game" href="games/pond-chorus/" aria-label="Pond chorus, a music listening game for grades K to 5">
+        <a class="game" data-subject="music" href="games/pond-chorus/" aria-label="Pond chorus, a music listening game for grades K to 5">
           <div class="game-thumb" style="background:#F3C3D4">
             <svg width="90" height="60" viewBox="0 0 90 60" aria-hidden="true">
               <ellipse cx="30" cy="40" rx="14" ry="10" fill="#993556"/>
@@ -422,7 +432,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
             <span class="tag tag-k2">Grades K to 5</span><span class="tag tag-sub">Music</span>
           </div>
         </a>
-        <a class="game" href="games/fly-catcher/" aria-label="Fly catcher, a multiplication facts game for grades 3 to 5">
+        <a class="game" data-subject="math" href="games/fly-catcher/" aria-label="Fly catcher, a multiplication facts game for grades 3 to 5">
           <div class="game-thumb" style="background:#C9E9D8">
             <svg width="90" height="60" viewBox="0 0 90 60" aria-hidden="true">
               <path d="M18 52 Q40 40 62 26" stroke="#E77A88" stroke-width="5" fill="none" stroke-linecap="round"/>
@@ -543,6 +553,36 @@ document.querySelectorAll('.nav-links a').forEach(function(a){
     if (t) t.setAttribute('aria-expanded', 'false');
   });
 });
+
+var SUBJECT_NAMES = {
+  math: 'Math lily pads', reading: 'Reading reeds', science: 'Science springs',
+  social: 'Social studies shore', music: 'Music marsh', movement: 'Movement meadow',
+  tools: 'Class tools'
+};
+
+function filterGames(key){
+  var cards = document.querySelectorAll('.game');
+  var shown = 0;
+  cards.forEach(function(c){
+    var show = key === 'all' || c.dataset.subject === key;
+    c.style.display = show ? '' : 'none';
+    if (show) shown++;
+  });
+  var heading = document.getElementById('gamesHeading');
+  var sub = document.getElementById('gamesSub');
+  var btn = document.getElementById('showAllBtn');
+  var note = document.getElementById('emptyNote');
+  if (key === 'all') {
+    heading.textContent = "This week's favorites";
+    sub.textContent = 'Fresh from the pond. More hatching soon!';
+    btn.classList.add('hidden-btn');
+  } else {
+    heading.textContent = SUBJECT_NAMES[key];
+    sub.textContent = shown === 1 ? '1 game' : shown + ' games';
+    btn.classList.remove('hidden-btn');
+  }
+  note.style.display = shown === 0 ? '' : 'none';
+}
 </script>
 </body>
 </html>
