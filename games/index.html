@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time to ribbit - Wonder Pond</title>
+<meta name="description" content="Read the frog clock and hop across the pond. A free classroom game from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --amber:#F5C84C;
+  --amber-dark:#C99A17;
+  --red:#E24B4A;
+  --pad:#2E8B57;
+  --pad-light:#5DBB7F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--sky) 42%,var(--water) 42%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:960px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:34px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 24px}
+.choose-label{font-weight:700;font-size:1.05rem;margin-bottom:12px;display:block}
+.modes{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
+.mode-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.15rem;font-weight:700;
+  padding:16px 22px;min-width:150px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.mode-btn:hover{transform:translateY(-3px)}
+.mode-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.mode-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.8rem;opacity:.8}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.5rem;font-weight:700;
+  padding:18px 46px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.3rem,3.2vw,1.9rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0;
+  background:rgba(255,255,255,.85);display:inline-block;padding:7px 26px;border-radius:999px;
+}
+
+.clock-wrap{margin:6px auto 2px;width:min(46vw,270px)}
+@keyframes ribbitBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.clock-wrap.ribbit{animation:ribbitBounce .4s ease}
+
+/* Answer choices */
+.choices{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.choice{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.7rem,4vw,2.4rem);font-weight:700;
+  min-width:150px;min-height:84px;padding:10px 28px;
+  border-radius:22px;border:none;background:#fff;color:var(--teal-dark);
+  cursor:pointer;box-shadow:0 6px 0 rgba(18,64,58,.25);transition:transform .12s ease;
+  font-variant-numeric:tabular-nums;
+}
+.choice:hover:enabled{transform:translateY(-3px)}
+.choice:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.25)}
+.choice.correct{background:var(--green-light);color:#fff;box-shadow:0 6px 0 var(--green)}
+.choice.wrong{background:var(--red);color:#fff;opacity:.85}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.choice.shake{animation:shake .35s ease}
+.choice:disabled{cursor:default}
+
+/* Progress pads */
+.track{display:flex;gap:6px;justify-content:center;align-items:center;margin-top:16px;flex-wrap:wrap}
+.track .tpad{
+  width:34px;height:18px;border-radius:50%;background:rgba(255,255,255,.55);
+  border:2px solid rgba(255,255,255,.8);
+}
+.track .tpad.done{background:var(--pad-light);border-color:var(--pad)}
+.track .tpad.retry{background:var(--amber);border-color:var(--amber-dark)}
+.track .tfrog{font-size:1.1rem;line-height:1}
+
+/* End screen */
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <svg width="120" height="105" viewBox="0 0 120 105" aria-hidden="true" style="margin:0 auto 4px">
+        <circle cx="47" cy="26" r="9" fill="#4FB06A"/>
+        <circle cx="73" cy="26" r="9" fill="#4FB06A"/>
+        <circle cx="47" cy="26" r="5.6" fill="#fff"/>
+        <circle cx="73" cy="26" r="5.6" fill="#fff"/>
+        <circle cx="48" cy="27" r="2.7" fill="#22303B"/>
+        <circle cx="74" cy="27" r="2.7" fill="#22303B"/>
+        <circle cx="60" cy="62" r="38" fill="#4FB06A"/>
+        <circle cx="60" cy="62" r="29" fill="#fff"/>
+        <path d="M60 62 L60 42 M60 62 L74 68" stroke="#1F6E68" stroke-width="4.5" stroke-linecap="round"/>
+        <circle cx="60" cy="62" r="3.5" fill="#1F6E68"/>
+        <ellipse cx="30" cy="95" rx="13" ry="7" fill="#3F9457"/>
+        <ellipse cx="90" cy="95" rx="13" ry="7" fill="#3F9457"/>
+      </svg>
+      <h1 id="gameTitle">Time to ribbit</h1>
+      <p class="sub">Read the frog clock and hop across the pond!</p>
+      <span class="choose-label" id="modeLabel">Choose your times</span>
+      <div class="modes" role="group" aria-labelledby="modeLabel">
+        <button class="mode-btn" data-mode="hour" aria-pressed="true" onclick="chooseMode(this)">O'clock<small>3:00, 8:00</small></button>
+        <button class="mode-btn" data-mode="half" aria-pressed="false" onclick="chooseMode(this)">Half hours<small>3:00, 3:30</small></button>
+        <button class="mode-btn" data-mode="five" aria-pressed="false" onclick="chooseMode(this)">Five minutes<small>3:05, 3:40</small></button>
+      </div>
+      <button class="big-btn" onclick="startGame()">Tick tock, let's hop!</button>
+    </div>
+  </section>
+
+  <!-- Game screen -->
+  <section class="screen hidden" id="gameScreen">
+    <div class="hud">
+      <span class="chip" id="roundChip">Round 1 of 10</span>
+      <span class="chip" id="scoreChip">Score 0</span>
+    </div>
+    <p class="prompt" id="prompt">What time is it?</p>
+
+    <div class="clock-wrap" id="clockWrap">
+      <svg viewBox="0 0 200 210" role="img" aria-label="Analog frog clock" id="clockSvg">
+        <circle cx="78" cy="24" r="15" fill="#4FB06A"/>
+        <circle cx="122" cy="24" r="15" fill="#4FB06A"/>
+        <circle cx="78" cy="24" r="9.5" fill="#fff"/>
+        <circle cx="122" cy="24" r="9.5" fill="#fff"/>
+        <circle cx="79.5" cy="25.5" r="4.5" fill="#22303B"/>
+        <circle cx="120.5" cy="25.5" r="4.5" fill="#22303B"/>
+        <ellipse cx="34" cy="188" rx="22" ry="11" fill="#3F9457"/>
+        <ellipse cx="166" cy="188" rx="22" ry="11" fill="#3F9457"/>
+        <circle cx="100" cy="112" r="86" fill="#4FB06A"/>
+        <circle cx="100" cy="112" r="68" fill="#fff"/>
+        <g id="clockNums" font-family="'Baloo 2',sans-serif" font-size="15" font-weight="700" fill="#12403A" text-anchor="middle"></g>
+        <line id="hourHand" x1="100" y1="112" x2="100" y2="76" stroke="#12403A" stroke-width="7" stroke-linecap="round"/>
+        <line id="minHand" x1="100" y1="112" x2="100" y2="58" stroke="#1F6E68" stroke-width="4.5" stroke-linecap="round"/>
+        <circle cx="100" cy="112" r="5.5" fill="#12403A"/>
+      </svg>
+    </div>
+
+    <div class="choices" id="choices" role="group" aria-label="Time choices"></div>
+
+    <div class="track" id="track" aria-hidden="true"></div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Ribbit-tastic!</h2>
+      <p class="score-line" id="finalScore">You read 10 of 10 clocks on the first try.</p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="startGame()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change times</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="hidden" id="srStatus"></div>
+
+<script>
+var TOTAL_ROUNDS = 10;
+
+var mode = 'hour';
+var round = 0;
+var score = 0;
+var firstTry = true;
+var answer = '';
+var busy = false;
+var soundOn = true;
+var audioCtx = null;
+var results = [];
+
+function $(id){ return document.getElementById(id); }
+
+function chooseMode(btn){
+  document.querySelectorAll('.mode-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  mode = btn.dataset.mode;
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.16, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndRibbit(){ beep([160, 210], 0.09, 'square'); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function buildClockNumbers(){
+  var g = $('clockNums');
+  if (g.childNodes.length) return;
+  for (var n = 1; n <= 12; n++) {
+    var ang = (n * 30 - 90) * Math.PI / 180;
+    var x = 100 + Math.cos(ang) * 56;
+    var y = 112 + Math.sin(ang) * 56 + 5;
+    var t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t.setAttribute('x', x.toFixed(1));
+    t.setAttribute('y', y.toFixed(1));
+    t.textContent = n;
+    g.appendChild(t);
+  }
+}
+
+function setClock(h, m){
+  var minAngle = m * 6;
+  var hourAngle = (h % 12) * 30 + m * 0.5;
+  $('minHand').setAttribute('transform', 'rotate(' + minAngle + ' 100 112)');
+  $('hourHand').setAttribute('transform', 'rotate(' + hourAngle + ' 100 112)');
+}
+
+function fmt(h, m){
+  return h + ':' + (m < 10 ? '0' + m : m);
+}
+
+function randHour(){ return 1 + Math.floor(Math.random() * 12); }
+
+function makeRound(){
+  var h = randHour();
+  var m;
+  if (mode === 'hour') m = 0;
+  else if (mode === 'half') m = Math.random() < 0.5 ? 0 : 30;
+  else m = 5 * (1 + Math.floor(Math.random() * 11));
+  return { h: h, m: m };
+}
+
+function wrapHour(h){
+  h = h % 12;
+  return h <= 0 ? h + 12 : h;
+}
+
+function makeChoices(h, m){
+  var set = {};
+  var correct = fmt(h, m);
+  set[correct] = true;
+  var candidates = [];
+  candidates.push(fmt(wrapHour(h + 1), m));
+  candidates.push(fmt(wrapHour(h - 1), m));
+  if (m !== 0) {
+    var swapH = m / 5;
+    var swapM = (h % 12) * 5;
+    candidates.push(fmt(wrapHour(swapH), swapM));
+    candidates.push(fmt(h, (m + 5) % 60));
+    candidates.push(fmt(h, (m + 55) % 60));
+  }
+  candidates.sort(function(){ return Math.random() - 0.5; });
+  var out = [correct];
+  for (var i = 0; i < candidates.length && out.length < 3; i++) {
+    if (!set[candidates[i]]) {
+      set[candidates[i]] = true;
+      out.push(candidates[i]);
+    }
+  }
+  out.sort(function(){ return Math.random() - 0.5; });
+  return out;
+}
+
+function buildTrack(){
+  var tr = $('track');
+  tr.innerHTML = '';
+  for (var i = 0; i < TOTAL_ROUNDS; i++) {
+    var p = document.createElement('span');
+    p.className = 'tpad';
+    p.id = 'tpad' + i;
+    tr.appendChild(p);
+  }
+  var f = document.createElement('span');
+  f.className = 'tfrog';
+  f.id = 'tfrog';
+  f.textContent = '';
+  tr.appendChild(f);
+}
+
+function startGame(){
+  round = 0;
+  score = 0;
+  results = [];
+  buildClockNumbers();
+  buildTrack();
+  $('startScreen').classList.add('hidden');
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.remove('hidden');
+  nextRound();
+}
+
+function backToStart(){
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.add('hidden');
+  $('startScreen').classList.remove('hidden');
+}
+
+function nextRound(){
+  round++;
+  if (round > TOTAL_ROUNDS) { endGame(); return; }
+  busy = false;
+  firstTry = true;
+  var r = makeRound();
+  answer = fmt(r.h, r.m);
+  setClock(r.h, r.m);
+
+  $('roundChip').textContent = 'Round ' + round + ' of ' + TOTAL_ROUNDS;
+  $('scoreChip').textContent = 'Score ' + score;
+  $('prompt').textContent = 'What time is it?';
+
+  var box = $('choices');
+  box.innerHTML = '';
+  makeChoices(r.h, r.m).forEach(function(t, i){
+    var b = document.createElement('button');
+    b.className = 'choice';
+    b.textContent = t;
+    b.dataset.key = (i + 1);
+    b.onclick = function(){ pick(b, t); };
+    box.appendChild(b);
+  });
+
+  $('srStatus').textContent = 'Round ' + round + '. Read the clock and choose the time.';
+}
+
+function pick(btn, t){
+  if (busy) return;
+  if (t === answer) {
+    busy = true;
+    btn.classList.add('correct');
+    document.querySelectorAll('.choice').forEach(function(b){ b.disabled = true; });
+    if (firstTry) score++;
+    results.push(firstTry);
+    $('scoreChip').textContent = 'Score ' + score;
+    $('prompt').textContent = 'Ribbit! It is ' + answer + '.';
+    $('srStatus').textContent = 'Correct. It is ' + answer + '.';
+    var wrap = $('clockWrap');
+    wrap.classList.remove('ribbit');
+    void wrap.offsetWidth;
+    wrap.classList.add('ribbit');
+    sndRibbit();
+    setTimeout(sndGood, 160);
+    var pad = $('tpad' + (round - 1));
+    pad.classList.add(firstTry ? 'done' : 'retry');
+    setTimeout(nextRound, 1700);
+  } else {
+    firstTry = false;
+    btn.classList.add('wrong', 'shake');
+    btn.disabled = true;
+    sndBad();
+    $('srStatus').textContent = 'Not quite. Look at the hands and try again.';
+  }
+}
+
+function endGame(){
+  $('gameScreen').classList.add('hidden');
+  $('endScreen').classList.remove('hidden');
+  var msg, stars;
+  if (score >= 9) { msg = 'Ribbit-tastic!'; stars = 3; }
+  else if (score >= 7) { msg = 'Hoppy work!'; stars = 2; }
+  else { msg = 'Keep on ticking!'; stars = 1; }
+  $('endTitle').textContent = msg;
+  $('finalScore').textContent = 'You read ' + score + ' of ' + TOTAL_ROUNDS + ' clocks on the first try.';
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = msg + ' Final score ' + score + ' of ' + TOTAL_ROUNDS + '.';
+  sndWin();
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key >= '1' && e.key <= '3') {
+    var b = document.querySelector('.choice[data-key="' + e.key + '"]');
+    if (b && !b.disabled) b.click();
+  }
+});
+</script>
+</body>
+</html>
