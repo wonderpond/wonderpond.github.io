@@ -4,7 +4,7 @@ Where curiosity comes to play.
 
 Wonder Pond is a free playground of learning games for elementary classrooms, made for big screens and little hands. Jump in with Edie, Hop, and Skip.
 
-Play now: https://wonderpond.github.io
+Play now: https://wonderpond.github.io/
 
 Our four promises
 
@@ -12,7 +12,7 @@ Our four promises
 No ads. Nothing distracts from learning.
 No sign-ups. No student accounts, no personal data, ever.
 No installs. Every game runs right in the browser.
-Free forever. Made by a teacher, free for every classroom.
+Free forever. Made by Dr. Henry Yu, free for every classroom.
 
 
 Because Wonder Pond collects no student information at all, there is nothing for schools to worry about under COPPA or district privacy policies. Open the link and play.
@@ -22,7 +22,7 @@ How it works in the classroom
 Every game follows the same rules:
 
 
-One round takes about a minute, so it fits the ten minutes before the bell.
+One round takes a minute or two, so it fits the ten minutes before the bell.
 Big buttons and big text, designed for interactive whiteboards and touchscreens.
 Sound effects can be muted with one tap.
 Works offline-friendly: each game is a single HTML file with no server behind it.
@@ -30,7 +30,7 @@ Works offline-friendly: each game is a single HTML file with no server behind it
 
 The games
 
-GameSubjectGradesSkillsLily pad leapMathK to 2Skip counting by 1s, 2s, 5s, 10sWord splashSpelling3 to 5Coming soonTime to ribbitMathK to 2Coming soon
+GameSubjectGradesSkillsLily pad leapMathK to 2Skip counting by 1s, 2s, 5s, and 10sWord splashSpelling3 to 5Commonly misspelled words, team showdownTime to ribbitMathK to 2Telling time to the hour, half hour, and five minutesRibbit recessMovementK to 5Whole-class brain breaks and stretchesPond chorusMusicK to 5Pitch memory and rhythm reading
 
 Meet the pond friends
 
@@ -45,6 +45,10 @@ Project structure
 index.html                     Landing page
 games/
   lily-pad-leap/index.html     Each game is one self-contained HTML file
+  word-splash/index.html
+  time-to-ribbit/index.html
+  ribbit-recess/index.html
+  pond-chorus/index.html
 
 To add a new game, drop a single index.html into a new folder under games/ and add a card to the landing page. That is the whole build system.
 
@@ -59,3 +63,4 @@ License
 Wonder Pond is licensed under CC BY-NC 4.0.
 
 You are free to use, copy, modify, and share these games for classroom and personal learning, as long as you credit Wonder Pond and do not use them commercially (no ads, no paywalls, no reselling).
+Project contentWonder Pond WebsiteCreated by youAdd PDFs, documents, or other text to reference in this project.Content
