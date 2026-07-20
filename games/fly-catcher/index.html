@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fly catcher - Wonder Pond</title>
+<meta name="description" content="Help Hop catch the fly carrying the right answer! A free multiplication facts game for elementary classrooms from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --amber:#F5C84C;
+  --amber-dark:#C99A17;
+  --red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--sky) 62%,var(--water) 62%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:960px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:6px 0 10px;display:block}
+.tables{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.table-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.25rem;font-weight:700;
+  width:64px;height:64px;border-radius:16px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.table-btn:hover{transform:translateY(-3px)}
+.table-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.mix-btn{width:auto;padding:0 20px;font-size:1.05rem}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.5rem;font-weight:700;
+  padding:17px 44px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin-top:16px;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC;}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:4px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.problem{
+  font-family:"Baloo 2",sans-serif;font-weight:700;
+  font-size:clamp(2.4rem,7vw,4rem);color:var(--teal-dark);
+  background:rgba(255,255,255,.9);display:inline-block;
+  padding:6px 40px;border-radius:24px;margin:6px 0 2px;
+  font-variant-numeric:tabular-nums;
+}
+.feedback{
+  font-family:"Baloo 2",sans-serif;font-size:1.15rem;font-weight:700;
+  color:var(--teal-dark);min-height:1.7em;margin-top:2px;
+}
+
+/* Play area */
+.pond-air{
+  position:relative;height:300px;max-width:920px;margin:0 auto;
+}
+.fly-btn{
+  position:absolute;border:none;background:none;cursor:pointer;
+  width:104px;transform:translate(-50%,-50%);padding:0;
+  transition:opacity .2s ease;
+}
+.fly-inner{animation:flyFloat 2.6s ease-in-out infinite}
+.fly-btn:nth-child(2) .fly-inner{animation-duration:3.1s;animation-delay:.4s}
+.fly-btn:nth-child(3) .fly-inner{animation-duration:2.3s;animation-delay:.8s}
+@keyframes flyFloat{
+  0%,100%{transform:translate(0,0)}
+  25%{transform:translate(9px,-12px)}
+  50%{transform:translate(-7px,6px)}
+  75%{transform:translate(6px,10px)}
+}
+.fly-btn:hover:enabled{filter:brightness(1.06)}
+.fly-btn:disabled{cursor:default}
+.fly-num{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.7rem;
+  fill:#12403A;
+}
+@keyframes gulp{
+  0%{transform:translate(-50%,-50%) scale(1);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(.1);opacity:0}
+}
+.fly-btn.caught{animation:gulp .35s ease forwards}
+@keyframes buzzAway{
+  0%{transform:translate(-50%,-50%)}
+  25%{transform:translate(calc(-50% - 14px),-50%)}
+  75%{transform:translate(calc(-50% + 14px),-50%)}
+  100%{transform:translate(-50%,-50%)}
+}
+.fly-btn.buzz{animation:buzzAway .35s ease}
+
+#tongue{
+  position:absolute;left:0;top:0;width:100%;height:100%;
+  pointer-events:none;
+}
+#frogHome{
+  position:absolute;left:50%;bottom:-14px;width:120px;transform:translateX(-50%);
+}
+@keyframes frogHappy{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-12px)}}
+#frogHome.happy{animation:frogHappy .5s ease}
+
+/* End screen */
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+@media (max-width:640px){
+  .pond-air{height:250px}
+  .fly-btn{width:88px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <svg width="150" height="86" viewBox="0 0 150 86" aria-hidden="true" style="margin:0 auto 2px">
+        <ellipse cx="60" cy="60" rx="26" ry="20" fill="#4FB06A"/>
+        <circle cx="50" cy="38" r="10" fill="#4FB06A"/>
+        <circle cx="70" cy="38" r="10" fill="#4FB06A"/>
+        <circle cx="50" cy="38" r="6.5" fill="#fff"/>
+        <circle cx="70" cy="38" r="6.5" fill="#fff"/>
+        <circle cx="52" cy="38" r="3" fill="#22303B"/>
+        <circle cx="72" cy="38" r="3" fill="#22303B"/>
+        <path d="M72 60 Q95 48 116 34" stroke="#E77A88" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <ellipse cx="124" cy="28" rx="11" ry="8" fill="#5F5E5A"/>
+        <ellipse cx="118" cy="20" rx="7" ry="5" fill="#BFE3F2"/>
+        <ellipse cx="131" cy="20" rx="7" ry="5" fill="#BFE3F2"/>
+      </svg>
+      <h1 id="gameTitle">Fly catcher</h1>
+      <p class="sub">Hungry Hop only eats flies with the right answer. Zap them with his tongue!</p>
+      <span class="choose-label" id="tableLabel">Practice one table...</span>
+      <div class="tables" role="group" aria-labelledby="tableLabel" id="tableRow"></div>
+      <span class="choose-label">...or mix them up</span>
+      <div class="tables" role="group" aria-label="Mixed practice">
+        <button class="table-btn mix-btn" data-mode="easy" aria-pressed="false" onclick="chooseMode(this)">Easy mix, 2 to 5</button>
+        <button class="table-btn mix-btn" data-mode="hard" aria-pressed="false" onclick="chooseMode(this)">Tricky mix, 6 to 9</button>
+        <button class="table-btn mix-btn" data-mode="all" aria-pressed="true" onclick="chooseMode(this)">All mixed, 2 to 9</button>
+      </div>
+      <button class="big-btn" onclick="startGame()">Snack time!</button>
+    </div>
+  </section>
+
+  <!-- Game screen -->
+  <section class="screen hidden" id="gameScreen">
+    <div class="hud">
+      <span class="chip" id="roundChip">Fly 1 of 10</span>
+      <span class="chip" id="scoreChip">Caught 0</span>
+    </div>
+    <div>
+      <span class="problem" id="problem">6 &times; 7</span>
+    </div>
+    <p class="feedback" id="feedback">Tap the fly with the answer!</p>
+
+    <div class="pond-air" id="pondAir">
+      <svg id="tongue" aria-hidden="true"></svg>
+      <svg id="frogHome" viewBox="0 0 120 100" aria-hidden="true">
+        <ellipse cx="60" cy="62" rx="26" ry="20" fill="#4FB06A"/>
+        <ellipse cx="42" cy="76" rx="10" ry="6" fill="#3F9457"/>
+        <ellipse cx="78" cy="76" rx="10" ry="6" fill="#3F9457"/>
+        <circle cx="50" cy="40" r="10" fill="#4FB06A"/>
+        <circle cx="70" cy="40" r="10" fill="#4FB06A"/>
+        <circle cx="50" cy="40" r="6.5" fill="#fff"/>
+        <circle cx="70" cy="40" r="6.5" fill="#fff"/>
+        <circle cx="51" cy="38" r="3" fill="#22303B"/>
+        <circle cx="71" cy="38" r="3" fill="#22303B"/>
+        <path d="M48 66 Q60 76 72 66" stroke="#1F5B36" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Full belly!</h2>
+      <p class="score-line" id="finalScore"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="startGame()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change tables</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="hidden" id="srStatus"></div>
+
+<script>
+var TOTAL_ROUNDS = 10;
+var SLOTS = [ { x: 20, y: 32 }, { x: 50, y: 18 }, { x: 80, y: 34 } ];
+
+var mode = 'all';
+var round = 0;
+var score = 0;
+var firstTry = true;
+var answer = 0;
+var busy = false;
+var soundOn = true;
+var audioCtx = null;
+
+function $(id){ return document.getElementById(id); }
+
+function buildTableButtons(){
+  var row = $('tableRow');
+  for (var n = 2; n <= 9; n++) {
+    var b = document.createElement('button');
+    b.className = 'table-btn';
+    b.dataset.mode = String(n);
+    b.setAttribute('aria-pressed', 'false');
+    b.textContent = 'x' + n;
+    b.onclick = (function(btn){ return function(){ chooseMode(btn); }; })(b);
+    row.appendChild(b);
+  }
+}
+buildTableButtons();
+
+function chooseMode(btn){
+  document.querySelectorAll('.table-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  mode = btn.dataset.mode;
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.17, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndZap(){ beep([880, 660], 0.07); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function pickFactorA(){
+  if (mode === 'easy') return 2 + Math.floor(Math.random() * 4);
+  if (mode === 'hard') return 6 + Math.floor(Math.random() * 4);
+  if (mode === 'all') return 2 + Math.floor(Math.random() * 8);
+  return parseInt(mode, 10);
+}
+
+function makeChoices(a, b, ans){
+  var set = new Set([ans]);
+  var candidates = [
+    a * (b + 1), a * (b - 1), (a + 1) * b, (a - 1) * b,
+    ans + a, ans - a, ans + b, ans - b, ans + 1, ans - 1, a + b
+  ];
+  candidates.sort(function(){ return Math.random() - 0.5; });
+  for (var i = 0; i < candidates.length && set.size < 3; i++) {
+    var c = candidates[i];
+    if (c > 0 && c !== ans && !set.has(c)) set.add(c);
+  }
+  var arr = Array.from(set);
+  arr.sort(function(){ return Math.random() - 0.5; });
+  return arr;
+}
+
+function flySvg(num){
+  return '<svg class="fly-inner" viewBox="0 0 104 96" aria-hidden="true">' +
+    '<ellipse cx="40" cy="26" rx="17" ry="10" fill="#BFE3F2" opacity="0.9"/>' +
+    '<ellipse cx="66" cy="26" rx="17" ry="10" fill="#BFE3F2" opacity="0.9"/>' +
+    '<ellipse cx="52" cy="38" rx="20" ry="15" fill="#5F5E5A"/>' +
+    '<circle cx="44" cy="34" r="4" fill="#fff"/>' +
+    '<circle cx="60" cy="34" r="4" fill="#fff"/>' +
+    '<circle cx="44.8" cy="34.8" r="2" fill="#22303B"/>' +
+    '<circle cx="60.8" cy="34.8" r="2" fill="#22303B"/>' +
+    '<circle cx="52" cy="72" r="22" fill="#fff" stroke="#C9E2DE" stroke-width="3"/>' +
+    '<text x="52" y="81" text-anchor="middle" class="fly-num">' + num + '</text>' +
+    '</svg>';
+}
+
+function startGame(){
+  round = 0;
+  score = 0;
+  $('startScreen').classList.add('hidden');
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.remove('hidden');
+  nextRound();
+}
+
+function backToStart(){
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.add('hidden');
+  $('startScreen').classList.remove('hidden');
+}
+
+function nextRound(){
+  round++;
+  if (round > TOTAL_ROUNDS) { endGame(); return; }
+  busy = false;
+  firstTry = true;
+  var a = pickFactorA();
+  var b = 2 + Math.floor(Math.random() * 8);
+  answer = a * b;
+
+  $('roundChip').textContent = 'Fly ' + round + ' of ' + TOTAL_ROUNDS;
+  $('scoreChip').textContent = 'Caught ' + score;
+  $('problem').innerHTML = a + ' &times; ' + b;
+  $('feedback').textContent = 'Tap the fly with the answer!';
+  $('tongue').innerHTML = '';
+  $('srStatus').textContent = 'What is ' + a + ' times ' + b + '?';
+
+  var air = $('pondAir');
+  air.querySelectorAll('.fly-btn').forEach(function(f){ f.remove(); });
+
+  makeChoices(a, b, answer).forEach(function(n, i){
+    var slot = SLOTS[i];
+    var fb = document.createElement('button');
+    fb.className = 'fly-btn';
+    fb.style.left = (slot.x + (Math.random() * 10 - 5)) + '%';
+    fb.style.top = (slot.y + (Math.random() * 12 - 6)) + '%';
+    fb.setAttribute('aria-label', 'Fly carrying ' + n);
+    fb.innerHTML = flySvg(n);
+    fb.onclick = function(){ pick(fb, n); };
+    air.appendChild(fb);
+  });
+}
+
+function shootTongue(targetBtn, done){
+  var air = $('pondAir');
+  var svg = $('tongue');
+  var ar = air.getBoundingClientRect();
+  var fr = targetBtn.getBoundingClientRect();
+  var x1 = ar.width / 2;
+  var y1 = ar.height - 20;
+  var x2 = fr.left - ar.left + fr.width / 2;
+  var y2 = fr.top - ar.top + fr.height / 2;
+  svg.setAttribute('viewBox', '0 0 ' + ar.width + ' ' + ar.height);
+  svg.innerHTML = '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 +
+    '" stroke="#E77A88" stroke-width="9" stroke-linecap="round"/>' +
+    '<circle cx="' + x2 + '" cy="' + y2 + '" r="9" fill="#E77A88"/>';
+  sndZap();
+  setTimeout(function(){
+    svg.innerHTML = '';
+    if (done) done();
+  }, 320);
+}
+
+function pick(btn, n){
+  if (busy) return;
+  if (n === answer) {
+    busy = true;
+    document.querySelectorAll('.fly-btn').forEach(function(f){ f.disabled = true; });
+    shootTongue(btn, function(){
+      btn.classList.add('caught');
+      var frog = $('frogHome');
+      frog.classList.remove('happy');
+      void frog.offsetWidth;
+      frog.classList.add('happy');
+      if (firstTry) score++;
+      $('scoreChip').textContent = 'Caught ' + score;
+      $('feedback').textContent = 'Gulp! ' + $('problem').textContent + ' = ' + answer;
+      $('srStatus').textContent = 'Correct. The answer is ' + answer + '.';
+      sndGood();
+      setTimeout(nextRound, 1500);
+    });
+  } else {
+    firstTry = false;
+    btn.classList.remove('buzz');
+    void btn.offsetWidth;
+    btn.classList.add('buzz');
+    sndBad();
+    $('feedback').textContent = 'Bzzz! Not that fly. Try again!';
+    $('srStatus').textContent = 'Not quite. Try again.';
+  }
+}
+
+function endGame(){
+  $('gameScreen').classList.add('hidden');
+  $('endScreen').classList.remove('hidden');
+  var msg, stars;
+  if (score >= 9) { msg = 'Fly-catching champion!'; stars = 3; }
+  else if (score >= 7) { msg = 'Full belly!'; stars = 2; }
+  else { msg = 'Tasty practice!'; stars = 1; }
+  $('endTitle').textContent = msg;
+  $('finalScore').textContent = 'Hop caught ' + score + ' of ' + TOTAL_ROUNDS + ' flies on the first try.';
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = msg + ' Final score ' + score + ' of ' + TOTAL_ROUNDS + '.';
+  sndWin();
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key >= '1' && e.key <= '3') {
+    var flies = document.querySelectorAll('.fly-btn');
+    var idx = parseInt(e.key, 10) - 1;
+    if (flies[idx] && !flies[idx].disabled) flies[idx].click();
+  }
+});
+</script>
+</body>
+</html>
