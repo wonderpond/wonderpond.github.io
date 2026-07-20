@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ribbit recess - Wonder Pond</title>
+<meta name="description" content="Get the wiggles out! Hop leads the class through frog jumps, stretches, and silly moves. A free classroom movement break from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --amber:#F5C84C;
+  --amber-dark:#C99A17;
+  --red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--sky) 45%,var(--water) 45%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 16px 26px}
+.screen{width:100%;max-width:940px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:34px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 24px}
+.choose-label{font-weight:700;font-size:1.05rem;margin-bottom:12px;display:block}
+.modes{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
+.mode-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.15rem;font-weight:700;
+  padding:16px 22px;min-width:160px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.mode-btn:hover{transform:translateY(-3px)}
+.mode-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.mode-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.8rem;opacity:.8}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.5rem;font-weight:700;
+  padding:18px 46px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.skip-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1rem;font-weight:700;
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  padding:10px 22px;cursor:pointer;color:var(--teal-dark);margin-top:14px;
+}
+.skip-btn:hover{background:#fff}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.chip.calm{background:var(--amber);color:#5A4407}
+
+/* Move card */
+.move-card{
+  background:rgba(255,255,255,.94);border-radius:28px;padding:24px 22px 28px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.move-name{
+  font-family:"Baloo 2",sans-serif;font-weight:700;
+  font-size:clamp(1.9rem,5vw,3rem);color:var(--teal-dark);
+}
+.move-detail{font-size:clamp(1.05rem,2.6vw,1.35rem);color:var(--ink-soft);margin:4px 0 10px}
+.counter{
+  font-family:"Baloo 2",sans-serif;font-weight:700;
+  font-size:clamp(3.2rem,10vw,5.5rem);line-height:1.1;color:var(--green);
+  font-variant-numeric:tabular-nums;
+}
+.counter.timeup{color:var(--amber-dark)}
+.count-hint{font-size:1rem;color:#6E8C86;margin-bottom:6px}
+
+/* Frog coach */
+.coach{width:clamp(120px,22vw,170px);margin:2px auto 6px}
+@keyframes coachJump{0%,100%{transform:translateY(0)}30%{transform:translateY(-26px) scale(1.04)}60%{transform:translateY(0)}}
+@keyframes coachSway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+@keyframes coachBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.coach.jump{animation:coachJump 1s ease-in-out infinite;transform-origin:bottom center}
+.coach.sway{animation:coachSway 1.6s ease-in-out infinite;transform-origin:bottom center}
+.coach.bounce{animation:coachBounce .6s ease-in-out infinite}
+.coach.still{animation:none}
+
+/* Progress dots */
+.dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.dot{
+  width:16px;height:16px;border-radius:50%;
+  background:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.8);
+}
+.dot.done{background:var(--green-light);border-color:var(--green)}
+.dot.now{background:var(--amber);border-color:var(--amber-dark)}
+
+/* End screen */
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px;color:var(--amber)}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <svg width="130" height="100" viewBox="0 0 130 100" aria-hidden="true" style="margin:0 auto 4px">
+        <ellipse cx="65" cy="92" rx="46" ry="7" fill="#BFE3F2"/>
+        <g>
+          <ellipse cx="65" cy="56" rx="26" ry="20" fill="#4FB06A"/>
+          <path d="M42 62 L26 44" stroke="#3F9457" stroke-width="9" stroke-linecap="round"/>
+          <path d="M88 62 L104 44" stroke="#3F9457" stroke-width="9" stroke-linecap="round"/>
+          <ellipse cx="47" cy="72" rx="10" ry="6" fill="#3F9457"/>
+          <ellipse cx="83" cy="72" rx="10" ry="6" fill="#3F9457"/>
+          <circle cx="55" cy="34" r="10" fill="#4FB06A"/>
+          <circle cx="75" cy="34" r="10" fill="#4FB06A"/>
+          <circle cx="55" cy="34" r="6.5" fill="#fff"/>
+          <circle cx="75" cy="34" r="6.5" fill="#fff"/>
+          <circle cx="56" cy="35" r="3" fill="#22303B"/>
+          <circle cx="76" cy="35" r="3" fill="#22303B"/>
+          <path d="M53 60 Q65 70 77 60" stroke="#1F5B36" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <path d="M18 18 L20 24 L26 26 L20 28 L18 34 L16 28 L10 26 L16 24 Z" fill="#F5C84C"/>
+        <path d="M110 12 L112 18 L118 20 L112 22 L110 28 L108 22 L102 20 L108 18 Z" fill="#F5C84C"/>
+      </svg>
+      <h1 id="gameTitle">Ribbit recess</h1>
+      <p class="sub">Get the wiggles out! Hop leads, everybody moves. Stand up and make some space.</p>
+      <span class="choose-label" id="modeLabel">How long is recess?</span>
+      <div class="modes" role="group" aria-labelledby="modeLabel">
+        <button class="mode-btn" data-count="5" aria-pressed="true" onclick="chooseLen(this)">Quick splash<small>5 moves, about 2 min</small></button>
+        <button class="mode-btn" data-count="8" aria-pressed="false" onclick="chooseLen(this)">Full recess<small>8 moves, about 3 min</small></button>
+        <button class="mode-btn" data-count="12" aria-pressed="false" onclick="chooseLen(this)">Frog marathon<small>12 moves, about 5 min</small></button>
+      </div>
+      <button class="big-btn" onclick="startGame()">Ribbit, let's move!</button>
+    </div>
+  </section>
+
+  <!-- Game screen -->
+  <section class="screen hidden" id="gameScreen">
+    <div class="hud">
+      <span class="chip" id="roundChip">Move 1 of 5</span>
+      <span class="chip calm hidden" id="calmChip">Cool-down</span>
+    </div>
+    <div class="move-card">
+      <p class="move-name" id="moveName">Frog jumps</p>
+      <p class="move-detail" id="moveDetail">Jump high like Hop!</p>
+      <svg class="coach jump" id="coach" viewBox="0 0 130 100" aria-hidden="true">
+        <g>
+          <ellipse cx="65" cy="56" rx="26" ry="20" fill="#4FB06A"/>
+          <path d="M42 62 L26 44" stroke="#3F9457" stroke-width="9" stroke-linecap="round"/>
+          <path d="M88 62 L104 44" stroke="#3F9457" stroke-width="9" stroke-linecap="round"/>
+          <ellipse cx="47" cy="74" rx="10" ry="6" fill="#3F9457"/>
+          <ellipse cx="83" cy="74" rx="10" ry="6" fill="#3F9457"/>
+          <circle cx="55" cy="34" r="10" fill="#4FB06A"/>
+          <circle cx="75" cy="34" r="10" fill="#4FB06A"/>
+          <circle cx="55" cy="34" r="6.5" fill="#fff"/>
+          <circle cx="75" cy="34" r="6.5" fill="#fff"/>
+          <circle cx="56" cy="35" r="3" fill="#22303B"/>
+          <circle cx="76" cy="35" r="3" fill="#22303B"/>
+          <path d="M53 60 Q65 70 77 60" stroke="#1F5B36" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <p class="count-hint" id="countHint">Count together!</p>
+      <p class="counter" id="counter">10</p>
+      <button class="big-btn" id="doneBtn" onclick="doneMove()">We did it!</button>
+    </div>
+    <button class="skip-btn" onclick="skipMove()">Give us a different move</button>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">What a recess!</h2>
+      <p class="score-line" id="finalLine">You finished all 5 moves. Your brain is ready to learn!</p>
+      <div class="stars" aria-hidden="true"><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="startGame()">One more recess</button>
+        <button class="big-btn alt" onclick="backToStart()">Back to start</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="hidden" id="srStatus"></div>
+
+<script>
+var MOVES = [
+  { name: 'Frog jumps', detail: 'Crouch low, then jump high like Hop!', type: 'reps', amount: 10, pose: 'jump' },
+  { name: 'Ribbit run', detail: 'Run in place as fast as you can!', type: 'secs', amount: 20, pose: 'bounce' },
+  { name: 'Lily pad lunges', detail: 'Big step forward, then switch legs!', type: 'reps', amount: 8, pose: 'sway' },
+  { name: 'Fishy swims', detail: 'Swim your arms through the water!', type: 'secs', amount: 15, pose: 'sway' },
+  { name: 'Croak and squat', detail: 'Squat down low and croak like a frog!', type: 'reps', amount: 8, pose: 'jump' },
+  { name: 'Heron balance, left', detail: 'Stand on your left leg like a heron!', type: 'secs', amount: 10, pose: 'sway' },
+  { name: 'Heron balance, right', detail: 'Now switch! Stand on your right leg!', type: 'secs', amount: 10, pose: 'sway' },
+  { name: 'Dragonfly circles', detail: 'Stretch your arms out and make big circles!', type: 'secs', amount: 15, pose: 'sway' },
+  { name: 'Splash claps', detail: 'Jump and clap high above your head!', type: 'reps', amount: 10, pose: 'jump' },
+  { name: 'Tadpole wiggles', detail: 'Wiggle your whole body like a tadpole!', type: 'secs', amount: 15, pose: 'bounce' },
+  { name: 'Cattail stretch', detail: 'Reach up tall, tall, taller!', type: 'secs', amount: 10, pose: 'sway' },
+  { name: 'Pond freeze', detail: 'Freeze! Hold perfectly still like a statue!', type: 'secs', amount: 10, pose: 'still' }
+];
+var COOLDOWNS = [
+  { name: 'Turtle stretch', detail: 'Slow shoulder rolls, nice and easy.', type: 'secs', amount: 15, pose: 'sway', calm: true },
+  { name: 'Bee breaths', detail: 'Big breath in through your nose, hum it out.', type: 'reps', amount: 3, pose: 'still', calm: true }
+];
+
+var sessionLen = 5;
+var plan = [];
+var moveIndex = 0;
+var current = null;
+var timerId = null;
+var timeLeft = 0;
+var soundOn = true;
+var audioCtx = null;
+var spare = [];
+
+function $(id){ return document.getElementById(id); }
+
+function chooseLen(btn){
+  document.querySelectorAll('.mode-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  sessionLen = parseInt(btn.dataset.count, 10);
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+  if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.16, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndTick(){ beep([700], 0.08); }
+function sndGo(){ beep([523, 659], 0.12); }
+function sndDone(){ beep([523, 659, 784], 0.11); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function say(text){
+  if (!soundOn || !window.speechSynthesis) return;
+  try {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.95;
+    window.speechSynthesis.speak(u);
+  } catch(e) {}
+}
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function startGame(){
+  var mixed = shuffle(MOVES);
+  plan = mixed.slice(0, sessionLen - 1);
+  spare = mixed.slice(sessionLen - 1);
+  plan.push(shuffle(COOLDOWNS)[0]);
+  moveIndex = 0;
+  $('startScreen').classList.add('hidden');
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.remove('hidden');
+  buildDots();
+  showMove();
+}
+
+function backToStart(){
+  clearInterval(timerId);
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.add('hidden');
+  $('startScreen').classList.remove('hidden');
+}
+
+function buildDots(){
+  var d = $('dots');
+  d.innerHTML = '';
+  for (var i = 0; i < plan.length; i++) {
+    var s = document.createElement('span');
+    s.className = 'dot';
+    s.id = 'dot' + i;
+    d.appendChild(s);
+  }
+}
+
+function showMove(){
+  clearInterval(timerId);
+  current = plan[moveIndex];
+  $('roundChip').textContent = 'Move ' + (moveIndex + 1) + ' of ' + plan.length;
+  $('calmChip').classList.toggle('hidden', !current.calm);
+  $('moveName').textContent = current.name;
+  $('moveDetail').textContent = current.detail;
+
+  var coach = $('coach');
+  coach.className = 'coach ' + current.pose;
+
+  for (var i = 0; i < plan.length; i++) {
+    var dot = $('dot' + i);
+    dot.className = 'dot' + (i < moveIndex ? ' done' : i === moveIndex ? ' now' : '');
+  }
+
+  var counter = $('counter');
+  counter.classList.remove('timeup');
+  var doneBtn = $('doneBtn');
+
+  if (current.type === 'reps') {
+    counter.textContent = 'x ' + current.amount;
+    $('countHint').textContent = 'Count together!';
+    doneBtn.textContent = 'We did it!';
+    doneBtn.classList.remove('hidden');
+  } else {
+    timeLeft = current.amount;
+    counter.textContent = timeLeft;
+    $('countHint').textContent = 'Keep going until the timer ends!';
+    doneBtn.classList.add('hidden');
+    timerId = setInterval(tick, 1000);
+  }
+
+  say(current.name + '. ' + current.detail);
+  $('srStatus').textContent = 'Move ' + (moveIndex + 1) + ': ' + current.name + '. ' + current.detail;
+  sndGo();
+}
+
+function tick(){
+  timeLeft--;
+  var counter = $('counter');
+  if (timeLeft > 0) {
+    counter.textContent = timeLeft;
+    if (timeLeft <= 3) sndTick();
+  } else {
+    clearInterval(timerId);
+    counter.textContent = 'Done!';
+    counter.classList.add('timeup');
+    sndDone();
+    var doneBtn = $('doneBtn');
+    doneBtn.textContent = 'Next move';
+    doneBtn.classList.remove('hidden');
+  }
+}
+
+function doneMove(){
+  clearInterval(timerId);
+  sndDone();
+  moveIndex++;
+  if (moveIndex >= plan.length) endGame();
+  else showMove();
+}
+
+function skipMove(){
+  if (current && current.calm) {
+    var alt = COOLDOWNS.filter(function(c){ return c.name !== current.name; });
+    if (alt.length) plan[moveIndex] = alt[Math.floor(Math.random() * alt.length)];
+  } else if (spare.length) {
+    plan[moveIndex] = spare.shift();
+  }
+  showMove();
+}
+
+function endGame(){
+  clearInterval(timerId);
+  $('gameScreen').classList.add('hidden');
+  $('endScreen').classList.remove('hidden');
+  $('finalLine').textContent = 'You finished all ' + plan.length + ' moves. Your brain is ready to learn!';
+  $('srStatus').textContent = 'Recess complete. You finished all ' + plan.length + ' moves.';
+  say('What a recess! Your brain is ready to learn.');
+  sndWin();
+}
+</script>
+</body>
+</html>
