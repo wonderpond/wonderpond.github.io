@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond chorus - Wonder Pond</title>
+<meta name="description" content="Four singing frogs test your musical ears. Echo the melody or solve the rhythm riddle! A free classroom music game from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --amber:#F5C84C;
+  --amber-dark:#C99A17;
+  --red:#E24B4A;
+  --f1:#4FB06A;
+  --f2:#3FA7A3;
+  --f3:#D06A8C;
+  --f4:#3D7EC2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--sky) 42%,var(--water) 42%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 16px 26px}
+.screen{width:100%;max-width:940px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:34px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 24px}
+.modes{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.mode-card{
+  font-family:"Baloo 2",sans-serif;font-size:1.3rem;font-weight:700;
+  padding:22px 26px;min-width:230px;border-radius:22px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.mode-card:hover{transform:translateY(-3px)}
+.mode-card small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.85rem;opacity:.8;margin-top:4px}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:16px 42px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.25rem,3vw,1.8rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 10px;
+  background:rgba(255,255,255,.85);display:inline-block;padding:7px 26px;border-radius:999px;
+}
+
+/* Singing frogs */
+.frog-row{display:flex;gap:clamp(10px,2.5vw,22px);justify-content:center;flex-wrap:wrap;margin:10px 0 4px}
+.frog-btn{
+  border:none;background:none;cursor:pointer;padding:6px;border-radius:22px;
+  transition:transform .1s ease;
+}
+.frog-btn:hover:enabled{transform:translateY(-4px)}
+.frog-btn:disabled{cursor:default}
+.frog-btn svg{width:clamp(74px,15vw,120px);display:block}
+.frog-btn .mouth-open{display:none}
+.frog-btn.singing{transform:translateY(-8px)}
+.frog-btn.singing .mouth-closed{display:none}
+.frog-btn.singing .mouth-open{display:block}
+.frog-name{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1rem;color:#fff;
+  border-radius:999px;padding:2px 14px;display:inline-block;margin-top:4px;
+}
+
+/* Rhythm cards */
+.rhythm-choices{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.rhythm-card{
+  background:#fff;border:none;border-radius:22px;padding:18px 20px;cursor:pointer;
+  box-shadow:0 6px 0 rgba(18,64,58,.25);transition:transform .12s ease;min-width:210px;
+}
+.rhythm-card:hover:enabled{transform:translateY(-3px)}
+.rhythm-card:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.25)}
+.rhythm-card.correct{background:var(--green-light);box-shadow:0 6px 0 var(--green)}
+.rhythm-card.correct .blk{background:#fff}
+.rhythm-card.correct .beam{background:#fff}
+.rhythm-card.correct .rest{border-color:#fff}
+.rhythm-card.wrong{background:var(--red);opacity:.85}
+.rhythm-card.wrong .blk{background:#fff}
+.rhythm-card.wrong .beam{background:#fff}
+.rhythm-card.wrong .rest{border-color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.rhythm-card.shake{animation:shake .35s ease}
+.rhythm-card:disabled{cursor:default}
+.beat-row{display:flex;gap:14px;justify-content:center;align-items:flex-end;height:56px}
+.beat{display:flex;gap:5px;align-items:flex-end;position:relative;min-width:40px;justify-content:center}
+.blk{width:16px;background:var(--teal-dark);border-radius:4px}
+.blk.ta{width:34px;height:40px}
+.blk.ti{height:30px}
+.beam{position:absolute;top:8px;left:2px;right:2px;height:7px;background:var(--teal-dark);border-radius:3px}
+.rest{
+  width:30px;height:30px;border:3px dashed #9AB5B0;border-radius:8px;
+}
+.card-label{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.15rem;
+  color:var(--teal-dark);margin-top:10px;
+}
+.rhythm-card.correct .card-label,.rhythm-card.wrong .card-label{color:#fff}
+
+.listen-btn{
+  margin:8px auto 2px;display:inline-flex;align-items:center;gap:8px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.05rem;
+  background:rgba(255,255,255,.92);border:none;border-radius:999px;
+  padding:10px 24px;cursor:pointer;color:var(--teal-dark);
+}
+.listen-btn:hover{background:#fff}
+.listen-btn:disabled{opacity:.5;cursor:default}
+
+.feedback{
+  font-family:"Baloo 2",sans-serif;font-size:1.15rem;font-weight:700;
+  color:var(--teal-dark);min-height:1.8em;margin-top:10px;
+}
+
+/* End screen */
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <svg width="150" height="80" viewBox="0 0 150 80" aria-hidden="true" style="margin:0 auto 4px">
+        <ellipse cx="40" cy="52" rx="20" ry="15" fill="#4FB06A"/>
+        <circle cx="33" cy="35" r="7" fill="#4FB06A"/><circle cx="47" cy="35" r="7" fill="#4FB06A"/>
+        <circle cx="33" cy="35" r="4.4" fill="#fff"/><circle cx="47" cy="35" r="4.4" fill="#fff"/>
+        <circle cx="34" cy="36" r="2.1" fill="#22303B"/><circle cx="48" cy="36" r="2.1" fill="#22303B"/>
+        <ellipse cx="40" cy="57" rx="7" ry="8" fill="#1F5B36"/>
+        <ellipse cx="110" cy="52" rx="20" ry="15" fill="#3FA7A3"/>
+        <circle cx="103" cy="35" r="7" fill="#3FA7A3"/><circle cx="117" cy="35" r="7" fill="#3FA7A3"/>
+        <circle cx="103" cy="35" r="4.4" fill="#fff"/><circle cx="117" cy="35" r="4.4" fill="#fff"/>
+        <circle cx="104" cy="36" r="2.1" fill="#22303B"/><circle cx="118" cy="36" r="2.1" fill="#22303B"/>
+        <ellipse cx="110" cy="57" rx="7" ry="8" fill="#175E5B"/>
+        <path d="M70 22 q0 -10 8 -10 q8 0 8 10 l0 14 q0 6 -6 6 q-6 0 -6 -6 q0 -5 5 -5 l1 0 l0 -9" fill="none" stroke="#F5C84C" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <h1 id="gameTitle">Pond chorus</h1>
+      <p class="sub">Four singing frogs test your musical ears. Pick a game!</p>
+      <div class="modes">
+        <button class="mode-card" onclick="startEcho()">Copycat chorus<small>Listen to the frogs sing, then tap the tune back. How long can you go?</small></button>
+        <button class="mode-card" onclick="startRhythm()">Rhythm riddles<small>Hear a rhythm, then find the matching pattern. 10 riddles.</small></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Echo (Simon) screen -->
+  <section class="screen hidden" id="echoScreen">
+    <div class="hud">
+      <span class="chip" id="echoRound">Tune length: 1</span>
+      <span class="chip" id="echoBest">Best: 0</span>
+    </div>
+    <p class="prompt" id="echoPrompt">Listen to the chorus...</p>
+    <div class="frog-row" id="frogRow"></div>
+    <button class="big-btn" id="echoStartBtn" onclick="echoNewGame()">Start the chorus</button>
+    <p class="feedback" id="echoFeedback"></p>
+  </section>
+
+  <!-- Rhythm screen -->
+  <section class="screen hidden" id="rhythmScreen">
+    <div class="hud">
+      <span class="chip" id="rhythmRound">Riddle 1 of 10</span>
+      <span class="chip" id="rhythmScore">Score 0</span>
+    </div>
+    <p class="prompt">Which pattern did you hear?</p>
+    <div>
+      <button class="listen-btn" id="listenBtn" onclick="playPattern(true)">&#128266; Hear it again</button>
+    </div>
+    <div class="rhythm-choices" id="rhythmChoices"></div>
+    <p class="feedback" id="rhythmFeedback"></p>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Bravo!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" id="againBtn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="hidden" id="srStatus"></div>
+
+<script>
+var FROGS = [
+  { name: 'Bass', color: 'var(--f4)', hex: '#3D7EC2', dark: '#2A5E96', freq: 261.63 },
+  { name: 'Tenor', color: 'var(--f2)', hex: '#3FA7A3', dark: '#2B7B78', freq: 329.63 },
+  { name: 'Alto', color: 'var(--f1)', hex: '#4FB06A', dark: '#37814C', freq: 392.00 },
+  { name: 'Soprano', color: 'var(--f3)', hex: '#D06A8C', dark: '#A34868', freq: 523.25 }
+];
+
+var audioCtx = null;
+var lastMode = 'echo';
+
+function $(id){ return document.getElementById(id); }
+
+function note(freq, dur, when, type){
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime + (when || 0);
+    var o = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    o.type = type || 'triangle';
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0.001, t);
+    g.gain.exponentialRampToValueAtTime(0.22, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(t);
+    o.stop(t + dur + 0.05);
+  } catch(e) {}
+}
+function sndGood(){ note(523,0.12); note(659,0.12,0.11); note(784,0.16,0.22); }
+function sndBad(){ note(220,0.16); note(180,0.2,0.14); }
+function sndWin(){ note(523,0.13); note(659,0.13,0.12); note(784,0.13,0.24); note(1047,0.2,0.36); }
+
+/* ---------- Shared screens ---------- */
+function backToStart(){
+  ['echoScreen','rhythmScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); });
+  $('startScreen').classList.remove('hidden');
+}
+function playAgain(){
+  $('endScreen').classList.add('hidden');
+  if (lastMode === 'echo') startEcho();
+  else startRhythm();
+}
+function showEnd(title, line, stars){
+  ['echoScreen','rhythmScreen','startScreen'].forEach(function(s){ $(s).classList.add('hidden'); });
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+
+/* ---------- Copycat chorus (echo) ---------- */
+var seq = [];
+var playerIdx = 0;
+var echoBusy = true;
+var best = 0;
+
+function frogSvg(i){
+  var f = FROGS[i];
+  return '<svg viewBox="0 0 120 100" aria-hidden="true">' +
+    '<ellipse cx="60" cy="60" rx="26" ry="20" fill="' + f.hex + '"/>' +
+    '<ellipse cx="42" cy="74" rx="10" ry="6" fill="' + f.dark + '"/>' +
+    '<ellipse cx="78" cy="74" rx="10" ry="6" fill="' + f.dark + '"/>' +
+    '<circle cx="50" cy="38" r="10" fill="' + f.hex + '"/>' +
+    '<circle cx="70" cy="38" r="10" fill="' + f.hex + '"/>' +
+    '<circle cx="50" cy="38" r="6.5" fill="#fff"/>' +
+    '<circle cx="70" cy="38" r="6.5" fill="#fff"/>' +
+    '<circle cx="51" cy="39" r="3" fill="#22303B"/>' +
+    '<circle cx="71" cy="39" r="3" fill="#22303B"/>' +
+    '<path class="mouth-closed" d="M48 64 Q60 74 72 64" stroke="' + f.dark + '" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    '<ellipse class="mouth-open" cx="60" cy="66" rx="8" ry="10" fill="' + f.dark + '"/>' +
+    '</svg>' +
+    '<span class="frog-name" style="background:' + f.hex + '">' + f.name + '</span>';
+}
+
+function buildFrogs(){
+  var row = $('frogRow');
+  if (row.childNodes.length) return;
+  FROGS.forEach(function(f, i){
+    var b = document.createElement('button');
+    b.className = 'frog-btn';
+    b.id = 'frog' + i;
+    b.setAttribute('aria-label', f.name + ' frog');
+    b.innerHTML = frogSvg(i);
+    b.disabled = true;
+    b.onclick = function(){ tapFrog(i); };
+    row.appendChild(b);
+  });
+}
+
+function singFrog(i, dur){
+  var b = $('frog' + i);
+  b.classList.add('singing');
+  note(FROGS[i].freq, dur || 0.42);
+  setTimeout(function(){ b.classList.remove('singing'); }, (dur || 0.42) * 800);
+}
+
+function startEcho(){
+  lastMode = 'echo';
+  $('startScreen').classList.add('hidden');
+  $('endScreen').classList.add('hidden');
+  $('echoScreen').classList.remove('hidden');
+  buildFrogs();
+  seq = [];
+  echoBusy = true;
+  setFrogsEnabled(false);
+  $('echoRound').textContent = 'Tune length: 0';
+  $('echoBest').textContent = 'Best: ' + best;
+  $('echoPrompt').textContent = 'Press start and listen closely!';
+  $('echoFeedback').textContent = '';
+  $('echoStartBtn').classList.remove('hidden');
+}
+
+function echoNewGame(){
+  seq = [];
+  $('echoStartBtn').classList.add('hidden');
+  $('echoFeedback').textContent = '';
+  extendAndPlay();
+}
+
+function setFrogsEnabled(on){
+  FROGS.forEach(function(f, i){ $('frog' + i).disabled = !on; });
+}
+
+function extendAndPlay(){
+  seq.push(Math.floor(Math.random() * 4));
+  $('echoRound').textContent = 'Tune length: ' + seq.length;
+  playSeq();
+}
+
+function playSeq(){
+  echoBusy = true;
+  setFrogsEnabled(false);
+  $('echoPrompt').textContent = 'Listen to the chorus...';
+  $('srStatus').textContent = 'Listen. The tune is ' + seq.length + ' notes long.';
+  var gap = seq.length > 6 ? 480 : 620;
+  seq.forEach(function(fi, i){
+    setTimeout(function(){ singFrog(fi); }, 400 + i * gap);
+  });
+  setTimeout(function(){
+    playerIdx = 0;
+    echoBusy = false;
+    setFrogsEnabled(true);
+    $('echoPrompt').textContent = 'Your turn! Tap the tune back.';
+    $('srStatus').textContent = 'Your turn. Tap the frogs in the same order.';
+  }, 400 + seq.length * gap + 200);
+}
+
+function tapFrog(i){
+  if (echoBusy) return;
+  singFrog(i, 0.3);
+  if (i === seq[playerIdx]) {
+    playerIdx++;
+    if (playerIdx >= seq.length) {
+      echoBusy = true;
+      setFrogsEnabled(false);
+      $('echoFeedback').textContent = 'Beautiful! The chorus adds a note...';
+      if (seq.length > best) {
+        best = seq.length;
+        $('echoBest').textContent = 'Best: ' + best;
+      }
+      setTimeout(sndGood, 350);
+      setTimeout(extendAndPlay, 1300);
+    }
+  } else {
+    echoBusy = true;
+    setFrogsEnabled(false);
+    sndBad();
+    var streak = seq.length - 1;
+    var stars = streak >= 8 ? 3 : streak >= 5 ? 2 : 1;
+    var title = streak >= 8 ? 'Musical ears!' : streak >= 5 ? 'Bravo!' : 'Nice singing!';
+    setTimeout(function(){
+      showEnd(title, 'You echoed a tune ' + streak + ' notes long.', stars);
+    }, 900);
+  }
+}
+
+/* ---------- Rhythm riddles ---------- */
+var R_TOTAL = 10;
+var rRound = 0;
+var rScore = 0;
+var pattern = [];
+var rBusy = false;
+
+/* beat symbols: 'ta' one sound, 'titi' two sounds, 'rest' silence */
+function makePattern(){
+  var beats = [];
+  var restUsed = false;
+  for (var i = 0; i < 4; i++) {
+    var r = Math.random();
+    if (r < 0.2 && !restUsed && i > 0) { beats.push('rest'); restUsed = true; }
+    else if (r < 0.6) beats.push('ta');
+    else beats.push('titi');
+  }
+  return beats;
+}
+
+function mutatePattern(p){
+  var q = p.slice();
+  var idx = Math.floor(Math.random() * 4);
+  var opts = ['ta','titi','rest'].filter(function(x){ return x !== q[idx]; });
+  q[idx] = opts[Math.floor(Math.random() * opts.length)];
+  return q;
+}
+
+function samePattern(a, b){ return a.join(',') === b.join(','); }
+
+function playPattern(fromButton){
+  if (!pattern.length) return;
+  var beatDur = 0.55;
+  var t = 0.35;
+  pattern.forEach(function(b){
+    if (b === 'ta') note(880, 0.18, t, 'square');
+    else if (b === 'titi') { note(880, 0.12, t, 'square'); note(880, 0.12, t + beatDur / 2, 'square'); }
+    t += beatDur;
+  });
+}
+
+function patternHtml(p){
+  var h = '<span class="beat-row">';
+  p.forEach(function(b){
+    if (b === 'ta') h += '<span class="beat"><span class="blk ta"></span></span>';
+    else if (b === 'titi') h += '<span class="beat"><span class="beam"></span><span class="blk ti"></span><span class="blk ti"></span></span>';
+    else h += '<span class="beat"><span class="rest"></span></span>';
+  });
+  h += '</span>';
+  return h;
+}
+
+function patternWords(p){
+  return p.map(function(b){ return b === 'titi' ? 'ti-ti' : b; }).join(', ');
+}
+
+function startRhythm(){
+  lastMode = 'rhythm';
+  $('startScreen').classList.add('hidden');
+  $('endScreen').classList.add('hidden');
+  $('rhythmScreen').classList.remove('hidden');
+  rRound = 0;
+  rScore = 0;
+  nextRiddle();
+}
+
+function nextRiddle(){
+  rRound++;
+  if (rRound > R_TOTAL) {
+    var stars = rScore >= 9 ? 3 : rScore >= 7 ? 2 : 1;
+    var title = rScore >= 9 ? 'Rhythm master!' : rScore >= 7 ? 'Bravo!' : 'Keep the beat going!';
+    showEnd(title, 'You solved ' + rScore + ' of ' + R_TOTAL + ' rhythm riddles.', stars);
+    return;
+  }
+  rBusy = false;
+  pattern = makePattern();
+  $('rhythmRound').textContent = 'Riddle ' + rRound + ' of ' + R_TOTAL;
+  $('rhythmScore').textContent = 'Score ' + rScore;
+  $('rhythmFeedback').textContent = '';
+
+  var options = [pattern];
+  while (options.length < 3) {
+    var m = mutatePattern(options[Math.floor(Math.random() * options.length)]);
+    var dup = options.some(function(o){ return samePattern(o, m); });
+    if (!dup) options.push(m);
+  }
+  options.sort(function(){ return Math.random() - 0.5; });
+
+  var box = $('rhythmChoices');
+  box.innerHTML = '';
+  options.forEach(function(p, i){
+    var b = document.createElement('button');
+    b.className = 'rhythm-card';
+    b.innerHTML = patternHtml(p) + '<div class="card-label">Pattern ' + (i + 1) + '</div>';
+    b.setAttribute('aria-label', 'Pattern ' + (i + 1) + ': ' + patternWords(p));
+    b.onclick = function(){ pickRhythm(b, p); };
+    box.appendChild(b);
+  });
+
+  $('srStatus').textContent = 'Riddle ' + rRound + '. Listen to the rhythm.';
+  setTimeout(playPattern, 500);
+}
+
+function pickRhythm(btn, p){
+  if (rBusy) return;
+  rBusy = true;
+  document.querySelectorAll('.rhythm-card').forEach(function(b){ b.disabled = true; });
+  if (samePattern(p, pattern)) {
+    btn.classList.add('correct');
+    rScore++;
+    $('rhythmScore').textContent = 'Score ' + rScore;
+    sndGood();
+    $('rhythmFeedback').textContent = 'That is the one! ' + patternWords(pattern) + '.';
+    $('srStatus').textContent = 'Correct. The rhythm was ' + patternWords(pattern) + '.';
+  } else {
+    btn.classList.add('wrong', 'shake');
+    sndBad();
+    document.querySelectorAll('.rhythm-card').forEach(function(b){
+      if (b.getAttribute('aria-label').indexOf(patternWords(pattern)) >= 0) b.classList.add('correct');
+    });
+    $('rhythmFeedback').textContent = 'Almost! It was ' + patternWords(pattern) + '.';
+    $('srStatus').textContent = 'Not quite. The rhythm was ' + patternWords(pattern) + '.';
+  }
+  setTimeout(nextRiddle, 2200);
+}
+</script>
+</body>
+</html>
