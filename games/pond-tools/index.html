@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond tools - Wonder Pond</title>
+<meta name="description" content="Big classroom timer, team scoreboard, and random student picker in one place. Free classroom tools from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;
+  --green:#3F9457;--green-light:#4FB06A;--sky:#DFF2FA;--water:#8FCDE8;
+  --water-deep:#6BB6DB;--amber:#F5C84C;--amber-dark:#C99A17;--red:#E24B4A;
+  --t1:#4FB06A;--t2:#3FA7A3;--t3:#D06A8C;--t4:#3D7EC2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--sky) 55%,var(--water) 55%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;
+  border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.tabs{display:flex;gap:10px;justify-content:center;padding:4px 16px 14px;flex-wrap:wrap}
+.tab{
+  font-family:"Baloo 2",sans-serif;font-size:1.15rem;font-weight:700;
+  padding:12px 26px;border-radius:999px;border:3px solid var(--teal);
+  background:#fff;color:var(--teal-dark);cursor:pointer;
+}
+.tab[aria-pressed="true"]{background:var(--teal);color:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 16px 30px}
+.panel{width:100%;max-width:900px;text-align:center}
+.hidden{display:none !important}
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:28px 24px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.3rem;font-weight:700;
+  padding:14px 34px;border-radius:999px;border:none;background:var(--green-light);
+  color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);margin:6px;
+}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn.warn{background:var(--amber);color:#5A4407;box-shadow:0 6px 0 var(--amber-dark)}
+.preset{
+  font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;
+  padding:12px 20px;border-radius:16px;border:3px solid var(--teal);
+  background:#fff;color:var(--teal-dark);cursor:pointer;margin:4px;
+}
+.preset[aria-pressed="true"]{background:var(--teal);color:#fff}
+#timeDisplay{
+  font-family:"Baloo 2",sans-serif;font-weight:700;
+  font-size:clamp(4.5rem,18vw,10rem);line-height:1.05;color:var(--teal-dark);
+  font-variant-numeric:tabular-nums;
+}
+#timeDisplay.low{color:var(--red)}
+#timeUp{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.6rem,5vw,2.6rem);
+  color:var(--amber-dark);min-height:1.3em;
+}
+.score-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.team-box{border-radius:22px;padding:16px 18px 18px;color:#fff;min-width:170px}
+.team-box h2{font-size:1.25rem}
+.team-score{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:3.4rem;line-height:1.1}
+.pm{display:flex;gap:10px;justify-content:center;margin-top:6px}
+.pm button{
+  width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
+  font-family:"Baloo 2",sans-serif;font-size:1.6rem;font-weight:700;
+  background:rgba(255,255,255,.9);color:var(--ink);
+}
+.field{display:inline-flex;align-items:center;gap:10px;margin:8px 12px}
+.field label{font-weight:700}
+.field input{width:86px;padding:9px 10px;font:inherit;text-align:center;border:2px solid #BFDDD6;border-radius:12px}
+.results{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:52px;margin-top:12px}
+.bubble{
+  width:52px;height:52px;border-radius:50%;background:var(--green-light);color:#fff;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.4rem;
+  display:flex;align-items:center;justify-content:center;animation:pop .3s ease;
+}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.note{font-size:.95rem;color:#6E8C86;margin-top:10px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+</div>
+<div class="tabs" role="group" aria-label="Tools">
+  <button class="tab" aria-pressed="true" onclick="showTab('timer',this)">Timer</button>
+  <button class="tab" aria-pressed="false" onclick="showTab('score',this)">Scoreboard</button>
+  <button class="tab" aria-pressed="false" onclick="showTab('picker',this)">Random picker</button>
+</div>
+<main class="stage">
+
+  <section class="panel" id="timerPanel">
+    <div class="card">
+      <div>
+        <button class="preset" aria-pressed="false" onclick="setTimer(60,this)">1 min</button>
+        <button class="preset" aria-pressed="false" onclick="setTimer(120,this)">2 min</button>
+        <button class="preset" aria-pressed="true" onclick="setTimer(300,this)">5 min</button>
+        <button class="preset" aria-pressed="false" onclick="setTimer(600,this)">10 min</button>
+        <span class="field"><label for="customMin">Custom</label>
+        <input type="number" id="customMin" min="1" max="90" value="3">
+        <button class="preset" onclick="setCustom()">Set (min)</button></span>
+      </div>
+      <p id="timeDisplay">5:00</p>
+      <p id="timeUp"></p>
+      <button class="big-btn" id="startPause" onclick="startPause()">Start</button>
+      <button class="big-btn alt" onclick="resetTimer()">Reset</button>
+    </div>
+  </section>
+
+  <section class="panel hidden" id="scorePanel">
+    <div class="card">
+      <div>
+        <button class="preset" aria-pressed="true" onclick="buildTeams(2,this)">2 teams</button>
+        <button class="preset" aria-pressed="false" onclick="buildTeams(3,this)">3 teams</button>
+        <button class="preset" aria-pressed="false" onclick="buildTeams(4,this)">4 teams</button>
+        <button class="big-btn alt" onclick="resetScores()">Reset scores</button>
+      </div>
+      <div class="score-row" id="scoreRow"></div>
+      <p class="note">Tap the team name to rename it.</p>
+    </div>
+  </section>
+
+  <section class="panel hidden" id="pickerPanel">
+    <div class="card">
+      <div>
+        <span class="field"><label for="totalN">How many students?</label><input type="number" id="totalN" min="1" max="60" value="24"></span>
+        <span class="field"><label for="pickN">How many to pick?</label><input type="number" id="pickN" min="1" max="10" value="1"></span>
+      </div>
+      <button class="big-btn" onclick="pickNumbers()">Pick</button>
+      <button class="big-btn alt" onclick="resetPicker()">Reset</button>
+      <div class="results" id="pickResults" aria-live="polite"></div>
+      <p class="note" id="pickedNote">Numbers already picked stay out until you reset.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+function $(id){ return document.getElementById(id); }
+var audioCtx = null;
+function beep(freqs, dur){
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.2, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+
+function showTab(name, btn){
+  document.querySelectorAll('.tab').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  $('timerPanel').classList.toggle('hidden', name !== 'timer');
+  $('scorePanel').classList.toggle('hidden', name !== 'score');
+  $('pickerPanel').classList.toggle('hidden', name !== 'picker');
+}
+
+/* Timer */
+var totalSecs = 300, leftSecs = 300, running = false, tId = null;
+function fmt(s){
+  var m = Math.floor(s / 60), r = s % 60;
+  return m + ':' + (r < 10 ? '0' + r : r);
+}
+function render(){
+  var d = $('timeDisplay');
+  d.textContent = fmt(leftSecs);
+  d.classList.toggle('low', leftSecs <= 10 && leftSecs > 0);
+}
+function setTimer(s, btn){
+  document.querySelectorAll('#timerPanel .preset').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  if (btn) btn.setAttribute('aria-pressed','true');
+  stopTick();
+  totalSecs = s; leftSecs = s;
+  $('timeUp').textContent = '';
+  $('startPause').textContent = 'Start';
+  render();
+}
+function setCustom(){
+  var m = Math.max(1, Math.min(90, parseInt($('customMin').value, 10) || 1));
+  setTimer(m * 60, null);
+}
+function stopTick(){ running = false; clearInterval(tId); }
+function startPause(){
+  if (running) {
+    stopTick();
+    $('startPause').textContent = 'Start';
+    return;
+  }
+  if (leftSecs <= 0) { leftSecs = totalSecs; $('timeUp').textContent = ''; }
+  running = true;
+  $('startPause').textContent = 'Pause';
+  tId = setInterval(function(){
+    leftSecs--;
+    render();
+    if (leftSecs <= 5 && leftSecs > 0) beep([700], 0.08);
+    if (leftSecs <= 0) {
+      stopTick();
+      $('startPause').textContent = 'Start';
+      $('timeUp').textContent = "Ribbit! Time's up!";
+      beep([523, 659, 784, 1047], 0.14);
+    }
+  }, 1000);
+}
+function resetTimer(){
+  stopTick();
+  leftSecs = totalSecs;
+  $('timeUp').textContent = '';
+  $('startPause').textContent = 'Start';
+  render();
+}
+render();
+
+/* Scoreboard */
+var COLORS = ['var(--t1)','var(--t2)','var(--t3)','var(--t4)'];
+var NAMES = ['Team Hop','Team Skip','Team Lily','Team Splash'];
+var scores = [];
+function buildTeams(n, btn){
+  document.querySelectorAll('#scorePanel .preset').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  if (btn) btn.setAttribute('aria-pressed','true');
+  scores = [];
+  var row = $('scoreRow');
+  row.innerHTML = '';
+  for (var i = 0; i < n; i++) {
+    scores.push(0);
+    var box = document.createElement('div');
+    box.className = 'team-box';
+    box.style.background = COLORS[i];
+    box.innerHTML = '<h2 contenteditable="true" spellcheck="false">' + NAMES[i] + '</h2>' +
+      '<div class="team-score" id="ts' + i + '">0</div>' +
+      '<div class="pm"><button onclick="bump(' + i + ',-1)" aria-label="Minus one">-</button>' +
+      '<button onclick="bump(' + i + ',1)" aria-label="Plus one">+</button></div>';
+    row.appendChild(box);
+  }
+}
+function bump(i, d){
+  scores[i] = Math.max(0, scores[i] + d);
+  $('ts' + i).textContent = scores[i];
+  if (d > 0) beep([659], 0.09);
+}
+function resetScores(){
+  scores = scores.map(function(){ return 0; });
+  scores.forEach(function(s, i){ $('ts' + i).textContent = 0; });
+}
+buildTeams(2, document.querySelector('#scorePanel .preset'));
+
+/* Picker */
+var pickedSet = new Set();
+function pickNumbers(){
+  var total = Math.max(1, Math.min(60, parseInt($('totalN').value, 10) || 1));
+  var count = Math.max(1, Math.min(10, parseInt($('pickN').value, 10) || 1));
+  var pool = [];
+  for (var i = 1; i <= total; i++) if (!pickedSet.has(i)) pool.push(i);
+  if (pool.length === 0) {
+    $('pickedNote').textContent = 'Everyone has been picked! Press reset to start over.';
+    return;
+  }
+  var results = $('pickResults');
+  results.innerHTML = '';
+  var n = Math.min(count, pool.length);
+  for (var j = 0; j < n; j++) {
+    var idx = Math.floor(Math.random() * pool.length);
+    var num = pool.splice(idx, 1)[0];
+    pickedSet.add(num);
+    var b = document.createElement('span');
+    b.className = 'bubble';
+    b.textContent = num;
+    results.appendChild(b);
+  }
+  beep([523, 784], 0.1);
+  $('pickedNote').textContent = 'Picked so far: ' + Array.from(pickedSet).sort(function(a, b){ return a - b; }).join(', ');
+}
+function resetPicker(){
+  pickedSet.clear();
+  $('pickResults').innerHTML = '';
+  $('pickedNote').textContent = 'Numbers already picked stay out until you reset.';
+}
+</script>
+</body>
+</html>
