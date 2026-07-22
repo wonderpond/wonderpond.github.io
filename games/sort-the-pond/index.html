@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sort the pond - Wonder Pond</title>
+<meta name="description" content="Sort things into the right basket! Living or nonliving, animal groups, states of matter, and more. A free science sorting game for K to 2 classrooms from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;
+  --green:#3F9457;--green-light:#4FB06A;--sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;
+  --amber:#F5C84C;--amber-dark:#C99A17;--red:#E24B4A;
+  --binA:#4FB06A;--binB:#3D7EC2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--sky) 55%,var(--water) 55%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:940px;text-align:center}
+.hidden{display:none !important}
+
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:30px 24px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:6px 0 12px;display:block}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:8px}
+.topic-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.15rem;font-weight:700;
+  padding:18px 16px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease;
+}
+.topic-btn:hover{transform:translateY(-3px)}
+.topic-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.topic-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.82rem;opacity:.8;margin-top:3px}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:16px 42px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin-top:16px;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+
+.topic-title{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;color:var(--teal-dark);
+  background:rgba(255,255,255,.85);display:inline-block;padding:5px 22px;border-radius:999px;margin-bottom:8px;
+}
+
+/* Item */
+.item-zone{min-height:150px;display:flex;align-items:center;justify-content:center;margin:4px 0}
+.item{
+  background:#fff;border-radius:24px;padding:16px 22px;box-shadow:0 8px 24px rgba(18,64,58,.16);
+  display:inline-flex;flex-direction:column;align-items:center;gap:6px;min-width:150px;
+}
+.item .emoji{font-size:clamp(3rem,10vw,4.4rem);line-height:1}
+.item .label{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.3rem;color:var(--teal-dark)}
+@keyframes flyToA{to{transform:translate(-160px,-90px) scale(.3);opacity:0}}
+@keyframes flyToB{to{transform:translate(160px,-90px) scale(.3);opacity:0}}
+.item.toA{animation:flyToA .4s ease forwards}
+.item.toB{animation:flyToB .4s ease forwards}
+@keyframes wiggle{0%,100%{transform:translateX(0)}25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
+.item.wiggle{animation:wiggle .35s ease}
+@keyframes itemIn{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.item.in{animation:itemIn .25s ease}
+
+/* Baskets */
+.baskets{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.basket{
+  border:none;cursor:pointer;border-radius:22px;padding:16px 22px;min-width:180px;
+  color:#fff;font-family:"Baloo 2",sans-serif;transition:transform .12s ease;
+  box-shadow:0 6px 0 rgba(18,64,58,.22);
+}
+.basket:hover:enabled{transform:translateY(-4px)}
+.basket:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.basket:disabled{cursor:default}
+.basket .frog{font-size:2.2rem;line-height:1}
+.basket .bname{font-size:1.4rem;font-weight:700;margin-top:2px;display:block}
+.basket.a{background:var(--binA)}
+.basket.b{background:var(--binB)}
+.basket.flash{animation:basketFlash .4s ease}
+@keyframes basketFlash{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}
+
+.feedback{font-family:"Baloo 2",sans-serif;font-size:1.15rem;font-weight:700;color:var(--teal-dark);min-height:1.7em;margin-top:12px}
+
+/* End */
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div style="font-size:3rem;line-height:1;margin-bottom:2px" aria-hidden="true">&#129370;</div>
+      <h1 id="gameTitle">Sort the pond</h1>
+      <p class="sub">Things float by the pond. Drop each one in the basket where it belongs!</p>
+      <span class="choose-label" id="topicLabel">Pick what to sort</span>
+      <div class="topic-grid" role="group" aria-labelledby="topicLabel" id="topicGrid"></div>
+      <button class="big-btn" onclick="startGame()">Start sorting!</button>
+    </div>
+  </section>
+
+  <!-- Game -->
+  <section class="screen hidden" id="gameScreen">
+    <div class="hud">
+      <span class="chip" id="roundChip">Item 1 of 10</span>
+      <span class="chip" id="scoreChip">Sorted 0</span>
+    </div>
+    <div><span class="topic-title" id="topicTitle">Living or nonliving?</span></div>
+    <div class="item-zone" id="itemZone"></div>
+    <div class="baskets" id="baskets">
+      <button class="basket a" id="basketA" onclick="sortTo('a')"></button>
+      <button class="basket b" id="basketB" onclick="sortTo('b')"></button>
+    </div>
+    <p class="feedback" id="feedback">Which basket?</p>
+  </section>
+
+  <!-- End -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Sorted it out!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="startGame()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change topic</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="hidden" id="srStatus"></div>
+
+<script>
+var TOPICS = [
+  {
+    id: 'living', name: 'Living or nonliving?',
+    short: 'Living things', a: { frog: '\uD83D\uDC38', name: 'Living' }, b: { frog: '\uD83E\uDEA8', name: 'Nonliving' },
+    items: [
+      { e: '\uD83D\uDC36', l: 'Dog', c: 'a' }, { e: '\uD83C\uDF3B', l: 'Sunflower', c: 'a' },
+      { e: '\uD83E\uDD8B', l: 'Butterfly', c: 'a' }, { e: '\uD83C\uDF33', l: 'Tree', c: 'a' },
+      { e: '\uD83D\uDC1F', l: 'Fish', c: 'a' }, { e: '\uD83E\uDDD2', l: 'Child', c: 'a' },
+      { e: '\uD83C\uDF44', l: 'Mushroom', c: 'a' }, { e: '\uD83D\uDC26', l: 'Bird', c: 'a' },
+      { e: '\uD83E\uDEA8', l: 'Rock', c: 'b' }, { e: '\uD83D\uDE97', l: 'Car', c: 'b' },
+      { e: '\u2600\uFE0F', l: 'Sun', c: 'b' }, { e: '\uD83E\uDD5B', l: 'Milk carton', c: 'b' },
+      { e: '\u26F0\uFE0F', l: 'Mountain', c: 'b' }, { e: '\uD83E\uDE91', l: 'Chair', c: 'b' },
+      { e: '\uD83D\uDCA7', l: 'Water drop', c: 'b' }, { e: '\u26BD', l: 'Ball', c: 'b' }
+    ]
+  },
+  {
+    id: 'animals', name: 'Water or land animal?',
+    short: 'Animal homes', a: { frog: '\uD83C\uDF0A', name: 'Water' }, b: { frog: '\uD83C\uDF3F', name: 'Land' },
+    items: [
+      { e: '\uD83D\uDC20', l: 'Fish', c: 'a' }, { e: '\uD83D\uDC19', l: 'Octopus', c: 'a' },
+      { e: '\uD83D\uDC33', l: 'Whale', c: 'a' }, { e: '\uD83E\uDD88', l: 'Shark', c: 'a' },
+      { e: '\uD83E\uDD80', l: 'Crab', c: 'a' }, { e: '\uD83D\uDC2C', l: 'Dolphin', c: 'a' },
+      { e: '\uD83E\uDDAD', l: 'Seal', c: 'a' }, { e: '\uD83D\uDC22', l: 'Sea turtle', c: 'a' },
+      { e: '\uD83E\uDD81', l: 'Lion', c: 'b' }, { e: '\uD83D\uDC18', l: 'Elephant', c: 'b' },
+      { e: '\uD83D\uDC07', l: 'Rabbit', c: 'b' }, { e: '\uD83E\uDD92', l: 'Giraffe', c: 'b' },
+      { e: '\uD83D\uDC0E', l: 'Horse', c: 'b' }, { e: '\uD83D\uDC3F\uFE0F', l: 'Squirrel', c: 'b' },
+      { e: '\uD83D\uDC2A', l: 'Camel', c: 'b' }, { e: '\uD83E\uDD8A', l: 'Fox', c: 'b' }
+    ]
+  },
+  {
+    id: 'matter', name: 'Solid or liquid?',
+    short: 'States of matter', a: { frog: '\uD83E\uDDCA', name: 'Solid' }, b: { frog: '\uD83D\uDCA7', name: 'Liquid' },
+    items: [
+      { e: '\uD83E\uDDCA', l: 'Ice cube', c: 'a' }, { e: '\uD83E\uDEA8', l: 'Rock', c: 'a' },
+      { e: '\uD83C\uDF4E', l: 'Apple', c: 'a' }, { e: '\uD83E\uDDF1', l: 'Brick', c: 'a' },
+      { e: '\uD83D\uDCD6', l: 'Book', c: 'a' }, { e: '\uD83D\uDD11', l: 'Key', c: 'a' },
+      { e: '\uD83E\uDD5B', l: 'Milk', c: 'b' }, { e: '\uD83E\uDDC3', l: 'Juice', c: 'b' },
+      { e: '\u2615', l: 'Coffee', c: 'b' }, { e: '\uD83C\uDF0A', l: 'Water', c: 'b' },
+      { e: '\uD83C\uDF6F', l: 'Honey', c: 'b' }, { e: '\uD83D\uDEE2\uFE0F', l: 'Oil', c: 'b' }
+    ]
+  },
+  {
+    id: 'plantanimal', name: 'Plant or animal?',
+    short: 'Plants and animals', a: { frog: '\uD83C\uDF3F', name: 'Plant' }, b: { frog: '\uD83D\uDC3E', name: 'Animal' },
+    items: [
+      { e: '\uD83C\uDF3B', l: 'Sunflower', c: 'a' }, { e: '\uD83C\uDF32', l: 'Pine tree', c: 'a' },
+      { e: '\uD83C\uDF35', l: 'Cactus', c: 'a' }, { e: '\uD83C\uDF3E', l: 'Wheat', c: 'a' },
+      { e: '\uD83C\uDF42', l: 'Leaf', c: 'a' }, { e: '\uD83C\uDF39', l: 'Rose', c: 'a' },
+      { e: '\uD83D\uDC22', l: 'Turtle', c: 'b' }, { e: '\uD83D\uDC0C', l: 'Snail', c: 'b' },
+      { e: '\uD83E\uDD89', l: 'Owl', c: 'b' }, { e: '\uD83D\uDC1D', l: 'Bee', c: 'b' },
+      { e: '\uD83D\uDC38', l: 'Frog', c: 'b' }, { e: '\uD83E\uDD8C', l: 'Deer', c: 'b' }
+    ]
+  }
+];
+var TOTAL_ROUNDS = 10;
+
+var topicIdx = 0;
+var topic = TOPICS[0];
+var deck = [];
+var round = 0;
+var score = 0;
+var current = null;
+var firstTry = true;
+var busy = false;
+var soundOn = true;
+var audioCtx = null;
+
+function $(id){ return document.getElementById(id); }
+
+function buildTopicButtons(){
+  var grid = $('topicGrid');
+  TOPICS.forEach(function(t, i){
+    var b = document.createElement('button');
+    b.className = 'topic-btn';
+    b.dataset.idx = i;
+    b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.innerHTML = t.name + '<small>' + t.short + '</small>';
+    b.onclick = (function(btn, idx){ return function(){ chooseTopic(btn, idx); }; })(b, i);
+    grid.appendChild(b);
+  });
+}
+buildTopicButtons();
+
+function chooseTopic(btn, i){
+  document.querySelectorAll('.topic-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  topicIdx = i;
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.17, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function startGame(){
+  topic = TOPICS[topicIdx];
+  var pool = shuffle(topic.items);
+  deck = pool.slice(0, Math.min(TOTAL_ROUNDS, pool.length));
+  round = 0;
+  score = 0;
+  $('startScreen').classList.add('hidden');
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.remove('hidden');
+  $('topicTitle').textContent = topic.name;
+  $('basketA').innerHTML = '<span class="frog" aria-hidden="true">' + topic.a.frog + '</span><span class="bname">' + topic.a.name + '</span>';
+  $('basketB').innerHTML = '<span class="frog" aria-hidden="true">' + topic.b.frog + '</span><span class="bname">' + topic.b.name + '</span>';
+  $('basketA').setAttribute('aria-label', 'Basket: ' + topic.a.name);
+  $('basketB').setAttribute('aria-label', 'Basket: ' + topic.b.name);
+  nextRound();
+}
+
+function backToStart(){
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.add('hidden');
+  $('startScreen').classList.remove('hidden');
+}
+
+function nextRound(){
+  round++;
+  if (round > deck.length) { endGame(); return; }
+  busy = false;
+  firstTry = true;
+  current = deck[round - 1];
+  $('roundChip').textContent = 'Item ' + round + ' of ' + deck.length;
+  $('scoreChip').textContent = 'Sorted ' + score;
+  $('feedback').textContent = 'Which basket?';
+  $('basketA').disabled = false;
+  $('basketB').disabled = false;
+
+  var zone = $('itemZone');
+  zone.innerHTML = '<div class="item in"><span class="emoji" aria-hidden="true">' + current.e + '</span><span class="label">' + current.l + '</span></div>';
+  $('srStatus').textContent = current.l + '. ' + topic.a.name + ' or ' + topic.b.name + '?';
+}
+
+function sortTo(choice){
+  if (busy) return;
+  var itemEl = document.querySelector('.item');
+  if (choice === current.c) {
+    busy = true;
+    $('basketA').disabled = true;
+    $('basketB').disabled = true;
+    if (firstTry) score++;
+    $('scoreChip').textContent = 'Sorted ' + score;
+    var basket = choice === 'a' ? $('basketA') : $('basketB');
+    basket.classList.remove('flash'); void basket.offsetWidth; basket.classList.add('flash');
+    itemEl.classList.add(choice === 'a' ? 'toA' : 'toB');
+    var correctName = choice === 'a' ? topic.a.name : topic.b.name;
+    $('feedback').textContent = 'Yes! ' + current.l + ' is ' + correctName.toLowerCase() + '.';
+    $('srStatus').textContent = 'Correct. ' + current.l + ' is ' + correctName + '.';
+    sndGood();
+    setTimeout(nextRound, 1200);
+  } else {
+    firstTry = false;
+    itemEl.classList.remove('wiggle'); void itemEl.offsetWidth; itemEl.classList.add('wiggle');
+    sndBad();
+    $('feedback').textContent = 'Hmm, try the other basket!';
+    $('srStatus').textContent = 'Not quite. Try the other basket.';
+  }
+}
+
+function endGame(){
+  $('gameScreen').classList.add('hidden');
+  $('endScreen').classList.remove('hidden');
+  var msg, stars;
+  if (score >= 9) { msg = 'Super sorter!'; stars = 3; }
+  else if (score >= 7) { msg = 'Sorted it out!'; stars = 2; }
+  else { msg = 'Good sorting practice!'; stars = 1; }
+  $('endTitle').textContent = msg;
+  $('finalLine').textContent = 'You sorted ' + score + ' of ' + deck.length + ' on the first try.';
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = msg + ' Final score ' + score + ' of ' + deck.length + '.';
+  sndWin();
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowLeft' && !$('basketA').disabled) sortTo('a');
+  if (e.key === 'ArrowRight' && !$('basketB').disabled) sortTo('b');
+});
+</script>
+</body>
+</html>
