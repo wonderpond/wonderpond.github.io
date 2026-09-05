@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass cove - Wonder Pond</title>
+<meta name="description" content="Read the town map, follow the compass, and find the right square. A free social studies map skills game for K to 5 classrooms from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;
+  --green:#3F9457;--green-light:#4FB06A;--sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;
+  --amber:#F5C84C;--amber-dark:#C99A17;--red:#E24B4A;
+  --land:#F7FBF3;--land-line:#CFE4D6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--sky) 55%,var(--water) 55%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:940px;text-align:center}
+.hidden{display:none !important}
+
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:30px 24px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:6px 0 12px;display:block}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:8px}
+.topic-btn{
+  font-family:"Baloo 2",sans-serif;font-weight:600;font-size:1.05rem;
+  background:#fff;border:3px solid #CFE4D6;color:var(--teal-dark);
+  border-radius:18px;padding:14px 10px;cursor:pointer;line-height:1.25;
+}
+.topic-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:400;font-size:.85rem;color:var(--ink-soft);margin-top:3px}
+.topic-btn[aria-pressed="true"]{border-color:var(--teal);background:#E7F6F1}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-weight:600;font-size:1.25rem;
+  background:var(--teal);color:#fff;border:none;border-radius:999px;
+  padding:14px 34px;cursor:pointer;margin-top:18px;
+}
+.big-btn:hover{background:var(--teal-dark)}
+.big-btn:active{transform:scale(.97)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);border:3px solid #9EC9C2}
+.big-btn.alt:hover{background:var(--sky)}
+
+/* Play screen */
+.hud{display:flex;gap:10px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.9);border-radius:999px;padding:6px 16px;font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);font-size:1rem}
+.task{
+  background:rgba(255,255,255,.93);border-radius:20px;padding:12px 18px;margin:0 auto 12px;
+  max-width:640px;font-size:clamp(1.05rem,2.4vw,1.4rem);line-height:1.4;
+}
+.task b{color:var(--teal-dark)}
+.mapwrap{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap}
+.mapgrid{
+  display:grid;grid-template-columns:30px repeat(4,1fr);gap:6px;
+  background:rgba(255,255,255,.6);padding:10px;border-radius:22px;
+  width:min(94vw,540px);
+}
+.axis{display:flex;align-items:center;justify-content:center;font-family:"Baloo 2",sans-serif;font-weight:700;color:var(--teal-dark);font-size:1rem}
+.cell{
+  position:relative;background:var(--land);border:2px solid var(--land-line);border-radius:14px;
+  cursor:pointer;padding:4px 2px;min-height:74px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  font-family:"Nunito",sans-serif;color:var(--ink);
+}
+.cell:hover{border-color:var(--teal);background:#EDF8F2}
+.cell .coord{position:absolute;top:3px;left:6px;font-size:.7rem;font-weight:700;color:#9BB6AB}
+.cell .pic{font-size:clamp(1.4rem,4vw,1.9rem);line-height:1}
+.cell .name{font-size:clamp(.62rem,1.7vw,.8rem);font-weight:700;line-height:1.1;padding:0 2px}
+.cell .hop{position:absolute;bottom:2px;right:4px;font-size:1.15rem;line-height:1}
+.cell.start{border-color:var(--amber-dark);background:#FFF6DD}
+.cell.cursor{box-shadow:0 0 0 4px rgba(245,200,76,.75)}
+.cell.right{border-color:var(--green);background:#DDF3E2;animation:pop .45s ease}
+.cell.wrong{animation:wiggle .4s ease}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.09)}100%{transform:scale(1)}}
+@keyframes wiggle{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.rose{background:rgba(255,255,255,.8);border-radius:20px;padding:8px 10px}
+.rose small{display:block;font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--ink-soft);font-size:.8rem;margin-top:2px}
+.feedback{font-family:"Baloo 2",sans-serif;font-size:1.15rem;font-weight:700;color:var(--teal-dark);min-height:1.7em;margin-top:12px}
+
+/* End */
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (max-width:620px){
+  .rose{order:-1}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div style="font-size:3rem;line-height:1;margin-bottom:2px" aria-hidden="true">&#129517;</div>
+      <h1 id="gameTitle">Compass cove</h1>
+      <p class="sub">Hop is exploring the town map. Read the directions and tap the square where Hop lands!</p>
+      <span class="choose-label" id="topicLabel">Pick a map challenge</span>
+      <div class="topic-grid" role="group" aria-labelledby="topicLabel" id="topicGrid"></div>
+      <button class="big-btn" onclick="startGame()">Start exploring!</button>
+    </div>
+  </section>
+
+  <!-- Game -->
+  <section class="screen hidden" id="gameScreen">
+    <div class="hud">
+      <span class="chip" id="roundChip">Map 1 of 8</span>
+      <span class="chip" id="scoreChip">Found 0</span>
+    </div>
+    <p class="task" id="task">Ready?</p>
+    <div class="mapwrap">
+      <div class="mapgrid" id="mapGrid" role="group" aria-label="Town map, four columns A to D, four rows 1 to 4"></div>
+      <div class="rose">
+        <svg width="104" height="104" viewBox="0 0 104 104" aria-hidden="true">
+          <circle cx="52" cy="52" r="40" fill="#EAF6F2" stroke="#1F6E68" stroke-width="2.5"/>
+          <path d="M52 14 L60 52 L52 46 L44 52 Z" fill="#E24B4A"/>
+          <path d="M52 90 L44 52 L52 58 L60 52 Z" fill="#1F6E68"/>
+          <path d="M90 52 L52 60 L58 52 L52 44 Z" fill="#3F9457"/>
+          <path d="M14 52 L52 44 L46 52 L52 60 Z" fill="#3F9457"/>
+          <circle cx="52" cy="52" r="4" fill="#0F5A50"/>
+          <text x="52" y="12" text-anchor="middle" font-family="Baloo 2,sans-serif" font-size="13" font-weight="700" fill="#0F5A50">N</text>
+          <text x="52" y="102" text-anchor="middle" font-family="Baloo 2,sans-serif" font-size="13" font-weight="700" fill="#0F5A50">S</text>
+          <text x="98" y="57" text-anchor="middle" font-family="Baloo 2,sans-serif" font-size="13" font-weight="700" fill="#0F5A50">E</text>
+          <text x="6" y="57" text-anchor="middle" font-family="Baloo 2,sans-serif" font-size="13" font-weight="700" fill="#0F5A50">W</text>
+        </svg>
+        <small>Compass rose</small>
+      </div>
+    </div>
+    <p class="feedback" id="feedback">Tap the square.</p>
+  </section>
+
+  <!-- End -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Map read!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="startGame()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change challenge</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="hidden" id="srStatus"></div>
+
+<script>
+var COLS = ['A', 'B', 'C', 'D'];
+var SIZE = 4;
+
+/* Row 0 is the north edge of the map. */
+var PLACES = [
+  { e: '\uD83C\uDF32', n: 'Woods' },      { e: '\uD83C\uDFEB', n: 'School' },   { e: '\uD83D\uDCDA', n: 'Library' },    { e: '\uD83D\uDE9C', n: 'Farm' },
+  { e: '\uD83C\uDF3C', n: 'Meadow' },     { e: '\uD83C\uDF33', n: 'Park' },     { e: '\uD83C\uDFEA', n: 'Store' },      { e: '\uD83D\uDE92', n: 'Fire station' },
+  { e: '\uD83C\uDF3B', n: 'Garden' },     { e: '\uD83D\uDCA7', n: 'Pond' },     { e: '\uD83C\uDF09', n: 'Bridge' },     { e: '\uD83D\uDCEE', n: 'Post office' },
+  { e: '\uD83D\uDEF6', n: 'Dock' },       { e: '\uD83C\uDF88', n: 'Playground' },{ e: '\uD83C\uDFE2', n: 'Town hall' }, { e: '\uD83C\uDF4E', n: 'Market' }
+];
+
+var MODES = [
+  { id: 'one', name: 'One hop', short: 'North, south, east, west' },
+  { id: 'two', name: 'Two hops', short: 'Follow two moves in a row' },
+  { id: 'grid', name: 'Map grid', short: 'Squares, corners, neighbors' }
+];
+
+var DIRS = {
+  north: { dr: -1, dc: 0, hint: 'North is up on the map.' },
+  south: { dr: 1, dc: 0, hint: 'South is down on the map.' },
+  east: { dr: 0, dc: 1, hint: 'East is to the right.' },
+  west: { dr: 0, dc: -1, hint: 'West is to the left.' },
+  northeast: { dr: -1, dc: 1, hint: 'Northeast is up and to the right.' },
+  northwest: { dr: -1, dc: -1, hint: 'Northwest is up and to the left.' },
+  southeast: { dr: 1, dc: 1, hint: 'Southeast is down and to the right.' },
+  southwest: { dr: 1, dc: -1, hint: 'Southwest is down and to the left.' }
+};
+
+var TOTAL_ROUNDS = 8;
+var modeIdx = 0;
+var mode = MODES[0];
+var round = 0, score = 0;
+var current = null;
+var busy = false, firstTry = true;
+var soundOn = true;
+var lastTarget = -1;
+var cursor = 0;
+var audioCtx = null;
+
+function $(id){ return document.getElementById(id); }
+
+function idx(r, c){ return r * SIZE + c; }
+function rowOf(i){ return Math.floor(i / SIZE); }
+function colOf(i){ return i % SIZE; }
+function coordOf(i){ return COLS[colOf(i)] + (rowOf(i) + 1); }
+function nameOf(i){ return PLACES[i].n; }
+function inBounds(r, c){ return r >= 0 && r < SIZE && c >= 0 && c < SIZE; }
+
+function buildModeButtons(){
+  var grid = $('topicGrid');
+  MODES.forEach(function(m, i){
+    var b = document.createElement('button');
+    b.className = 'topic-btn';
+    b.dataset.idx = i;
+    b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.innerHTML = m.name + '<small>' + m.short + '</small>';
+    b.onclick = (function(btn, ix){ return function(){ chooseMode(btn, ix); }; })(b, i);
+    grid.appendChild(b);
+  });
+}
+buildModeButtons();
+
+function chooseMode(btn, i){
+  document.querySelectorAll('.topic-btn').forEach(function(b){ b.setAttribute('aria-pressed', 'false'); });
+  btn.setAttribute('aria-pressed', 'true');
+  modeIdx = i;
+}
+
+function buildMap(){
+  var grid = $('mapGrid');
+  grid.innerHTML = '';
+  var corner = document.createElement('div');
+  corner.className = 'axis';
+  corner.setAttribute('aria-hidden', 'true');
+  grid.appendChild(corner);
+  COLS.forEach(function(letter){
+    var h = document.createElement('div');
+    h.className = 'axis';
+    h.setAttribute('aria-hidden', 'true');
+    h.textContent = letter;
+    grid.appendChild(h);
+  });
+  for (var r = 0; r < SIZE; r++) {
+    var rn = document.createElement('div');
+    rn.className = 'axis';
+    rn.setAttribute('aria-hidden', 'true');
+    rn.textContent = String(r + 1);
+    grid.appendChild(rn);
+    for (var c = 0; c < SIZE; c++) {
+      var i = idx(r, c);
+      var b = document.createElement('button');
+      b.className = 'cell';
+      b.id = 'cell' + i;
+      b.setAttribute('aria-label', 'Square ' + coordOf(i) + ', ' + nameOf(i));
+      b.innerHTML = '<span class="coord" aria-hidden="true">' + coordOf(i) + '</span>' +
+                    '<span class="pic" aria-hidden="true">' + PLACES[i].e + '</span>' +
+                    '<span class="name">' + PLACES[i].n + '</span>';
+      b.onclick = (function(cellIndex){ return function(){ pick(cellIndex); }; })(i);
+      grid.appendChild(b);
+    }
+  }
+}
+buildMap();
+
+function clearMarks(){
+  for (var i = 0; i < SIZE * SIZE; i++) {
+    var el = $('cell' + i);
+    el.classList.remove('start', 'right', 'wrong', 'cursor');
+    var hop = el.querySelector('.hop');
+    if (hop) hop.parentNode.removeChild(hop);
+    el.disabled = false;
+  }
+}
+
+function markStart(i){
+  var el = $('cell' + i);
+  el.classList.add('start');
+  var s = document.createElement('span');
+  s.className = 'hop';
+  s.setAttribute('aria-hidden', 'true');
+  s.textContent = '\uD83D\uDC38';
+  el.appendChild(s);
+}
+
+function moveCursor(i){
+  for (var k = 0; k < SIZE * SIZE; k++) $('cell' + k).classList.remove('cursor');
+  cursor = i;
+  $('cell' + i).classList.add('cursor');
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.17, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function randInt(n){ return Math.floor(Math.random() * n); }
+
+function makeOneHop(){
+  var start = randInt(SIZE * SIZE);
+  var names = shuffle(['north', 'south', 'east', 'west']);
+  for (var i = 0; i < names.length; i++) {
+    var d = DIRS[names[i]];
+    var r = rowOf(start) + d.dr, c = colOf(start) + d.dc;
+    if (inBounds(r, c)) {
+      return {
+        start: start,
+        target: idx(r, c),
+        html: 'Hop is at the <b>' + nameOf(start) + '</b> (' + coordOf(start) + ').<br>Move <b>1 square ' + names[i] + '</b>.',
+        sr: 'Hop is at the ' + nameOf(start) + ', square ' + coordOf(start) + '. Move one square ' + names[i] + '.',
+        hint: d.hint
+      };
+    }
+  }
+  return makeOneHop();
+}
+
+function squares(n){ return n + (n === 1 ? ' square ' : ' squares '); }
+
+function makeTwoHops(){
+  var start = randInt(SIZE * SIZE);
+  var vert = ['north', 'south'], horiz = ['east', 'west'], steps = [1, 2];
+  var options = [];
+  for (var a = 0; a < 2; a++) {
+    for (var s1 = 0; s1 < 2; s1++) {
+      var d1 = DIRS[vert[a]];
+      var r1 = rowOf(start) + d1.dr * steps[s1], c1 = colOf(start);
+      if (!inBounds(r1, c1)) continue;
+      for (var b = 0; b < 2; b++) {
+        for (var s2 = 0; s2 < 2; s2++) {
+          var d2 = DIRS[horiz[b]];
+          var c2 = c1 + d2.dc * steps[s2];
+          if (!inBounds(r1, c2)) continue;
+          options.push({ v: vert[a], n1: steps[s1], h: horiz[b], n2: steps[s2], r: r1, c: c2 });
+        }
+      }
+    }
+  }
+  if (!options.length) return makeTwoHops();
+  var o = options[randInt(options.length)];
+  var first = Math.random() < 0.5;
+  var moveA = first ? squares(o.n1) + o.v : squares(o.n2) + o.h;
+  var moveB = first ? squares(o.n2) + o.h : squares(o.n1) + o.v;
+  return {
+    start: start,
+    target: idx(o.r, o.c),
+    html: 'Hop is at the <b>' + nameOf(start) + '</b> (' + coordOf(start) + ').<br>Move <b>' + moveA + '</b>, then <b>' + moveB + '</b>.',
+    sr: 'Hop is at the ' + nameOf(start) + '. Move ' + moveA + ', then ' + moveB + '.',
+    hint: DIRS[o.v].hint + ' ' + DIRS[o.h].hint
+  };
+}
+
+function makeCoord(){
+  var target = randInt(SIZE * SIZE);
+  return {
+    start: -1,
+    target: target,
+    html: 'Edie is waiting at square <b>' + coordOf(target) + '</b>.<br>Tap that square on the map.',
+    sr: 'Find square ' + coordOf(target) + '.',
+    hint: 'Letters run across the top. Numbers run down the side.'
+  };
+}
+
+function makeDiagonal(){
+  var start = randInt(SIZE * SIZE);
+  var names = shuffle(['northeast', 'northwest', 'southeast', 'southwest']);
+  for (var i = 0; i < names.length; i++) {
+    var d = DIRS[names[i]];
+    var r = rowOf(start) + d.dr, c = colOf(start) + d.dc;
+    if (inBounds(r, c)) {
+      return {
+        start: start,
+        target: idx(r, c),
+        html: 'Hop is at the <b>' + nameOf(start) + '</b> (' + coordOf(start) + ').<br>Move <b>1 square ' + names[i] + '</b>.',
+        sr: 'Hop is at the ' + nameOf(start) + '. Move one square ' + names[i] + '.',
+        hint: d.hint
+      };
+    }
+  }
+  return makeDiagonal();
+}
+
+function makeNeighbor(){
+  var start = randInt(SIZE * SIZE);
+  var names = shuffle(['north', 'south', 'east', 'west']);
+  for (var i = 0; i < names.length; i++) {
+    var d = DIRS[names[i]];
+    var r = rowOf(start) + d.dr, c = colOf(start) + d.dc;
+    if (inBounds(r, c)) {
+      return {
+        start: start,
+        target: idx(r, c),
+        html: 'Which place is directly <b>' + names[i] + '</b> of the <b>' + nameOf(start) + '</b>?',
+        sr: 'Which place is directly ' + names[i] + ' of the ' + nameOf(start) + '?',
+        hint: d.hint
+      };
+    }
+  }
+  return makeNeighbor();
+}
+
+function makeRound(){
+  var q;
+  var tries = 0;
+  do {
+    if (mode.id === 'one') q = makeOneHop();
+    else if (mode.id === 'two') q = makeTwoHops();
+    else {
+      var kinds = ['coord', 'diagonal', 'neighbor'];
+      var kind = kinds[randInt(kinds.length)];
+      q = kind === 'coord' ? makeCoord() : (kind === 'diagonal' ? makeDiagonal() : makeNeighbor());
+    }
+    tries++;
+  } while (q.target === lastTarget && tries < 12);
+  lastTarget = q.target;
+  return q;
+}
+
+function startGame(){
+  mode = MODES[modeIdx];
+  round = 0;
+  score = 0;
+  lastTarget = -1;
+  $('startScreen').classList.add('hidden');
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.remove('hidden');
+  nextRound();
+}
+
+function backToStart(){
+  $('endScreen').classList.add('hidden');
+  $('gameScreen').classList.add('hidden');
+  $('startScreen').classList.remove('hidden');
+}
+
+function nextRound(){
+  round++;
+  if (round > TOTAL_ROUNDS) { endGame(); return; }
+  busy = false;
+  firstTry = true;
+  clearMarks();
+  current = makeRound();
+  $('roundChip').textContent = 'Map ' + round + ' of ' + TOTAL_ROUNDS;
+  $('scoreChip').textContent = 'Found ' + score;
+  $('task').innerHTML = current.html;
+  $('feedback').textContent = 'Tap the square.';
+  if (current.start >= 0) markStart(current.start);
+  moveCursor(current.start >= 0 ? current.start : 0);
+  $('srStatus').textContent = current.sr;
+}
+
+function pick(i){
+  if (busy) return;
+  var el = $('cell' + i);
+  if (i === current.target) {
+    busy = true;
+    for (var k = 0; k < SIZE * SIZE; k++) $('cell' + k).disabled = true;
+    if (firstTry) score++;
+    $('scoreChip').textContent = 'Found ' + score;
+    el.classList.remove('wrong');
+    el.classList.add('right');
+    $('feedback').textContent = 'Yes! That is the ' + nameOf(i) + ', square ' + coordOf(i) + '.';
+    $('srStatus').textContent = 'Correct. The ' + nameOf(i) + ' at square ' + coordOf(i) + '.';
+    sndGood();
+    setTimeout(nextRound, 1300);
+  } else {
+    firstTry = false;
+    el.classList.remove('wrong'); void el.offsetWidth; el.classList.add('wrong');
+    sndBad();
+    $('feedback').textContent = 'Not that one. ' + current.hint;
+    $('srStatus').textContent = 'Not quite. ' + current.hint;
+  }
+}
+
+function endGame(){
+  $('gameScreen').classList.add('hidden');
+  $('endScreen').classList.remove('hidden');
+  var msg, stars;
+  if (score >= 7) { msg = 'Master map reader!'; stars = 3; }
+  else if (score >= 5) { msg = 'Map read!'; stars = 2; }
+  else { msg = 'Good compass practice!'; stars = 1; }
+  $('endTitle').textContent = msg;
+  $('finalLine').textContent = 'You found ' + score + ' of ' + TOTAL_ROUNDS + ' on the first try.';
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = msg + ' Final score ' + score + ' of ' + TOTAL_ROUNDS + '.';
+  sndWin();
+}
+
+document.addEventListener('keydown', function(e){
+  if ($('gameScreen').classList.contains('hidden')) return;
+  var r = rowOf(cursor), c = colOf(cursor), moved = false;
+  if (e.key === 'ArrowUp' && r > 0) { r--; moved = true; }
+  if (e.key === 'ArrowDown' && r < SIZE - 1) { r++; moved = true; }
+  if (e.key === 'ArrowLeft' && c > 0) { c--; moved = true; }
+  if (e.key === 'ArrowRight' && c < SIZE - 1) { c++; moved = true; }
+  if (moved) {
+    e.preventDefault();
+    moveCursor(idx(r, c));
+    $('cell' + cursor).focus();
+  }
+});
+</script>
+</body>
+</html>
