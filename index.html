@@ -143,11 +143,49 @@ section{padding:48px 0}
 .show-all:hover{background:#fff}
 .hidden-btn{display:none}
 
-/* Teacher note */
-.teacher{background:var(--sand)}
-.teacher-inner{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
-.teacher h2{font-size:1.5rem;margin-bottom:8px}
-.teacher p{color:var(--ink-soft);max-width:46rem}
+/* Maker + support (bottom of page) */
+.maker{background:var(--sand);padding:56px 0 64px}
+.maker-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:stretch}
+.maker-card,.coffee-card{border-radius:var(--radius-lg);padding:28px}
+.maker-card{background:#fff;border:1px solid var(--card-line);display:flex;flex-direction:column;gap:14px}
+.maker-top{display:flex;align-items:center;gap:16px}
+.maker-card h2{font-size:1.5rem}
+.maker-card .role{font-size:.9rem;color:#6E8C86;font-weight:700}
+.maker-card p{color:var(--ink-soft)}
+.maker-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
+.coffee-card{
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#FFF6CF 0%,#FFE88A 100%);
+  border:2px solid #F0CF4A;
+  display:flex;flex-direction:column;gap:14px;
+}
+.coffee-card::after{
+  content:"";position:absolute;right:-60px;bottom:-60px;width:200px;height:200px;
+  border-radius:50%;background:rgba(255,255,255,.35);pointer-events:none;
+}
+.coffee-top{display:flex;align-items:center;gap:16px}
+.coffee-card h2{font-size:1.7rem;color:#4A3806}
+.coffee-card .kicker{font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8A6A0B}
+.coffee-card p{color:#5A4407;max-width:34rem}
+.coffee-card ul{list-style:none;display:flex;flex-direction:column;gap:6px;color:#5A4407;font-weight:600}
+.coffee-card li{display:flex;gap:8px;align-items:flex-start}
+.coffee-card li svg{flex:0 0 18px;margin-top:4px}
+.btn-coffee{
+  position:relative;z-index:1;align-self:flex-start;
+  background:#FFDD00;color:#1A1A1A;border:2px solid #1A1A1A;
+  font-size:1.15rem;padding:14px 28px;box-shadow:0 4px 0 #1A1A1A;
+}
+.btn-coffee:hover{background:#FFE733;transform:translateY(-2px);box-shadow:0 6px 0 #1A1A1A}
+.btn-coffee:active{transform:translateY(2px);box-shadow:0 2px 0 #1A1A1A}
+.steam{animation:steam 2.4s ease-in-out infinite}
+.steam.s2{animation-delay:.6s}.steam.s3{animation-delay:1.2s}
+@keyframes steam{0%,100%{opacity:.25;transform:translateY(2px)}50%{opacity:.9;transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.steam{animation:none}}
+@media (max-width:760px){
+  .maker{padding:40px 0 48px}
+  .maker-grid{grid-template-columns:1fr}
+  .btn-coffee{align-self:stretch;justify-content:center}
+}
 
 /* Footer */
 footer{background:var(--ink);color:#CDE7E1;padding:26px 0}
@@ -571,19 +609,52 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
     </div>
   </section>
 
-  <!-- Teacher note -->
-  <section class="teacher" id="teachers">
-    <div class="wrap teacher-inner">
-      <svg width="90" height="90" viewBox="0 0 60 60" aria-hidden="true">
-        <circle cx="30" cy="30" r="28" fill="#DFF2FA" stroke="#1F6E68" stroke-width="3"/>
-        <ellipse cx="30" cy="37" rx="17" ry="12" fill="#4FB06A"/>
-        <circle cx="23" cy="24" r="6" fill="#4FB06A"/><circle cx="37" cy="24" r="6" fill="#4FB06A"/>
-        <circle cx="23" cy="24" r="3.8" fill="#fff"/><circle cx="37" cy="24" r="3.8" fill="#fff"/>
-        <circle cx="23.5" cy="24.5" r="1.9" fill="#22303B"/><circle cx="37.5" cy="24.5" r="1.9" fill="#22303B"/>
-      </svg>
-      <div>
-        <h2>Made by Dr. Henry Yu</h2>
+  <!-- Maker + support -->
+  <section class="maker" id="teachers" aria-labelledby="makerHeading">
+    <div class="wrap maker-grid">
+      <div class="maker-card">
+        <div class="maker-top">
+          <svg width="72" height="72" viewBox="0 0 60 60" aria-hidden="true">
+            <circle cx="30" cy="30" r="28" fill="#DFF2FA" stroke="#1F6E68" stroke-width="3"/>
+            <ellipse cx="30" cy="37" rx="17" ry="12" fill="#4FB06A"/>
+            <circle cx="23" cy="24" r="6" fill="#4FB06A"/><circle cx="37" cy="24" r="6" fill="#4FB06A"/>
+            <circle cx="23" cy="24" r="3.8" fill="#fff"/><circle cx="37" cy="24" r="3.8" fill="#fff"/>
+            <circle cx="23.5" cy="24.5" r="1.9" fill="#22303B"/><circle cx="37.5" cy="24.5" r="1.9" fill="#22303B"/>
+          </svg>
+          <div>
+            <h2 id="makerHeading">Made by Dr. Henry Yu</h2>
+            <span class="role">Teacher educator, Ball State University</span>
+          </div>
+        </div>
         <p>Wonder Pond games are built for real classrooms: one round takes about a minute, works great on interactive whiteboards, and there is nothing to set up. Perfect for the ten minutes before the bell. Have an idea for a game? I would love to hear it.</p>
+        <div class="maker-links">
+          <a class="btn btn-ghost" href="https://github.com/wonderpond/wonderpond.github.io" target="_blank" rel="noopener" aria-label="Wonder Pond on GitHub (opens in a new tab)">View the code</a>
+        </div>
+      </div>
+
+      <div class="coffee-card">
+        <div class="coffee-top">
+          <svg width="72" height="72" viewBox="0 0 64 64" aria-hidden="true">
+            <path class="steam" d="M24 14 Q20 9 24 4" stroke="#8A6A0B" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path class="steam s2" d="M32 14 Q28 9 32 4" stroke="#8A6A0B" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path class="steam s3" d="M40 14 Q36 9 40 4" stroke="#8A6A0B" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path d="M12 20 H50 L46 54 Q45.5 58 41 58 H21 Q16.5 58 16 54 Z" fill="#fff" stroke="#1A1A1A" stroke-width="2.6" stroke-linejoin="round"/>
+            <path d="M14.5 30 H47.5 L46.2 42 H15.8 Z" fill="#4FB06A"/>
+            <ellipse cx="31" cy="36" rx="5" ry="3.6" fill="#fff" opacity=".9"/>
+            <rect x="10" y="16" width="42" height="6" rx="3" fill="#1A1A1A"/>
+          </svg>
+          <div>
+            <span class="kicker">Keep the pond free</span>
+            <h2>Buy me a coffee</h2>
+          </div>
+        </div>
+        <p>Wonder Pond has no ads, no sign-ups, and no fees, and it will stay that way. If these games have helped your class, a small coffee keeps new ones hatching.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#8A6A0B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 L10 17 L19 7"/></svg>New games for more subjects and grades</li>
+          <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#8A6A0B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 L10 17 L19 7"/></svg>Hosting and upkeep, with every game free for every classroom</li>
+          <li><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#8A6A0B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 L10 17 L19 7"/></svg>Time to turn teacher ideas into real games</li>
+        </ul>
+        <a class="btn btn-coffee" href="https://buymeacoffee.com/henryyu" target="_blank" rel="noopener" aria-label="Buy me a coffee to support Wonder Pond (opens in a new tab)">Buy me a coffee</a>
       </div>
     </div>
   </section>
@@ -591,10 +662,9 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
 
 <footer>
   <div class="wrap foot">
-    <span>Made by Dr. Henry Yu, free for every classroom.</span>
+    <span>&copy; 2026 Wonder Pond. Free for every classroom.</span>
     <span class="spacer"></span>
-    <a href="https://github.com/wonderpond/wonderpond.github.io" target="_blank" rel="noopener" aria-label="Wonder Pond on GitHub">Open source</a>
-    <a href="https://buymeacoffee.com/henryyu" target="_blank" rel="noopener" aria-label="Support Wonder Pond">Buy me a coffee</a>
+    <a href="#top" aria-label="Back to top">Back to top</a>
   </div>
 </footer>
 
