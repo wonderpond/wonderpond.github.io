@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noun verb hop - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Hop each word onto the right lily pad: noun, verb, adjective, adverb, or pronoun. Words are always shown in a sentence. A free parts of speech game for grades 2 to 4 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --amber:#F5C84C;
+  --red:#E24B4A;
+  --c-n:#2B6CB0;
+  --c-v:#C0392B;
+  --c-a:#2E8540;
+  --c-d:#7B4BA8;
+  --c-p:#B26A00;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:980px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;
+  padding:14px 20px;min-width:200px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.8}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:16px 42px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.note{font-size:.9rem;color:#6E8C86;margin-top:12px;max-width:640px;margin-left:auto;margin-right:auto}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 10px;
+  background:rgba(255,255,255,.88);display:inline-block;padding:7px 26px;border-radius:999px;max-width:100%;
+}
+
+/* Sentence */
+.sentence{
+  background:#fff;border-radius:26px;padding:22px 24px;margin:0 auto 14px;max-width:880px;
+  box-shadow:0 8px 0 rgba(18,64,58,.18);
+  font-family:"Baloo 2",sans-serif;font-weight:600;font-size:clamp(1.6rem,4.4vw,2.7rem);line-height:1.5;color:var(--ink);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;
+}
+.w{display:inline-block;border-radius:12px;padding:0 8px;border-bottom:4px solid transparent}
+.w.punct{padding:0;margin-left:-16px}
+.w.focus{background:#FFF3C8;border-bottom-color:var(--amber);animation:glow 1.4s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(245,200,76,.0)}50%{box-shadow:0 0 0 6px rgba(245,200,76,.35)}}
+button.w{border:none;background:#F2F7F6;cursor:pointer;font:inherit;color:inherit}
+button.w:hover:enabled{background:#E1EFEC}
+button.w:disabled{cursor:default}
+.w.t-n{color:var(--c-n);border-bottom-color:var(--c-n);background:#E6F0FA}
+.w.t-v{color:var(--c-v);border-bottom-color:var(--c-v);background:#FBE9E7}
+.w.t-a{color:var(--c-a);border-bottom-color:var(--c-a);background:#E6F4E8}
+.w.t-d{color:var(--c-d);border-bottom-color:var(--c-d);background:#F1EAF8}
+.w.t-p{color:var(--c-p);border-bottom-color:var(--c-p);background:#FFF1DC}
+.w.bad{background:var(--red);color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+
+/* Lily pads */
+.pads{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:4px}
+.pad{
+  position:relative;width:clamp(130px,17vw,170px);aspect-ratio:1.35/1;border:none;background:none;cursor:pointer;padding:0;
+  transition:transform .15s ease;
+}
+.pad svg{position:absolute;inset:0;width:100%;height:100%}
+.pad .pl{
+  position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);line-height:1.05;
+}
+.pad .plate{background:rgba(255,255,255,.93);border-radius:14px;padding:4px 10px 5px;max-width:86%;box-shadow:0 2px 0 rgba(18,64,58,.15)}
+.pad .plate small{display:block;margin:1px auto 0;font-family:"Nunito",sans-serif;font-size:.62em;font-weight:700;color:var(--ink-soft);max-width:80%}
+.pad:hover:enabled{transform:translateY(-4px)}
+.pad:disabled{cursor:default}
+.pad.right svg .leaf{fill:#BFE8C8}
+.pad.wrong{animation:shake .35s ease}
+.pad.wrong svg .leaf{fill:#F4B6B5}
+.pad.dim{opacity:.35}
+
+.fact{
+  margin:14px auto 0;max-width:720px;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+  background:rgba(255,255,255,.92);border-radius:18px;padding:10px 18px;
+}
+.legend{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.legend span{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.95rem;background:rgba(255,255,255,.9);border-radius:999px;padding:3px 12px;border-bottom:3px solid}
+
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" aria-hidden="true" style="display:flex;gap:6px;justify-content:center;margin-bottom:4px"></div>
+      <h1 id="gameTitle">Noun verb hop</h1>
+      <p class="sub">Every word has a job. Read the sentence, then hop the word onto the lily pad that names its job.</p>
+      <span class="choose-label" id="levelLabel">Pick your word jobs</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Noun, verb, adjective<small>grades 2 and 3</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Add adverb and pronoun<small>grades 3 and 4</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startSort()">Hop the word</button>
+        <button class="big-btn alt" onclick="startFind()">Find them all</button>
+      </div>
+      <p class="note">Hop the word: one word in the sentence glows. Tap the lily pad for its job. Find them all: tap every word in the sentence that does one job, like every verb. Words are always in a sentence, because the same word can do different jobs.</p>
+    </div>
+  </section>
+
+  <!-- Sort mode -->
+  <section class="screen hidden" id="sortScreen">
+    <div class="hud">
+      <span class="chip" id="sortRound">Word 1 of 10</span>
+      <span class="chip" id="sortScore">First try 0</span>
+    </div>
+    <p class="prompt" id="sortPrompt">What job does the glowing word do?</p>
+    <div class="sentence" id="sortSentence"></div>
+    <div class="pads" id="pads" role="group" aria-label="Word jobs"></div>
+    <p class="fact hidden" id="sortFact" role="status"></p>
+  </section>
+
+  <!-- Find mode -->
+  <section class="screen hidden" id="findScreen">
+    <div class="hud">
+      <span class="chip" id="findRound">Sentence 1 of 10</span>
+      <span class="chip" id="findScore">First try 0</span>
+    </div>
+    <p class="prompt" id="findPrompt">Tap every verb</p>
+    <div class="sentence" id="findSentence" role="group" aria-label="Sentence words"></div>
+    <p class="fact hidden" id="findFact" role="status"></p>
+    <div class="legend hidden" id="legend" aria-hidden="true"></div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Word wizard!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+/* Each word is tagged with its job in this sentence:
+   n noun, v verb, a adjective, d adverb, p pronoun, x other (the, a, on, and...) */
+var SENTENCES = [
+  'The/x green/a frog/n jumps/v high/d',
+  'A/x tiny/a snail/n crawls/v slowly/d',
+  'Mia/n feeds/v the/x hungry/a ducks/n',
+  'The/x turtle/n naps/v on/x a/x warm/a rock/n',
+  'She/p quickly/d catches/v a/x shiny/a fish/n',
+  'Bright/a dragonflies/n zoom/v over/x the/x pond/n',
+  'We/p sing/v loudly/d by/x the/x water/n',
+  'The/x old/a heron/n waits/v patiently/d',
+  'Leo/n found/v a/x smooth/a pebble/n',
+  'They/p splash/v happily/d in/x the/x cold/a lake/n',
+  'Fluffy/a ducklings/n follow/v the/x big/a duck/n',
+  'The/x wind/n gently/d rocks/v the/x little/a boat/n',
+  'He/p paints/v a/x colorful/a sunset/n',
+  'Raindrops/n tap/v softly/d on/x the/x roof/n',
+  'A/x brave/a beaver/n builds/v a/x strong/a dam/n',
+  'The/x busy/a ants/n carry/v crumbs/n',
+  'It/p swims/v fast/d under/x the/x bridge/n',
+  'You/p read/v the/x funny/a book/n yesterday/d',
+  'The/x kids/n laugh/v at/x the/x silly/a frog/n',
+  'Tall/a reeds/n sway/v in/x the/x breeze/n',
+  'I/p carefully/d hold/v the/x wet/a frog/n',
+  'The/x moon/n shines/v brightly/d tonight/d',
+  'Grandpa/n tells/v us/p a/x spooky/a story/n',
+  'Small/a fish/n dart/v away/d quickly/d',
+  'A/x loud/a goose/n honks/v at/x them/p',
+  'The/x friendly/a otter/n waves/v at/x me/p',
+  'Cool/a water/n flows/v under/x the/x bridge/n',
+  'Ben/n and/x Ava/n explore/v the/x muddy/a shore/n'
+];
+var JOBS = {
+  n: { name: 'Noun', plural: 'nouns', hint: 'names a person, place, or thing', why: 'names a person, place, or thing' },
+  v: { name: 'Verb', plural: 'verbs', hint: 'shows an action', why: 'shows the action, what someone or something does' },
+  a: { name: 'Adjective', plural: 'adjectives', hint: 'describes a noun', why: 'describes a noun. It tells what kind' },
+  d: { name: 'Adverb', plural: 'adverbs', hint: 'tells how, when, or where', why: 'tells how, when, or where the action happens' },
+  p: { name: 'Pronoun', plural: 'pronouns', hint: 'takes the place of a noun', why: 'takes the place of a noun, like he, she, we, or them' }
+};
+var LEVEL_JOBS = [['n','v','a'], ['n','p','v','a','d']];
+var ROUNDS = 10;
+
+var level = 0;
+var lastMode = 'sort';
+var soundOn = true;
+var audioCtx = null;
+var timer = null;
+
+function $(id){ return document.getElementById(id); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function parse(s){ return s.split(' ').map(function(t){ var p = t.split('/'); return { w: p[0], t: p[1] }; }); }
+function jobs(){ return LEVEL_JOBS[level]; }
+/* An even mix of jobs for a round, so every job shows up */
+function jobMix(){ var out = []; while (out.length < ROUNDS) out = out.concat(shuffle(jobs())); return shuffle(out.slice(0, ROUNDS)); }
+function article(job){ return job === 'a' || job === 'd' ? 'an' : 'a'; }
+
+function chooseLevel(btn){
+  document.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.16, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndHop(){ beep([330, 660], 0.07); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function hideAll(){ ['startScreen','sortScreen','findScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); }); }
+function backToStart(){ clearTimeout(timer); hideAll(); $('startScreen').classList.remove('hidden'); }
+function playAgain(){ if (lastMode === 'sort') startSort(); else startFind(); }
+function showEnd(title, line, stars){
+  hideAll();
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function endTitle(s){ return s >= 9 ? 'Word wizard!' : s >= 7 ? 'Great hopping!' : 'Keep hopping!'; }
+function endStars(s){ return s >= 9 ? 3 : s >= 7 ? 2 : 1; }
+
+function padSvg(){
+  return '<svg viewBox="0 0 135 100" aria-hidden="true"><ellipse cx="67.5" cy="54" rx="64" ry="42" fill="#3F9457"/>' +
+    '<path class="leaf" d="M67.5 52 L118 30 A62 40 0 1 1 100 16Z" fill="#7CC47F"/>' +
+    '<path d="M67.5 52 L28 36 M67.5 52 L40 84 M67.5 52 L96 84" stroke="#5DA360" stroke-width="2" fill="none"/></svg>';
+}
+
+function sentenceWords(words){
+  /* Capitalize the first word and add a period at the end */
+  return words.map(function(o, i){ return { w: i === 0 ? o.w.charAt(0).toUpperCase() + o.w.slice(1) : o.w, t: o.t }; });
+}
+
+/* ---------- Hop the word ---------- */
+var sortDeck = [];
+var round = 0;
+var score = 0;
+var cur = null;
+var firstTry = true;
+var busy = false;
+
+function makeSortDeck(){
+  var out = [], used = {};
+  var want = jobMix();
+  var sents = shuffle(SENTENCES.map(parse));
+  want.forEach(function(job){
+    if (out.length >= ROUNDS) return;
+    for (var i = 0; i < sents.length; i++) {
+      if (used[i]) continue;
+      var idx = sents[i].map(function(o, k){ return o.t === job ? k : -1; }).filter(function(k){ return k !== -1; });
+      if (idx.length) {
+        used[i] = 1;
+        out.push({ words: sents[i], focus: idx[Math.floor(Math.random() * idx.length)] });
+        return;
+      }
+    }
+  });
+  return out;
+}
+
+function startSort(){
+  lastMode = 'sort';
+  sortDeck = makeSortDeck();
+  round = 0;
+  score = 0;
+  hideAll();
+  $('sortScreen').classList.remove('hidden');
+  nextSort();
+}
+
+function nextSort(){
+  round++;
+  if (round > sortDeck.length) {
+    showEnd(endTitle(score), 'You hopped ' + score + ' of ' + sortDeck.length + ' words to the right pad on the first try.', endStars(score));
+    return;
+  }
+  busy = false;
+  firstTry = true;
+  cur = sortDeck[round - 1];
+  $('sortRound').textContent = 'Word ' + round + ' of ' + sortDeck.length;
+  $('sortScore').textContent = 'First try ' + score;
+  $('sortPrompt').textContent = 'What job does the glowing word do?';
+  $('sortFact').classList.add('hidden');
+  var words = sentenceWords(cur.words);
+  $('sortSentence').innerHTML = words.map(function(o, i){
+    var span = '<span class="w' + (i === cur.focus ? ' focus' : '') + '">' + o.w + '</span>';
+    return i === words.length - 1 ? '<span style="white-space:nowrap">' + span + '.</span>' : span;
+  }).join('');
+  var pads = $('pads');
+  pads.innerHTML = '';
+  jobs().forEach(function(j, i){
+    var b = document.createElement('button');
+    b.className = 'pad';
+    b.dataset.key = i + 1;
+    b.dataset.job = j;
+    b.innerHTML = padSvg() + '<span class="pl" style="color:var(--c-' + j + ')"><span class="plate">' + JOBS[j].name + '<small>' + JOBS[j].hint + '</small></span></span>';
+    b.setAttribute('aria-label', JOBS[j].name + ': ' + JOBS[j].hint);
+    b.onclick = function(){ pickJob(b, j); };
+    pads.appendChild(b);
+  });
+  var text = words.map(function(o){ return o.w; }).join(' ') + '.';
+  $('srStatus').textContent = text + ' What job does the word ' + cur.words[cur.focus].w + ' do?';
+}
+
+function pickJob(btn, j){
+  if (busy) return;
+  var o = cur.words[cur.focus];
+  var fw = $('sortSentence').querySelectorAll('.w')[cur.focus];
+  if (j === o.t) {
+    busy = true;
+    if (firstTry) score++;
+    $('sortScore').textContent = 'First try ' + score;
+    btn.classList.add('right');
+    document.querySelectorAll('.pad').forEach(function(p){ if (p !== btn) { p.disabled = true; p.classList.add('dim'); } });
+    fw.classList.remove('focus');
+    fw.classList.add('t-' + j);
+    var msg = 'Yes! "' + o.w + '" is ' + article(j) + ' ' + JOBS[j].name.toLowerCase() + '. It ' + JOBS[j].why + '.';
+    $('sortPrompt').textContent = 'Hop! Right pad!';
+    $('sortFact').textContent = msg;
+    $('sortFact').classList.remove('hidden');
+    sndHop();
+    setTimeout(sndGood, 140);
+    $('srStatus').textContent = msg;
+    timer = setTimeout(nextSort, 2600);
+  } else {
+    firstTry = false;
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    var msg2 = 'Not ' + article(j) + ' ' + JOBS[j].name.toLowerCase() + '. ' + JOBS[j].name + 's ' + verbOf(j) + '. ' + questionFor(o.t);
+    $('sortFact').textContent = msg2;
+    $('sortFact').classList.remove('hidden');
+    sndBad();
+    $('srStatus').textContent = msg2;
+  }
+}
+function verbOf(j){
+  return { n: 'name a person, place, or thing', v: 'show an action', a: 'describe a noun', d: 'tell how, when, or where', p: 'take the place of a noun' }[j];
+}
+function questionFor(t){
+  if (t === 'a') return 'Does the word tell what kind of thing?';
+  if (t === 'd') return 'Does the word tell how, when, or where something happens?';
+  if (t === 'v') return 'Is the word something you can do?';
+  if (t === 'p') return 'Could you swap this word for someone\'s name?';
+  return 'Is the word a person, place, or thing?';
+}
+
+/* ---------- Find them all ---------- */
+var findDeck = [];
+var fq = null;
+var found = 0;
+var need = 0;
+
+function makeFindDeck(){
+  var out = [];
+  var sents = shuffle(SENTENCES.map(parse));
+  var want = jobMix();
+  var si = 0;
+  want.forEach(function(job){
+    if (out.length >= ROUNDS) return;
+    for (var tries = 0; tries < sents.length; tries++) {
+      var s = sents[(si + tries) % sents.length];
+      if (s.used) continue;
+      if (s.some(function(o){ return o.t === job; })) { s.used = true; out.push({ words: s, job: job }); si++; return; }
+    }
+  });
+  return out;
+}
+
+function startFind(){
+  lastMode = 'find';
+  findDeck = makeFindDeck();
+  round = 0;
+  score = 0;
+  hideAll();
+  $('findScreen').classList.remove('hidden');
+  nextFind();
+}
+
+function nextFind(){
+  round++;
+  if (round > findDeck.length) {
+    showEnd(endTitle(score), 'You found every word with no misses in ' + score + ' of ' + findDeck.length + ' sentences.', endStars(score));
+    return;
+  }
+  busy = false;
+  firstTry = true;
+  fq = findDeck[round - 1];
+  found = 0;
+  need = fq.words.filter(function(o){ return o.t === fq.job; }).length;
+  $('findRound').textContent = 'Sentence ' + round + ' of ' + findDeck.length;
+  $('findScore').textContent = 'First try ' + score;
+  $('findFact').classList.add('hidden');
+  $('legend').classList.add('hidden');
+  updateFindPrompt();
+  var box = $('findSentence');
+  box.innerHTML = '';
+  sentenceWords(fq.words).forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'w';
+    b.textContent = o.w;
+    b.dataset.i = i;
+    b.onclick = function(){ tapWord(b, i); };
+    box.appendChild(b);
+  });
+  var dot = document.createElement('span');
+  dot.className = 'w punct';
+  dot.textContent = '.';
+  box.appendChild(dot);
+  $('srStatus').textContent = $('findPrompt').textContent + '. ' + sentenceWords(fq.words).map(function(o){ return o.w; }).join(' ') + '.';
+}
+
+function updateFindPrompt(){
+  var j = JOBS[fq.job];
+  $('findPrompt').textContent = need === 1
+    ? 'Tap the ' + j.name.toLowerCase()
+    : 'Tap every ' + j.name.toLowerCase() + ' (' + found + ' of ' + need + ' found)';
+}
+
+function tapWord(b, i){
+  if (busy || b.classList.contains('t-' + fq.job)) return;
+  var o = fq.words[i];
+  if (o.t === fq.job) {
+    found++;
+    b.classList.add('t-' + fq.job);
+    b.disabled = true;
+    sndHop();
+    updateFindPrompt();
+    if (found === need) finishFind();
+    else $('srStatus').textContent = 'Yes, ' + o.w + '. ' + (need - found) + ' more to find.';
+  } else {
+    firstTry = false;
+    b.classList.add('bad', 'shake');
+    setTimeout(function(){ b.classList.remove('bad', 'shake'); }, 600);
+    var what = o.t === 'x' ? '"' + o.w + '" is a small helper word, not ' + article(fq.job) + ' ' + JOBS[fq.job].name.toLowerCase() + '.'
+      : '"' + o.w + '" is ' + article(o.t) + ' ' + JOBS[o.t].name.toLowerCase() + ' here, because it ' + JOBS[o.t].hint + '.';
+    if (o.t !== 'x' && jobs().indexOf(o.t) === -1) what = '"' + o.w + '" is not ' + article(fq.job) + ' ' + JOBS[fq.job].name.toLowerCase() + '.';
+    $('findFact').textContent = what + ' ' + JOBS[fq.job].name + 's ' + verbOf(fq.job) + '.';
+    $('findFact').classList.remove('hidden');
+    sndBad();
+    $('srStatus').textContent = $('findFact').textContent;
+  }
+}
+
+function finishFind(){
+  busy = true;
+  if (firstTry) score++;
+  $('findScore').textContent = 'First try ' + score;
+  /* Color the whole sentence by job so kids see how the words work together */
+  var btns = $('findSentence').querySelectorAll('button.w');
+  var shown = {};
+  fq.words.forEach(function(o, i){
+    btns[i].disabled = true;
+    if (o.t !== 'x' && jobs().indexOf(o.t) !== -1) { btns[i].classList.add('t-' + o.t); shown[o.t] = 1; }
+  });
+  $('findPrompt').textContent = need === 1 ? 'You found it!' : 'You found all ' + need + '!';
+  $('findFact').textContent = 'Here is the job of every word in the sentence.';
+  $('findFact').classList.remove('hidden');
+  $('legend').innerHTML = jobs().filter(function(j){ return shown[j]; }).map(function(j){
+    return '<span style="color:var(--c-' + j + ');border-color:var(--c-' + j + ')">' + JOBS[j].name + '</span>';
+  }).join('');
+  $('legend').classList.remove('hidden');
+  sndGood();
+  $('srStatus').textContent = 'You found all the ' + JOBS[fq.job].plural + '.';
+  timer = setTimeout(nextFind, 3200);
+}
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown', function(e){
+  var sortOn = !$('sortScreen').classList.contains('hidden');
+  var findOn = !$('findScreen').classList.contains('hidden');
+  if (sortOn && /^[1-5]$/.test(e.key)) {
+    var b = document.querySelector('.pad[data-key="' + e.key + '"]');
+    if (b && !b.disabled) b.click();
+  } else if ((sortOn || findOn) && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+    var list = Array.prototype.slice.call(document.querySelectorAll(sortOn ? '.pad:enabled' : '#findSentence button.w:enabled'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+$('startArt').innerHTML = ['n','v','a'].map(function(j){
+  return '<div style="position:relative;width:92px;height:68px">' + padSvg().replace('<svg ', '<svg style="position:absolute;inset:0;width:100%;height:100%" ') +
+    '<span style="position:relative;display:flex;align-items:center;justify-content:center;height:100%;font-family:\'Baloo 2\',sans-serif;font-weight:700;color:var(--c-' + j + ')"><span style="background:rgba(255,255,255,.93);border-radius:10px;padding:0 8px">' + JOBS[j].name + '</span></span></div>';
+}).join('');
+</script>
+</body>
+</html>
