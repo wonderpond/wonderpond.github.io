@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pebble place value - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Build and read numbers with pond pebbles: ones, tens, and hundreds. Ten pebbles bundle into a ten right before your eyes. A free place value game for grades 1 to 3 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --sand:#EFE3C4;
+  --amber:#F5C84C;
+  --amber-dark:#C99A17;
+  --red:#E24B4A;
+  --pebble:#C8B596;
+  --pebble-line:#8F7B5C;
+  --u:clamp(8px,1.05vw,11px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--water) 28%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:980px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;
+  padding:14px 20px;min-width:160px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.8}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:16px 42px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:12px;max-width:640px;margin-left:auto;margin-right:auto}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 8px;
+  background:rgba(255,255,255,.85);display:inline-block;padding:7px 26px;border-radius:999px;
+}
+.target{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(3rem,9vw,5rem);line-height:1;
+  color:var(--teal-dark);background:#fff;display:inline-block;padding:6px 34px 0;border-radius:24px;
+  box-shadow:0 6px 0 rgba(18,64,58,.2);margin:4px 0 10px;letter-spacing:4px;
+}
+.target .d{display:inline-block;border-radius:10px;padding:0 2px}
+.target .d.h{color:#9B4D8E}.target .d.t{color:#1F6E68}.target .d.o{color:#B7791F}
+
+/* Place value mat */
+.mat{
+  display:flex;justify-content:center;gap:10px;margin:0 auto;max-width:900px;
+  background:var(--sand);border-radius:26px;padding:12px;box-shadow:0 8px 0 #D6C79F;
+}
+.col{
+  flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;
+  background:rgba(255,255,255,.55);border-radius:18px;padding:8px 8px 10px;border:3px solid transparent;
+}
+.col.hundreds{flex-grow:1.7}
+.col h3{font-family:"Baloo 2",sans-serif;font-size:1.05rem;margin-bottom:4px}
+.col.hundreds h3{color:#9B4D8E}.col.tens h3{color:#1F6E68}.col.ones h3{color:#B7791F}
+.col.wrong{border-color:var(--red);background:#FCE3E3}
+.col.right{border-color:var(--green);background:#E4F5E9}
+.pile{
+  flex:1;width:100%;min-height:calc(var(--u) * 10 + 12px);
+  display:flex;align-items:center;justify-content:center;padding:4px 0;
+}
+.flats{display:grid;grid-template-columns:repeat(3,calc(var(--u) * 10));gap:6px;justify-content:center}
+.rods{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}
+.ones-grid{display:grid;grid-template-columns:repeat(5,var(--u));gap:4px;justify-content:center;align-content:center}
+
+.flat,.rod,.one{background-color:var(--pebble);border:1.5px solid var(--pebble-line);border-radius:3px}
+.flat{
+  width:calc(var(--u) * 10);height:calc(var(--u) * 10);
+  background-image:
+    repeating-linear-gradient(90deg,transparent 0,transparent calc(var(--u) - 1px),rgba(143,123,92,.55) calc(var(--u) - 1px),rgba(143,123,92,.55) var(--u)),
+    repeating-linear-gradient(0deg,transparent 0,transparent calc(var(--u) - 1px),rgba(143,123,92,.55) calc(var(--u) - 1px),rgba(143,123,92,.55) var(--u));
+  background-size:calc(var(--u) * 10 - 3px) calc(var(--u) * 10 - 3px);
+}
+.rod{
+  width:var(--u);height:calc(var(--u) * 10);
+  background-image:repeating-linear-gradient(0deg,transparent 0,transparent calc(var(--u) - 1px),rgba(143,123,92,.55) calc(var(--u) - 1px),rgba(143,123,92,.55) var(--u));
+}
+.one{width:var(--u);height:var(--u);border-radius:40%}
+@keyframes popIn{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.pop{animation:popIn .35s ease}
+@keyframes bundle{0%{transform:none;opacity:1}100%{transform:translateX(-60px) scale(.2);opacity:0}}
+.bundling .one,.bundling .rod{animation:bundle .55s ease forwards}
+.bundling{outline:3px dashed var(--amber);outline-offset:4px;border-radius:10px}
+
+.count{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:2.2rem;line-height:1;margin-top:4px;min-height:2.2rem}
+.col.hundreds .count{color:#9B4D8E}.col.tens .count{color:#1F6E68}.col.ones .count{color:#B7791F}
+.steppers{display:flex;gap:8px;margin-top:6px}
+.step{
+  width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.9rem;line-height:1;
+  background:#fff;color:var(--teal-dark);box-shadow:0 4px 0 rgba(18,64,58,.22);
+}
+.step.plus{background:var(--green-light);color:#fff;box-shadow:0 4px 0 var(--green)}
+.step:active:enabled{transform:translateY(3px);box-shadow:0 1px 0 rgba(18,64,58,.22)}
+.step:disabled{opacity:.35;cursor:default}
+
+.trade{
+  min-height:2.2rem;margin:10px auto 0;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.25rem;color:var(--teal-dark);
+}
+.trade span{background:#FFF3C8;border-radius:999px;padding:4px 18px;display:inline-block}
+.expanded{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.2rem,3vw,1.7rem);color:var(--teal-dark);
+  background:rgba(255,255,255,.9);display:inline-block;border-radius:18px;padding:6px 22px;margin-top:10px;
+}
+.choices{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.choice{
+  min-width:130px;padding:10px 24px;border-radius:22px;border:none;cursor:pointer;background:#fff;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(2rem,5vw,2.8rem);color:var(--teal-dark);
+  box-shadow:0 6px 0 rgba(18,64,58,.22);transition:transform .12s ease;
+}
+.choice:hover:enabled{transform:translateY(-3px)}
+.choice:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.choice.right{background:#E4F5E9;box-shadow:0 6px 0 var(--green)}
+.choice.wrong{background:var(--red);color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (max-width:600px){
+  .mat{flex-wrap:wrap}
+  .col.hundreds{flex-basis:100%}
+  .step{width:46px;height:46px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <svg width="200" height="84" viewBox="0 0 200 84" aria-hidden="true" style="margin:0 auto 4px">
+        <g stroke="#8F7B5C" stroke-width="1.2" fill="#C8B596">
+          <rect x="18" y="8" width="66" height="66" rx="3"/>
+          <rect x="100" y="8" width="7" height="66" rx="2"/><rect x="112" y="8" width="7" height="66" rx="2"/><rect x="124" y="8" width="7" height="66" rx="2"/>
+          <rect x="148" y="52" width="9" height="9" rx="3.5"/><rect x="161" y="52" width="9" height="9" rx="3.5"/><rect x="174" y="52" width="9" height="9" rx="3.5"/><rect x="148" y="65" width="9" height="9" rx="3.5"/>
+        </g>
+        <path d="M24.6 8V74M31.2 8V74M37.8 8V74M44.4 8V74M51 8V74M57.6 8V74M64.2 8V74M70.8 8V74M77.4 8V74M18 14.6H84M18 21.2H84M18 27.8H84M18 34.4H84M18 41H84M18 47.6H84M18 54.2H84M18 60.8H84M18 67.4H84" stroke="#8F7B5C" stroke-width=".6" opacity=".6"/>
+        <path d="M100 14.6H131M100 21.2H131M100 27.8H131M100 34.4H131M100 41H131M100 47.6H131M100 54.2H131M100 60.8H131M100 67.4H131" stroke="#8F7B5C" stroke-width=".6" opacity=".6"/>
+        <path d="M168 22 L170 28 L176 30 L170 32 L168 38 L166 32 L160 30 L166 28 Z" fill="#F5C84C"/>
+      </svg>
+      <h1 id="gameTitle">Pebble place value</h1>
+      <p class="sub">Every pebble counts! Ten pebbles bundle into a ten, and ten tens bundle into a hundred.</p>
+      <span class="choose-label" id="levelLabel">Pick your numbers</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Tens and ones<small>numbers to 99</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Hundreds<small>numbers to 999</small></button>
+        <button class="pick-btn" data-level="2" aria-pressed="false" onclick="chooseLevel(this)">Tricky zeros<small>105, 340, 708...</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startBuild()">Build the number</button>
+        <button class="big-btn alt" onclick="startRead()">Read the pebbles</button>
+      </div>
+      <p class="note">Build the number: use the plus and minus buttons to lay out pebbles that match the number. Add a tenth pebble and watch it bundle into a ten. Read the pebbles: count the hundreds, tens, and ones, then pick the matching number.</p>
+    </div>
+  </section>
+
+  <!-- Build mode -->
+  <section class="screen hidden" id="buildScreen">
+    <div class="hud">
+      <span class="chip" id="buildRound">Number 1 of 8</span>
+      <span class="chip" id="buildScore">First try 0</span>
+    </div>
+    <p class="prompt" id="buildPrompt">Build this number with pebbles</p>
+    <div><div class="target" id="buildTarget" aria-live="off">47</div></div>
+    <div class="mat" id="buildMat"></div>
+    <p class="trade" id="trade" aria-hidden="true"></p>
+    <div>
+      <button class="big-btn" id="checkBtn" onclick="checkBuild()">Check</button>
+    </div>
+    <div class="hidden" id="buildExpanded"><span class="expanded" id="buildExpandedText"></span></div>
+  </section>
+
+  <!-- Read mode -->
+  <section class="screen hidden" id="readScreen">
+    <div class="hud">
+      <span class="chip" id="readRound">Number 1 of 8</span>
+      <span class="chip" id="readScore">First try 0</span>
+    </div>
+    <p class="prompt" id="readPrompt">What number do the pebbles show?</p>
+    <div class="mat" id="readMat"></div>
+    <div class="choices" id="choices" role="group" aria-label="Answer choices"></div>
+    <div class="hidden" id="readExpanded"><span class="expanded" id="readExpandedText"></span></div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Rock solid!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change numbers</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var ROUNDS = 8;
+var PLACES = [
+  { key: 'h', cls: 'hundreds', name: 'Hundreds', one: 'hundred', many: 'hundreds', val: 100 },
+  { key: 't', cls: 'tens', name: 'Tens', one: 'ten', many: 'tens', val: 10 },
+  { key: 'o', cls: 'ones', name: 'Ones', one: 'one', many: 'ones', val: 1 }
+];
+
+var level = 0;
+var lastMode = 'build';
+var soundOn = true;
+var audioCtx = null;
+var timer = null;
+
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function digits(n){ return { h: Math.floor(n / 100), t: Math.floor(n / 10) % 10, o: n % 10 }; }
+function hasHundreds(){ return level > 0; }
+function places(){ return hasHundreds() ? PLACES : PLACES.slice(1); }
+function plural(n, p){ return n + ' ' + (n === 1 ? p.one : p.many); }
+
+function expandedForm(n){
+  var d = digits(n), parts = [];
+  var words = places().map(function(p){ return plural(d[p.key], p); }).join(' + ') + ' = ' + n;
+  if (d.h) parts.push(d.h * 100);
+  if (d.t) parts.push(d.t * 10);
+  if (d.o) parts.push(d.o);
+  return parts.length > 1 ? [words, parts.join(' + ') + ' = ' + n] : [words];
+}
+function expandedHtml(n){ return expandedForm(n).join('<br>'); }
+function expandedSpoken(n){ return expandedForm(n).join('. ').replace(/=/g, 'equals').replace(/\+/g, 'plus'); }
+
+function chooseLevel(btn){
+  document.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.16, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndClick(){ beep([600], 0.05, 'triangle'); }
+function sndUnclick(){ beep([380], 0.05, 'triangle'); }
+function sndBundle(){ beep([392, 523, 784], 0.08); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function hideAll(){ ['startScreen','buildScreen','readScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); }); }
+function backToStart(){ clearTimeout(timer); clearTimeout(bundleTimer); hideAll(); $('startScreen').classList.remove('hidden'); }
+function playAgain(){ if (lastMode === 'build') startBuild(); else startRead(); }
+function showEnd(title, line, stars){
+  hideAll();
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function endTitle(score){ return score >= 7 ? 'Place value pro!' : score >= 5 ? 'Rock solid!' : 'Keep counting!'; }
+function endStars(score){ return score >= 7 ? 3 : score >= 5 ? 2 : 1; }
+
+/* Numbers for a round, no repeats */
+function makeNumbers(){
+  var out = [], guard = 0;
+  while (out.length < ROUNDS && guard++ < 1000) {
+    var n;
+    if (level === 0) {
+      n = rand(11, 99);
+      if (out.length % 4 === 3) n = rand(1, 9) * 10;
+    } else if (level === 1) {
+      n = rand(101, 999);
+    } else {
+      var h = rand(1, 9), t = rand(0, 9), o = rand(0, 9);
+      var pick = rand(0, 2);
+      if (pick === 0) t = 0; else if (pick === 1) o = 0; else { t = 0; o = rand(1, 9); }
+      if (t === 0 && o === 0 && rand(0, 2)) o = rand(1, 9);
+      n = h * 100 + t * 10 + o;
+    }
+    if (out.indexOf(n) === -1) out.push(n);
+  }
+  return out;
+}
+
+/* Draw one place column's pieces */
+function pieces(p, count, extraClass){
+  var html = '';
+  var cls = p.key === 'h' ? 'flat' : p.key === 't' ? 'rod' : 'one';
+  for (var i = 0; i < count; i++) html += '<div class="' + cls + (extraClass && i === count - 1 ? ' ' + extraClass : '') + '"></div>';
+  var wrap = p.key === 'h' ? 'flats' : p.key === 't' ? 'rods' : 'ones-grid';
+  return '<div class="' + wrap + '">' + html + '</div>';
+}
+
+/* ---------- Build the number ---------- */
+var nums = [];
+var round = 0;
+var score = 0;
+var target = 0;
+var have = { h: 0, t: 0, o: 0 };
+var firstTry = true;
+var busy = false;
+var bundleTimer = null;
+var justAdded = null;
+
+function startBuild(){
+  lastMode = 'build';
+  nums = makeNumbers();
+  round = 0;
+  score = 0;
+  hideAll();
+  $('buildScreen').classList.remove('hidden');
+  nextBuild();
+}
+
+function targetHtml(n){
+  var s = String(n), keys = s.length === 3 ? ['h','t','o'] : ['t','o'];
+  return s.split('').map(function(ch, i){ return '<span class="d ' + keys[i] + '">' + ch + '</span>'; }).join('');
+}
+
+function nextBuild(){
+  round++;
+  if (round > ROUNDS) {
+    showEnd(endTitle(score), 'You built ' + score + ' of ' + ROUNDS + ' numbers on the first try.', endStars(score));
+    return;
+  }
+  busy = false;
+  firstTry = true;
+  target = nums[round - 1];
+  have = { h: 0, t: 0, o: 0 };
+  $('buildRound').textContent = 'Number ' + round + ' of ' + ROUNDS;
+  $('buildScore').textContent = 'First try ' + score;
+  $('buildPrompt').textContent = 'Build this number with pebbles';
+  $('buildTarget').innerHTML = targetHtml(target);
+  $('buildExpanded').classList.add('hidden');
+  $('trade').innerHTML = '';
+  $('checkBtn').disabled = false;
+  justAdded = null;
+  drawBuild();
+  $('srStatus').textContent = 'Build the number ' + target + '.';
+}
+
+function canAdd(key){
+  if (busy) return false;
+  if (key === 'h') return have.h < 9;
+  if (key === 't') return have.t < 9 || (hasHundreds() && have.h < 9);
+  return have.o < 9 || have.t < 9 || (hasHundreds() && have.h < 9);
+}
+
+function drawBuild(bundling){
+  var mat = $('buildMat');
+  mat.innerHTML = '';
+  places().forEach(function(p){
+    var col = document.createElement('div');
+    col.className = 'col ' + p.cls;
+    col.dataset.key = p.key;
+    var n = have[p.key];
+    col.innerHTML = '<h3>' + p.name + '</h3>' +
+      '<div class="pile' + (bundling === p.key ? ' bundling' : '') + '">' + pieces(p, n, justAdded === p.key ? 'pop' : '') + '</div>' +
+      '<div class="count" aria-hidden="true">' + n + '</div>' +
+      '<div class="steppers">' +
+        '<button class="step minus" aria-label="Take away one ' + p.one + '"' + (busy || n === 0 ? ' disabled' : '') + '>&#8722;</button>' +
+        '<button class="step plus" aria-label="Add one ' + p.one + '"' + (canAdd(p.key) ? '' : ' disabled') + '>+</button>' +
+      '</div>';
+    col.querySelector('.minus').onclick = function(){ change(p.key, -1); };
+    col.querySelector('.plus').onclick = function(){ change(p.key, 1); };
+    mat.appendChild(col);
+  });
+  justAdded = null;
+}
+
+function change(key, delta){
+  if (busy) return;
+  $('trade').innerHTML = '';
+  $('buildPrompt').textContent = 'Build this number with pebbles';
+  var focusSel = '.col[data-key="' + key + '"] .' + (delta > 0 ? 'plus' : 'minus');
+  if (delta < 0) {
+    if (have[key] === 0) return;
+    have[key]--;
+    sndUnclick();
+    drawBuild();
+    announceHave();
+  } else {
+    if (!canAdd(key)) return;
+    have[key]++;
+    justAdded = key;
+    sndClick();
+    if (have[key] === 10) {
+      bundleUp(key, focusSel);
+      return;
+    }
+    drawBuild();
+    announceHave();
+  }
+  var f = document.querySelector(focusSel);
+  if (f && !f.disabled) f.focus();
+}
+
+/* Ten of a place bundle into one of the next place, one step at a time so kids can see it */
+function bundleUp(key, focusSel){
+  busy = true;
+  $('checkBtn').disabled = true;
+  var p = key === 'o' ? PLACES[2] : PLACES[1];
+  var next = key === 'o' ? PLACES[1] : PLACES[0];
+  drawBuild(key);
+  $('trade').innerHTML = '<span>10 ' + p.many + ' make 1 ' + next.one + '!</span>';
+  $('srStatus').textContent = 'Ten ' + p.many + ' bundle into one ' + next.one + '.';
+  bundleTimer = setTimeout(function(){
+    have[key] = 0;
+    have[next.key]++;
+    justAdded = next.key;
+    sndBundle();
+    if (have[next.key] === 10) { bundleUp(next.key, focusSel); return; }
+    busy = false;
+    $('checkBtn').disabled = false;
+    drawBuild();
+    announceHave();
+    var f = document.querySelector(focusSel);
+    if (f && !f.disabled) f.focus();
+  }, 900);
+}
+
+function announceHave(){
+  var parts = places().map(function(p){ return plural(have[p.key], p); });
+  $('srStatus').textContent = 'You have ' + parts.join(', ') + '.';
+}
+
+function checkBuild(){
+  if (busy) return;
+  var want = digits(target);
+  var wrong = places().filter(function(p){ return have[p.key] !== want[p.key]; });
+  var cols = $('buildMat').children;
+  if (!wrong.length) {
+    busy = true;
+    if (firstTry) score++;
+    $('buildScore').textContent = 'First try ' + score;
+    drawBuild();
+    for (var i = 0; i < cols.length; i++) cols[i].classList.add('right');
+    $('checkBtn').disabled = true;
+    $('trade').innerHTML = '';
+    $('buildPrompt').textContent = 'You built ' + target + '!';
+    $('buildExpandedText').innerHTML = expandedHtml(target);
+    $('buildExpanded').classList.remove('hidden');
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + expandedSpoken(target);
+    timer = setTimeout(nextBuild, 2400);
+  } else {
+    firstTry = false;
+    wrong.forEach(function(p){
+      var c = document.querySelector('#buildMat .col[data-key="' + p.key + '"]');
+      c.classList.add('wrong', 'shake');
+    });
+    var p0 = wrong[0], diff = want[p0.key] - have[p0.key];
+    var hint = 'Check the ' + p0.many + '. ' + (diff > 0 ? 'You need more.' : 'You have too many.');
+    $('buildPrompt').textContent = hint;
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + hint;
+    timer = setTimeout(function(){
+      document.querySelectorAll('#buildMat .col').forEach(function(c){ c.classList.remove('shake'); });
+    }, 400);
+  }
+}
+
+/* ---------- Read the pebbles ---------- */
+var rTarget = 0;
+var rFirst = true;
+var rBusy = false;
+
+function startRead(){
+  lastMode = 'read';
+  nums = makeNumbers();
+  round = 0;
+  score = 0;
+  hideAll();
+  $('readScreen').classList.remove('hidden');
+  nextRead();
+}
+
+function inRange(n){
+  if (level === 0) return n >= 1 && n <= 99;
+  if (level === 2) return n >= 10 && n <= 999;
+  return n >= 100 && n <= 999;
+}
+
+/* Wrong answers built from real mix-ups: swapped digits, a zero in the wrong place, off by ten */
+function distractors(n){
+  var d = digits(n), cand = [];
+  if (level === 0) {
+    cand.push(d.o * 10 + d.t);
+    cand.push(n + 10, n - 10, n + 1, n - 1);
+  } else {
+    cand.push(d.h * 100 + d.o * 10 + d.t);
+    cand.push(d.t * 100 + d.h * 10 + d.o);
+    if (d.t === 0) cand.push(d.h * 10 + d.o, d.h * 100 + d.o * 10);
+    if (d.o === 0) cand.push(d.h * 100 + d.t, d.h * 10 + d.t);
+    cand.push(n + 10, n - 10, n + 100, n - 100);
+  }
+  var out = [];
+  cand.forEach(function(c){
+    if (out.length < 2 && c !== n && inRange(c) && out.indexOf(c) === -1) out.push(c);
+  });
+  var guard = 0;
+  while (out.length < 2 && guard++ < 50) {
+    var c = n + [10, -10, 1, -1, 100, -100][rand(0, 5)];
+    if (c !== n && inRange(c) && out.indexOf(c) === -1) out.push(c);
+  }
+  return out;
+}
+
+function nextRead(){
+  round++;
+  if (round > ROUNDS) {
+    showEnd(endTitle(score), 'You read ' + score + ' of ' + ROUNDS + ' numbers on the first try.', endStars(score));
+    return;
+  }
+  rBusy = false;
+  rFirst = true;
+  rTarget = nums[round - 1];
+  var d = digits(rTarget);
+  $('readRound').textContent = 'Number ' + round + ' of ' + ROUNDS;
+  $('readScore').textContent = 'First try ' + score;
+  $('readPrompt').textContent = 'What number do the pebbles show?';
+  $('readExpanded').classList.add('hidden');
+  var mat = $('readMat');
+  mat.innerHTML = '';
+  places().forEach(function(p){
+    var col = document.createElement('div');
+    col.className = 'col ' + p.cls;
+    col.innerHTML = '<h3>' + p.name + '</h3><div class="pile">' + pieces(p, d[p.key]) + '</div>';
+    mat.appendChild(col);
+  });
+  var opts = shuffle([rTarget].concat(distractors(rTarget)));
+  var box = $('choices');
+  box.innerHTML = '';
+  opts.forEach(function(n, i){
+    var b = document.createElement('button');
+    b.className = 'choice';
+    b.dataset.key = i + 1;
+    b.textContent = n;
+    b.onclick = function(){ pickRead(b, n); };
+    box.appendChild(b);
+  });
+  var parts = places().map(function(p){ return plural(d[p.key], p); });
+  $('srStatus').textContent = 'The pebbles show ' + parts.join(', ') + '. Which number is it?';
+}
+
+function pickRead(btn, n){
+  if (rBusy) return;
+  if (n === rTarget) {
+    rBusy = true;
+    if (rFirst) score++;
+    $('readScore').textContent = 'First try ' + score;
+    btn.classList.add('right');
+    document.querySelectorAll('.choice').forEach(function(b){ b.disabled = b !== btn; });
+    document.querySelectorAll('#readMat .col').forEach(function(c){ c.classList.add('right'); });
+    $('readPrompt').textContent = 'Yes, it is ' + n + '!';
+    $('readExpandedText').innerHTML = expandedHtml(n);
+    $('readExpanded').classList.remove('hidden');
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + expandedSpoken(n);
+    timer = setTimeout(nextRead, 2200);
+  } else {
+    rFirst = false;
+    btn.classList.add('wrong', 'shake');
+    btn.disabled = true;
+    sndBad();
+    var d = digits(rTarget);
+    var hint = level === 0 ? 'Count the tens first, then the ones.' : 'Count the hundreds, then the tens, then the ones.';
+    if (level > 0 && (d.t === 0 || d.o === 0)) hint = 'An empty spot still needs a zero.';
+    $('readPrompt').textContent = hint;
+    $('srStatus').textContent = 'Not quite. ' + hint;
+  }
+}
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown', function(e){
+  if (!$('readScreen').classList.contains('hidden')) {
+    if (e.key >= '1' && e.key <= '3') {
+      var b = document.querySelector('.choice[data-key="' + e.key + '"]');
+      if (b && !b.disabled) b.click();
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      moveFocus('.choice:enabled', e);
+    }
+  } else if (!$('buildScreen').classList.contains('hidden')) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') moveFocus('#buildMat .step:enabled', e);
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      var col = document.activeElement && document.activeElement.closest ? document.activeElement.closest('.col') : null;
+      if (col) { change(col.dataset.key, e.key === 'ArrowUp' ? 1 : -1); e.preventDefault(); }
+    }
+  }
+});
+function moveFocus(sel, e){
+  var list = Array.prototype.slice.call(document.querySelectorAll(sel));
+  if (!list.length) return;
+  var i = list.indexOf(document.activeElement);
+  var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+  list[n].focus();
+  e.preventDefault();
+}
+</script>
+</body>
+</html>
