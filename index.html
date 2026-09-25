@@ -105,9 +105,12 @@ section{padding:48px 0}
 }
 .subject:hover{transform:translateY(-3px);border-color:var(--teal)}
 .subject-icon{
-  width:44px;height:44px;border-radius:12px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+  width:52px;height:52px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .2s ease;
 }
+.subject:hover .subject-icon{transform:rotate(-6deg) scale(1.06)}
+@media (prefers-reduced-motion:reduce){.subject:hover .subject-icon{transform:none}}
 .subject b{display:block;font-family:"Baloo 2",sans-serif;font-size:1.05rem}
 .subject small{color:#6E8C86;font-size:.85rem}
 
@@ -343,31 +346,60 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
       </div>
       <div class="subject-grid">
         <a class="subject" href="#favorites" onclick="filterGames('math')">
-          <span class="subject-icon" style="background:#E1F5EE;color:#0F6E56" aria-hidden="true">&#43;</span>
+          <span class="subject-icon" style="background:#E1F5EE;color:#0F6E56" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><path d="M16 16 27 11.5A12 12 0 1 1 20.5 4.9Z" fill="currentColor"/>
+<path d="M10.5 18h8M14.5 14v8" stroke="#F5C84C" stroke-width="3" stroke-linecap="round"/></svg></span>
           <span><b>Math lily pads</b><small>Counting, operations, fractions</small></span>
         </a>
         <a class="subject" href="#favorites" onclick="filterGames('reading')">
-          <span class="subject-icon" style="background:#FAEEDA;color:#854F0B" aria-hidden="true">Aa</span>
+          <span class="subject-icon" style="background:#FAEEDA;color:#854F0B" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><path d="M5 11c4-1.5 7.5-1 11 1.5v14C12.5 24 9 23.5 5 25Z" fill="currentColor"/>
+<path d="M27 11c-4-1.5-7.5-1-11 1.5v14c3.5-2.5 7-3 11-1.5Z" fill="currentColor" opacity=".7"/>
+<path d="M8 15.3l5.5.9M8 19.3l5.5.9" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M22 12.2V4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+<rect x="20.3" y="3" width="3.4" height="7" rx="1.7" fill="#F5C84C"/></svg></span>
           <span><b>Reading reeds</b><small>Sight words, spelling, vocabulary</small></span>
         </a>
         <a class="subject" href="#favorites" onclick="filterGames('science')">
-          <span class="subject-icon" style="background:#E6F1FB;color:#185FA5" aria-hidden="true">&#9679;</span>
+          <span class="subject-icon" style="background:#E6F1FB;color:#185FA5" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><path d="M12.5 4h7M13.5 4v8L6.8 23.5A3 3 0 0 0 9.4 28h13.2a3 3 0 0 0 2.6-4.5L18.5 12V4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M9.2 20.5c2.3-1.2 4.5-1.2 6.8 0s4.5 1.2 6.8 0l2.5 3.8A2.4 2.4 0 0 1 23.2 28H8.8a2.4 2.4 0 0 1-2.1-3.6Z" fill="currentColor"/>
+<circle cx="14" cy="24.5" r="1.4" fill="#fff"/><circle cx="18.5" cy="23" r="1" fill="#fff"/>
+<circle cx="17" cy="16" r="1.3" fill="#F5C84C"/></svg></span>
           <span><b>Science springs</b><small>Sorting, cycles, observation</small></span>
         </a>
         <a class="subject" href="#favorites" onclick="filterGames('social')">
-          <span class="subject-icon" style="background:#EAF3DE;color:#3B6D11" aria-hidden="true">&#9673;</span>
+          <span class="subject-icon" style="background:#EAF3DE;color:#3B6D11" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><path d="M4 9l8-3 8 3 8-3v17l-8 3-8-3-8 3Z" fill="currentColor" opacity=".35"/>
+<path d="M12 6l8 3v17l-8-3Z" fill="currentColor" opacity=".6"/>
+<path d="M4 9l8-3v17l-8 3Z" fill="currentColor"/>
+<path d="M22 3.5a4.5 4.5 0 0 0-4.5 4.5c0 3.4 4.5 8 4.5 8s4.5-4.6 4.5-8A4.5 4.5 0 0 0 22 3.5Z" fill="#F5C84C" stroke="#fff" stroke-width="1.2"/>
+<circle cx="22" cy="8" r="1.6" fill="#fff"/></svg></span>
           <span><b>Social studies shore</b><small>Maps, states, communities</small></span>
         </a>
         <a class="subject" href="#favorites" onclick="filterGames('music')">
-          <span class="subject-icon" style="background:#FBEAF0;color:#993556" aria-hidden="true">&#9834;</span>
+          <span class="subject-icon" style="background:#FBEAF0;color:#993556" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><path d="M12 22V8l14-3.5v14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+<path d="M12 8l14-3.5v3.8L12 11.8Z" fill="currentColor"/>
+<ellipse cx="8.5" cy="23" rx="4.5" ry="3.3" fill="currentColor"/>
+<ellipse cx="22.5" cy="19.5" rx="4.5" ry="3.3" fill="currentColor"/>
+<circle cx="7" cy="22" r="1.1" fill="#fff"/><circle cx="21" cy="18.5" r="1.1" fill="#fff"/>
+<path d="M4 7.5l1 2 2 1-2 1-1 2-1-2-2-1 2-1Z" fill="#F5C84C"/></svg></span>
           <span><b>Music marsh</b><small>Rhythm, notes, listening</small></span>
         </a>
         <a class="subject" href="#favorites" onclick="filterGames('movement')">
-          <span class="subject-icon" style="background:#DFF3EC;color:#0F6E7E" aria-hidden="true">Go</span>
+          <span class="subject-icon" style="background:#DFF3EC;color:#0F6E7E" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><path d="M3 20C5 9 12 5 19 8" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2.2 3" stroke-linecap="round" opacity=".6"/>
+<ellipse cx="21" cy="20.5" rx="7" ry="5.5" fill="currentColor"/>
+<circle cx="17.8" cy="14.8" r="2.8" fill="currentColor"/><circle cx="24.2" cy="14.8" r="2.8" fill="currentColor"/>
+<circle cx="17.8" cy="14.6" r="1.5" fill="#fff"/><circle cx="24.2" cy="14.6" r="1.5" fill="#fff"/>
+<path d="M18.5 21.5q2.5 2 5 0" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<ellipse cx="14.5" cy="25.8" rx="3" ry="1.5" fill="currentColor"/><ellipse cx="27.5" cy="25.8" rx="3" ry="1.5" fill="currentColor"/>
+<ellipse cx="21" cy="28.5" rx="8" ry="1.3" fill="#F5C84C"/></svg></span>
           <span><b>Movement meadow</b><small>Brain breaks, stretches, dances</small></span>
         </a>
         <a class="subject" href="#favorites" onclick="filterGames('tools')">
-          <span class="subject-icon" style="background:#F1EFE8;color:#5F5E5A" aria-hidden="true">&#9866;</span>
+          <span class="subject-icon" style="background:#F1EFE8;color:#5F5E5A" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><rect x="13" y="2.5" width="6" height="3.2" rx="1.2" fill="currentColor"/>
+<path d="M24.5 8.5l2-2" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+<circle cx="16" cy="18" r="11" fill="currentColor"/>
+<circle cx="16" cy="18" r="8" fill="#fff"/>
+<path d="M16 18V12.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M16 18l4 2.5" stroke="#F5C84C" stroke-width="2.4" stroke-linecap="round"/>
+<circle cx="16" cy="18" r="1.4" fill="currentColor"/></svg></span>
           <span><b>Class tools</b><small>Timer, random picker, scoreboard</small></span>
         </a>
       </div>
