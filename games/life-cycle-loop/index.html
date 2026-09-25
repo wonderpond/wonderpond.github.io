@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life cycle loop - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Put the stages of a frog, butterfly, bean plant, and chicken in order around the loop. A free life cycle science game for grades 1 to 3 classrooms from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --meadow:#DDF0C8;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --amber:#F5C84C;
+  --amber-dark:#C99A17;
+  --red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--meadow) 40%,var(--water) 40%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:960px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;
+  padding:14px 20px;min-width:170px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.8}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:16px 42px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.note{font-size:.9rem;color:#6E8C86;margin-top:12px;max-width:640px;margin-left:auto;margin-right:auto}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 8px;
+  background:rgba(255,255,255,.85);display:inline-block;padding:7px 26px;border-radius:999px;
+}
+
+/* Stage picture cards */
+.pic{display:block;width:100%;height:auto}
+.stage-card{
+  border:none;background:#fff;border-radius:20px;cursor:pointer;padding:8px 8px 10px;
+  width:clamp(96px,17vw,132px);box-shadow:0 5px 0 rgba(18,64,58,.22);
+  transition:transform .12s ease,opacity .15s ease;color:var(--teal-dark);
+}
+.stage-card:hover:enabled{transform:translateY(-3px)}
+.stage-card:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.stage-card:disabled{opacity:.2;cursor:default;box-shadow:none}
+.stage-card .lbl{display:block;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(.85rem,1.9vw,1.05rem);line-height:1.1;margin-top:2px}
+.stage-card.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green)}
+.stage-card.wrong{background:var(--red);color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+
+.tray{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  margin:10px auto 0;padding:14px;max-width:760px;
+  background:rgba(255,255,255,.35);border-radius:26px;
+}
+
+/* The loop: slots sit on a circle, arrows run clockwise between them */
+.loop{position:relative;width:min(90vw,470px);aspect-ratio:1/1;margin:14px auto 0}
+.loop svg.arrows{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.arrows path{stroke:#fff;stroke-width:2.2;fill:none;stroke-linecap:round;opacity:.9;transition:stroke .3s ease}
+.arrows path.head{fill:#fff;stroke:none}
+.loop.done .arrows path{stroke:var(--amber)}
+.loop.done .arrows path.head{fill:var(--amber);stroke:none}
+.loop-center{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:38%;
+  font-family:"Baloo 2",sans-serif;font-weight:700;color:var(--teal-dark);line-height:1.15;
+  font-size:clamp(1rem,3.2vw,1.45rem);
+}
+.loop-center small{display:block;font-family:"Nunito",sans-serif;font-size:.62em;color:var(--ink-soft)}
+.slot{
+  position:absolute;transform:translate(-50%,-50%);
+  border-radius:20px;border:4px dashed #fff;background:rgba(255,255,255,.35);
+  padding:4px;cursor:pointer;color:var(--teal-dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.slot:disabled{cursor:default}
+.slot .num{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.3rem,4vw,2rem);opacity:.75;line-height:1}
+.slot .num small{display:block;font-size:.5em}
+.slot.filled{border-style:solid;border-color:#fff;background:#fff;box-shadow:0 5px 0 rgba(18,64,58,.22)}
+.slot .lbl{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(.7rem,1.7vw,.92rem);line-height:1.05}
+.slot.right{background:#E4F5E9;border-color:var(--green)}
+.slot.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.fact{
+  margin:12px auto 0;max-width:620px;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+  background:rgba(255,255,255,.9);border-radius:18px;padding:10px 18px;
+}
+
+/* What comes next */
+.pair{display:flex;align-items:center;justify-content:center;gap:14px;margin:6px 0 14px}
+.pair .stage-card{cursor:default;width:clamp(120px,22vw,170px)}
+.pair .mystery{
+  width:clamp(120px,22vw,170px);aspect-ratio:1/1.12;border-radius:20px;border:4px dashed #fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:4rem;color:#fff;
+}
+.pair .mystery .stage-card{box-shadow:none}
+.pair .arrow{width:56px;flex:none}
+.choices{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.choices .stage-card{width:clamp(110px,20vw,150px)}
+
+/* End screen */
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:190px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Life cycle loop</h1>
+      <p class="sub">Eggs hatch, babies grow, grown-ups make new eggs. Put each animal and plant back in its loop!</p>
+      <span class="choose-label" id="levelLabel">Pick your words</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Everyday words<small>egg, caterpillar, sprout...</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Science words<small>larva, pupa, seedling...</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startLoop()">Build the loop</button>
+        <button class="big-btn alt" onclick="startNext()">What comes next?</button>
+      </div>
+      <p class="note">Build the loop: tap the pictures in order, starting at the top, to finish four life cycles. What comes next: look at one stage and pick the one that comes after it, or before it. Science words adds more stages and the terms used in grade 3.</p>
+    </div>
+  </section>
+
+  <!-- Build the loop -->
+  <section class="screen hidden" id="loopScreen">
+    <div class="hud">
+      <span class="chip" id="loopRound">Loop 1 of 4</span>
+      <span class="chip" id="loopScore">First try 0</span>
+    </div>
+    <p class="prompt" id="loopPrompt">Start at the top and go around</p>
+    <div class="loop" id="loop"></div>
+    <p class="fact hidden" id="fact" role="status"></p>
+    <div class="tray" id="tray" role="group" aria-label="Life cycle pictures"></div>
+  </section>
+
+  <!-- What comes next -->
+  <section class="screen hidden" id="nextScreen">
+    <div class="hud">
+      <span class="chip" id="nextRound">Question 1 of 10</span>
+      <span class="chip" id="nextScore">First try 0</span>
+    </div>
+    <p class="prompt" id="nextPrompt">What comes next?</p>
+    <div class="pair" id="pair"></div>
+    <div class="choices" id="choices" role="group" aria-label="Answer choices"></div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Around and around!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+/* ---------- Pictures (all drawn on a 100 x 100 grid) ---------- */
+function svgWrap(inner){ return '<svg class="pic" viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + inner + '</svg>'; }
+function eye(x, y, r){ return '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="#fff"/><circle cx="' + (x + r * .15) + '" cy="' + (y + r * .15) + '" r="' + (r * .5) + '" fill="#22303B"/>'; }
+function soil(){ return '<rect x="6" y="72" width="88" height="22" rx="8" fill="#8A6A45"/><path d="M14 80 H30 M44 86 H60 M70 79 H84" stroke="#6E5236" stroke-width="2.5" stroke-linecap="round"/>'; }
+function nest(){ return '<path d="M16 68 Q50 96 84 68 Q50 80 16 68Z" fill="#B08850"/><path d="M24 74 Q40 82 54 78 M46 84 Q62 82 74 74" stroke="#8A6A45" stroke-width="2" fill="none" stroke-linecap="round"/>'; }
+function flower(x, y){
+  return '<circle cx="' + (x - 4) + '" cy="' + y + '" r="4" fill="#D9C2F0"/><circle cx="' + (x + 4) + '" cy="' + y + '" r="4" fill="#D9C2F0"/>' +
+    '<circle cx="' + x + '" cy="' + (y - 4) + '" r="4" fill="#D9C2F0"/><circle cx="' + x + '" cy="' + (y + 4) + '" r="4" fill="#D9C2F0"/><circle cx="' + x + '" cy="' + y + '" r="2.6" fill="#F5C84C"/>';
+}
+function leafPair(y, size){
+  return '<ellipse cx="' + (50 - size) + '" cy="' + y + '" rx="' + size + '" ry="' + (size * .5) + '" fill="#5DB35A" transform="rotate(-25 ' + (50 - size) + ' ' + y + ')"/>' +
+    '<ellipse cx="' + (50 + size) + '" cy="' + (y - 3) + '" rx="' + size + '" ry="' + (size * .5) + '" fill="#5DB35A" transform="rotate(25 ' + (50 + size) + ' ' + (y - 3) + ')"/>';
+}
+function stem(top){ return '<path d="M50 80 Q47 ' + ((80 + top) / 2) + ' 50 ' + top + '" stroke="#3F9457" stroke-width="4" fill="none" stroke-linecap="round"/>'; }
+
+var PICS = {
+  frogEggs: function(){
+    var pts = [[38,38],[53,32],[66,42],[45,52],[60,56],[32,58],[74,58],[50,70],[64,72]], s = '';
+    pts.forEach(function(p){ s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="9" fill="#E3F4FA" stroke="#8DBFC9" stroke-width="2"/><circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.2" fill="#22303B"/>'; });
+    return s;
+  },
+  tadpole: function(){
+    return '<path d="M52 52 Q66 40 76 52 T94 50" stroke="#3E5A3C" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="38" cy="52" rx="17" ry="14" fill="#3E5A3C"/>' + eye(31, 47, 3.2);
+  },
+  tadLegs: function(){
+    return '<path d="M52 52 Q66 40 76 52 T94 50" stroke="#46663F" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+      '<path d="M46 62 Q50 74 42 80 M52 60 Q60 72 56 80" stroke="#46663F" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="40" cy="81" rx="5" ry="2.6" fill="#46663F"/><ellipse cx="58" cy="81" rx="5" ry="2.6" fill="#46663F"/>' +
+      '<ellipse cx="38" cy="52" rx="17" ry="14" fill="#46663F"/>' + eye(31, 47, 3.2);
+  },
+  froglet: function(){
+    return '<path d="M60 64 Q74 62 82 70" stroke="#6BAF6E" stroke-width="6" fill="none" stroke-linecap="round"/>' +
+      '<path d="M32 66 Q24 76 30 80 M58 68 Q66 78 60 80" stroke="#6BAF6E" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="45" cy="62" rx="18" ry="13" fill="#6BAF6E"/>' +
+      '<circle cx="37" cy="48" r="6" fill="#6BAF6E"/><circle cx="53" cy="48" r="6" fill="#6BAF6E"/>' + eye(37, 48, 3.6) + eye(53, 48, 3.6) +
+      '<path d="M39 64 Q45 68 51 64" stroke="#2E6B3A" stroke-width="2" fill="none" stroke-linecap="round"/>';
+  },
+  frog: function(){
+    return '<ellipse cx="26" cy="74" rx="12" ry="6" fill="#3F9457"/><ellipse cx="74" cy="74" rx="12" ry="6" fill="#3F9457"/>' +
+      '<ellipse cx="50" cy="62" rx="24" ry="17" fill="#4FB06A"/>' +
+      '<circle cx="39" cy="44" r="8" fill="#4FB06A"/><circle cx="61" cy="44" r="8" fill="#4FB06A"/>' + eye(39, 44, 5) + eye(61, 44, 5) +
+      '<circle cx="33" cy="62" r="3.4" fill="#F4A0A0" opacity=".5"/><circle cx="67" cy="62" r="3.4" fill="#F4A0A0" opacity=".5"/>' +
+      '<path d="M41 64 Q50 72 59 64" stroke="#1F5B36" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="40" cy="79" rx="6" ry="3" fill="#3F9457"/><ellipse cx="60" cy="79" rx="6" ry="3" fill="#3F9457"/>';
+  },
+  bflyEgg: function(){
+    return '<path d="M10 72 Q46 18 90 36 Q64 90 10 72Z" fill="#7CC47F"/><path d="M14 70 Q52 52 86 38" stroke="#5DA360" stroke-width="2" fill="none"/>' +
+      '<ellipse cx="54" cy="50" rx="7" ry="9" fill="#FFF4C9" stroke="#D9C58A" stroke-width="1.6"/><path d="M50 46 Q54 44 58 46" stroke="#D9C58A" stroke-width="1.2" fill="none"/>';
+  },
+  caterpillar: function(){
+    var s = '', xs = [18, 31, 44, 57, 70];
+    xs.forEach(function(x, i){
+      var y = 60 + (i % 2 ? -4 : 0);
+      s += '<path d="M' + x + ' ' + (y + 9) + ' v7" stroke="#3A2A1E" stroke-width="2" stroke-linecap="round"/>';
+      s += '<circle cx="' + x + '" cy="' + y + '" r="10" fill="' + (i % 2 ? '#F5C84C' : '#6FBF5A') + '"/>';
+      s += '<path d="M' + (x - 5) + ' ' + (y - 6) + ' Q' + x + ' ' + (y - 9) + ' ' + (x + 5) + ' ' + (y - 6) + '" stroke="#3A2A1E" stroke-width="2" fill="none"/>';
+    });
+    return s + '<circle cx="82" cy="52" r="12" fill="#4FA046"/>' + eye(86, 49, 3) +
+      '<path d="M80 40 L76 32 M86 40 L90 32" stroke="#3A2A1E" stroke-width="2" stroke-linecap="round"/>';
+  },
+  chrysalis: function(){
+    return '<path d="M18 14 H82" stroke="#8A6A45" stroke-width="6" stroke-linecap="round"/><path d="M50 16 V24" stroke="#C9C2AC" stroke-width="2"/>' +
+      '<path d="M50 24 C70 30 68 62 50 86 C32 62 30 30 50 24Z" fill="#7CC47F"/>' +
+      '<path d="M50 30 C58 44 58 60 50 78" stroke="#5DA360" stroke-width="2" fill="none"/>' +
+      '<circle cx="42" cy="40" r="2.4" fill="#F5C84C"/><circle cx="58" cy="40" r="2.4" fill="#F5C84C"/><circle cx="46" cy="54" r="2" fill="#F5C84C"/>';
+  },
+  butterfly: function(){
+    function wing(cx, cy, rx, ry){ return '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" fill="#F39C3D" stroke="#3A2A1E" stroke-width="3"/>'; }
+    return wing(32, 40, 18, 15) + wing(68, 40, 18, 15) + wing(36, 66, 12, 11) + wing(64, 66, 12, 11) +
+      '<circle cx="26" cy="36" r="3" fill="#fff"/><circle cx="74" cy="36" r="3" fill="#fff"/><circle cx="34" cy="66" r="2.4" fill="#fff"/><circle cx="66" cy="66" r="2.4" fill="#fff"/>' +
+      '<ellipse cx="50" cy="52" rx="4" ry="22" fill="#3A2A1E"/>' +
+      '<path d="M48 32 Q42 20 38 18 M52 32 Q58 20 62 18" stroke="#3A2A1E" stroke-width="2" fill="none" stroke-linecap="round"/>';
+  },
+  seed: function(){
+    return soil() + '<path d="M36 82 Q36 72 48 72 Q54 72 56 76 Q58 72 64 74 Q70 80 62 88 Q48 94 38 88 Q36 86 36 82Z" fill="#C9844A"/>' +
+      '<path d="M54 78 Q56 82 54 84" stroke="#8A5530" stroke-width="2" fill="none" stroke-linecap="round"/>';
+  },
+  sprout: function(){
+    return soil() + '<path d="M50 80 Q46 66 50 56" stroke="#3F9457" stroke-width="4" fill="none" stroke-linecap="round"/>' + leafPair(55, 8) +
+      '<path d="M44 84 Q50 78 56 84" stroke="#6E5236" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  },
+  youngPlant: function(){ return soil() + stem(34) + leafPair(64, 10) + leafPair(46, 11); },
+  flowering: function(){ return soil() + stem(22) + leafPair(66, 11) + leafPair(48, 12) + flower(50, 20) + flower(36, 34) + flower(64, 36); },
+  pods: function(){
+    function pod(d, dots){
+      var s = '<path d="' + d + '" stroke="#3F9457" stroke-width="11" fill="none" stroke-linecap="round"/><path d="' + d + '" stroke="#B8D86B" stroke-width="7" fill="none" stroke-linecap="round"/>';
+      dots.forEach(function(p){ s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="2.2" fill="#7FA83A"/>'; });
+      return s;
+    }
+    return soil() + stem(24) + leafPair(66, 11) + leafPair(48, 12) +
+      pod('M46 30 Q30 34 24 54', [[38,33],[31,38],[27,46]]) + pod('M54 34 Q70 38 76 58', [[62,36],[69,41],[73,50]]);
+  },
+  egg: function(){ return nest() + '<ellipse cx="50" cy="56" rx="15" ry="19" fill="#FFF7EA" stroke="#E4D6BE" stroke-width="2"/>'; },
+  hatching: function(){
+    return nest() + '<circle cx="50" cy="44" r="12" fill="#FFD84D"/>' + eye(54, 42, 2.6) + '<path d="M61 44 L68 46 L61 49Z" fill="#F39C3D"/>' +
+      '<path d="M35 58 L41 52 L46 58 L51 51 L56 58 L61 52 L65 58 Q66 76 50 76 Q34 76 35 58Z" fill="#FFF7EA" stroke="#E4D6BE" stroke-width="2"/>' +
+      '<path d="M30 40 L34 36 M70 34 L74 30" stroke="#E4D6BE" stroke-width="3" stroke-linecap="round"/>';
+  },
+  chick: function(){
+    return '<path d="M44 76 V86 M56 76 V86 M40 86 H48 M52 86 H60" stroke="#F39C3D" stroke-width="3" stroke-linecap="round"/>' +
+      '<ellipse cx="48" cy="62" rx="21" ry="18" fill="#FFD84D"/><circle cx="60" cy="40" r="13" fill="#FFD84D"/>' + eye(64, 38, 3) +
+      '<path d="M72 40 L80 43 L72 46Z" fill="#F39C3D"/><path d="M36 58 Q44 70 54 62" stroke="#E8B82E" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  },
+  youngChicken: function(){
+    return '<path d="M44 70 V88 M56 70 V88 M40 88 H48 M52 88 H60" stroke="#F39C3D" stroke-width="3" stroke-linecap="round"/>' +
+      '<path d="M26 54 Q18 46 22 38 Q30 46 32 50Z" fill="#F4EBD8"/>' +
+      '<ellipse cx="46" cy="58" rx="21" ry="15" fill="#F4EBD8"/><path d="M58 50 Q62 38 64 32" stroke="#F4EBD8" stroke-width="10" stroke-linecap="round"/>' +
+      '<circle cx="66" cy="30" r="10" fill="#F4EBD8"/><circle cx="36" cy="56" r="5" fill="#FFD84D"/><circle cx="48" cy="64" r="4" fill="#FFD84D"/>' +
+      '<path d="M62 21 Q66 17 70 21" stroke="#E24B4A" stroke-width="3" fill="none" stroke-linecap="round"/>' + eye(69, 28, 2.6) +
+      '<path d="M75 30 L82 32 L75 35Z" fill="#F39C3D"/>';
+  },
+  hen: function(){
+    return '<path d="M42 74 V88 M56 74 V88 M38 88 H46 M52 88 H60" stroke="#F39C3D" stroke-width="3" stroke-linecap="round"/>' +
+      '<path d="M22 60 Q8 44 16 30 Q26 40 30 50Z" fill="#8E4A28"/>' +
+      '<ellipse cx="46" cy="60" rx="27" ry="19" fill="#C1693C"/>' +
+      '<path d="M32 58 Q44 72 58 60" stroke="#8E4A28" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="68" cy="36" r="12" fill="#C1693C"/><path d="M60 48 Q64 42 66 46" stroke="#C1693C" stroke-width="10"/>' +
+      '<circle cx="63" cy="24" r="4" fill="#E24B4A"/><circle cx="69" cy="22" r="4.4" fill="#E24B4A"/><circle cx="75" cy="25" r="3.6" fill="#E24B4A"/>' +
+      '<ellipse cx="77" cy="44" rx="3" ry="4.4" fill="#E24B4A"/>' + eye(71, 34, 2.8) + '<path d="M79 36 L87 38 L79 41Z" fill="#F39C3D"/>';
+  }
+};
+
+/* ---------- Life cycles ---------- */
+var NAMES = {
+  frogEggs:['eggs','eggs'], tadpole:['tadpole','tadpole'], tadLegs:['tadpole','tadpole with legs'], froglet:['froglet','froglet'], frog:['frog','adult frog'],
+  bflyEgg:['egg','egg'], caterpillar:['caterpillar','larva'], chrysalis:['chrysalis','pupa'], butterfly:['butterfly','adult butterfly'],
+  seed:['seed','seed'], sprout:['sprout','seedling'], youngPlant:['young plant','young plant'], flowering:['grown plant','flowering plant'], pods:['pods','pods with seeds'],
+  egg:['egg','egg'], hatching:['hatching chick','hatching chick'], chick:['chick','chick'], youngChicken:['young chicken','young chicken'], hen:['hen','adult hen']
+};
+var CYCLES = [
+  { name:'Frog', stages:[['frogEggs','tadpole','froglet','frog'], ['frogEggs','tadpole','tadLegs','froglet','frog']],
+    fact:['Grown frogs lay eggs in the pond, and the loop starts again.', 'Adult frogs lay eggs in the water, and the life cycle starts again. This big change is called metamorphosis.'] },
+  { name:'Butterfly', stages:[['bflyEgg','caterpillar','chrysalis','butterfly'], ['bflyEgg','caterpillar','chrysalis','butterfly']],
+    fact:['The butterfly lays eggs on a leaf, and the loop starts again.', 'The adult butterfly lays eggs on a leaf, and the life cycle starts again. Butterflies go through metamorphosis too.'] },
+  { name:'Bean plant', stages:[['seed','sprout','youngPlant','flowering'], ['seed','sprout','youngPlant','flowering','pods']],
+    fact:['The grown plant makes new seeds, and the loop starts again.', 'Flowers turn into pods full of new seeds, and the life cycle starts again.'] },
+  { name:'Chicken', stages:[['egg','chick','youngChicken','hen'], ['egg','hatching','chick','youngChicken','hen']],
+    fact:['The hen lays eggs, and the loop starts again.', 'The adult hen lays eggs, and the life cycle starts again.'] }
+];
+var NEXT_ROUNDS = 10;
+
+var level = 0;
+var lastMode = 'loop';
+var soundOn = true;
+var audioCtx = null;
+
+function $(id){ return document.getElementById(id); }
+function label(id){ return NAMES[id][level]; }
+function stagesOf(c){ return CYCLES[c].stages[level]; }
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function chooseLevel(btn){
+  document.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+
+function beep(freqs, dur){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.16, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440], 0.07); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function sndLoop(){ beep([392, 523, 659, 784, 1047], 0.1); }
+
+function cardHtml(id){ return svgWrap(PICS[id]()) + '<span class="lbl">' + label(id) + '</span>'; }
+
+function hideAll(){ ['startScreen','loopScreen','nextScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); }); }
+var timer = null;
+function backToStart(){ clearTimeout(timer); hideAll(); $('startScreen').classList.remove('hidden'); }
+function playAgain(){ if (lastMode === 'loop') startLoop(); else startNext(); }
+function showEnd(title, line, stars){
+  hideAll();
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+
+/* ---------- Build the loop ---------- */
+var order = [];
+var lRound = 0;
+var lScore = 0;
+var cyc = 0;
+var cards = [];
+var slots = [];
+var firstTry = true;
+var busy = false;
+
+function startLoop(){
+  lastMode = 'loop';
+  order = shuffle([0, 1, 2, 3]);
+  lRound = 0;
+  lScore = 0;
+  hideAll();
+  $('loopScreen').classList.remove('hidden');
+  nextLoop();
+}
+
+function nextLoop(){
+  lRound++;
+  if (lRound > order.length) {
+    var stars = lScore >= 4 ? 3 : lScore >= 3 ? 2 : 1;
+    var title = lScore >= 4 ? 'Life cycle expert!' : lScore >= 3 ? 'Around and around!' : 'Keep growing!';
+    showEnd(title, 'You built ' + lScore + ' of ' + order.length + ' loops on the first try.', stars);
+    return;
+  }
+  busy = false;
+  firstTry = true;
+  cyc = order[lRound - 1];
+  var st = stagesOf(cyc);
+  var mixed;
+  do { mixed = shuffle(st); } while (mixed.join() === st.join());
+  cards = mixed.map(function(id){ return { id: id, used: false }; });
+  slots = st.map(function(){ return null; });
+  $('loopRound').textContent = 'Loop ' + lRound + ' of ' + order.length;
+  $('loopScore').textContent = 'First try ' + lScore;
+  $('loopPrompt').textContent = 'Start at the top and go around';
+  $('fact').classList.add('hidden');
+  $('loop').classList.remove('done');
+  drawLoop();
+  $('srStatus').textContent = CYCLES[cyc].name + ' life cycle. Put ' + st.length + ' pictures in order, starting at the top.';
+}
+
+function slotPos(i, n){
+  var a = (-90 + i * 360 / n) * Math.PI / 180;
+  return { x: 50 + 36 * Math.cos(a), y: 50 + 36 * Math.sin(a), a: a };
+}
+
+function arrowsSvg(n){
+  var gap = n === 4 ? 25 : 21;
+  var s = '<svg class="arrows" viewBox="0 0 100 100" aria-hidden="true">';
+  for (var i = 0; i < n; i++) {
+    var a1 = (-90 + i * 360 / n + gap) * Math.PI / 180;
+    var a2 = (-90 + (i + 1) * 360 / n - gap) * Math.PI / 180;
+    var x1 = 50 + 36 * Math.cos(a1), y1 = 50 + 36 * Math.sin(a1);
+    var x2 = 50 + 36 * Math.cos(a2), y2 = 50 + 36 * Math.sin(a2);
+    s += '<path d="M' + x1.toFixed(2) + ' ' + y1.toFixed(2) + ' A36 36 0 0 1 ' + x2.toFixed(2) + ' ' + y2.toFixed(2) + '"/>';
+    var tx = -Math.sin(a2), ty = Math.cos(a2);
+    var nx = Math.cos(a2), ny = Math.sin(a2);
+    var p1 = (x2 + tx * 2.6).toFixed(2) + ' ' + (y2 + ty * 2.6).toFixed(2);
+    var p2 = (x2 - tx * 1.4 + nx * 2.4).toFixed(2) + ' ' + (y2 - ty * 1.4 + ny * 2.4).toFixed(2);
+    var p3 = (x2 - tx * 1.4 - nx * 2.4).toFixed(2) + ' ' + (y2 - ty * 1.4 - ny * 2.4).toFixed(2);
+    s += '<path class="head" d="M' + p1 + ' L' + p2 + ' L' + p3 + 'Z"/>';
+  }
+  return s + '</svg>';
+}
+
+function drawLoop(){
+  var n = slots.length;
+  var size = n === 4 ? 28 : 25;
+  var html = arrowsSvg(n) + '<div class="loop-center">' + CYCLES[cyc].name + '<small>life cycle</small></div>';
+  slots.forEach(function(ci, i){
+    var p = slotPos(i, n);
+    var inner = ci === null
+      ? '<span class="num">' + (i + 1) + (i === 0 ? '<small>start</small>' : '') + '</span>'
+      : svgWrap(PICS[cards[ci].id]()) + '<span class="lbl">' + label(cards[ci].id) + '</span>';
+    var aria = 'Spot ' + (i + 1) + (i === 0 ? ', the start' : '') + (ci === null ? ', empty' : ', ' + label(cards[ci].id) + '. Tap to take it out.');
+    html += '<button class="slot' + (ci !== null ? ' filled' : '') + '" data-slot="' + i + '" style="left:' + p.x + '%;top:' + p.y + '%;width:' + size + '%;height:' + (size + 3) + '%"' +
+      (busy || ci === null ? ' disabled' : '') + ' aria-label="' + aria + '" onclick="unplace(' + i + ')">' + inner + '</button>';
+  });
+  $('loop').innerHTML = html;
+  var hadFocus = document.activeElement && document.activeElement.classList.contains('stage-card');
+  var tray = $('tray');
+  tray.innerHTML = '';
+  cards.forEach(function(c, i){
+    var b = document.createElement('button');
+    b.className = 'stage-card';
+    b.dataset.key = i + 1;
+    b.innerHTML = cardHtml(c.id);
+    b.setAttribute('aria-label', label(c.id));
+    b.disabled = busy || c.used;
+    b.onclick = function(){ place(i); };
+    tray.appendChild(b);
+  });
+  if (hadFocus) { var f = tray.querySelector('.stage-card:enabled'); if (f) f.focus(); }
+}
+
+function place(ci){
+  if (busy || cards[ci].used) return;
+  var s = slots.indexOf(null);
+  if (s === -1) return;
+  slots[s] = ci;
+  cards[ci].used = true;
+  sndPlop();
+  drawLoop();
+  if (slots.indexOf(null) === -1) checkLoop();
+}
+
+function unplace(s){
+  if (busy || slots[s] === null) return;
+  cards[slots[s]].used = false;
+  slots[s] = null;
+  drawLoop();
+}
+
+function checkLoop(){
+  var st = stagesOf(cyc);
+  var wrong = [];
+  slots.forEach(function(ci, i){ if (cards[ci].id !== st[i]) wrong.push(i); });
+  var els = $('loop').querySelectorAll('.slot');
+  busy = true;
+  if (wrong.length === 0) {
+    if (firstTry) lScore++;
+    $('loopScore').textContent = 'First try ' + lScore;
+    drawLoop();
+    els = $('loop').querySelectorAll('.slot');
+    for (var i = 0; i < els.length; i++) els[i].classList.add('right');
+    $('loop').classList.add('done');
+    $('loopPrompt').textContent = 'The loop is complete!';
+    var f = CYCLES[cyc].fact[level];
+    $('fact').textContent = f;
+    $('fact').classList.remove('hidden');
+    sndLoop();
+    $('srStatus').textContent = 'Correct! ' + st.map(label).join(', then ') + '. ' + f;
+    timer = setTimeout(nextLoop, 3600);
+  } else {
+    firstTry = false;
+    wrong.forEach(function(i){ els[i].classList.add('wrong', 'shake'); });
+    sndBad();
+    $('srStatus').textContent = 'Not quite. The red spots need a different picture.';
+    timer = setTimeout(function(){
+      busy = false;
+      wrong.forEach(function(i){ cards[slots[i]].used = false; slots[i] = null; });
+      drawLoop();
+    }, 1000);
+  }
+}
+
+/* ---------- What comes next ---------- */
+var questions = [];
+var qIndex = 0;
+var qScore = 0;
+var q = null;
+var qFirst = true;
+var qBusy = false;
+
+function makeQuestions(){
+  var list = [];
+  CYCLES.forEach(function(c, ci){
+    var st = c.stages[level];
+    st.forEach(function(id, i){
+      list.push({ cyc: ci, shown: id, answer: st[(i + 1) % st.length], dir: 'next' });
+      list.push({ cyc: ci, shown: id, answer: st[(i - 1 + st.length) % st.length], dir: 'before' });
+    });
+  });
+  var picked = [], seen = {};
+  shuffle(list).forEach(function(item){
+    var k = item.cyc + item.shown;
+    if (picked.length < NEXT_ROUNDS && !seen[k]) { seen[k] = 1; picked.push(item); }
+  });
+  /* make sure at least one question shows the loop closing (adult back to egg or seed) */
+  var closes = picked.some(function(p){ var st = CYCLES[p.cyc].stages[level]; return p.dir === 'next' && p.shown === st[st.length - 1]; });
+  if (!closes) {
+    var c = Math.floor(Math.random() * CYCLES.length), st = CYCLES[c].stages[level];
+    picked[picked.length - 1] = { cyc: c, shown: st[st.length - 1], answer: st[0], dir: 'next' };
+  }
+  return shuffle(picked);
+}
+
+function startNext(){
+  lastMode = 'next';
+  questions = makeQuestions();
+  qIndex = 0;
+  qScore = 0;
+  hideAll();
+  $('nextScreen').classList.remove('hidden');
+  nextQuestion();
+}
+
+var ARROW = '<svg class="arrow" viewBox="0 0 56 30" aria-hidden="true"><path d="M4 15 H44 M36 6 L48 15 L36 24" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function nextQuestion(){
+  qIndex++;
+  if (qIndex > questions.length) {
+    var stars = qScore >= 9 ? 3 : qScore >= 7 ? 2 : 1;
+    var title = qScore >= 9 ? 'Life cycle expert!' : qScore >= 7 ? 'Around and around!' : 'Keep growing!';
+    showEnd(title, 'You got ' + qScore + ' of ' + questions.length + ' on the first try.', stars);
+    return;
+  }
+  qBusy = false;
+  qFirst = true;
+  q = questions[qIndex - 1];
+  var st = stagesOf(q.cyc);
+  $('nextRound').textContent = 'Question ' + qIndex + ' of ' + questions.length;
+  $('nextScore').textContent = 'First try ' + qScore;
+  $('nextPrompt').textContent = CYCLES[q.cyc].name + ': ' + (q.dir === 'next' ? 'what comes next?' : 'what came before?');
+  var shown = '<div class="stage-card" aria-hidden="true">' + cardHtml(q.shown) + '</div>';
+  var mystery = '<div class="mystery" id="mystery" aria-hidden="true">?</div>';
+  $('pair').innerHTML = q.dir === 'next' ? shown + ARROW + mystery : mystery + ARROW + shown;
+
+  var others = shuffle(st.filter(function(id){ return id !== q.shown && id !== q.answer; })).slice(0, 2);
+  var opts = shuffle([q.answer].concat(others));
+  var box = $('choices');
+  box.innerHTML = '';
+  opts.forEach(function(id, i){
+    var b = document.createElement('button');
+    b.className = 'stage-card';
+    b.dataset.key = i + 1;
+    b.innerHTML = cardHtml(id);
+    b.setAttribute('aria-label', 'Choice ' + (i + 1) + ': ' + label(id));
+    b.onclick = function(){ answer(b, id); };
+    box.appendChild(b);
+  });
+  $('srStatus').textContent = CYCLES[q.cyc].name + '. The picture shows ' + label(q.shown) + '. ' + (q.dir === 'next' ? 'What comes next?' : 'What came before?');
+}
+
+function answer(btn, id){
+  if (qBusy) return;
+  if (id === q.answer) {
+    qBusy = true;
+    if (qFirst) qScore++;
+    $('nextScore').textContent = 'First try ' + qScore;
+    btn.classList.add('right');
+    document.querySelectorAll('#choices .stage-card').forEach(function(b){ b.disabled = b !== btn; });
+    $('mystery').innerHTML = '<div class="stage-card right">' + cardHtml(id) + '</div>';
+    $('mystery').style.border = 'none';
+    var st = stagesOf(q.cyc);
+    var wrap = (q.dir === 'next' && q.shown === st[st.length - 1]) || (q.dir === 'before' && q.shown === st[0]);
+    var msg = wrap ? 'Yes! ' + label(st[st.length - 1]) + ', then ' + label(st[0]) + '. The loop starts over!' : 'Yes! ' + label(q.dir === 'next' ? q.shown : id) + ', then ' + label(q.dir === 'next' ? id : q.shown) + '.';
+    $('nextPrompt').textContent = msg;
+    $('srStatus').textContent = msg;
+    sndGood();
+    timer = setTimeout(nextQuestion, wrap ? 2600 : 1700);
+  } else {
+    qFirst = false;
+    btn.classList.add('wrong', 'shake');
+    btn.disabled = true;
+    sndBad();
+    $('srStatus').textContent = 'Not quite. Try another picture.';
+  }
+}
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown', function(e){
+  var loopOn = !$('loopScreen').classList.contains('hidden');
+  var nextOn = !$('nextScreen').classList.contains('hidden');
+  if (!loopOn && !nextOn) return;
+  var sel = loopOn ? '#tray .stage-card' : '#choices .stage-card';
+  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(document.querySelectorAll(sel + ':enabled'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  } else if (/^[1-5]$/.test(e.key)) {
+    var b = document.querySelector(sel + '[data-key="' + e.key + '"]');
+    if (b && !b.disabled) b.click();
+  } else if (loopOn && e.key === 'Backspace') {
+    for (var s = slots.length - 1; s >= 0; s--) { if (slots[s] !== null) { unplace(s); break; } }
+    e.preventDefault();
+  }
+});
+
+/* Start screen art: a mini frog loop */
+(function(){
+  var ids = ['frogEggs', 'tadpole', 'froglet', 'frog'], s = '<svg viewBox="0 0 100 100" aria-hidden="true">';
+  s += '<circle cx="50" cy="50" r="33" fill="none" stroke="#9EC9C2" stroke-width="3" stroke-dasharray="5 5"/>';
+  ids.forEach(function(id, i){
+    var a = (-90 + i * 90) * Math.PI / 180, x = 50 + 33 * Math.cos(a), y = 50 + 33 * Math.sin(a);
+    s += '<circle cx="' + x + '" cy="' + y + '" r="16" fill="#fff" stroke="#DDF0C8" stroke-width="2"/>';
+    s += '<g transform="translate(' + (x - 13) + ' ' + (y - 13) + ') scale(.26)">' + PICS[id]() + '</g>';
+  });
+  $('startArt').innerHTML = s + '</svg>';
+})();
+</script>
+</body>
+</html>

@@ -108,6 +108,7 @@ h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
 .score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
 
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
@@ -171,7 +172,7 @@ h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
   </section>
 </main>
 
-<div aria-live="polite" class="hidden" id="srStatus"></div>
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
 
 <script>
 var TOPICS = [

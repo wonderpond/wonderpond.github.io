@@ -177,6 +177,7 @@ h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
   .frog-corner{display:none}
   .choices{gap:10px}
 }
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
@@ -261,7 +262,7 @@ h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
   <path d="M48 66 Q60 76 72 66" stroke="#1F5B36" stroke-width="3" fill="none" stroke-linecap="round"/>
 </svg>
 
-<div aria-live="polite" class="hidden" id="srStatus"></div>
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
 
 <script>
 /* Each entry: word, index of the tricky blank letter, letter choices (first one is correct). */
