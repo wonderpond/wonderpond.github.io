@@ -284,44 +284,115 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
 
       <!-- Edie with Hop and Skip -->
       <svg class="hero-art" width="330" height="280" viewBox="0 0 240 204" role="img" aria-label="Edie, a smiling child, holding two friendly frogs named Hop and Skip above a pond">
-        <ellipse cx="120" cy="188" rx="96" ry="12" fill="#BFE3F2"/>
-        <ellipse cx="52" cy="186" rx="26" ry="8" fill="#7FC98B"/>
-        <ellipse cx="192" cy="190" rx="24" ry="8" fill="#7FC98B"/>
-        <path d="M78 112 L38 90" stroke="#F6C9A2" stroke-width="11" stroke-linecap="round"/>
-        <path d="M162 112 L202 90" stroke="#F6C9A2" stroke-width="11" stroke-linecap="round"/>
-        <rect x="106" y="158" width="9" height="24" rx="4.5" fill="#F6C9A2"/>
-        <rect x="125" y="158" width="9" height="24" rx="4.5" fill="#F6C9A2"/>
-        <ellipse cx="110" cy="184" rx="10" ry="5" fill="#7A1B2E"/>
-        <ellipse cx="130" cy="184" rx="10" ry="5" fill="#7A1B2E"/>
-        <rect x="95" y="102" width="50" height="18" rx="8" fill="#FFF5E6"/>
-        <rect x="96" y="112" width="48" height="52" rx="12" fill="#BA0C2F"/>
-        <rect x="102" y="102" width="7" height="19" rx="3" fill="#BA0C2F"/>
-        <rect x="131" y="102" width="7" height="19" rx="3" fill="#BA0C2F"/>
-        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
-        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
-        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
-        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
-        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
-        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
-        <circle cx="36" cy="88" r="9" fill="#F6C9A2"/>
-        <circle cx="204" cy="88" r="9" fill="#F6C9A2"/>
+        <defs>
+          <radialGradient id="hx-skin" cx="38%" cy="32%" r="72%"><stop offset="0" stop-color="#FFE6CF"/><stop offset=".55" stop-color="#F6C9A2"/><stop offset="1" stop-color="#D89A70"/></radialGradient>
+          <radialGradient id="hx-hand" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#FFE6CF"/><stop offset=".6" stop-color="#F3C39A"/><stop offset="1" stop-color="#D2926A"/></radialGradient>
+          <radialGradient id="hx-hair" cx="40%" cy="25%" r="80%"><stop offset="0" stop-color="#9A7050"/><stop offset=".5" stop-color="#6B4A2F"/><stop offset="1" stop-color="#43291A"/></radialGradient>
+          <radialGradient id="hx-shirt" cx="38%" cy="25%" r="85%"><stop offset="0" stop-color="#E4415D"/><stop offset=".55" stop-color="#BA0C2F"/><stop offset="1" stop-color="#7E0620"/></radialGradient>
+          <linearGradient id="hx-collar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9D9C0"/></linearGradient>
+          <linearGradient id="hx-leg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#D89A70"/><stop offset=".4" stop-color="#FFE0C4"/><stop offset="1" stop-color="#D0906A"/></linearGradient>
+          <radialGradient id="hx-shoe" cx="35%" cy="25%" r="80%"><stop offset="0" stop-color="#B33A55"/><stop offset=".6" stop-color="#7A1B2E"/><stop offset="1" stop-color="#4A0E1B"/></radialGradient>
+          <radialGradient id="hx-green" cx="36%" cy="28%" r="78%"><stop offset="0" stop-color="#A6E89E"/><stop offset=".5" stop-color="#4FB06A"/><stop offset="1" stop-color="#27713F"/></radialGradient>
+          <radialGradient id="hx-teal" cx="36%" cy="28%" r="78%"><stop offset="0" stop-color="#9BE6E1"/><stop offset=".5" stop-color="#3FA7A3"/><stop offset="1" stop-color="#1D6461"/></radialGradient>
+          <radialGradient id="hx-eye" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D6E2E6"/></radialGradient>
+          <radialGradient id="hx-pond" cx="50%" cy="35%" r="65%"><stop offset="0" stop-color="#E4F5FC"/><stop offset=".6" stop-color="#A9D9EE"/><stop offset="1" stop-color="#7FC0DE"/></radialGradient>
+          <radialGradient id="hx-pad" cx="40%" cy="30%" r="75%"><stop offset="0" stop-color="#B5E8B0"/><stop offset=".6" stop-color="#6FBF7E"/><stop offset="1" stop-color="#3D8A52"/></radialGradient>
+          <radialGradient id="hx-blush" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#F28B8B" stop-opacity=".7"/><stop offset="1" stop-color="#F28B8B" stop-opacity="0"/></radialGradient>
+          <radialGradient id="hx-star" cx="45%" cy="40%" r="60%"><stop offset="0" stop-color="#FFF4C2"/><stop offset=".6" stop-color="#F5C84C"/><stop offset="1" stop-color="#D69A1E"/></radialGradient>
+          <filter id="hx-soft" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="2.4"/></filter>
+          <filter id="hx-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2"/></filter>
+        </defs>
+
+        <!-- Pond and lily pads -->
+        <ellipse cx="120" cy="188" rx="98" ry="13" fill="url(#hx-pond)"/>
+        <path d="M60 184 Q90 180 120 184 M150 190 Q170 187 190 191" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>
+        <ellipse cx="53" cy="189" rx="25" ry="6" fill="#3E7F9E" opacity=".35" filter="url(#hx-soft)"/>
+        <path d="M52 178 A26 8 0 1 0 78 186 L52 186 Z" fill="url(#hx-pad)"/>
+        <ellipse cx="193" cy="193" rx="23" ry="6" fill="#3E7F9E" opacity=".35" filter="url(#hx-soft)"/>
+        <path d="M192 182 A24 8 0 1 0 216 190 L192 190 Z" fill="url(#hx-pad)"/>
+
+        <!-- Contact shadow under Edie -->
+        <ellipse cx="120" cy="186" rx="26" ry="5" fill="#2E6F8C" opacity=".4" filter="url(#hx-soft)"/>
+
+        <!-- Arms: shaded base plus highlight give a rounded feel -->
+        <path d="M78 113 L38 91" stroke="#D5966C" stroke-width="12" stroke-linecap="round"/>
+        <path d="M77 110.5 L39 89.5" stroke="#F8D2AF" stroke-width="6" stroke-linecap="round"/>
+        <path d="M162 113 L202 91" stroke="#D5966C" stroke-width="12" stroke-linecap="round"/>
+        <path d="M163 110.5 L201 89.5" stroke="#F8D2AF" stroke-width="6" stroke-linecap="round"/>
+
+        <!-- Legs and shoes -->
+        <rect x="106" y="158" width="9" height="24" rx="4.5" fill="url(#hx-leg)"/>
+        <rect x="125" y="158" width="9" height="24" rx="4.5" fill="url(#hx-leg)"/>
+        <ellipse cx="110" cy="184" rx="10.5" ry="5.5" fill="url(#hx-shoe)"/>
+        <ellipse cx="130" cy="184" rx="10.5" ry="5.5" fill="url(#hx-shoe)"/>
+        <ellipse cx="107" cy="182" rx="4" ry="1.6" fill="#fff" opacity=".35"/>
+        <ellipse cx="127" cy="182" rx="4" ry="1.6" fill="#fff" opacity=".35"/>
+
+        <!-- Body -->
+        <rect x="95" y="102" width="50" height="18" rx="8" fill="url(#hx-collar)"/>
+        <rect x="96" y="112" width="48" height="52" rx="14" fill="url(#hx-shirt)"/>
+        <rect x="102" y="102" width="7" height="19" rx="3" fill="#A30A29"/>
+        <rect x="131" y="102" width="7" height="19" rx="3" fill="#A30A29"/>
+        <path d="M103 122 Q104 146 110 156" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".22"/>
+        <ellipse cx="120" cy="104" rx="20" ry="4" fill="#8A5A3C" opacity=".3" filter="url(#hx-glow)"/>
+
+        <!-- Head -->
+        <circle cx="85" cy="70" r="7" fill="#E3A87E"/>
+        <circle cx="155" cy="70" r="7" fill="#E3A87E"/>
+        <circle cx="120" cy="66" r="36" fill="url(#hx-skin)"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="url(#hx-hair)"/>
+        <path d="M96 40 Q106 30 120 29" stroke="#C49A74" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/>
+        <circle cx="120" cy="21" r="7.5" fill="url(#hx-hair)"/>
+        <circle cx="117.5" cy="18.5" r="2.4" fill="#C49A74" opacity=".6"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        <ellipse cx="99" cy="75" rx="8" ry="6" fill="url(#hx-blush)"/>
+        <ellipse cx="141" cy="75" rx="8" ry="6" fill="url(#hx-blush)"/>
+        <ellipse cx="120" cy="71" rx="3" ry="2.2" fill="#E8AE86"/>
+        <ellipse cx="119.2" cy="70.2" rx="1.2" ry=".8" fill="#fff" opacity=".7"/>
+        <path d="M102 76 Q120 95 138 76 Q120 86 102 76 Z" fill="#7A3E30"/>
+        <path d="M112 85 Q120 90 128 85 Q120 83 112 85 Z" fill="#E77A7A"/>
+        <ellipse cx="106" cy="50" rx="7" ry="3" fill="#fff" opacity=".18" transform="rotate(-25 106 50)"/>
+
+        <!-- Hands -->
+        <circle cx="36" cy="88" r="9.5" fill="url(#hx-hand)"/>
+        <circle cx="204" cy="88" r="9.5" fill="url(#hx-hand)"/>
+
+        <!-- Hop -->
         <g class="bob-a">
-          <ellipse cx="32" cy="70" rx="17" ry="13" fill="#4FB06A"/>
-          <circle cx="26" cy="55" r="6" fill="#4FB06A"/><circle cx="38" cy="55" r="6" fill="#4FB06A"/>
-          <circle cx="26" cy="55" r="3.6" fill="#fff"/><circle cx="38" cy="55" r="3.6" fill="#fff"/>
-          <circle cx="26.5" cy="55.5" r="1.7" fill="#22303B"/><circle cx="38.5" cy="55.5" r="1.7" fill="#22303B"/>
+          <ellipse cx="32" cy="82" rx="14" ry="3.5" fill="#8A5A3C" opacity=".35" filter="url(#hx-glow)"/>
+          <ellipse cx="21" cy="80" rx="6" ry="3.4" fill="#2E7D45"/>
+          <ellipse cx="43" cy="80" rx="6" ry="3.4" fill="#2E7D45"/>
+          <ellipse cx="32" cy="70" rx="17.5" ry="13.5" fill="url(#hx-green)"/>
+          <ellipse cx="32" cy="77" rx="10" ry="5.5" fill="#D6F2C4" opacity=".85"/>
+          <circle cx="26" cy="55" r="6.5" fill="url(#hx-green)"/><circle cx="38" cy="55" r="6.5" fill="url(#hx-green)"/>
+          <circle cx="26" cy="55" r="4" fill="url(#hx-eye)"/><circle cx="38" cy="55" r="4" fill="url(#hx-eye)"/>
+          <circle cx="26.6" cy="55.6" r="2" fill="#22303B"/><circle cx="38.6" cy="55.6" r="2" fill="#22303B"/>
+          <circle cx="25.7" cy="54.5" r=".8" fill="#fff"/><circle cx="37.7" cy="54.5" r=".8" fill="#fff"/>
+          <ellipse cx="20" cy="71" rx="3.4" ry="2.4" fill="url(#hx-blush)"/><ellipse cx="44" cy="71" rx="3.4" ry="2.4" fill="url(#hx-blush)"/>
           <path d="M25 72 Q32 78 39 72" stroke="#1F5B36" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <ellipse cx="25" cy="63" rx="6" ry="2.6" fill="#fff" opacity=".35" transform="rotate(-20 25 63)"/>
         </g>
+
+        <!-- Skip -->
         <g class="bob-b">
-          <ellipse cx="208" cy="70" rx="17" ry="13" fill="#3FA7A3"/>
-          <circle cx="202" cy="55" r="6" fill="#3FA7A3"/><circle cx="214" cy="55" r="6" fill="#3FA7A3"/>
-          <circle cx="202" cy="55" r="3.6" fill="#fff"/><circle cx="214" cy="55" r="3.6" fill="#fff"/>
-          <circle cx="202.5" cy="55.5" r="1.7" fill="#22303B"/><circle cx="214.5" cy="55.5" r="1.7" fill="#22303B"/>
+          <ellipse cx="208" cy="82" rx="14" ry="3.5" fill="#8A5A3C" opacity=".35" filter="url(#hx-glow)"/>
+          <ellipse cx="197" cy="80" rx="6" ry="3.4" fill="#22706D"/>
+          <ellipse cx="219" cy="80" rx="6" ry="3.4" fill="#22706D"/>
+          <ellipse cx="208" cy="70" rx="17.5" ry="13.5" fill="url(#hx-teal)"/>
+          <ellipse cx="208" cy="77" rx="10" ry="5.5" fill="#D2F3EF" opacity=".85"/>
+          <circle cx="202" cy="55" r="6.5" fill="url(#hx-teal)"/><circle cx="214" cy="55" r="6.5" fill="url(#hx-teal)"/>
+          <circle cx="202" cy="55" r="4" fill="url(#hx-eye)"/><circle cx="214" cy="55" r="4" fill="url(#hx-eye)"/>
+          <circle cx="202.6" cy="55.6" r="2" fill="#22303B"/><circle cx="214.6" cy="55.6" r="2" fill="#22303B"/>
+          <circle cx="201.7" cy="54.5" r=".8" fill="#fff"/><circle cx="213.7" cy="54.5" r=".8" fill="#fff"/>
+          <ellipse cx="196" cy="71" rx="3.4" ry="2.4" fill="url(#hx-blush)"/><ellipse cx="220" cy="71" rx="3.4" ry="2.4" fill="url(#hx-blush)"/>
           <path d="M201 72 Q208 78 215 72" stroke="#175E5B" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <ellipse cx="201" cy="63" rx="6" ry="2.6" fill="#fff" opacity=".35" transform="rotate(-20 201 63)"/>
         </g>
-        <path class="twinkle" d="M120 2 L123 10 L131 13 L123 16 L120 24 L117 16 L109 13 L117 10 Z" fill="#F5C84C"/>
+
+        <!-- Star -->
+        <circle cx="120" cy="13" r="9" fill="#F5C84C" opacity=".45" filter="url(#hx-glow)"/>
+        <path class="twinkle" d="M120 2 L123 10 L131 13 L123 16 L120 24 L117 16 L109 13 L117 10 Z" fill="url(#hx-star)"/>
       </svg>
     </div>
   </div>
