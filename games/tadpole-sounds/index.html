@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tadpole sounds - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Hear a word, then build it sound by sound in the tadpole boxes. A free phonics game for blending and segmenting CVC words and digraphs in K to 1 classrooms from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --reed:#CFEBD9;
+  --amber:#F5C84C;
+  --amber-dark:#C99A17;
+  --vowel:#FFE9A8;
+  --digraph:#D7F0EC;
+  --red:#E24B4A;
+  --tadpole:#3E5A3C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--reed) 30%,var(--water) 30%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:960px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;
+  padding:14px 20px;min-width:150px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.8}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:16px 42px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.note{font-size:.9rem;color:#6E8C86;margin-top:12px;max-width:640px;margin-left:auto;margin-right:auto}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.3rem,3.2vw,1.9rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 8px;
+  background:rgba(255,255,255,.85);display:inline-block;padding:7px 26px;border-radius:999px;
+}
+.hear-btn{
+  margin:2px auto 10px;display:inline-flex;align-items:center;gap:8px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.05rem;
+  background:rgba(255,255,255,.92);border:none;border-radius:999px;
+  padding:10px 24px;cursor:pointer;color:var(--teal-dark);
+}
+.hear-btn:hover{background:#fff}
+.hear-btn svg{width:22px;height:22px}
+
+/* Sound boxes: one box per sound, with a tap dot under each */
+.box-wrap{display:flex;flex-direction:column;align-items:center;width:fit-content;margin:10px auto 4px}
+.boxes{display:flex;gap:18px;justify-content:center;transition:gap .5s ease}
+.box{
+  width:clamp(84px,15vw,128px);height:clamp(84px,15vw,128px);
+  border-radius:22px;border:4px dashed var(--teal);background:rgba(255,255,255,.55);
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(2.6rem,7vw,4.2rem);
+  color:var(--teal-dark);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  position:relative;padding:0;line-height:1;
+}
+.box:disabled{cursor:default}
+.box.filled{border-style:solid;background:#fff;box-shadow:0 6px 0 rgba(18,64,58,.22)}
+.box.v{background:var(--vowel)}
+.box.dg{background:var(--digraph)}
+.box.right{border-color:var(--green);background:#E4F5E9}
+.box.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.box.lit{border-color:var(--amber-dark);transform:translateY(-6px);transition:transform .2s ease}
+.box .dot{
+  position:absolute;bottom:-26px;left:50%;width:14px;height:14px;margin-left:-7px;
+  border-radius:50%;background:rgba(255,255,255,.8);transition:transform .2s ease,background .2s ease;
+}
+.box.lit .dot,.boxes.blend .dot{background:var(--amber);transform:scale(1.35)}
+.blend-arrow{width:100%;height:30px;margin-top:26px;opacity:0;transition:opacity .3s ease}
+.blend-arrow path{stroke-dasharray:400;stroke-dashoffset:400}
+.boxes.blend{gap:2px}
+.boxes.blend + .blend-arrow{opacity:1}
+.boxes.blend + .blend-arrow path{animation:sweep .6s ease forwards}
+@keyframes sweep{to{stroke-dashoffset:0}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+
+/* Letter tiles */
+.tray{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  margin:8px auto 0;padding:16px;max-width:620px;
+  background:rgba(255,255,255,.35);border-radius:26px;
+}
+.tile{
+  min-width:74px;height:74px;padding:0 14px;border-radius:18px;border:none;
+  background:#fff;color:var(--teal-dark);cursor:pointer;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:2.3rem;line-height:1;
+  box-shadow:0 5px 0 rgba(18,64,58,.25);transition:transform .12s ease,opacity .15s ease;
+}
+.tile.v{background:var(--vowel)}
+.tile.dg{background:var(--digraph)}
+.tile:hover:enabled{transform:translateY(-3px)}
+.tile:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.25)}
+.tile:disabled{opacity:.22;cursor:default;box-shadow:none}
+.legend{font-size:.85rem;color:var(--teal-dark);margin-top:10px;font-weight:700}
+.legend span{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin:0 4px 0 10px}
+
+/* End screen */
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .boxes.blend + .blend-arrow path{stroke-dashoffset:0}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound effects off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <svg width="230" height="108" viewBox="-6 0 176 80" aria-hidden="true" style="margin:0 auto 4px">
+        <path d="M44 46 Q26 36 12 48 Q4 54 -2 46" stroke="#3E5A3C" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="52" cy="44" r="15" fill="#3E5A3C"/>
+        <text x="52" y="52" font-family="'Baloo 2',sans-serif" font-weight="700" font-size="21" fill="#fff" text-anchor="middle">c</text>
+        <path d="M94 38 Q78 26 66 34" stroke="#3E5A3C" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="102" cy="36" r="15" fill="#3E5A3C"/>
+        <text x="102" y="44" font-family="'Baloo 2',sans-serif" font-weight="700" font-size="21" fill="#F5C84C" text-anchor="middle">a</text>
+        <path d="M144 46 Q128 36 116 46" stroke="#3E5A3C" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="152" cy="44" r="15" fill="#3E5A3C"/>
+        <text x="152" y="52" font-family="'Baloo 2',sans-serif" font-weight="700" font-size="21" fill="#fff" text-anchor="middle">t</text>
+        <circle cx="96" cy="31" r="2" fill="#fff"/><circle cx="146" cy="39" r="2" fill="#fff"/><circle cx="46" cy="39" r="2" fill="#fff"/>
+      </svg>
+      <h1 id="gameTitle">Tadpole sounds</h1>
+      <p class="sub">Every tadpole carries one sound. Listen to the word, then line up the tadpoles to build it!</p>
+      <span class="choose-label" id="levelLabel">Pick your sounds</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Short a<small>cat, map, bag...</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">All short vowels<small>pig, sun, bed, hop...</small></button>
+        <button class="pick-btn" data-level="2" aria-pressed="false" onclick="chooseLevel(this)">sh, ch, th<small>ship, chin, bath...</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startBuild()">Build it</button>
+        <button class="big-btn alt" onclick="startBlend()">Blend it together</button>
+      </div>
+      <p class="note">Build it: hear a word, then tap the letters into the sound boxes in order. Blend it together: the class says each sound as its dot lights up, then says the whole word fast. Two letters that make one sound, like sh, share one box.</p>
+      <p class="note hidden" id="noVoice">This browser cannot say words out loud, so Build it will not work here. Blend it together still works with a teacher leading.</p>
+    </div>
+  </section>
+
+  <!-- Build mode -->
+  <section class="screen hidden" id="buildScreen">
+    <div class="hud">
+      <span class="chip" id="buildRound">Word 1 of 8</span>
+      <span class="chip" id="buildScore">First try 0</span>
+    </div>
+    <p class="prompt" id="buildPrompt">Build the word you hear</p>
+    <div>
+      <button class="hear-btn" onclick="sayTarget()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9Z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+        Hear it again
+      </button>
+    </div>
+    <div class="box-wrap">
+      <div class="boxes" id="buildBoxes" role="group" aria-label="Sound boxes"></div>
+      <svg class="blend-arrow" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M10 12 H282 M270 4 L284 12 L270 20" stroke="#F5C84C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="tray" id="tray" role="group" aria-label="Letter tiles"></div>
+    <p class="legend" aria-hidden="true"><span style="background:var(--vowel)"></span>vowel<span style="background:#fff"></span>consonant<span style="background:var(--digraph)"></span>two letters, one sound</p>
+  </section>
+
+  <!-- Blend mode -->
+  <section class="screen hidden" id="blendScreen">
+    <div class="hud">
+      <span class="chip" id="blendRound">Word 1 of 10</span>
+      <span class="chip" id="blendSpeed">Speed: medium</span>
+    </div>
+    <p class="prompt" id="blendPrompt">Say each sound</p>
+    <div class="box-wrap">
+      <div class="boxes" id="blendBoxes" aria-hidden="true"></div>
+      <svg class="blend-arrow" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M10 12 H282 M270 4 L284 12 L270 20" stroke="#F5C84C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div style="margin-top:18px">
+      <button class="big-btn alt" onclick="setSpeed()">Change speed</button>
+      <button class="big-btn alt" onclick="stopBlend()">Stop</button>
+    </div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Splendid sounding!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change sounds</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+/* Each word is written sound by sound. Two letters that make one sound (sh, ch, th) are one entry. */
+var LEVELS = [
+  { words: ['c a t','h a t','m a p','b a g','j a m','v a n','c a p','f a n','m a d','r a n','p a n','r a t','s a d','d a d','b a t','t a p','w a g','m a n','h a m','n a p','l a p','m a t','c a n','p a t'],
+    pool: ['b','d','f','g','h','j','l','m','n','p','r','s','t','v','w','z'] },
+  { words: ['p i g','s i t','h o p','d o g','b u g','s u n','b e d','h e n','n e t','c u p','m u d','p e n','f i n','l i d','p o t','h u g','j e t','w e t','r u g','d i g','t o p','h o t','f u n','l o g','w e b','s i p'],
+    pool: ['b','d','f','g','h','j','l','m','n','p','r','s','t','v','w','z'] },
+  { words: ['sh i p','sh o p','f i sh','d i sh','ch i n','ch o p','ch i p','m u ch','r i ch','th i n','p a th','b a th','m a th','w i th','sh e d','w i sh','r u sh','ch a t','m o th','sh u t','c a sh','s u ch'],
+    pool: ['b','d','f','g','h','l','m','n','p','r','s','t','w','sh','ch','th'] }
+];
+var VOWELS = ['a','e','i','o','u'];
+var CONFUSE = { b:'d', d:'b', p:'b', m:'n', n:'m', f:'v', v:'f', t:'d', g:'j', s:'z', sh:'ch', ch:'sh', th:'f' };
+var BUILD_ROUNDS = 8;
+var BLEND_ROUNDS = 10;
+var SPEEDS = [ { name: 'slow', ms: 1600 }, { name: 'medium', ms: 1200 }, { name: 'fast', ms: 850 } ];
+
+var level = 0;
+var lastMode = 'build';
+var soundOn = true;
+var audioCtx = null;
+var enVoice = null;
+
+function $(id){ return document.getElementById(id); }
+function isVowel(g){ return VOWELS.indexOf(g) !== -1; }
+function kind(g){ return isVowel(g) ? 'v' : (g.length > 1 ? 'dg' : 'c'); }
+function wordOf(sounds){ return sounds.join(''); }
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function chooseLevel(btn){
+  document.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound effects off' : 'Turn sound effects on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+
+function beep(freqs, dur){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.16, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440], 0.07); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+/* Speech: always prefer an American English voice, even on computers set to another language */
+function pickVoice(){
+  if (!window.speechSynthesis) return;
+  var vs = window.speechSynthesis.getVoices();
+  var us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); });
+  var nice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava|Allison/i.test(v.name); });
+  enVoice = nice[0] || us[0] || vs.filter(function(v){ return /^en/i.test(v.lang); })[0] || null;
+}
+if (window.speechSynthesis) {
+  pickVoice();
+  window.speechSynthesis.onvoiceschanged = pickVoice;
+} else {
+  $('noVoice').classList.remove('hidden');
+}
+function speak(text){
+  if (!window.speechSynthesis) return;
+  try {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.75;
+    window.speechSynthesis.speak(u);
+  } catch(e) {}
+}
+
+function hideAll(){
+  ['startScreen','buildScreen','blendScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); });
+}
+function backToStart(){
+  clearBlendTimers();
+  clearTimeout(buildTimer);
+  hideAll();
+  $('startScreen').classList.remove('hidden');
+}
+function playAgain(){
+  if (lastMode === 'build') startBuild();
+  else startBlend();
+}
+function showEnd(title, line, stars){
+  hideAll();
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+
+function makeDeck(n){
+  var words = shuffle(LEVELS[level].words);
+  return words.slice(0, n).map(function(w){ return w.split(' '); });
+}
+
+/* Three distractor tiles: a different vowel, a look-alike or sound-alike, and one more from the pool */
+function distractors(sounds){
+  var used = sounds.slice();
+  var out = [];
+  function add(g){ if (g && used.indexOf(g) === -1 && out.indexOf(g) === -1 && out.length < 3) out.push(g); }
+  add(shuffle(VOWELS.filter(function(v){ return used.indexOf(v) === -1; }))[0]);
+  shuffle(sounds.filter(function(g){ return !isVowel(g); })).forEach(function(g){
+    if (out.length < 2) add(CONFUSE[g]);
+  });
+  shuffle(LEVELS[level].pool).forEach(add);
+  return out;
+}
+
+/* ---------- Build it ---------- */
+var deck = [];
+var bRound = 0;
+var bScore = 0;
+var target = [];
+var tiles = [];
+var slots = [];
+var firstTry = true;
+var busy = false;
+var buildTimer = null;
+
+function startBuild(){
+  lastMode = 'build';
+  deck = makeDeck(BUILD_ROUNDS);
+  bRound = 0;
+  bScore = 0;
+  hideAll();
+  $('buildScreen').classList.remove('hidden');
+  nextBuild();
+}
+
+function nextBuild(){
+  bRound++;
+  if (bRound > BUILD_ROUNDS) {
+    var stars = bScore >= 7 ? 3 : bScore >= 5 ? 2 : 1;
+    var title = bScore >= 7 ? 'Super sounder!' : bScore >= 5 ? 'Splendid sounding!' : 'Keep on sounding out!';
+    showEnd(title, 'You built ' + bScore + ' of ' + BUILD_ROUNDS + ' words on the first try.', stars);
+    return;
+  }
+  busy = false;
+  firstTry = true;
+  target = deck[bRound - 1];
+  slots = target.map(function(){ return null; });
+  tiles = shuffle(target.concat(distractors(target))).map(function(g){ return { g: g, used: false }; });
+  $('buildRound').textContent = 'Word ' + bRound + ' of ' + BUILD_ROUNDS;
+  $('buildScore').textContent = 'First try ' + bScore;
+  $('buildPrompt').textContent = 'Build the word you hear';
+  $('buildBoxes').classList.remove('blend');
+  drawBuild();
+  $('srStatus').textContent = 'Listen, then build the word with ' + target.length + ' sounds.';
+  buildTimer = setTimeout(sayTarget, 400);
+}
+
+function sayTarget(){ speak(wordOf(target)); }
+
+function drawBuild(){
+  var boxes = $('buildBoxes');
+  boxes.innerHTML = '';
+  slots.forEach(function(ti, i){
+    var b = document.createElement('button');
+    b.className = 'box';
+    if (ti !== null) b.className += ' filled ' + kind(tiles[ti].g);
+    b.innerHTML = (ti !== null ? tiles[ti].g : '') + '<span class="dot"></span>';
+    b.setAttribute('aria-label', 'Sound box ' + (i + 1) + (ti !== null ? ', ' + tiles[ti].g.split('').join(' ') + '. Tap to take it out.' : ', empty'));
+    b.disabled = busy || ti === null;
+    b.onclick = function(){ unplace(i); };
+    boxes.appendChild(b);
+  });
+  var tray = $('tray');
+  var focusedIdx = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.tile : null;
+  tray.innerHTML = '';
+  tiles.forEach(function(t, i){
+    var b = document.createElement('button');
+    b.className = 'tile ' + kind(t.g);
+    b.textContent = t.g;
+    b.dataset.tile = i;
+    b.setAttribute('aria-label', 'Letter ' + t.g.split('').join(' '));
+    b.disabled = busy || t.used;
+    b.onclick = function(){ place(i); };
+    tray.appendChild(b);
+  });
+  if (focusedIdx !== null && focusedIdx !== undefined) {
+    var next = tray.querySelector('.tile:enabled');
+    if (next) next.focus();
+  }
+}
+
+function place(ti){
+  if (busy || tiles[ti].used) return;
+  var s = slots.indexOf(null);
+  if (s === -1) return;
+  slots[s] = ti;
+  tiles[ti].used = true;
+  sndPlop();
+  drawBuild();
+  if (slots.indexOf(null) === -1) checkBuild();
+}
+
+function unplace(s){
+  if (busy || slots[s] === null) return;
+  tiles[slots[s]].used = false;
+  slots[s] = null;
+  drawBuild();
+}
+
+function checkBuild(){
+  var wrong = [];
+  slots.forEach(function(ti, i){ if (tiles[ti].g !== target[i]) wrong.push(i); });
+  var boxEls = $('buildBoxes').children;
+  if (wrong.length === 0) {
+    busy = true;
+    if (firstTry) bScore++;
+    $('buildScore').textContent = 'First try ' + bScore;
+    drawBuild();
+    for (var i = 0; i < boxEls.length; i++) boxEls[i].classList.add('right');
+    $('buildBoxes').classList.add('blend');
+    $('buildPrompt').textContent = 'You built ' + wordOf(target) + '!';
+    sndGood();
+    setTimeout(sayTarget, 350);
+    $('srStatus').textContent = 'Correct! ' + target.join(', ') + ' makes ' + wordOf(target) + '.';
+    buildTimer = setTimeout(nextBuild, 2200);
+  } else {
+    firstTry = false;
+    busy = true;
+    wrong.forEach(function(i){ boxEls[i].classList.add('wrong', 'shake'); });
+    sndBad();
+    $('srStatus').textContent = 'Not quite. The red boxes need a different sound. Listen again.';
+    buildTimer = setTimeout(function(){
+      busy = false;
+      wrong.forEach(function(i){ tiles[slots[i]].used = false; slots[i] = null; });
+      drawBuild();
+      sayTarget();
+    }, 900);
+  }
+}
+
+/* ---------- Blend it together ---------- */
+var blendDeck = [];
+var blIndex = 0;
+var speedIdx = 1;
+var blendTimers = [];
+
+function clearBlendTimers(){
+  blendTimers.forEach(clearTimeout);
+  blendTimers = [];
+}
+function later(fn, ms){ blendTimers.push(setTimeout(fn, ms)); }
+
+function startBlend(){
+  lastMode = 'blend';
+  blendDeck = makeDeck(BLEND_ROUNDS);
+  blIndex = 0;
+  hideAll();
+  $('blendScreen').classList.remove('hidden');
+  $('blendSpeed').textContent = 'Speed: ' + SPEEDS[speedIdx].name;
+  showBlendWord();
+}
+
+function showBlendWord(){
+  clearBlendTimers();
+  if (blIndex >= blendDeck.length) {
+    showEnd('Great blending, everyone!', 'You blended ' + blendDeck.length + ' words together.', 3);
+    return;
+  }
+  var sounds = blendDeck[blIndex];
+  var step = SPEEDS[speedIdx].ms;
+  var row = $('blendBoxes');
+  row.classList.remove('blend');
+  row.innerHTML = '';
+  sounds.forEach(function(g){
+    var d = document.createElement('div');
+    d.className = 'box filled ' + kind(g);
+    d.innerHTML = g + '<span class="dot"></span>';
+    row.appendChild(d);
+  });
+  $('blendRound').textContent = 'Word ' + (blIndex + 1) + ' of ' + blendDeck.length;
+  $('blendPrompt').textContent = 'Say each sound';
+  $('srStatus').textContent = 'Sounds: ' + sounds.join(', ');
+
+  var boxes = row.children;
+  sounds.forEach(function(g, i){
+    later(function(){
+      for (var k = 0; k < boxes.length; k++) boxes[k].classList.remove('lit');
+      boxes[i].classList.add('lit');
+      sndPlop();
+    }, 500 + step * i);
+  });
+  var t = 500 + step * sounds.length;
+  later(function(){
+    for (var k = 0; k < boxes.length; k++) boxes[k].classList.remove('lit');
+    row.classList.add('blend');
+    $('blendPrompt').textContent = 'Now say it fast!';
+  }, t);
+  later(function(){
+    speak(wordOf(sounds));
+    $('srStatus').textContent = 'The word is ' + wordOf(sounds) + '.';
+  }, t + step * 1.3);
+  blIndex++;
+  later(showBlendWord, t + step * 2.8);
+}
+
+function setSpeed(){
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  $('blendSpeed').textContent = 'Speed: ' + SPEEDS[speedIdx].name;
+}
+
+function stopBlend(){
+  clearBlendTimers();
+  backToStart();
+}
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown', function(e){
+  if (!$('buildScreen').classList.contains('hidden')) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      var list = Array.prototype.slice.call(document.querySelectorAll('.tile:enabled'));
+      if (!list.length) return;
+      var i = list.indexOf(document.activeElement);
+      var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+      list[n].focus();
+      e.preventDefault();
+    } else if (e.key === 'Backspace') {
+      for (var s = slots.length - 1; s >= 0; s--) { if (slots[s] !== null) { unplace(s); break; } }
+      e.preventDefault();
+    } else if (/^[a-z]$/i.test(e.key)) {
+      var k = e.key.toLowerCase();
+      for (var t = 0; t < tiles.length; t++) { if (!tiles[t].used && tiles[t].g === k) { place(t); break; } }
+    }
+  } else if (!$('blendScreen').classList.contains('hidden') && e.key === 'ArrowRight') {
+    showBlendWord();
+  }
+});
+</script>
+</body>
+</html>
