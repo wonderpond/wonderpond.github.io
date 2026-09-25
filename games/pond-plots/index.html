@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond plots - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Plant garden plots and build fences to learn area and perimeter. Count squares, trace fences, use the formulas, and build gardens with a given area and perimeter. A free game for grades 3 and 4 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --meadow:#DDF0C8;
+  --water:#8FCDE8;
+  --amber:#F5C84C;
+  --fence:#9A6B3F;
+  --red:#E24B4A;
+  --area:#2E8540;
+  --perim:#B26A00;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--meadow) 34%,#CBE6B3 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:980px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;
+  padding:14px 20px;min-width:170px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.8}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:14px 40px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:12px;max-width:660px;margin-left:auto;margin-right:auto}
+.key{display:inline-block;border-radius:999px;padding:0 10px;font-weight:700}
+.key.a{background:#E4F5E9;color:var(--area)}
+.key.p{background:#FFF1DC;color:var(--perim)}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 8px;
+  background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%;
+}
+.prompt .a{color:var(--area)}
+.prompt .p{color:var(--perim)}
+
+.board{
+  background:#fff;border-radius:24px;padding:12px;margin:0 auto;display:inline-block;
+  box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%;
+}
+.board svg{display:block;width:min(88vw,560px);height:auto;touch-action:none}
+.board svg:focus-visible{outline:4px solid var(--amber);outline-offset:4px;border-radius:12px}
+.grid-line{stroke:#D9E8DF;stroke-width:1}
+.cell{fill:#7CC47F;stroke:#5DA360;stroke-width:1.2}
+.cell.pop{animation:pop .25s ease}
+@keyframes pop{0%{opacity:.2}100%{opacity:1}}
+.cell-num{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:15px;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.fence{stroke:var(--fence);stroke-width:6;stroke-linecap:round}
+.fence.hot{stroke:var(--amber)}
+.edge-num{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:12px;fill:var(--perim);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.cursor{fill:none;stroke:var(--amber);stroke-width:4;rx:4}
+.side-label{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:20px;fill:var(--teal-dark);text-anchor:middle;dominant-baseline:central}
+.side-label.ask{fill:var(--red)}
+
+.choices{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.choice{
+  min-width:130px;padding:10px 22px;border-radius:22px;border:none;cursor:pointer;background:#fff;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.3rem);color:var(--teal-dark);line-height:1.05;
+  box-shadow:0 6px 0 rgba(18,64,58,.22);transition:transform .12s ease;
+}
+.choice small{display:block;font-family:"Nunito",sans-serif;font-size:.42em;color:var(--ink-soft)}
+.choice:hover:enabled{transform:translateY(-3px)}
+.choice:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.choice.right{background:#E4F5E9;box-shadow:0 6px 0 var(--green)}
+.choice.wrong{background:var(--red);color:#fff}
+.choice.wrong small{color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{
+  margin:12px auto 0;max-width:720px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);
+  background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px;
+}
+
+.readout{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px 0 0}
+.readout span{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.25rem;background:#fff;border-radius:999px;padding:4px 18px}
+.readout .a{color:var(--area);box-shadow:inset 0 0 0 3px #BFE3C8}
+.readout .p{color:var(--perim);box-shadow:inset 0 0 0 3px #F6D9A8}
+.readout .ok{background:#E4F5E9}
+.build-actions{margin-top:4px}
+
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:200px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond plots</h1>
+      <p class="sub">The frogs are planting gardens by the pond. <span class="key a">Area</span> is how many squares get planted. <span class="key p">Perimeter</span> is how much fence goes around.</p>
+      <span class="choose-label" id="levelLabel">Pick your gardens</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Rectangles<small>count on the grid</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">L and U shapes<small>tricky corners</small></button>
+        <button class="pick-btn" data-level="2" aria-pressed="false" onclick="chooseLevel(this)">Use the formula<small>no grid, missing sides</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startMeasure()">Measure it</button>
+        <button class="big-btn alt" onclick="startBuild()">Build a garden</button>
+      </div>
+      <p class="note">Measure it: find the area or perimeter of a garden. After each answer, watch the squares or the fence get counted. Build a garden: tap or drag on the grid to plant a garden that matches both numbers. Many different gardens can work!</p>
+    </div>
+  </section>
+
+  <!-- Measure mode -->
+  <section class="screen hidden" id="measureScreen">
+    <div class="hud">
+      <span class="chip" id="mRound">Garden 1 of 10</span>
+      <span class="chip" id="mScore">First try 0</span>
+    </div>
+    <p class="prompt" id="mPrompt">What is the area?</p>
+    <div><div class="board" id="mBoard"></div></div>
+    <div class="choices" id="choices" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="mFact" role="status"></p>
+  </section>
+
+  <!-- Build mode -->
+  <section class="screen hidden" id="buildScreen">
+    <div class="hud">
+      <span class="chip" id="bRound">Garden 1 of 6</span>
+      <span class="chip" id="bScore">First try 0</span>
+    </div>
+    <p class="prompt" id="bPrompt">Build a garden</p>
+    <div><div class="board" id="bBoard"></div></div>
+    <div class="readout" id="readout" aria-hidden="true"></div>
+    <div class="build-actions">
+      <button class="big-btn alt" onclick="clearBuild()">Clear</button>
+      <button class="big-btn" id="checkBtn" onclick="checkBuild()">Check</button>
+    </div>
+    <p class="fact hidden" id="bFact" role="status"></p>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Garden genius!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var COLS = 12, ROWS = 8, S = 40, PAD = 14;
+var M_ROUNDS = 10, B_ROUNDS = 6;
+var UNITS = [{ one: 'foot', many: 'feet' }, { one: 'meter', many: 'meters' }, { one: 'yard', many: 'yards' }];
+
+var level = 0;
+var lastMode = 'measure';
+var soundOn = true;
+var audioCtx = null;
+var timer = null;
+var animTimers = [];
+
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function key(x, y){ return x + ',' + y; }
+
+function chooseLevel(btn){
+  document.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.14, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndTick(){ beep([880], 0.03, 'triangle'); }
+function sndPlant(){ beep([520], 0.04, 'triangle'); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function clearAnim(){ animTimers.forEach(clearTimeout); animTimers = []; }
+function hideAll(){ ['startScreen','measureScreen','buildScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); }); }
+function backToStart(){ clearTimeout(timer); clearAnim(); hideAll(); $('startScreen').classList.remove('hidden'); }
+function playAgain(){ if (lastMode === 'measure') startMeasure(); else startBuild(); }
+function showEnd(title, line, stars){
+  hideAll();
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+
+/* ---------- Shapes as sets of cells ---------- */
+function rectCells(x0, y0, w, h){
+  var c = {};
+  for (var x = x0; x < x0 + w; x++) for (var y = y0; y < y0 + h; y++) c[key(x, y)] = 1;
+  return c;
+}
+function cellList(c){ return Object.keys(c).map(function(k){ var p = k.split(','); return [+p[0], +p[1]]; }); }
+function area(c){ return Object.keys(c).length; }
+
+/* Boundary edges, directed so the garden is always on the right. Chaining them walks around the fence in order. */
+function boundary(c){
+  var edges = [];
+  cellList(c).forEach(function(p){
+    var x = p[0], y = p[1];
+    if (!c[key(x, y - 1)]) edges.push([x, y, x + 1, y]);
+    if (!c[key(x + 1, y)]) edges.push([x + 1, y, x + 1, y + 1]);
+    if (!c[key(x, y + 1)]) edges.push([x + 1, y + 1, x, y + 1]);
+    if (!c[key(x - 1, y)]) edges.push([x, y + 1, x, y]);
+  });
+  return edges;
+}
+function perimeter(c){ return boundary(c).length; }
+function orderedBoundary(c){
+  var edges = boundary(c), byStart = {}, out = [], used = {};
+  edges.forEach(function(e, i){ var k = key(e[0], e[1]); (byStart[k] = byStart[k] || []).push(i); });
+  var start = 0;
+  edges.forEach(function(e, i){ if (e[1] < edges[start][1] || (e[1] === edges[start][1] && e[0] < edges[start][0])) start = i; });
+  var order = [start].concat(edges.map(function(_, i){ return i; }).filter(function(i){ return i !== start; }));
+  order.forEach(function(s){
+    var i = s;
+    while (i !== undefined && !used[i]) {
+      used[i] = 1;
+      out.push(edges[i]);
+      var e = edges[i], nexts = byStart[key(e[2], e[3])] || [];
+      i = nexts.filter(function(n){ return !used[n]; })[0];
+    }
+  });
+  return out;
+}
+function connected(c){
+  var list = cellList(c);
+  if (!list.length) return false;
+  var seen = {}, stack = [list[0]];
+  seen[key(list[0][0], list[0][1])] = 1;
+  while (stack.length) {
+    var p = stack.pop();
+    [[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){
+      var k = key(p[0] + d[0], p[1] + d[1]);
+      if (c[k] && !seen[k]) { seen[k] = 1; stack.push([p[0] + d[0], p[1] + d[1]]); }
+    });
+  }
+  return Object.keys(seen).length === list.length;
+}
+function bbox(c){
+  var l = cellList(c), xs = l.map(function(p){ return p[0]; }), ys = l.map(function(p){ return p[1]; });
+  return { x0: Math.min.apply(null, xs), y0: Math.min.apply(null, ys), x1: Math.max.apply(null, xs), y1: Math.max.apply(null, ys) };
+}
+
+function randomRect(){
+  var w = rand(2, 7), h = rand(2, 5);
+  if (w === h && Math.random() < .5) w = Math.min(7, w + 1);
+  return rectCells(Math.floor((COLS - w) / 2), Math.floor((ROWS - h) / 2), w, h);
+}
+function randomComposite(){
+  var W = rand(4, 8), H = rand(3, 6);
+  var x0 = Math.floor((COLS - W) / 2), y0 = Math.floor((ROWS - H) / 2);
+  var c = rectCells(x0, y0, W, H);
+  var kind = Math.random() < .55 ? 'L' : 'U';
+  if (kind === 'L') {
+    var w = rand(1, W - 2), h = rand(1, H - 1);
+    var cx = Math.random() < .5 ? x0 : x0 + W - w, cy = Math.random() < .5 ? y0 : y0 + H - h;
+    for (var x = cx; x < cx + w; x++) for (var y = cy; y < cy + h; y++) delete c[key(x, y)];
+  } else {
+    var nw = rand(1, Math.max(1, W - 3)), nh = rand(1, H - 2);
+    var nx = x0 + rand(1, W - nw - 1);
+    var top = Math.random() < .5;
+    for (var xx = nx; xx < nx + nw; xx++) for (var k = 0; k < nh; k++) delete c[key(xx, top ? y0 + k : y0 + H - 1 - k)];
+  }
+  return c;
+}
+
+/* ---------- Drawing ---------- */
+function gridSvg(extra, opts){
+  opts = opts || {};
+  var w = COLS * S + PAD * 2, h = ROWS * S + PAD * 2;
+  var s = '<svg viewBox="0 0 ' + w + ' ' + h + '"' + (opts.attrs || ' aria-hidden="true"') + '>';
+  s += '<rect x="0" y="0" width="' + w + '" height="' + h + '" fill="#fff"/>';
+  if (!opts.noGrid) {
+    for (var x = 0; x <= COLS; x++) s += '<line class="grid-line" x1="' + (PAD + x * S) + '" y1="' + PAD + '" x2="' + (PAD + x * S) + '" y2="' + (PAD + ROWS * S) + '"/>';
+    for (var y = 0; y <= ROWS; y++) s += '<line class="grid-line" x1="' + PAD + '" y1="' + (PAD + y * S) + '" x2="' + (PAD + COLS * S) + '" y2="' + (PAD + y * S) + '"/>';
+  }
+  return s + extra + '</svg>';
+}
+function cellsSvg(c, cls){
+  return cellList(c).map(function(p){
+    return '<rect class="cell ' + (cls || '') + '" data-k="' + key(p[0], p[1]) + '" x="' + (PAD + p[0] * S) + '" y="' + (PAD + p[1] * S) + '" width="' + S + '" height="' + S + '"/>';
+  }).join('');
+}
+function fenceSvg(c){
+  return orderedBoundary(c).map(function(e, i){
+    return '<line class="fence" data-e="' + i + '" x1="' + (PAD + e[0] * S) + '" y1="' + (PAD + e[1] * S) + '" x2="' + (PAD + e[2] * S) + '" y2="' + (PAD + e[3] * S) + '"/>';
+  }).join('');
+}
+
+/* Count the squares one by one, row by row */
+function animateArea(board, c){
+  var list = cellList(c).sort(function(a, b){ return a[1] - b[1] || a[0] - b[0]; });
+  var svg = board.querySelector('svg'), step = Math.max(40, Math.min(140, 2200 / list.length));
+  list.forEach(function(p, i){
+    animTimers.push(setTimeout(function(){
+      var t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      t.setAttribute('class', 'cell-num');
+      t.setAttribute('x', PAD + p[0] * S + S / 2);
+      t.setAttribute('y', PAD + p[1] * S + S / 2);
+      t.textContent = i + 1;
+      svg.appendChild(t);
+      var r = svg.querySelector('.cell[data-k="' + key(p[0], p[1]) + '"]');
+      if (r) r.style.fill = '#3F9457';
+      sndTick();
+    }, i * step));
+  });
+  return list.length * step;
+}
+/* Walk around the fence, counting each side */
+function animatePerimeter(board, c){
+  var edges = orderedBoundary(c), svg = board.querySelector('svg'), step = Math.max(40, Math.min(140, 2200 / edges.length));
+  edges.forEach(function(e, i){
+    animTimers.push(setTimeout(function(){
+      var line = svg.querySelector('.fence[data-e="' + i + '"]');
+      if (line) line.classList.add('hot');
+      var mx = PAD + (e[0] + e[2]) / 2 * S, my = PAD + (e[1] + e[3]) / 2 * S;
+      var dx = e[3] - e[1], dy = e[0] - e[2];
+      var t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      t.setAttribute('class', 'edge-num');
+      t.setAttribute('x', mx - dx * 13);
+      t.setAttribute('y', my - dy * 13);
+      t.textContent = i + 1;
+      svg.appendChild(t);
+      sndTick();
+    }, i * step));
+  });
+  return edges.length * step;
+}
+
+/* ---------- Measure it ---------- */
+var mDeck = [];
+var mRound = 0;
+var mScore = 0;
+var mq = null;
+var mFirst = true;
+var mBusy = false;
+
+function makeMeasureQuestion(i){
+  if (level < 2) {
+    var c = level === 0 ? randomRect() : randomComposite();
+    var ask = i % 2 === 0 ? 'area' : 'perimeter';
+    return { kind: 'grid', cells: c, ask: ask, answer: ask === 'area' ? area(c) : perimeter(c), A: area(c), P: perimeter(c) };
+  }
+  var L = rand(3, 12), W = rand(2, 9);
+  if (L === W) L++;
+  var u = UNITS[rand(0, UNITS.length - 1)];
+  var types = ['area', 'perimeter', 'sideFromArea', 'sideFromPerim'];
+  var t = types[i % 4];
+  return { kind: 'formula', L: L, W: W, unit: u, ask: t, A: L * W, P: 2 * (L + W),
+    answer: t === 'area' ? L * W : t === 'perimeter' ? 2 * (L + W) : W };
+}
+
+function startMeasure(){
+  lastMode = 'measure';
+  mDeck = [];
+  for (var i = 0; i < M_ROUNDS; i++) mDeck.push(makeMeasureQuestion(i));
+  mDeck = shuffle(mDeck);
+  mRound = 0;
+  mScore = 0;
+  hideAll();
+  $('measureScreen').classList.remove('hidden');
+  nextMeasure();
+}
+
+function unitWord(q, n, square){
+  if (q.kind === 'grid') return square ? (n === 1 ? 'square unit' : 'square units') : (n === 1 ? 'unit' : 'units');
+  var w = n === 1 ? q.unit.one : q.unit.many;
+  return square ? 'square ' + w : w;
+}
+
+function measureDistractors(q){
+  var a = q.answer, cand = [];
+  if (q.ask === 'area') cand.push(q.P, a + 1, a - 1, a + 2, a - 2);
+  else if (q.ask === 'perimeter') {
+    cand.push(q.A, q.P / 2, q.P - 4, q.P + 4, q.P - 2);
+  } else if (q.ask === 'sideFromArea') {
+    cand.push(q.A - q.L, q.L, a + 1, a - 1);
+  } else {
+    cand.push(q.P - q.L, q.P / 2, a + 1, a - 1);
+  }
+  var out = [];
+  cand.forEach(function(x){ if (out.length < 2 && x > 0 && x !== a && out.indexOf(x) === -1 && x === Math.round(x)) out.push(x); });
+  while (out.length < 2) { var x = a + rand(-3, 3); if (x > 0 && x !== a && out.indexOf(x) === -1) out.push(x); }
+  return out;
+}
+
+function formulaSvg(q){
+  var maxW = COLS * S - 240, maxH = ROWS * S - 120;
+  var scale = Math.min(maxW / q.L, maxH / q.W, 44);
+  var w = q.L * scale, h = q.W * scale;
+  var x0 = PAD + (COLS * S - w) / 2, y0 = PAD + (ROWS * S - h) / 2 - 8;
+  var hideW = q.ask === 'sideFromArea' || q.ask === 'sideFromPerim';
+  var s = '<rect x="' + x0 + '" y="' + y0 + '" width="' + w + '" height="' + h + '" rx="6" fill="#7CC47F" stroke="#9A6B3F" stroke-width="6"/>';
+  s += '<text class="side-label" x="' + (x0 + w / 2) + '" y="' + (y0 - 18) + '">' + q.L + ' ' + (q.L === 1 ? q.unit.one : q.unit.many) + '</text>';
+  s += '<text class="side-label' + (hideW ? ' ask' : '') + '" x="' + (x0 - 16) + '" y="' + (y0 + h / 2) + '" text-anchor="end" style="text-anchor:end">' + (hideW ? '?' : q.W + ' ' + q.unit.many) + '</text>';
+  if (q.ask === 'sideFromArea') s += '<text class="side-label" x="' + (x0 + w / 2) + '" y="' + (y0 + h + 30) + '" style="fill:#2E8540">Area = ' + q.A + ' square ' + q.unit.many + '</text>';
+  if (q.ask === 'sideFromPerim') s += '<text class="side-label" x="' + (x0 + w / 2) + '" y="' + (y0 + h + 30) + '" style="fill:#B26A00">Perimeter = ' + q.P + ' ' + q.unit.many + '</text>';
+  return gridSvg(s, { noGrid: true });
+}
+
+function questionText(q){
+  if (q.ask === 'area') return 'What is the <span class="a">area</span>?';
+  if (q.ask === 'perimeter') return 'What is the <span class="p">perimeter</span>?';
+  return 'How long is the missing side?';
+}
+
+function nextMeasure(){
+  clearAnim();
+  mRound++;
+  if (mRound > M_ROUNDS) {
+    var stars = mScore >= 9 ? 3 : mScore >= 7 ? 2 : 1;
+    showEnd(mScore >= 9 ? 'Garden genius!' : mScore >= 7 ? 'Great gardening!' : 'Keep measuring!', 'You measured ' + mScore + ' of ' + M_ROUNDS + ' gardens on the first try.', stars);
+    return;
+  }
+  mBusy = false;
+  mFirst = true;
+  mq = mDeck[mRound - 1];
+  $('mRound').textContent = 'Garden ' + mRound + ' of ' + M_ROUNDS;
+  $('mScore').textContent = 'First try ' + mScore;
+  $('mPrompt').innerHTML = questionText(mq);
+  $('mFact').classList.add('hidden');
+  if (mq.kind === 'grid') {
+    $('mBoard').innerHTML = gridSvg(cellsSvg(mq.cells) + fenceSvg(mq.cells));
+  } else {
+    $('mBoard').innerHTML = formulaSvg(mq);
+  }
+  var opts = shuffle([mq.answer].concat(measureDistractors(mq)));
+  var box = $('choices');
+  box.innerHTML = '';
+  var square = mq.ask === 'area';
+  opts.forEach(function(n, i){
+    var b = document.createElement('button');
+    b.className = 'choice';
+    b.dataset.key = i + 1;
+    b.innerHTML = n + '<small>' + unitWord(mq, n, square) + '</small>';
+    b.setAttribute('aria-label', n + ' ' + unitWord(mq, n, square));
+    b.onclick = function(){ pickMeasure(b, n); };
+    box.appendChild(b);
+  });
+  var desc = mq.kind === 'grid'
+    ? 'A garden on a grid of squares.'
+    : 'A rectangle garden, ' + mq.L + ' ' + mq.unit.many + ' long' + (mq.ask.indexOf('side') === 0 ? ', with a missing side. ' + (mq.ask === 'sideFromArea' ? 'The area is ' + mq.A + ' square ' + mq.unit.many + '.' : 'The perimeter is ' + mq.P + ' ' + mq.unit.many + '.') : ' and ' + mq.W + ' ' + mq.unit.many + ' wide.');
+  $('srStatus').textContent = desc + ' ' + $('mPrompt').textContent;
+}
+
+function explain(q){
+  if (q.kind === 'grid') {
+    if (q.ask === 'area') return 'Area counts the planted squares inside: ' + q.A + ' square units.';
+    return 'Perimeter counts every side of fence all the way around: ' + q.P + ' units.';
+  }
+  var u = q.unit.many;
+  if (q.ask === 'area') return 'Area = length \u00D7 width = ' + q.L + ' \u00D7 ' + q.W + ' = ' + q.A + ' square ' + u + '.';
+  if (q.ask === 'perimeter') return 'Perimeter = ' + q.L + ' + ' + q.W + ' + ' + q.L + ' + ' + q.W + ' = ' + q.P + ' ' + u + '.';
+  if (q.ask === 'sideFromArea') return q.L + ' \u00D7 ? = ' + q.A + ', so the missing side is ' + q.A + ' \u00F7 ' + q.L + ' = ' + q.W + ' ' + u + '.';
+  return 'Two lengths are ' + (2 * q.L) + '. ' + q.P + ' \u2212 ' + (2 * q.L) + ' = ' + (2 * q.W) + ' for two widths, so one width is ' + q.W + ' ' + u + '.';
+}
+
+function wrongHint(q, n){
+  if (q.ask === 'area' && n === q.P) return 'That is the perimeter, the fence around. Area counts the squares inside.';
+  if (q.ask === 'perimeter' && n === q.A) return 'That is the area, the squares inside. Perimeter counts the fence around the outside.';
+  if (q.ask === 'perimeter' && n === q.P / 2) return 'That only goes halfway around. Keep going until you are back where you started.';
+  if (q.ask === 'perimeter') return 'Count each side of fence once. Corners have two sides!';
+  if (q.ask === 'area') return q.kind === 'grid' ? 'Count the squares one row at a time.' : 'Multiply the length by the width.';
+  if (q.ask === 'sideFromArea') return 'Area is length times width. What times ' + q.L + ' makes ' + q.A + '?';
+  return 'The perimeter uses each side twice. Take away both long sides first.';
+}
+
+function pickMeasure(btn, n){
+  if (mBusy) return;
+  if (n === mq.answer) {
+    mBusy = true;
+    if (mFirst) mScore++;
+    $('mScore').textContent = 'First try ' + mScore;
+    btn.classList.add('right');
+    document.querySelectorAll('.choice').forEach(function(b){ b.disabled = b !== btn; });
+    $('mFact').textContent = explain(mq);
+    $('mFact').classList.remove('hidden');
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + explain(mq);
+    var dur = 0;
+    if (mq.kind === 'grid') dur = mq.ask === 'area' ? animateArea($('mBoard'), mq.cells) : animatePerimeter($('mBoard'), mq.cells);
+    timer = setTimeout(nextMeasure, dur + 2200);
+  } else {
+    mFirst = false;
+    btn.classList.add('wrong', 'shake');
+    btn.disabled = true;
+    var h = wrongHint(mq, n);
+    $('mFact').textContent = h;
+    $('mFact').classList.remove('hidden');
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Build a garden ---------- */
+var targets = [];
+var bRound = 0;
+var bScore = 0;
+var target = null;
+var planted = {};
+var bFirst = true;
+var bBusy = false;
+var cursor = [0, 0];
+var painting = null;
+
+function makeTargets(){
+  var out = [], seen = {}, guard = 0;
+  while (out.length < B_ROUNDS && guard++ < 500) {
+    var c = level === 0 ? randomRect() : randomComposite();
+    var A = area(c), P = perimeter(c);
+    if (A < 4 || A > 30) continue;
+    var k = A + '/' + P;
+    if (seen[k]) continue;
+    seen[k] = 1;
+    out.push({ A: A, P: P });
+  }
+  return out;
+}
+
+function startBuild(){
+  lastMode = 'build';
+  targets = makeTargets();
+  bRound = 0;
+  bScore = 0;
+  hideAll();
+  $('buildScreen').classList.remove('hidden');
+  nextBuild();
+}
+
+function nextBuild(){
+  clearAnim();
+  bRound++;
+  if (bRound > targets.length) {
+    var stars = bScore >= 5 ? 3 : bScore >= 4 ? 2 : 1;
+    showEnd(bScore >= 5 ? 'Garden genius!' : bScore >= 4 ? 'Great gardening!' : 'Keep building!', 'You built ' + bScore + ' of ' + targets.length + ' gardens on the first try.', stars);
+    return;
+  }
+  bBusy = false;
+  bFirst = true;
+  target = targets[bRound - 1];
+  planted = {};
+  cursor = [Math.floor(COLS / 2) - 1, Math.floor(ROWS / 2) - 1];
+  $('bRound').textContent = 'Garden ' + bRound + ' of ' + targets.length;
+  $('bScore').textContent = 'First try ' + bScore;
+  $('bPrompt').innerHTML = 'Build a garden with <span class="a">area ' + target.A + '</span> and <span class="p">perimeter ' + target.P + '</span>';
+  $('bFact').classList.add('hidden');
+  $('checkBtn').disabled = false;
+  drawBuild();
+  $('srStatus').textContent = 'Build a garden with area ' + target.A + ' square units and perimeter ' + target.P + ' units. Use the arrow keys to move and the space bar to plant.';
+}
+
+function drawBuild(){
+  var extra = cellsSvg(planted) + (area(planted) ? fenceSvg(planted) : '') +
+    '<rect class="cursor" id="cursor" x="' + (PAD + cursor[0] * S + 2) + '" y="' + (PAD + cursor[1] * S + 2) + '" width="' + (S - 4) + '" height="' + (S - 4) + '" style="display:none"/>';
+  $('bBoard').innerHTML = gridSvg(extra, { attrs: ' tabindex="0" role="application" aria-label="Garden grid. Use arrow keys to move and space to plant or remove a square."' });
+  var svg = $('bBoard').querySelector('svg');
+  svg.addEventListener('pointerdown', onDown);
+  svg.addEventListener('pointermove', onMove);
+  svg.addEventListener('focus', function(){ $('cursor').style.display = ''; });
+  svg.addEventListener('blur', function(){ $('cursor').style.display = 'none'; });
+  svg.addEventListener('keydown', onGridKey);
+  updateReadout();
+}
+
+function cellAt(svg, e){
+  var pt = svg.createSVGPoint();
+  pt.x = e.clientX; pt.y = e.clientY;
+  var p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  var x = Math.floor((p.x - PAD) / S), y = Math.floor((p.y - PAD) / S);
+  if (x < 0 || y < 0 || x >= COLS || y >= ROWS) return null;
+  return [x, y];
+}
+function setCell(x, y, on){
+  var k = key(x, y);
+  if (on && !planted[k]) { planted[k] = 1; sndPlant(); return true; }
+  if (!on && planted[k]) { delete planted[k]; sndPlant(); return true; }
+  return false;
+}
+function onDown(e){
+  if (bBusy) return;
+  var svg = e.currentTarget, c = cellAt(svg, e);
+  if (!c) return;
+  e.preventDefault();
+  painting = !planted[key(c[0], c[1])];
+  setCell(c[0], c[1], painting);
+  cursor = c;
+  refreshBuild();
+  try { svg.setPointerCapture(e.pointerId); } catch(err) {}
+}
+function onMove(e){
+  if (painting === null || bBusy) return;
+  var c = cellAt(e.currentTarget, e);
+  if (c && setCell(c[0], c[1], painting)) refreshBuild();
+}
+document.addEventListener('pointerup', function(){ painting = null; });
+
+function refreshBuild(){
+  var svg = $('bBoard').querySelector('svg');
+  var hadFocus = document.activeElement === svg;
+  drawBuild();
+  if (hadFocus) $('bBoard').querySelector('svg').focus();
+  $('bFact').classList.add('hidden');
+}
+
+function onGridKey(e){
+  if (bBusy) return;
+  var moves = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+  if (moves[e.key]) {
+    cursor = [Math.max(0, Math.min(COLS - 1, cursor[0] + moves[e.key][0])), Math.max(0, Math.min(ROWS - 1, cursor[1] + moves[e.key][1]))];
+    var cur = $('cursor');
+    cur.setAttribute('x', PAD + cursor[0] * S + 2);
+    cur.setAttribute('y', PAD + cursor[1] * S + 2);
+    e.preventDefault();
+  } else if (e.key === ' ' || e.key === 'Enter') {
+    setCell(cursor[0], cursor[1], !planted[key(cursor[0], cursor[1])]);
+    refreshBuild();
+    $('srStatus').textContent = 'Area ' + area(planted) + ', perimeter ' + perimeter(planted) + '.';
+    e.preventDefault();
+  }
+}
+
+function updateReadout(){
+  var A = area(planted), P = perimeter(planted);
+  $('readout').innerHTML = '<span class="a' + (A === target.A ? ' ok' : '') + '">Area: ' + A + ' of ' + target.A + '</span>' +
+    '<span class="p' + (P === target.P ? ' ok' : '') + '">Perimeter: ' + P + ' of ' + target.P + '</span>';
+}
+
+function clearBuild(){ if (bBusy) return; planted = {}; refreshBuild(); }
+
+function checkBuild(){
+  if (bBusy) return;
+  var A = area(planted), P = perimeter(planted), msg;
+  if (!A) msg = 'Tap squares on the grid to plant your garden first.';
+  else if (!connected(planted)) msg = 'All the squares need to touch side by side, so one fence can go around the whole garden.';
+  else if (A !== target.A && P !== target.P) msg = 'Both numbers are off. Start with the area: plant exactly ' + target.A + ' squares.';
+  else if (A !== target.A) msg = 'The area is ' + A + '. You need ' + (A < target.A ? 'more' : 'fewer') + ' squares.';
+  else if (P !== target.P) msg = 'The area is right! Now change the shape. ' + (P < target.P ? 'A longer, skinnier garden has more fence.' : 'A more square-like garden has less fence.');
+  if (msg) {
+    bFirst = false;
+    $('bFact').textContent = msg;
+    $('bFact').classList.remove('hidden');
+    sndBad();
+    $('srStatus').textContent = msg;
+    return;
+  }
+  bBusy = true;
+  if (bFirst) bScore++;
+  $('bScore').textContent = 'First try ' + bScore;
+  $('checkBtn').disabled = true;
+  var b = bbox(planted), isRect = A === (b.x1 - b.x0 + 1) * (b.y1 - b.y0 + 1);
+  var done = 'You did it! ' + A + ' squares planted and ' + P + ' sides of fence.' + (isRect ? ' Your garden is a ' + (b.x1 - b.x0 + 1) + ' by ' + (b.y1 - b.y0 + 1) + ' rectangle.' : ' What a creative shape!');
+  $('bFact').textContent = done;
+  $('bFact').classList.remove('hidden');
+  sndGood();
+  $('srStatus').textContent = done;
+  var dur = animatePerimeter($('bBoard'), planted);
+  timer = setTimeout(nextBuild, dur + 2400);
+}
+
+/* ---------- Keyboard for choices ---------- */
+document.addEventListener('keydown', function(e){
+  if ($('measureScreen').classList.contains('hidden')) return;
+  if (/^[1-3]$/.test(e.key)) {
+    var b = document.querySelector('.choice[data-key="' + e.key + '"]');
+    if (b && !b.disabled) b.click();
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(document.querySelectorAll('.choice:enabled'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+/* Start screen art */
+(function(){
+  var c = {}; [[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2]].forEach(function(p){ c[key(p[0] + 1, p[1] + 1)] = 1; });
+  var s = '<svg viewBox="0 0 200 160" aria-hidden="true"><g transform="translate(-6 -10)">';
+  cellList(c).forEach(function(p){ s += '<rect x="' + (p[0] * 36 + 20) + '" y="' + (p[1] * 36 + 10) + '" width="36" height="36" fill="#7CC47F" stroke="#5DA360"/>'; });
+  boundary(c).forEach(function(e){ s += '<line x1="' + (e[0] * 36 + 20) + '" y1="' + (e[1] * 36 + 10) + '" x2="' + (e[2] * 36 + 20) + '" y2="' + (e[3] * 36 + 10) + '" stroke="#9A6B3F" stroke-width="6" stroke-linecap="round"/>'; });
+  s += '<g transform="translate(184 140) scale(.7)"><ellipse cx="0" cy="0" rx="17" ry="13" fill="#4FB06A"/><circle cx="-6" cy="-15" r="6" fill="#4FB06A"/><circle cx="6" cy="-15" r="6" fill="#4FB06A"/><circle cx="-6" cy="-15" r="3.6" fill="#fff"/><circle cx="6" cy="-15" r="3.6" fill="#fff"/><circle cx="-6" cy="-14.5" r="1.7" fill="#22303B"/><circle cx="6" cy="-14.5" r="1.7" fill="#22303B"/><path d="M-7 2 Q0 8 7 2" stroke="#1F5B36" stroke-width="2" fill="none" stroke-linecap="round"/></g>';
+  $('startArt').innerHTML = s + '</g></svg>';
+})();
+</script>
+</body>
+</html>
