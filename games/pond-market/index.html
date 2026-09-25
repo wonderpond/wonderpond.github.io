@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond market - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Shop at the pond market! Pay with pennies, nickels, dimes, quarters, and dollar bills, or count a pile of coins. A free money counting game for grades 1 and 2 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --wood:#D9B27C;
+  --wood-dark:#B0864F;
+  --amber:#F5C84C;
+  --red:#E24B4A;
+  --mm:3.3px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:980px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;
+  padding:14px 20px;min-width:170px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.8}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:14px 40px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:12px;max-width:640px;margin-left:auto;margin-right:auto}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.chip-btn{border:none;cursor:pointer}
+.chip-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 8px;
+  background:rgba(255,255,255,.88);display:inline-block;padding:7px 26px;border-radius:999px;max-width:100%;
+}
+
+/* Coins: sizes follow real diameters in millimeters */
+.coin{
+  border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none;
+  font-family:"Nunito",sans-serif;font-weight:700;line-height:1;text-align:center;letter-spacing:.3px;
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.35),inset 0 -4px 6px rgba(0,0,0,.12),0 3px 0 rgba(0,0,0,.18);
+  position:relative;color:rgba(40,40,40,.75);
+}
+.coin.penny{width:calc(var(--mm) * 19);height:calc(var(--mm) * 19);background:radial-gradient(circle at 35% 30%,#E9A879,#B8683A 70%);color:rgba(80,35,10,.8);font-size:calc(var(--mm) * 2.6)}
+.coin.nickel{width:calc(var(--mm) * 21.2);height:calc(var(--mm) * 21.2);background:radial-gradient(circle at 35% 30%,#F1F2F2,#A7ADB1 70%);font-size:calc(var(--mm) * 2.6)}
+.coin.dime{width:calc(var(--mm) * 17.9);height:calc(var(--mm) * 17.9);background:radial-gradient(circle at 35% 30%,#F4F5F6,#AEB4B8 70%);font-size:calc(var(--mm) * 2.5)}
+.coin.quarter{width:calc(var(--mm) * 24.3);height:calc(var(--mm) * 24.3);background:radial-gradient(circle at 35% 30%,#F4F5F6,#A3A9AE 70%);font-size:calc(var(--mm) * 2.6)}
+.coin.reeded::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:repeating-conic-gradient(rgba(0,0,0,.22) 0 2deg,transparent 2deg 6deg);
+  -webkit-mask:radial-gradient(circle,transparent 62%,#000 64%);mask:radial-gradient(circle,transparent 62%,#000 64%);
+}
+.bill{
+  width:calc(var(--mm) * 46);height:calc(var(--mm) * 20);border-radius:6px;flex:none;
+  background:linear-gradient(135deg,#D7E8C6,#B7D3A0);border:3px solid #7FA66A;position:relative;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:"Nunito",sans-serif;font-weight:700;color:#3F6B33;font-size:calc(var(--mm) * 2.9);
+  box-shadow:0 3px 0 rgba(0,0,0,.18);
+}
+.bill .c{position:absolute;font-family:"Baloo 2",sans-serif;font-size:calc(var(--mm) * 4.6);line-height:1}
+.bill .c.tl{top:2px;left:6px}.bill .c.br{bottom:0;right:6px}
+.bill .oval{width:calc(var(--mm) * 11);height:calc(var(--mm) * 13);border-radius:50%;border:2px solid #7FA66A;margin-right:8px;background:#E6F0DA}
+
+/* Shop */
+.shop{display:flex;gap:18px;justify-content:center;align-items:stretch;flex-wrap:wrap;margin:6px auto 10px}
+.item-card{
+  background:#fff;border-radius:22px;padding:10px 18px 12px;box-shadow:0 6px 0 rgba(18,64,58,.2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:180px;
+}
+.item-card .pic{width:110px;height:110px}
+.item-card .iname{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--ink-soft)}
+.price{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(2.2rem,6vw,3rem);color:var(--teal-dark);line-height:1;
+  background:#FFF3C8;border-radius:14px;padding:6px 16px 2px;margin-top:6px;
+}
+.counter-wrap{flex:1 1 420px;max-width:560px;display:flex;flex-direction:column}
+.counter{
+  flex:1;min-height:190px;border-radius:22px;background:var(--wood);box-shadow:inset 0 -8px 0 var(--wood-dark),0 6px 0 rgba(18,64,58,.2);
+  display:flex;flex-wrap:wrap;gap:8px;align-content:center;justify-content:center;align-items:center;padding:16px 16px 22px;position:relative;
+}
+.counter .empty{font-family:"Baloo 2",sans-serif;font-weight:700;color:rgba(255,255,255,.9);font-size:1.2rem}
+.counter button{border:none;background:none;padding:0;cursor:pointer;border-radius:50%}
+.counter button.bill-btn{border-radius:8px}
+.counter button:disabled{cursor:default}
+@keyframes drop{0%{transform:translateY(-30px) scale(.8);opacity:0}100%{transform:none;opacity:1}}
+.drop{animation:drop .25s ease}
+.total{
+  margin-top:8px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.3rem;color:var(--teal-dark);
+  background:rgba(255,255,255,.9);border-radius:999px;padding:4px 16px;align-self:center;min-height:2.2rem;
+}
+.purse{
+  display:flex;gap:14px;justify-content:center;align-items:flex-end;flex-wrap:wrap;
+  background:rgba(255,255,255,.4);border-radius:26px;padding:12px 16px;margin:8px auto 0;max-width:760px;
+}
+.purse-btn{
+  border:none;background:rgba(255,255,255,.85);border-radius:18px;cursor:pointer;padding:8px 10px 6px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;min-width:92px;box-shadow:0 4px 0 rgba(18,64,58,.2);
+  transition:transform .12s ease;
+}
+.purse-btn:hover:enabled{transform:translateY(-3px)}
+.purse-btn:active:enabled{transform:translateY(3px);box-shadow:0 1px 0 rgba(18,64,58,.2)}
+.purse-btn:disabled{opacity:.5;cursor:default}
+.purse-btn .cname{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.95rem;color:var(--teal-dark);line-height:1.1}
+.purse-btn .cval{font-weight:700;font-size:.85rem;color:var(--ink-soft)}
+.pay-row{margin-top:6px}
+.count-line{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.1rem,2.6vw,1.5rem);color:var(--teal-dark);
+  background:rgba(255,255,255,.92);display:inline-block;border-radius:18px;padding:6px 20px;margin-top:10px;
+}
+.count-line small{display:block;font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft)}
+.badge{display:inline-block;background:var(--amber);color:#5A4300;border-radius:999px;padding:2px 12px;font-size:.9rem;margin-left:6px}
+
+/* Count mode */
+.pile{
+  min-height:210px;border-radius:26px;background:var(--wood);box-shadow:inset 0 -8px 0 var(--wood-dark),0 6px 0 rgba(18,64,58,.2);
+  max-width:680px;margin:6px auto 0;position:relative;
+}
+.pile .piece{position:absolute;transform:translate(-50%,-50%)}
+.choices{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.choice{
+  min-width:140px;padding:10px 24px;border-radius:22px;border:none;cursor:pointer;background:#fff;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.8rem,4.6vw,2.6rem);color:var(--teal-dark);
+  box-shadow:0 6px 0 rgba(18,64,58,.22);transition:transform .12s ease;
+}
+.choice:hover:enabled{transform:translateY(-3px)}
+.choice:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.choice.right{background:#E4F5E9;box-shadow:0 6px 0 var(--green)}
+.choice.wrong{background:var(--red);color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (max-width:640px){
+  :root{--mm:2.4px}
+  .item-card{flex-direction:row;gap:12px;min-width:0;width:100%}
+  .item-card .pic{width:70px;height:70px}
+  .counter{min-height:140px}
+  .purse-btn{min-width:74px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="display:flex;gap:10px;justify-content:center;align-items:center;margin-bottom:6px" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond market</h1>
+      <p class="sub">The frogs have opened a shop! Pay for treats with the right coins, or count what is in the tip jar.</p>
+      <span class="choose-label" id="levelLabel">Pick your money</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Pennies, nickels, dimes<small>up to 50 cents</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Add quarters<small>up to 99 cents</small></button>
+        <button class="pick-btn" data-level="2" aria-pressed="false" onclick="chooseLevel(this)">Dollars and cents<small>up to $5.00</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startPay()">Pay for it</button>
+        <button class="big-btn alt" onclick="startCount()">Count the coins</button>
+      </div>
+      <p class="note">Pay for it: tap coins to put them on the counter until you have the exact price, then press Pay. Tap a coin on the counter to take it back. Count the coins: find the total of a pile of money. Coins are drawn at their real sizes, so a dime is smaller than a penny.</p>
+    </div>
+  </section>
+
+  <!-- Pay mode -->
+  <section class="screen hidden" id="payScreen">
+    <div class="hud">
+      <span class="chip" id="payRound">Shopper 1 of 8</span>
+      <span class="chip" id="payScore">First try 0</span>
+      <button class="chip chip-btn" id="totalBtn" aria-pressed="true" onclick="toggleTotal()">Show my total: on</button>
+    </div>
+    <p class="prompt" id="payPrompt">Pay the exact price</p>
+    <div class="shop">
+      <div class="item-card" id="itemCard"></div>
+      <div class="counter-wrap">
+        <div class="counter" id="counter" role="group" aria-label="Money on the counter"></div>
+        <div class="total" id="total"></div>
+      </div>
+    </div>
+    <div class="purse" id="purse" role="group" aria-label="Your coins"></div>
+    <div class="pay-row">
+      <button class="big-btn" id="payBtn" onclick="pay()">Pay</button>
+    </div>
+    <div id="payCount" class="hidden"><span class="count-line" id="payCountText"></span></div>
+  </section>
+
+  <!-- Count mode -->
+  <section class="screen hidden" id="countScreen">
+    <div class="hud">
+      <span class="chip" id="countRound">Tip jar 1 of 8</span>
+      <span class="chip" id="countScore">First try 0</span>
+    </div>
+    <p class="prompt" id="countPrompt">How much money is here?</p>
+    <div class="pile" id="pile" role="img" aria-label="A pile of money"></div>
+    <div class="choices" id="choices" role="group" aria-label="Answer choices"></div>
+    <div id="countCount" class="hidden"><span class="count-line" id="countCountText"></span></div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Super shopper!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change money</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var MONEY = {
+  dollar:  { name: 'dollar bill', short: 'dollar', val: 100, text: 'ONE DOLLAR' },
+  quarter: { name: 'quarter', short: 'quarter', val: 25, text: 'QUARTER<br>DOLLAR', reeded: true },
+  dime:    { name: 'dime', short: 'dime', val: 10, text: 'ONE<br>DIME', reeded: true },
+  nickel:  { name: 'nickel', short: 'nickel', val: 5, text: 'FIVE<br>CENTS' },
+  penny:   { name: 'penny', short: 'penny', val: 1, text: 'ONE<br>CENT' }
+};
+var LEVELS = [
+  { kinds: ['dime','nickel','penny'], min: 6, max: 50 },
+  { kinds: ['quarter','dime','nickel','penny'], min: 26, max: 99 },
+  { kinds: ['dollar','quarter','dime','nickel','penny'], min: 105, max: 500 }
+];
+var ROUNDS = 8;
+
+/* Shop items, drawn on a 100 x 100 grid */
+var ITEMS = [
+  { name: 'Lollipop', svg: '<path d="M50 56 V94" stroke="#E8DCC4" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="36" r="24" fill="#F4A0A0"/><path d="M50 36 m0 -3 a3 3 0 1 1 -3 3 a8 8 0 0 1 8 -8 a13 13 0 0 1 13 13 a18 18 0 0 1 -18 18 a21 21 0 0 1 -21 -21" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>' },
+  { name: 'Pencil', svg: '<g transform="rotate(-35 50 50)"><rect x="18" y="42" width="54" height="16" fill="#F5C84C"/><rect x="18" y="42" width="54" height="5" fill="#F9DA78"/><rect x="10" y="42" width="10" height="16" rx="3" fill="#F4A0A0"/><rect x="18" y="42" width="5" height="16" fill="#B8BEC2"/><path d="M72 42 L90 50 L72 58Z" fill="#EFD3A8"/><path d="M84 47.4 L90 50 L84 52.6Z" fill="#3A2A1E"/></g>' },
+  { name: 'Apple', svg: '<path d="M50 30 Q40 18 30 22 Q14 28 16 52 Q18 78 38 88 Q46 92 50 88 Q54 92 62 88 Q82 78 84 52 Q86 28 70 22 Q60 18 50 30Z" fill="#E24B4A"/><path d="M50 30 Q52 18 58 12" stroke="#6B4A2F" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M56 20 Q68 10 76 18 Q66 26 56 20Z" fill="#4FB06A"/><ellipse cx="32" cy="46" rx="5" ry="9" fill="#fff" opacity=".35"/>' },
+  { name: 'Ball', svg: '<circle cx="50" cy="52" r="34" fill="#6BB6DB"/><path d="M16 52 Q50 36 84 52" stroke="#fff" stroke-width="6" fill="none"/><path d="M50 18 Q36 52 50 86" stroke="#F5C84C" stroke-width="6" fill="none"/><circle cx="38" cy="38" r="5" fill="#fff" opacity=".45"/>' },
+  { name: 'Toy frog', svg: '<ellipse cx="26" cy="74" rx="12" ry="6" fill="#3F9457"/><ellipse cx="74" cy="74" rx="12" ry="6" fill="#3F9457"/><ellipse cx="50" cy="62" rx="24" ry="17" fill="#4FB06A"/><circle cx="39" cy="44" r="8" fill="#4FB06A"/><circle cx="61" cy="44" r="8" fill="#4FB06A"/><circle cx="39" cy="44" r="5" fill="#fff"/><circle cx="61" cy="44" r="5" fill="#fff"/><circle cx="40" cy="45" r="2.5" fill="#22303B"/><circle cx="62" cy="45" r="2.5" fill="#22303B"/><path d="M41 64 Q50 72 59 64" stroke="#1F5B36" stroke-width="2.4" fill="none" stroke-linecap="round"/>' },
+  { name: 'Sticker', svg: '<path d="M50 12 L60 38 L88 38 L66 55 L74 82 L50 66 L26 82 L34 55 L12 38 L40 38Z" fill="#F5C84C" stroke="#C99A17" stroke-width="3" stroke-linejoin="round"/><circle cx="43" cy="48" r="3" fill="#6B4A2F"/><circle cx="57" cy="48" r="3" fill="#6B4A2F"/><path d="M42 58 Q50 64 58 58" stroke="#6B4A2F" stroke-width="2.6" fill="none" stroke-linecap="round"/>' },
+  { name: 'Kite', svg: '<path d="M50 10 L78 42 L50 74 L22 42Z" fill="#9B4D8E"/><path d="M50 10 L50 74 M22 42 L78 42" stroke="#fff" stroke-width="2.5"/><path d="M50 10 L78 42 L50 42Z" fill="#C979BB"/><path d="M50 74 Q40 82 52 86 Q64 90 54 96" stroke="#6B4A2F" stroke-width="2" fill="none"/><path d="M48 82 L42 78 L44 86Z M54 90 L60 86 L60 94Z" fill="#F5C84C"/>' },
+  { name: 'Book', svg: '<path d="M14 26 Q32 18 50 28 V84 Q32 74 14 82Z" fill="#1F6E68"/><path d="M86 26 Q68 18 50 28 V84 Q68 74 86 82Z" fill="#2E8C84"/><path d="M50 28 V84" stroke="#0F5A50" stroke-width="2"/><path d="M22 38 Q32 34 42 38 M22 48 Q32 44 42 48 M58 38 Q68 34 78 38 M58 48 Q68 44 78 48" stroke="#BFE3DC" stroke-width="2.4" fill="none" stroke-linecap="round"/>' },
+  { name: 'Cupcake', svg: '<path d="M26 56 L32 88 H68 L74 56Z" fill="#F4A0A0"/><path d="M34 58 L38 88 M46 58 L48 88 M54 58 L52 88 M66 58 L62 88" stroke="#E08585" stroke-width="2"/><path d="M22 58 Q18 44 32 40 Q34 26 50 26 Q66 26 68 40 Q82 44 78 58Z" fill="#FFF3E8"/><circle cx="50" cy="22" r="6" fill="#E24B4A"/><g fill="#6BB6DB"><rect x="34" y="42" width="6" height="2.6" rx="1.3" transform="rotate(30 37 43)"/><rect x="56" y="36" width="6" height="2.6" rx="1.3" transform="rotate(-20 59 37)"/></g><g fill="#F5C84C"><rect x="44" y="48" width="6" height="2.6" rx="1.3"/><rect x="62" y="48" width="6" height="2.6" rx="1.3" transform="rotate(40 65 49)"/></g>' },
+  { name: 'Bubble wand', svg: '<path d="M44 52 L20 92" stroke="#9B4D8E" stroke-width="6" stroke-linecap="round"/><circle cx="56" cy="32" r="20" fill="none" stroke="#9B4D8E" stroke-width="6"/><circle cx="56" cy="32" r="14" fill="#DFF2FA" opacity=".7"/><circle cx="84" cy="62" r="8" fill="none" stroke="#6BB6DB" stroke-width="2"/><circle cx="76" cy="84" r="5" fill="none" stroke="#6BB6DB" stroke-width="2"/>' }
+];
+
+var level = 0;
+var lastMode = 'pay';
+var soundOn = true;
+var audioCtx = null;
+var timer = null;
+
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function money(c){
+  if (level === 2 || c >= 100) {
+    var d = Math.floor(c / 100), r = c % 100;
+    return '$' + d + '.' + (r < 10 ? '0' : '') + r;
+  }
+  return c + '\u00A2';
+}
+function spoken(c){
+  var d = Math.floor(c / 100), r = c % 100, parts = [];
+  if (d) parts.push(d + (d === 1 ? ' dollar' : ' dollars'));
+  if (r || !d) parts.push(r + (r === 1 ? ' cent' : ' cents'));
+  return parts.join(' and ');
+}
+function pieceHtml(kind){
+  var m = MONEY[kind];
+  if (kind === 'dollar') return '<span class="bill" aria-hidden="true"><span class="c tl">1</span><span class="oval"></span>ONE<br>DOLLAR<span class="c br">1</span></span>';
+  return '<span class="coin ' + kind + (m.reeded ? ' reeded' : '') + '" aria-hidden="true"><span>' + m.text + '</span></span>';
+}
+function kinds(){ return LEVELS[level].kinds; }
+
+/* Fewest pieces for an amount (greedy works for US money) */
+function fewest(c){
+  var out = [];
+  kinds().forEach(function(k){ while (c >= MONEY[k].val) { out.push(k); c -= MONEY[k].val; } });
+  return out;
+}
+function sortPieces(list){
+  var order = ['dollar','quarter','dime','nickel','penny'];
+  return list.slice().sort(function(a, b){ return order.indexOf(a) - order.indexOf(b); });
+}
+/* Counting on, biggest first: 25, 35, 40, 41 */
+function countOn(list){
+  var t = 0;
+  return sortPieces(list).map(function(k){ t += MONEY[k].val; return money(t); }).join(', ');
+}
+
+function chooseLevel(btn){
+  document.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.16, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndClink(){ beep([1320, 1760], 0.05, 'triangle'); }
+function sndBack(){ beep([520], 0.05, 'triangle'); }
+function sndRegister(){ beep([784, 1047, 1319, 1568], 0.08); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function hideAll(){ ['startScreen','payScreen','countScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); }); }
+function backToStart(){ clearTimeout(timer); hideAll(); $('startScreen').classList.remove('hidden'); }
+function playAgain(){ if (lastMode === 'pay') startPay(); else startCount(); }
+function showEnd(title, line, stars){
+  hideAll();
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function endTitle(s){ return s >= 7 ? 'Super shopper!' : s >= 5 ? 'Money smart!' : 'Keep counting coins!'; }
+function endStars(s){ return s >= 7 ? 3 : s >= 5 ? 2 : 1; }
+
+function makeAmounts(){
+  var L = LEVELS[level], out = [], guard = 0;
+  while (out.length < ROUNDS && guard++ < 500) {
+    var c = rand(L.min, L.max);
+    if (level === 2) c = rand(L.min / 5, L.max / 5) * 5;
+    if (out.indexOf(c) === -1) out.push(c);
+  }
+  return out;
+}
+
+/* ---------- Pay for it ---------- */
+var amounts = [];
+var round = 0;
+var score = 0;
+var price = 0;
+var onCounter = [];
+var firstTry = true;
+var busy = false;
+var showTotal = true;
+var itemOrder = [];
+
+function toggleTotal(){
+  showTotal = !showTotal;
+  var b = $('totalBtn');
+  b.setAttribute('aria-pressed', showTotal ? 'true' : 'false');
+  b.textContent = 'Show my total: ' + (showTotal ? 'on' : 'off');
+  drawTotal();
+}
+
+function startPay(){
+  lastMode = 'pay';
+  amounts = makeAmounts();
+  itemOrder = shuffle(ITEMS);
+  round = 0;
+  score = 0;
+  showTotal = level === 0;
+  $('totalBtn').setAttribute('aria-pressed', showTotal ? 'true' : 'false');
+  $('totalBtn').textContent = 'Show my total: ' + (showTotal ? 'on' : 'off');
+  hideAll();
+  $('payScreen').classList.remove('hidden');
+  drawPurse();
+  nextPay();
+}
+
+function nextPay(){
+  round++;
+  if (round > ROUNDS) {
+    showEnd(endTitle(score), 'You paid the exact price ' + score + ' of ' + ROUNDS + ' times on the first try.', endStars(score));
+    return;
+  }
+  busy = false;
+  firstTry = true;
+  price = amounts[round - 1];
+  onCounter = [];
+  var item = itemOrder[(round - 1) % itemOrder.length];
+  $('itemCard').innerHTML = '<svg class="pic" viewBox="0 0 100 100" aria-hidden="true">' + item.svg + '</svg><div><div class="iname">' + item.name + '</div><div class="price">' + money(price) + '</div></div>';
+  $('payRound').textContent = 'Shopper ' + round + ' of ' + ROUNDS;
+  $('payScore').textContent = 'First try ' + score;
+  $('payPrompt').textContent = 'Pay the exact price';
+  $('payCount').classList.add('hidden');
+  $('payBtn').disabled = false;
+  drawPurse();
+  drawCounter();
+  $('srStatus').textContent = 'The ' + item.name.toLowerCase() + ' costs ' + spoken(price) + '. Put money on the counter, then press Pay.';
+}
+
+function drawPurse(){
+  var p = $('purse');
+  p.innerHTML = '';
+  kinds().forEach(function(k, i){
+    var b = document.createElement('button');
+    b.className = 'purse-btn';
+    b.dataset.key = i + 1;
+    b.innerHTML = pieceHtml(k) + '<span class="cname">' + MONEY[k].short + '</span><span class="cval">' + money(MONEY[k].val) + '</span>';
+    b.setAttribute('aria-label', 'Add a ' + MONEY[k].name + ', ' + spoken(MONEY[k].val));
+    b.disabled = busy;
+    b.onclick = function(){ addPiece(k); };
+    p.appendChild(b);
+  });
+}
+
+function sum(list){ return list.reduce(function(t, k){ return t + MONEY[k].val; }, 0); }
+
+function drawCounter(dropLast){
+  var c = $('counter');
+  c.innerHTML = '';
+  if (!onCounter.length) c.innerHTML = '<span class="empty">Put money here</span>';
+  onCounter.forEach(function(k, i){
+    var b = document.createElement('button');
+    if (k === 'dollar') b.className = 'bill-btn';
+    if (dropLast && i === onCounter.length - 1) b.classList.add('drop');
+    b.innerHTML = pieceHtml(k);
+    b.setAttribute('aria-label', MONEY[k].name + ' on the counter. Tap to take it back.');
+    b.disabled = busy;
+    b.onclick = function(){ removePiece(i); };
+    c.appendChild(b);
+  });
+  drawTotal();
+}
+
+function drawTotal(){
+  var t = sum(onCounter);
+  $('total').textContent = showTotal ? 'On the counter: ' + money(t) : (onCounter.length ? onCounter.length + (onCounter.length === 1 ? ' piece' : ' pieces') + ' on the counter' : '');
+}
+
+function addPiece(k){
+  if (busy) return;
+  if (onCounter.length >= 30) return;
+  onCounter.push(k);
+  sndClink();
+  $('payPrompt').textContent = 'Pay the exact price';
+  drawCounter(true);
+  $('srStatus').textContent = 'Added a ' + MONEY[k].name + '.' + (showTotal ? ' Total ' + spoken(sum(onCounter)) + '.' : '');
+}
+
+function removePiece(i){
+  if (busy) return;
+  var k = onCounter.splice(i, 1)[0];
+  sndBack();
+  $('payPrompt').textContent = 'Pay the exact price';
+  drawCounter();
+  $('srStatus').textContent = 'Took back a ' + MONEY[k].name + '.' + (showTotal ? ' Total ' + spoken(sum(onCounter)) + '.' : '');
+  var f = $('counter').querySelector('button');
+  if (f) f.focus(); else { var pb = $('purse').querySelector('button'); if (pb) pb.focus(); }
+}
+
+function pay(){
+  if (busy) return;
+  var t = sum(onCounter);
+  if (t === price) {
+    busy = true;
+    if (firstTry) score++;
+    $('payScore').textContent = 'First try ' + score;
+    $('payBtn').disabled = true;
+    drawPurse();
+    drawCounter();
+    var best = fewest(price);
+    var isBest = onCounter.length === best.length;
+    $('payPrompt').textContent = 'Thank you! That is exactly ' + money(price) + '.';
+    $('payCountText').innerHTML = 'Count it: ' + countOn(onCounter) +
+      (isBest ? '<span class="badge">Fewest coins!</span>' : '<small>You could also pay with ' + best.length + ' pieces: ' + describe(best) + '.</small>');
+    $('payCount').classList.remove('hidden');
+    sndRegister();
+    $('srStatus').textContent = 'Correct! ' + spoken(price) + '.' + (isBest ? ' You used the fewest coins.' : '');
+    timer = setTimeout(nextPay, isBest ? 2600 : 3800);
+  } else {
+    firstTry = false;
+    var msg = !onCounter.length ? 'Put some money on the counter first.' :
+      t < price ? 'Not enough yet. Count again and add more.' : 'That is too much. Take some money back.';
+    $('payPrompt').textContent = msg;
+    $('counter').classList.add('shake');
+    setTimeout(function(){ $('counter').classList.remove('shake'); }, 400);
+    sndBad();
+    $('srStatus').textContent = msg;
+  }
+}
+
+function describe(list){
+  var counts = {};
+  list.forEach(function(k){ counts[k] = (counts[k] || 0) + 1; });
+  var plurals = { dollar: 'dollar bills', quarter: 'quarters', dime: 'dimes', nickel: 'nickels', penny: 'pennies' };
+  return sortPieces(Object.keys(counts)).map(function(k){ return counts[k] + ' ' + (counts[k] === 1 ? MONEY[k].short : plurals[k]); }).join(', ');
+}
+
+/* ---------- Count the coins ---------- */
+var cAnswer = 0;
+var cPieces = [];
+var cFirst = true;
+var cBusy = false;
+
+function startCount(){
+  lastMode = 'count';
+  amounts = makeAmounts();
+  round = 0;
+  score = 0;
+  hideAll();
+  $('countScreen').classList.remove('hidden');
+  nextCount();
+}
+
+/* A pile is not always the fewest coins: swap some bigger coins for smaller ones */
+function makePile(c){
+  var list = fewest(c);
+  var swaps = rand(0, 2);
+  for (var s = 0; s < swaps; s++) {
+    var i = list.findIndex(function(k){ return k === 'quarter' || k === 'dime'; });
+    if (i === -1) break;
+    var k = list[i];
+    list.splice(i, 1);
+    if (k === 'quarter') list.push('dime', 'dime', 'nickel');
+    else list.push('nickel', 'nickel');
+  }
+  if (list.length > 14) list = fewest(c);
+  return shuffle(list);
+}
+
+/* Wrong answers come from real mix-ups */
+function distractors(list, c){
+  var cand = [];
+  if (level < 2) cand.push(list.length);
+  var swapped = list.reduce(function(t, k){ return t + (k === 'nickel' ? 10 : k === 'dime' ? 5 : MONEY[k].val); }, 0);
+  cand.push(swapped);
+  cand.push(c + 10, c - 10, c + 5, c - 5, c + 1, c - 1);
+  if (level === 2) cand.push(c + 100, c - 100, c + 25, c - 25);
+  var out = [];
+  cand.forEach(function(x){ if (out.length < 2 && x > 0 && x !== c && out.indexOf(x) === -1) out.push(x); });
+  return out;
+}
+
+function layoutPile(list){
+  var n = list.length, cols = Math.ceil(Math.sqrt(n * 1.8)), rows = Math.ceil(n / cols);
+  var pos = [];
+  for (var i = 0; i < n; i++) {
+    var r = Math.floor(i / cols), col = i % cols;
+    var x = (col + .5) / cols * 100 + rand(-3, 3);
+    var y = (r + .5) / rows * 100 + rand(-5, 5);
+    pos.push([Math.min(90, Math.max(10, x)), Math.min(82, Math.max(18, y))]);
+  }
+  return pos;
+}
+
+function nextCount(){
+  round++;
+  if (round > ROUNDS) {
+    showEnd(endTitle(score), 'You counted ' + score + ' of ' + ROUNDS + ' tip jars on the first try.', endStars(score));
+    return;
+  }
+  cBusy = false;
+  cFirst = true;
+  cAnswer = amounts[round - 1];
+  cPieces = makePile(cAnswer);
+  $('countRound').textContent = 'Tip jar ' + round + ' of ' + ROUNDS;
+  $('countScore').textContent = 'First try ' + score;
+  $('countPrompt').textContent = 'How much money is here?';
+  $('countCount').classList.add('hidden');
+  var pile = $('pile');
+  var rows = Math.ceil(cPieces.length / Math.ceil(Math.sqrt(cPieces.length * 1.8)));
+  pile.style.height = (120 + rows * 70) + 'px';
+  var pos = layoutPile(cPieces);
+  pile.innerHTML = cPieces.map(function(k, i){
+    return '<span class="piece" style="left:' + pos[i][0] + '%;top:' + pos[i][1] + '%;transform:translate(-50%,-50%) rotate(' + rand(-20, 20) + 'deg)">' + pieceHtml(k) + '</span>';
+  }).join('');
+  pile.setAttribute('aria-label', 'A pile of money: ' + describe(cPieces));
+  var opts = shuffle([cAnswer].concat(distractors(cPieces, cAnswer)));
+  var box = $('choices');
+  box.innerHTML = '';
+  opts.forEach(function(c, i){
+    var b = document.createElement('button');
+    b.className = 'choice';
+    b.dataset.key = i + 1;
+    b.textContent = money(c);
+    b.setAttribute('aria-label', spoken(c));
+    b.onclick = function(){ pickCount(b, c); };
+    box.appendChild(b);
+  });
+  $('srStatus').textContent = 'The tip jar has ' + describe(cPieces) + '. How much is it?';
+}
+
+function pickCount(btn, c){
+  if (cBusy) return;
+  if (c === cAnswer) {
+    cBusy = true;
+    if (cFirst) score++;
+    $('countScore').textContent = 'First try ' + score;
+    btn.classList.add('right');
+    document.querySelectorAll('.choice').forEach(function(b){ b.disabled = b !== btn; });
+    $('countPrompt').textContent = 'Yes, it is ' + money(c) + '!';
+    $('countCountText').innerHTML = 'Start with the biggest: ' + countOn(cPieces);
+    $('countCount').classList.remove('hidden');
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + spoken(c) + '.';
+    timer = setTimeout(nextCount, 2800);
+  } else {
+    cFirst = false;
+    btn.classList.add('wrong', 'shake');
+    btn.disabled = true;
+    var hint = c === cPieces.length ? 'Each coin has its own value. Not every coin is 1 cent.' :
+      'Sort them first. Count the biggest ones, then count on with the smaller ones.';
+    if (cPieces.indexOf('dime') !== -1 && cPieces.indexOf('nickel') !== -1) hint += ' Remember, the small dime is worth more than the big nickel.';
+    $('countPrompt').textContent = hint;
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + hint;
+  }
+}
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown', function(e){
+  var payOn = !$('payScreen').classList.contains('hidden');
+  var countOnScr = !$('countScreen').classList.contains('hidden');
+  if (!payOn && !countOnScr) return;
+  if (/^[1-5]$/.test(e.key)) {
+    var b = document.querySelector((payOn ? '.purse-btn' : '.choice') + '[data-key="' + e.key + '"]');
+    if (b && !b.disabled) b.click();
+  } else if (payOn && e.key === 'Backspace') {
+    if (onCounter.length) removePiece(onCounter.length - 1);
+    e.preventDefault();
+  } else if (payOn && e.key === 'Enter' && document.activeElement === document.body) {
+    pay();
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(document.querySelectorAll(payOn ? '.purse-btn:enabled' : '.choice:enabled'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+$('startArt').innerHTML = ['penny','nickel','dime','quarter'].map(pieceHtml).join('');
+</script>
+</body>
+</html>
