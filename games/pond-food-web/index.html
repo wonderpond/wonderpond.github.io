@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond food web - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Follow the sun's energy through a pond. Build food chains, explore the food web, and predict what happens when one animal disappears. A free food web science game for grades 4 and 5 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#5FA9CF;
+  --amber:#F5C84C;
+  --amber-dark:#C99A17;
+  --red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--water) 26%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:16px 42px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.note{font-size:.9rem;color:#6E8C86;margin-top:12px;max-width:660px;margin-left:auto;margin-right:auto}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 8px;
+  background:rgba(255,255,255,.88);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%;
+}
+.legend{
+  display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.95rem;color:var(--teal-dark);
+  background:rgba(255,255,255,.75);border-radius:999px;padding:4px 14px;margin-bottom:8px;
+}
+.legend svg{width:44px;height:14px}
+.pic{display:block;width:100%;height:auto}
+
+/* Organism cards */
+.org{
+  border:none;background:#fff;border-radius:20px;cursor:pointer;padding:6px 6px 8px;
+  width:clamp(96px,14vw,124px);box-shadow:0 5px 0 rgba(18,64,58,.22);
+  transition:transform .12s ease,opacity .15s ease;color:var(--teal-dark);
+}
+.org:hover:enabled{transform:translateY(-3px)}
+.org:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.org:disabled{opacity:.2;cursor:default;box-shadow:none}
+.org .lbl,.slot .lbl,.node .lbl{display:block;font-family:"Baloo 2",sans-serif;font-weight:700;line-height:1.05}
+.org .lbl{font-size:clamp(.85rem,1.8vw,1rem)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+
+/* Food chain */
+.chain{display:flex;align-items:center;justify-content:center;gap:4px;margin:8px auto 4px;flex-wrap:nowrap}
+.slot{
+  width:clamp(104px,15vw,140px);min-height:clamp(128px,18vw,168px);
+  border-radius:20px;border:4px dashed #fff;background:rgba(255,255,255,.3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;
+  color:var(--teal-dark);cursor:pointer;position:relative;
+}
+.slot:disabled{cursor:default}
+.slot .num{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:2rem;color:#fff;opacity:.9}
+.slot.filled{border-style:solid;background:#fff;box-shadow:0 5px 0 rgba(18,64,58,.22)}
+.slot .lbl{font-size:clamp(.85rem,1.8vw,1.02rem)}
+.slot.fixed{border-color:var(--amber);background:#FFF6D8}
+.slot.right{border-color:var(--green);background:#E4F5E9}
+.slot.wrong{border-color:var(--red);background:var(--red);color:#fff}
+.slot .role{
+  position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);white-space:nowrap;
+  font-weight:700;font-size:.8rem;color:var(--teal-dark);background:#FFF3C8;border-radius:999px;padding:2px 10px;
+}
+.link{width:34px;flex:none}
+.tray{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  margin:42px auto 0;padding:14px;max-width:760px;
+  background:rgba(255,255,255,.3);border-radius:26px;
+}
+.fact{
+  margin:40px auto 0;max-width:720px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);
+  background:rgba(255,255,255,.92);border-radius:18px;padding:10px 18px;
+}
+
+/* Food web */
+.web-scroll{overflow-x:auto;margin:0 auto;max-width:min(900px,max(560px,calc((100vh - 360px) * 900 / 700)));min-width:0;padding-bottom:6px}
+.web{
+  position:relative;width:100%;min-width:560px;aspect-ratio:900/700;
+  background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.12));border-radius:26px;
+}
+.web svg.links{position:absolute;inset:0;width:100%;height:100%}
+.links line{stroke:#fff;stroke-width:3.5;opacity:.85;transition:stroke .2s ease,opacity .2s ease}
+.links line.hot{stroke:var(--amber);opacity:1;stroke-width:5}
+.links line.dim{opacity:.25}
+.node{
+  position:absolute;transform:translate(-50%,-38%);width:11.5%;
+  border:none;background:#fff;border-radius:50% 50% 22px 22px;cursor:pointer;padding:4px 4px 6px;
+  box-shadow:0 4px 0 rgba(18,64,58,.22);color:var(--teal-dark);transition:transform .12s ease,opacity .2s ease;
+}
+.node .lbl{font-size:clamp(.7rem,1.35vw,.92rem)}
+.node:hover:enabled{transform:translate(-50%,-38%) scale(1.06)}
+.node:disabled{cursor:default}
+.node.target{box-shadow:0 0 0 5px var(--amber),0 4px 0 rgba(18,64,58,.22)}
+.node.gone{opacity:.35}
+.node.gone::after{
+  content:"";position:absolute;inset:8% 14% 30%;
+  background:
+    linear-gradient(45deg,transparent 46%,var(--red) 46%,var(--red) 54%,transparent 54%),
+    linear-gradient(-45deg,transparent 46%,var(--red) 46%,var(--red) 54%,transparent 54%);
+}
+.node.right{background:#E4F5E9;box-shadow:0 0 0 5px var(--green)}
+.node.wrong{background:var(--red);color:#fff}
+.node.sun{background:#FFF6D8}
+.decomp-note{
+  position:absolute;right:2%;top:3%;width:20%;font-size:clamp(.62rem,1.1vw,.8rem);font-weight:700;
+  color:var(--teal-dark);background:rgba(255,255,255,.8);border-radius:12px;padding:4px 8px;line-height:1.2;
+}
+.answers{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:4px 0 12px}
+.web-fact{margin:0 auto 10px}
+.ans-btn{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.4rem;padding:12px 32px;border-radius:999px;border:none;
+  background:#fff;color:var(--teal-dark);cursor:pointer;box-shadow:0 6px 0 rgba(18,64,58,.22);min-width:190px;
+}
+.ans-btn:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans-btn.right{background:#E4F5E9;box-shadow:0 6px 0 var(--green)}
+.ans-btn.wrong{background:var(--red);color:#fff}
+.ans-btn:disabled{cursor:default}
+
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (max-width:700px){
+  .chain{flex-direction:column;gap:2px}
+  .chain .link{transform:rotate(90deg);width:28px}
+  .slot{flex-direction:row;width:min(92vw,300px);min-height:84px;gap:10px;justify-content:flex-start;padding:4px 12px}
+  .slot .pic{width:70px}
+  .slot .role{position:static;transform:none;margin-left:auto}
+  .tray{margin-top:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:330px;max-width:100%;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond food web</h1>
+      <p class="sub">Every living thing in the pond needs energy. Follow it from the sun, through the plants, all the way to the heron.</p>
+      <div class="row">
+        <button class="big-btn" onclick="startChains()">Build food chains</button>
+        <button class="big-btn alt" onclick="startWeb()">Explore the web</button>
+      </div>
+      <p class="note">Build food chains: put the living things in order so the energy flows from the sun to the top of the chain. Explore the web: find who eats whom, spot producers and decomposers, and predict what happens when one animal disappears. In both games, an arrow means "gives energy to," so it always points to the eater.</p>
+    </div>
+  </section>
+
+  <!-- Food chains -->
+  <section class="screen hidden" id="chainScreen">
+    <div class="hud">
+      <span class="chip" id="chainRound">Chain 1 of 6</span>
+      <span class="chip" id="chainScore">First try 0</span>
+    </div>
+    <p class="prompt" id="chainPrompt">Follow the energy from the sun</p>
+    <div><span class="legend" aria-hidden="true"><svg viewBox="0 0 44 14"><path d="M2 7 H36 M30 2 L38 7 L30 12" stroke="#1F6E68" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>gives energy to</span></div>
+    <div class="chain" id="chain" role="group" aria-label="Food chain"></div>
+    <p class="fact hidden" id="chainFact" role="status"></p>
+    <div class="tray" id="tray" role="group" aria-label="Living things to place"></div>
+  </section>
+
+  <!-- Food web -->
+  <section class="screen hidden" id="webScreen">
+    <div class="hud">
+      <span class="chip" id="webRound">Question 1 of 10</span>
+      <span class="chip" id="webScore">First try 0</span>
+    </div>
+    <p class="prompt" id="webPrompt">Tap an animal that eats algae</p>
+    <div class="answers hidden" id="answers" role="group" aria-label="Answer choices"></div>
+    <p class="fact web-fact hidden" id="webFact"></p>
+    <div><span class="legend" aria-hidden="true"><svg viewBox="0 0 44 14"><path d="M2 7 H36 M30 2 L38 7 L30 12" stroke="#1F6E68" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>gives energy to</span></div>
+    <div class="web-scroll"><div class="web" id="web"></div></div>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Energy expert!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+/* ---------- Pictures (100 x 100 grid) ---------- */
+function svgWrap(inner){ return '<svg class="pic" viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + inner + '</svg>'; }
+function eye(x, y, r){ return '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="#fff"/><circle cx="' + (x + r * .15) + '" cy="' + (y + r * .15) + '" r="' + (r * .5) + '" fill="#22303B"/>'; }
+
+var PICS = {
+  sun: function(){
+    var s = '';
+    for (var i = 0; i < 12; i++) {
+      var a = i * Math.PI / 6, x1 = 50 + 28 * Math.cos(a), y1 = 50 + 28 * Math.sin(a), x2 = 50 + 40 * Math.cos(a), y2 = 50 + 40 * Math.sin(a);
+      s += '<path d="M' + x1.toFixed(1) + ' ' + y1.toFixed(1) + ' L' + x2.toFixed(1) + ' ' + y2.toFixed(1) + '" stroke="#F5B82E" stroke-width="5" stroke-linecap="round"/>';
+    }
+    return s + '<circle cx="50" cy="50" r="22" fill="#F5C84C"/><path d="M41 54 Q50 62 59 54" stroke="#C97E12" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="42" cy="46" r="2.4" fill="#C97E12"/><circle cx="58" cy="46" r="2.4" fill="#C97E12"/>';
+  },
+  algae: function(){
+    return '<path d="M20 78 Q30 60 22 44 Q16 30 28 20" stroke="#5DAA4C" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M44 84 Q54 62 44 46 Q38 32 50 16" stroke="#4E9A3E" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M70 80 Q80 64 72 50 Q66 38 78 26" stroke="#5DAA4C" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<g fill="#7CC47F" stroke="#3F9457" stroke-width="1.4"><circle cx="30" cy="62" r="6"/><circle cx="38" cy="70" r="5"/><circle cx="58" cy="58" r="6.5"/><circle cx="64" cy="70" r="5"/><circle cx="54" cy="34" r="5"/><circle cx="80" cy="42" r="5.5"/><circle cx="18" cy="36" r="4.5"/></g>';
+  },
+  pondweed: function(){
+    return '<path d="M16 88 H84" stroke="#8A6A45" stroke-width="6" stroke-linecap="round"/>' +
+      '<path d="M34 86 Q28 60 36 42 Q42 26 34 10" stroke="#3F9457" stroke-width="3" fill="none"/>' +
+      '<path d="M60 86 Q68 62 60 44 Q54 28 64 14" stroke="#3F9457" stroke-width="3" fill="none"/>' +
+      '<g fill="#5DB35A"><ellipse cx="26" cy="64" rx="10" ry="4" transform="rotate(-30 26 64)"/><ellipse cx="44" cy="52" rx="10" ry="4" transform="rotate(25 44 52)"/>' +
+      '<ellipse cx="28" cy="34" rx="9" ry="3.6" transform="rotate(-35 28 34)"/><ellipse cx="42" cy="22" rx="8" ry="3.4" transform="rotate(25 42 22)"/>' +
+      '<ellipse cx="70" cy="66" rx="10" ry="4" transform="rotate(30 70 66)"/><ellipse cx="52" cy="54" rx="10" ry="4" transform="rotate(-25 52 54)"/>' +
+      '<ellipse cx="70" cy="36" rx="9" ry="3.6" transform="rotate(30 70 36)"/><ellipse cx="56" cy="26" rx="8" ry="3.4" transform="rotate(-30 56 26)"/></g>';
+  },
+  tadpole: function(){
+    return '<path d="M52 52 Q66 40 76 52 T94 50" stroke="#3E5A3C" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="38" cy="52" rx="17" ry="14" fill="#3E5A3C"/>' + eye(31, 47, 3.2);
+  },
+  mayfly: function(){
+    return '<path d="M78 50 Q88 40 96 36 M78 52 L97 52 M78 54 Q88 64 96 68" stroke="#8A6A45" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<path d="M34 46 L26 34 M42 46 L40 32 M34 58 L26 70 M42 58 L40 72 M50 58 L54 70" stroke="#8A6A45" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="54" cy="52" rx="26" ry="9" fill="#B08850"/>' +
+      '<g fill="#D9C08E"><ellipse cx="54" cy="44" rx="3" ry="4"/><ellipse cx="62" cy="44" rx="3" ry="4"/><ellipse cx="70" cy="45" rx="3" ry="3.6"/></g>' +
+      '<circle cx="26" cy="52" r="9" fill="#9A7345"/>' + eye(22, 49, 2.4) +
+      '<path d="M20 46 L10 38 M22 44 L16 34" stroke="#8A6A45" stroke-width="1.6" stroke-linecap="round"/>';
+  },
+  snail: function(){
+    return '<path d="M12 74 Q30 64 70 68 Q84 70 88 76 Q60 82 12 78Z" fill="#E4C9A0"/>' +
+      '<path d="M20 70 L14 56 M26 68 L24 54" stroke="#C9A878" stroke-width="3" stroke-linecap="round"/><circle cx="14" cy="55" r="2.6" fill="#22303B"/><circle cx="24" cy="53" r="2.6" fill="#22303B"/>' +
+      '<circle cx="54" cy="50" r="24" fill="#C1693C"/>' +
+      '<path d="M54 50 m0 -4 a4 4 0 1 1 -4 4 a9 9 0 0 1 9 -9 a14 14 0 0 1 14 14 a19 19 0 0 1 -19 19 a22 22 0 0 1 -22 -22" stroke="#8E4A28" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  },
+  dragonfly: function(){
+    return '<g fill="#DDF3FA" stroke="#7FB9CC" stroke-width="1.5" opacity=".95">' +
+      '<ellipse cx="30" cy="34" rx="22" ry="7" transform="rotate(-12 30 34)"/><ellipse cx="70" cy="34" rx="22" ry="7" transform="rotate(12 70 34)"/>' +
+      '<ellipse cx="32" cy="48" rx="19" ry="6" transform="rotate(12 32 48)"/><ellipse cx="68" cy="48" rx="19" ry="6" transform="rotate(-12 68 48)"/></g>' +
+      '<path d="M50 44 V92" stroke="#2E7FB8" stroke-width="6" stroke-linecap="round"/>' +
+      '<ellipse cx="50" cy="40" rx="6" ry="9" fill="#2E7FB8"/>' +
+      '<circle cx="44" cy="24" r="6.5" fill="#2B5E8C"/><circle cx="56" cy="24" r="6.5" fill="#2B5E8C"/><circle cx="42.5" cy="22.5" r="2" fill="#fff"/><circle cx="54.5" cy="22.5" r="2" fill="#fff"/>';
+  },
+  sunfish: function(){
+    return '<path d="M74 50 L94 34 Q90 50 94 66Z" fill="#3E8E86"/>' +
+      '<ellipse cx="46" cy="50" rx="32" ry="22" fill="#4FA39A"/>' +
+      '<path d="M22 58 Q46 76 72 58 Q46 70 22 58Z" fill="#F39C3D"/>' +
+      '<path d="M40 30 Q52 20 64 30" stroke="#3E8E86" stroke-width="6" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="28" cy="44" r="4" fill="#22303B"/><circle cx="29" cy="43" r="1.3" fill="#fff"/>' +
+      '<ellipse cx="38" cy="50" rx="3" ry="4" fill="#1F4E6B"/>' +
+      '<path d="M14 52 Q18 54 22 52" stroke="#1F4E4A" stroke-width="2" fill="none" stroke-linecap="round"/>';
+  },
+  frog: function(){
+    return '<ellipse cx="26" cy="74" rx="12" ry="6" fill="#3F9457"/><ellipse cx="74" cy="74" rx="12" ry="6" fill="#3F9457"/>' +
+      '<ellipse cx="50" cy="62" rx="24" ry="17" fill="#4FB06A"/>' +
+      '<circle cx="39" cy="44" r="8" fill="#4FB06A"/><circle cx="61" cy="44" r="8" fill="#4FB06A"/>' + eye(39, 44, 5) + eye(61, 44, 5) +
+      '<path d="M41 64 Q50 72 59 64" stroke="#1F5B36" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="40" cy="79" rx="6" ry="3" fill="#3F9457"/><ellipse cx="60" cy="79" rx="6" ry="3" fill="#3F9457"/>';
+  },
+  heron: function(){
+    return '<path d="M44 66 L40 96 M52 66 L56 96" stroke="#8A8F8C" stroke-width="2.6" stroke-linecap="round"/>' +
+      '<path d="M30 58 Q24 40 44 38 Q62 38 64 54 Q60 66 44 68 Q34 68 30 58Z" fill="#A9B4BA"/>' +
+      '<path d="M30 58 Q18 62 12 70 Q24 66 34 64Z" fill="#7F8C94"/>' +
+      '<path d="M40 44 Q48 32 58 32 Q64 30 62 22 Q60 14 68 12" stroke="#C6D0D4" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="70" cy="13" r="6" fill="#DDE4E7"/><path d="M75 12 L94 16 L75 16Z" fill="#E0A83A"/>' +
+      '<path d="M66 8 Q58 6 54 10" stroke="#3A4A52" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="71" cy="12" r="1.6" fill="#22303B"/>';
+  },
+  bacteria: function(){
+    return '<path d="M8 80 Q50 70 92 80 V92 H8Z" fill="#8A6A45"/>' +
+      '<g fill="#B79BD9" stroke="#7E5FA8" stroke-width="1.6">' +
+      '<rect x="18" y="34" width="26" height="11" rx="5.5" transform="rotate(-20 31 39)"/>' +
+      '<rect x="52" y="24" width="28" height="11" rx="5.5" transform="rotate(15 66 29)"/>' +
+      '<circle cx="40" cy="62" r="7"/><circle cx="52" cy="60" r="7"/><circle cx="72" cy="56" r="8"/></g>' +
+      '<path d="M44 34 Q50 30 52 36 M80 34 Q86 38 90 34 M80 58 Q86 54 90 60" stroke="#7E5FA8" stroke-width="1.6" fill="none" stroke-linecap="round"/>';
+  }
+};
+
+/* ---------- The pond ---------- */
+var ORGS = {
+  sun:       { name: 'Sun', role: 'energy source', x: 450, y: 612 },
+  algae:     { name: 'Algae', role: 'producer', x: 250, y: 515 },
+  pondweed:  { name: 'Pondweed', role: 'producer', x: 615, y: 525 },
+  tadpole:   { name: 'Tadpole', role: 'consumer', x: 120, y: 375 },
+  mayfly:    { name: 'Mayfly nymph', role: 'consumer', x: 400, y: 375 },
+  snail:     { name: 'Snail', role: 'consumer', x: 735, y: 395 },
+  dragonfly: { name: 'Dragonfly', role: 'consumer', x: 250, y: 245 },
+  frog:      { name: 'Frog', role: 'consumer', x: 130, y: 105 },
+  sunfish:   { name: 'Sunfish', role: 'consumer', x: 560, y: 160 },
+  heron:     { name: 'Heron', role: 'consumer', x: 360, y: 62 },
+  bacteria:  { name: 'Bacteria', role: 'decomposer', x: 835, y: 535 }
+};
+/* [food, eater]: energy moves from the first to the second */
+var LINKS = [
+  ['sun','algae'], ['sun','pondweed'],
+  ['algae','tadpole'], ['algae','mayfly'], ['algae','snail'], ['pondweed','snail'],
+  ['tadpole','dragonfly'], ['mayfly','dragonfly'], ['mayfly','sunfish'], ['snail','sunfish'],
+  ['dragonfly','frog'], ['dragonfly','sunfish'],
+  ['sunfish','heron'], ['frog','heron']
+];
+var CHAINS = [
+  ['sun','algae','tadpole','dragonfly'],
+  ['sun','algae','mayfly','sunfish','heron'],
+  ['sun','pondweed','snail','sunfish','heron'],
+  ['sun','algae','mayfly','dragonfly','frog'],
+  ['sun','algae','tadpole','dragonfly','sunfish'],
+  ['sun','algae','snail','sunfish']
+];
+var ROLE_NAMES = ['energy source', 'producer', 'primary consumer', 'secondary consumer', 'tertiary consumer'];
+/* What-if questions only where the answer is clear from this web */
+var WHATIFS = [
+  { gone: 'heron', ask: 'frog', ans: 'more', why: 'Herons eat frogs. With no herons hunting them, more frogs survive.' },
+  { gone: 'heron', ask: 'sunfish', ans: 'more', why: 'Herons eat sunfish. With no herons, more sunfish survive.' },
+  { gone: 'sunfish', ask: 'snail', ans: 'more', why: 'Sunfish eat snails. With no sunfish, more snails survive.' },
+  { gone: 'dragonfly', ask: 'tadpole', ans: 'more', why: 'Dragonflies eat tadpoles. With no dragonflies, more tadpoles survive.' },
+  { gone: 'algae', ask: 'tadpole', ans: 'fewer', why: 'In this pond, tadpoles only eat algae. With no algae, tadpoles run out of food.' },
+  { gone: 'algae', ask: 'mayfly', ans: 'fewer', why: 'Mayfly nymphs only eat algae here. No algae means no food for them.' },
+  { gone: 'dragonfly', ask: 'frog', ans: 'fewer', why: 'In this web, frogs only eat dragonflies. With no dragonflies, frogs have less food.' },
+  { gone: 'sun', ask: 'algae', ans: 'fewer', why: 'Algae is a producer. It makes its own food using energy from sunlight.' }
+];
+
+var CHAIN_ROUNDS = CHAINS.length;
+var WEB_ROUNDS = 10;
+var lastMode = 'chain';
+var soundOn = true;
+var audioCtx = null;
+var timer = null;
+
+function $(id){ return document.getElementById(id); }
+function nm(id){ return ORGS[id].name; }
+function low(id){ return id === 'sun' ? 'the sun' : ORGS[id].name.toLowerCase(); }
+function plural(id){
+  var p = { algae: 'algae', pondweed: 'pondweed', tadpole: 'tadpoles', mayfly: 'mayfly nymphs', snail: 'snails', dragonfly: 'dragonflies', frog: 'frogs', sunfish: 'sunfish', heron: 'herons', bacteria: 'bacteria' };
+  return p[id];
+}
+function eatersOf(id){ return LINKS.filter(function(l){ return l[0] === id; }).map(function(l){ return l[1]; }); }
+function foodsOf(id){ return LINKS.filter(function(l){ return l[1] === id; }).map(function(l){ return l[0]; }); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.16, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440], 0.07); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function sndFlow(){ beep([392, 494, 587, 698, 880], 0.09); }
+
+function hideAll(){ ['startScreen','chainScreen','webScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); }); }
+function backToStart(){ clearTimeout(timer); hideAll(); $('startScreen').classList.remove('hidden'); }
+function playAgain(){ if (lastMode === 'chain') startChains(); else startWeb(); }
+function showEnd(title, line, stars){
+  hideAll();
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+
+var LINK_ARROW = '<svg class="link" viewBox="0 0 34 20" aria-hidden="true"><path d="M3 10 H26 M20 4 L28 10 L20 16" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+/* ---------- Build food chains ---------- */
+var chainOrder = [];
+var cRound = 0;
+var cScore = 0;
+var chain = [];
+var cards = [];
+var slots = [];
+var cFirst = true;
+var cBusy = false;
+
+function startChains(){
+  lastMode = 'chain';
+  chainOrder = shuffle(CHAINS);
+  cRound = 0;
+  cScore = 0;
+  hideAll();
+  $('chainScreen').classList.remove('hidden');
+  nextChain();
+}
+
+function nextChain(){
+  cRound++;
+  if (cRound > CHAIN_ROUNDS) {
+    var stars = cScore >= 5 ? 3 : cScore >= 4 ? 2 : 1;
+    var title = cScore >= 5 ? 'Energy expert!' : cScore >= 4 ? 'Chain champion!' : 'Keep following the energy!';
+    showEnd(title, 'You built ' + cScore + ' of ' + CHAIN_ROUNDS + ' food chains on the first try.', stars);
+    return;
+  }
+  cBusy = false;
+  cFirst = true;
+  chain = chainOrder[cRound - 1];
+  var rest = chain.slice(1), mixed;
+  do { mixed = shuffle(rest); } while (mixed.join() === rest.join());
+  cards = mixed.map(function(id){ return { id: id, used: false }; });
+  slots = rest.map(function(){ return null; });
+  $('chainRound').textContent = 'Chain ' + cRound + ' of ' + CHAIN_ROUNDS;
+  $('chainScore').textContent = 'First try ' + cScore;
+  $('chainPrompt').textContent = 'Follow the energy from the sun';
+  $('chainFact').classList.add('hidden');
+  drawChain(false);
+  $('srStatus').textContent = 'A food chain starts with the sun. Put ' + rest.length + ' living things in order after it.';
+}
+
+function drawChain(done){
+  var html = '<div class="slot filled fixed" aria-label="The sun, the start of the chain">' + svgWrap(PICS.sun()) + '<span class="lbl">Sun</span>' +
+    (done ? '<span class="role">' + ROLE_NAMES[0] + '</span>' : '') + '</div>';
+  slots.forEach(function(ci, i){
+    html += LINK_ARROW;
+    var inner = ci === null
+      ? '<span class="num">' + (i + 2) + '</span>'
+      : svgWrap(PICS[cards[ci].id]()) + '<span class="lbl">' + nm(cards[ci].id) + '</span>';
+    if (done) inner += '<span class="role">' + ROLE_NAMES[Math.min(i + 1, ROLE_NAMES.length - 1)] + '</span>';
+    var aria = 'Spot ' + (i + 2) + (ci === null ? ', empty' : ', ' + nm(cards[ci].id) + '. Tap to take it out.');
+    html += '<button class="slot' + (ci !== null ? ' filled' : '') + (done ? ' right' : '') + '"' + (cBusy || ci === null ? ' disabled' : '') +
+      ' aria-label="' + aria + '" onclick="unplace(' + i + ')">' + inner + '</button>';
+  });
+  $('chain').innerHTML = html;
+  var hadFocus = document.activeElement && document.activeElement.classList.contains('org');
+  var tray = $('tray');
+  tray.innerHTML = '';
+  cards.forEach(function(c, i){
+    var b = document.createElement('button');
+    b.className = 'org';
+    b.dataset.key = i + 1;
+    b.innerHTML = svgWrap(PICS[c.id]()) + '<span class="lbl">' + nm(c.id) + '</span>';
+    b.setAttribute('aria-label', nm(c.id));
+    b.disabled = cBusy || c.used;
+    b.onclick = function(){ place(i); };
+    tray.appendChild(b);
+  });
+  if (hadFocus) { var f = tray.querySelector('.org:enabled'); if (f) f.focus(); }
+}
+
+function place(ci){
+  if (cBusy || cards[ci].used) return;
+  var s = slots.indexOf(null);
+  if (s === -1) return;
+  slots[s] = ci;
+  cards[ci].used = true;
+  sndPlop();
+  drawChain(false);
+  if (slots.indexOf(null) === -1) checkChain();
+}
+
+function unplace(s){
+  if (cBusy || slots[s] === null) return;
+  cards[slots[s]].used = false;
+  slots[s] = null;
+  drawChain(false);
+}
+
+function checkChain(){
+  var want = chain.slice(1);
+  var wrong = [];
+  slots.forEach(function(ci, i){ if (cards[ci].id !== want[i]) wrong.push(i); });
+  cBusy = true;
+  if (!wrong.length) {
+    if (cFirst) cScore++;
+    $('chainScore').textContent = 'First try ' + cScore;
+    drawChain(true);
+    $('chainPrompt').textContent = 'The energy flows all the way up!';
+    var sentence = 'The sun gives energy to the ' + low(chain[1]) + want.slice(1).map(function(id){ return ', then the ' + low(id); }).join('') + '.';
+    $('chainFact').textContent = sentence;
+    $('chainFact').classList.remove('hidden');
+    sndFlow();
+    $('srStatus').textContent = 'Correct! ' + sentence;
+    timer = setTimeout(nextChain, 3800);
+  } else {
+    cFirst = false;
+    var els = $('chain').querySelectorAll('button.slot');
+    wrong.forEach(function(i){ els[i].classList.add('wrong', 'shake'); });
+    var first = wrong[0];
+    var prev = first === 0 ? 'sun' : want[first - 1];
+    var hint = first === 0
+      ? 'Only a producer can take energy straight from the sun.'
+      : 'Look at spot ' + (first + 2) + '. What eats the ' + low(prev) + '?';
+    $('chainPrompt').textContent = hint;
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + hint;
+    timer = setTimeout(function(){
+      cBusy = false;
+      wrong.forEach(function(i){ cards[slots[i]].used = false; slots[i] = null; });
+      drawChain(false);
+    }, 1000);
+  }
+}
+
+/* ---------- Explore the web ---------- */
+var deck = [];
+var wRound = 0;
+var wScore = 0;
+var wq = null;
+var wFirst = true;
+var wBusy = false;
+
+function buildWeb(){
+  var R = 52;
+  var svg = '<svg class="links" viewBox="0 0 900 700" aria-hidden="true">' +
+    '<defs><marker id="headW" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#fff"/></marker>' +
+    '<marker id="headA" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#F5C84C"/></marker></defs>';
+  LINKS.forEach(function(l, i){
+    var a = ORGS[l[0]], b = ORGS[l[1]];
+    var dx = b.x - a.x, dy = b.y - a.y, len = Math.sqrt(dx * dx + dy * dy);
+    var x1 = a.x + dx / len * R, y1 = a.y + dy / len * R, x2 = b.x - dx / len * (R + 6), y2 = b.y - dy / len * (R + 6);
+    svg += '<line data-i="' + i + '" x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" marker-end="url(#headW)"/>';
+  });
+  svg += '</svg>';
+  var html = svg;
+  Object.keys(ORGS).forEach(function(id){
+    var o = ORGS[id];
+    html += '<button class="node' + (id === 'sun' ? ' sun' : '') + '" data-id="' + id + '" style="left:' + (o.x / 9) + '%;top:' + (o.y / 7) + '%" aria-label="' + o.name + '">' +
+      svgWrap(PICS[id]()) + '<span class="lbl">' + o.name + '</span></button>';
+  });
+  html += '<div class="decomp-note">Decomposers like bacteria break down dead plants and animals from every level.</div>';
+  $('web').innerHTML = html;
+  $('web').querySelectorAll('.node').forEach(function(b){ b.onclick = function(){ tapNode(b); }; });
+}
+
+function setLinks(highlight, dimOthers){
+  $('web').querySelectorAll('.links line').forEach(function(line){
+    var l = LINKS[+line.dataset.i];
+    var hot = highlight && highlight(l);
+    line.classList.toggle('hot', !!hot);
+    line.classList.toggle('dim', !!(dimOthers && !hot));
+    line.setAttribute('marker-end', hot ? 'url(#headA)' : 'url(#headW)');
+  });
+}
+
+function makeDeck(){
+  var q = [];
+  var eatenThings = shuffle(['algae','pondweed','tadpole','mayfly','snail','dragonfly','sunfish','frog']);
+  var eaters = shuffle(['tadpole','mayfly','snail','dragonfly','frog','sunfish','heron']);
+  q.push({ type: 'eats', of: eatenThings[0] }, { type: 'eats', of: eatenThings[1] });
+  var f1 = eaters.filter(function(e){ return e !== eatenThings[0] && e !== eatenThings[1]; });
+  q.push({ type: 'food', of: f1[0] }, { type: 'food', of: f1[1] });
+  var roles = shuffle(['producer','decomposer','top','source']).slice(0, 2);
+  roles.forEach(function(r){ q.push({ type: 'role', role: r }); });
+  var wi = shuffle(WHATIFS);
+  var usedPair = {};
+  wi.forEach(function(w){ if (q.length < WEB_ROUNDS && !usedPair[w.ask]) { usedPair[w.ask] = 1; q.push({ type: 'whatif', w: w }); } });
+  return shuffle(q);
+}
+
+function startWeb(){
+  lastMode = 'web';
+  deck = makeDeck();
+  wRound = 0;
+  wScore = 0;
+  hideAll();
+  $('webScreen').classList.remove('hidden');
+  buildWeb();
+  nextWeb();
+}
+
+function acceptable(q){
+  if (q.type === 'eats') return eatersOf(q.of);
+  if (q.type === 'food') return foodsOf(q.of).filter(function(id){ return id !== 'sun'; });
+  if (q.type === 'role') {
+    if (q.role === 'producer') return ['algae','pondweed'];
+    if (q.role === 'decomposer') return ['bacteria'];
+    if (q.role === 'top') return ['heron'];
+    return ['sun'];
+  }
+  return [];
+}
+
+function questionText(q){
+  if (q.type === 'eats') return 'Tap an animal that eats ' + (q.of === 'algae' || q.of === 'pondweed' ? '' : 'the ') + low(q.of);
+  if (q.type === 'food') return 'Tap something the ' + low(q.of) + ' eats';
+  if (q.type === 'role') {
+    if (q.role === 'producer') return 'Tap a producer, a living thing that makes its own food';
+    if (q.role === 'decomposer') return 'Tap a decomposer';
+    if (q.role === 'top') return 'Tap the top predator, the one nothing here eats';
+    return 'Where does all the energy in this pond start?';
+  }
+  return 'What if every ' + (q.w.gone === 'sun' ? 'bit of sunlight' : singular(q.w.gone)) + ' disappeared? What would happen to the ' + plural(q.w.ask) + '?';
+}
+function singular(id){ return id === 'algae' ? 'bit of algae' : low(id); }
+
+function nextWeb(){
+  wRound++;
+  if (wRound > WEB_ROUNDS) {
+    var stars = wScore >= 9 ? 3 : wScore >= 7 ? 2 : 1;
+    var title = wScore >= 9 ? 'Energy expert!' : wScore >= 7 ? 'Web wizard!' : 'Keep following the energy!';
+    showEnd(title, 'You got ' + wScore + ' of ' + WEB_ROUNDS + ' on the first try.', stars);
+    return;
+  }
+  wBusy = false;
+  wFirst = true;
+  wq = deck[wRound - 1];
+  $('webRound').textContent = 'Question ' + wRound + ' of ' + WEB_ROUNDS;
+  $('webScore').textContent = 'First try ' + wScore;
+  $('webPrompt').textContent = questionText(wq);
+  $('webFact').classList.add('hidden');
+  $('web').querySelectorAll('.node').forEach(function(n){
+    n.className = 'node' + (n.dataset.id === 'sun' ? ' sun' : '');
+    n.disabled = wq.type === 'whatif';
+  });
+  setLinks(null, false);
+  var ans = $('answers');
+  if (wq.type === 'whatif') {
+    node(wq.w.gone).classList.add('gone');
+    node(wq.w.ask).classList.add('target');
+    setLinks(function(l){ return (l[0] === wq.w.gone && l[1] === wq.w.ask) || (l[1] === wq.w.gone && l[0] === wq.w.ask); }, false);
+    ans.innerHTML = '';
+    [['more', 'More ' + plural(wq.w.ask)], ['fewer', 'Fewer ' + plural(wq.w.ask)]].forEach(function(o, i){
+      var b = document.createElement('button');
+      b.className = 'ans-btn';
+      b.dataset.key = i + 1;
+      b.textContent = o[1];
+      b.onclick = function(){ answerWhatIf(b, o[0]); };
+      ans.appendChild(b);
+    });
+    ans.classList.remove('hidden');
+  } else {
+    ans.classList.add('hidden');
+  }
+  $('srStatus').textContent = questionText(wq);
+}
+
+function node(id){ return $('web').querySelector('.node[data-id="' + id + '"]'); }
+
+function tapNode(b){
+  if (wBusy || !wq || wq.type === 'whatif') return;
+  var id = b.dataset.id;
+  var ok = acceptable(wq);
+  if (ok.indexOf(id) !== -1) {
+    wBusy = true;
+    if (wFirst) wScore++;
+    $('webScore').textContent = 'First try ' + wScore;
+    b.classList.add('right');
+    var msg;
+    if (wq.type === 'eats') {
+      setLinks(function(l){ return l[0] === wq.of && l[1] === id; }, true);
+      msg = 'Yes! The ' + low(id) + ' eats ' + (wq.of === 'algae' || wq.of === 'pondweed' ? '' : 'the ') + low(wq.of) + ', so the arrow points to the ' + low(id) + '.';
+      if (ok.length > 1) msg += ' ' + others(ok, id) + ' eat' + (ok.length > 2 ? '' : 's') + ' it too.';
+    } else if (wq.type === 'food') {
+      setLinks(function(l){ return l[1] === wq.of && l[0] === id; }, true);
+      msg = 'Yes! Energy flows from the ' + low(id) + ' to the ' + low(wq.of) + '.';
+      if (ok.length > 1) msg += ' It also eats ' + others(ok, id).toLowerCase() + '.';
+    } else if (wq.role === 'producer') {
+      setLinks(function(l){ return l[0] === 'sun'; }, true);
+      msg = 'Yes! ' + nm(id) + ' makes its own food from sunlight, air, and water.';
+    } else if (wq.role === 'decomposer') {
+      msg = 'Yes! Bacteria break down dead things and return nutrients to the mud and water for plants to use again.';
+    } else if (wq.role === 'top') {
+      setLinks(function(l){ return l[1] === 'heron'; }, true);
+      msg = 'Yes! Arrows point to the heron, but no arrows leave it. Nothing in this pond eats herons.';
+    } else {
+      setLinks(function(l){ return l[0] === 'sun'; }, true);
+      msg = 'Yes! Producers catch the sun\'s energy, and it flows up the web from there.';
+    }
+    $('webFact').textContent = msg;
+    $('webFact').classList.remove('hidden');
+    sndGood();
+    $('srStatus').textContent = msg;
+    timer = setTimeout(nextWeb, 3200);
+  } else {
+    wFirst = false;
+    b.classList.add('wrong', 'shake');
+    setTimeout(function(){ b.classList.remove('wrong', 'shake'); }, 700);
+    var hint;
+    if (wq.type === 'eats') hint = 'Find the ' + low(wq.of) + ' and follow an arrow away from it.';
+    else if (wq.type === 'food') hint = 'Find the ' + low(wq.of) + ' and look at the arrows coming into it.';
+    else if (wq.role === 'producer') hint = 'Producers get their energy straight from the sun.';
+    else if (wq.role === 'decomposer') hint = 'Decomposers break down dead things. Look near the mud.';
+    else if (wq.role === 'top') hint = 'Look for an animal with arrows coming in, but none going out.';
+    else hint = 'Follow the arrows back down as far as they go.';
+    $('webFact').textContent = hint;
+    $('webFact').classList.remove('hidden');
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + hint;
+  }
+}
+
+function others(list, id){
+  var o = list.filter(function(x){ return x !== id; }).map(function(x, i){ return (i === 0 ? 'The ' : 'the ') + low(x); });
+  if (o.length === 1) return o[0];
+  return o.slice(0, -1).join(', ') + ' and ' + o[o.length - 1];
+}
+
+function answerWhatIf(b, choice){
+  if (wBusy) return;
+  if (choice === wq.w.ans) {
+    wBusy = true;
+    if (wFirst) wScore++;
+    $('webScore').textContent = 'First try ' + wScore;
+    b.classList.add('right');
+    $('answers').querySelectorAll('.ans-btn').forEach(function(x){ x.disabled = x !== b; });
+    $('webFact').textContent = 'Yes! ' + wq.w.why;
+    $('webFact').classList.remove('hidden');
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + wq.w.why;
+    timer = setTimeout(nextWeb, 3600);
+  } else {
+    wFirst = false;
+    b.classList.add('wrong', 'shake');
+    b.disabled = true;
+    var eats = LINKS.some(function(l){ return l[0] === wq.w.ask && l[1] === wq.w.gone; });
+    var hint = eats
+      ? 'Look at the arrow. Does the ' + low(wq.w.gone) + ' eat the ' + low(wq.w.ask) + ', or the other way around?'
+      : 'Look at the arrow. What gives energy to the ' + low(wq.w.ask) + '?';
+    $('webFact').textContent = hint;
+    $('webFact').classList.remove('hidden');
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + hint;
+  }
+}
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown', function(e){
+  var chainOn = !$('chainScreen').classList.contains('hidden');
+  var webOn = !$('webScreen').classList.contains('hidden');
+  if (!chainOn && !webOn) return;
+  var sel = chainOn ? '#tray .org:enabled' : (wq && wq.type === 'whatif' ? '#answers .ans-btn:enabled' : '#web .node:enabled');
+  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(document.querySelectorAll(sel));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  } else if (/^[1-5]$/.test(e.key)) {
+    var scope = chainOn ? '#tray .org' : '#answers .ans-btn';
+    var b = document.querySelector(scope + '[data-key="' + e.key + '"]');
+    if (b && !b.disabled && (chainOn || (wq && wq.type === 'whatif'))) b.click();
+  } else if (chainOn && e.key === 'Backspace') {
+    for (var s = slots.length - 1; s >= 0; s--) { if (slots[s] !== null) { unplace(s); break; } }
+    e.preventDefault();
+  }
+});
+
+/* Start screen art: a small chain */
+(function(){
+  var ids = ['sun','algae','tadpole','dragonfly','heron'], s = '<svg viewBox="0 0 250 60" aria-hidden="true">';
+  ids.forEach(function(id, i){
+    var x = 8 + i * 50;
+    s += '<circle cx="' + (x + 18) + '" cy="30" r="21" fill="#fff" stroke="#DFF2FA" stroke-width="2"/><g transform="translate(' + (x + 2) + ' 14) scale(.32)">' + PICS[id]() + '</g>';
+    if (i < ids.length - 1) s += '<path d="M' + (x + 41) + ' 30 H' + (x + 53) + ' M' + (x + 49) + ' 26 L' + (x + 54) + ' 30 L' + (x + 49) + ' 34" stroke="#1F6E68" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+  });
+  $('startArt').innerHTML = s + '</svg>';
+})();
+</script>
+</body>
+</html>
