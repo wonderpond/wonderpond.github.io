@@ -6,6 +6,14 @@
 <title>Wonder Pond - Free learning games for elementary classrooms</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
 <meta name="description" content="Wonder Pond is a free playground of learning games for elementary classrooms. No ads, no sign-ups, no installs. Made by Dr. Henry Yu, built for big screens and little hands.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://wonderpond.github.io/">
+<meta property="og:title" content="Wonder Pond - Free learning games for elementary classrooms">
+<meta property="og:description" content="Free learning games for K-5 classrooms. No ads, no sign-ups, no installs.">
+<meta property="og:image" content="https://wonderpond.github.io/assets/og-image.jpg">
+<meta property="og:image:alt" content="Edie holding the frogs Hop and Skip next to the words Wonder Pond">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="image" href="assets/characters/edie-front.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -81,7 +89,7 @@ header{
 .wave{display:block;width:100%;height:60px;margin-top:-59px}
 
 /* Sections */
-section{padding:48px 0}
+section{padding:48px 0;scroll-margin-top:64px}
 .section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;flex-wrap:wrap}
 .section-head h2{font-size:1.7rem;font-weight:700}
 .section-head p{color:var(--ink-soft)}
@@ -201,6 +209,39 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
   font-size:1.4rem;cursor:pointer;color:#6E8C86;line-height:1;
 }
 
+/* Character art */
+.brand-mark{width:40px;height:auto;display:block}
+.hero-art{width:min(100%,340px);height:auto;filter:drop-shadow(0 10px 14px rgba(46,111,140,.22))}
+.friends-link{color:var(--teal-dark);font-weight:700;text-decoration-thickness:2px;text-underline-offset:3px}
+.teacher-art{width:96px;height:auto}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* Meet the pond friends */
+.friends{background:linear-gradient(var(--cream),var(--sky) 55%);padding-bottom:56px}
+.friend-row{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:24px;align-items:end;text-align:center}
+.friend{margin:0}
+.turn{display:flex;align-items:flex-end;justify-content:center;width:100%;background:none;border:0;padding:0 0 18px;cursor:pointer;position:relative;isolation:isolate;border-radius:var(--radius-lg)}
+.turn::after{content:"";position:absolute;left:12%;right:12%;bottom:4px;height:22px;border-radius:50%;background:radial-gradient(closest-side,rgba(127,192,222,.75),rgba(127,192,222,0));z-index:-1}
+.turn img{height:100%;width:auto;max-width:100%;object-fit:contain;transition:transform .16s ease-in}
+.friend-frog .turn{height:190px}
+.friend-edie .turn{height:340px}
+.turn:hover img{transform:translateY(-4px)}
+.turn img.mirror{transform:scaleX(-1)}
+.turn:hover img.mirror{transform:scaleX(-1) translateY(-4px)}
+.turn img.squash{transform:scaleX(.06)}
+.friend h3{font-size:1.45rem;margin:10px 0 4px}
+.friend-frog:first-child h3{color:var(--green)}
+.friend-frog:last-child h3{color:var(--teal)}
+.friend-edie h3{color:#A30A29}
+.friend p{color:var(--ink-soft);font-size:.98rem;max-width:22rem;margin:0 auto}
+.friends-origin{margin:30px auto 0;max-width:40rem;text-align:center;font-style:italic;color:var(--ink-soft)}
+@media (max-width:760px){
+  .friend-row{grid-template-columns:1fr 1fr;gap:28px 16px;align-items:start}
+  .friend-edie{grid-column:1 / -1;order:-1}
+  .friend-edie .turn{height:280px}
+  .friend-frog .turn{height:140px}
+}
+
 /* Motion */
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 @keyframes twinkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.82)}}
@@ -218,7 +259,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
   .hero-inner{grid-template-columns:1fr;text-align:center;padding:40px 0 64px}
   .hero p{margin-left:auto;margin-right:auto}
   .hero-ctas{justify-content:center}
-  .hero-art{order:-1;width:min(70vw,280px)}
+  .hero-art{order:-1;width:min(62vw,250px)}
   .nav-links{display:none}
   .nav-links.open{
     display:flex;flex-direction:column;position:absolute;top:100%;right:0;left:0;
@@ -237,15 +278,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
 <header>
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="Wonder Pond home">
-      <!-- Logo mark: two frogs peeking from the pond -->
-      <svg width="38" height="38" viewBox="0 0 60 60" aria-hidden="true">
-        <circle cx="30" cy="30" r="27" fill="#DFF2FA" stroke="#1F6E68" stroke-width="3"/>
-        <ellipse cx="30" cy="37" rx="17" ry="12" fill="#4FB06A"/>
-        <circle cx="23" cy="24" r="6" fill="#4FB06A"/><circle cx="37" cy="24" r="6" fill="#4FB06A"/>
-        <circle cx="23" cy="24" r="3.8" fill="#fff"/><circle cx="37" cy="24" r="3.8" fill="#fff"/>
-        <circle cx="23.5" cy="24.5" r="1.9" fill="#22303B"/><circle cx="37.5" cy="24.5" r="1.9" fill="#22303B"/>
-        <path class="twinkle" d="M46 9 L48 14 L53 16 L48 18 L46 23 L44 18 L39 16 L44 14 Z" fill="#F5C84C"/>
-      </svg>
+      <img class="brand-mark" src="assets/characters/hop-icon.webp" width="40" height="39" alt="">
       <span class="brand-name"><span class="w1">Wonder</span> <span class="w2">Pond</span></span>
     </a>
     <button class="menu-toggle" aria-expanded="false" aria-controls="navLinks" onclick="toggleMenu(this)">Menu</button>
@@ -265,7 +298,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
     <div class="wrap hero-inner">
       <div>
         <h1>Where curiosity comes to play</h1>
-        <p>Free learning games for elementary classrooms, made for big screens and little hands. Jump in with Edie, Hop, and Skip.</p>
+        <p>Free learning games for elementary classrooms, made for big screens and little hands. Jump in with <a class="friends-link" href="#friends">Edie, Hop, and Skip</a>.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="#subjects">Play now</a>
           <a class="btn btn-ghost" href="#favorites">Browse games</a>
@@ -273,117 +306,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
       </div>
 
       <!-- Edie with Hop and Skip -->
-      <svg class="hero-art" width="330" height="280" viewBox="0 0 240 204" role="img" aria-label="Edie, a smiling child, holding two friendly frogs named Hop and Skip above a pond">
-        <defs>
-          <radialGradient id="hx-skin" cx="38%" cy="32%" r="72%"><stop offset="0" stop-color="#FFE6CF"/><stop offset=".55" stop-color="#F6C9A2"/><stop offset="1" stop-color="#D89A70"/></radialGradient>
-          <radialGradient id="hx-hand" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#FFE6CF"/><stop offset=".6" stop-color="#F3C39A"/><stop offset="1" stop-color="#D2926A"/></radialGradient>
-          <radialGradient id="hx-hair" cx="40%" cy="25%" r="80%"><stop offset="0" stop-color="#9A7050"/><stop offset=".5" stop-color="#6B4A2F"/><stop offset="1" stop-color="#43291A"/></radialGradient>
-          <radialGradient id="hx-shirt" cx="38%" cy="25%" r="85%"><stop offset="0" stop-color="#E4415D"/><stop offset=".55" stop-color="#BA0C2F"/><stop offset="1" stop-color="#7E0620"/></radialGradient>
-          <linearGradient id="hx-collar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9D9C0"/></linearGradient>
-          <linearGradient id="hx-leg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#D89A70"/><stop offset=".4" stop-color="#FFE0C4"/><stop offset="1" stop-color="#D0906A"/></linearGradient>
-          <radialGradient id="hx-shoe" cx="35%" cy="25%" r="80%"><stop offset="0" stop-color="#B33A55"/><stop offset=".6" stop-color="#7A1B2E"/><stop offset="1" stop-color="#4A0E1B"/></radialGradient>
-          <radialGradient id="hx-green" cx="36%" cy="28%" r="78%"><stop offset="0" stop-color="#A6E89E"/><stop offset=".5" stop-color="#4FB06A"/><stop offset="1" stop-color="#27713F"/></radialGradient>
-          <radialGradient id="hx-teal" cx="36%" cy="28%" r="78%"><stop offset="0" stop-color="#9BE6E1"/><stop offset=".5" stop-color="#3FA7A3"/><stop offset="1" stop-color="#1D6461"/></radialGradient>
-          <radialGradient id="hx-eye" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D6E2E6"/></radialGradient>
-          <radialGradient id="hx-pond" cx="50%" cy="35%" r="65%"><stop offset="0" stop-color="#E4F5FC"/><stop offset=".6" stop-color="#A9D9EE"/><stop offset="1" stop-color="#7FC0DE"/></radialGradient>
-          <radialGradient id="hx-pad" cx="40%" cy="30%" r="75%"><stop offset="0" stop-color="#B5E8B0"/><stop offset=".6" stop-color="#6FBF7E"/><stop offset="1" stop-color="#3D8A52"/></radialGradient>
-          <radialGradient id="hx-blush" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#F28B8B" stop-opacity=".7"/><stop offset="1" stop-color="#F28B8B" stop-opacity="0"/></radialGradient>
-          <radialGradient id="hx-star" cx="45%" cy="40%" r="60%"><stop offset="0" stop-color="#FFF4C2"/><stop offset=".6" stop-color="#F5C84C"/><stop offset="1" stop-color="#D69A1E"/></radialGradient>
-          <filter id="hx-soft" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="2.4"/></filter>
-          <filter id="hx-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2"/></filter>
-        </defs>
-
-        <!-- Pond and lily pads -->
-        <ellipse cx="120" cy="188" rx="98" ry="13" fill="url(#hx-pond)"/>
-        <path d="M60 184 Q90 180 120 184 M150 190 Q170 187 190 191" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>
-        <ellipse cx="53" cy="189" rx="25" ry="6" fill="#3E7F9E" opacity=".35" filter="url(#hx-soft)"/>
-        <path d="M52 178 A26 8 0 1 0 78 186 L52 186 Z" fill="url(#hx-pad)"/>
-        <ellipse cx="193" cy="193" rx="23" ry="6" fill="#3E7F9E" opacity=".35" filter="url(#hx-soft)"/>
-        <path d="M192 182 A24 8 0 1 0 216 190 L192 190 Z" fill="url(#hx-pad)"/>
-
-        <!-- Contact shadow under Edie -->
-        <ellipse cx="120" cy="186" rx="26" ry="5" fill="#2E6F8C" opacity=".4" filter="url(#hx-soft)"/>
-
-        <!-- Arms: shaded base plus highlight give a rounded feel -->
-        <path d="M78 113 L38 91" stroke="#D5966C" stroke-width="12" stroke-linecap="round"/>
-        <path d="M77 110.5 L39 89.5" stroke="#F8D2AF" stroke-width="6" stroke-linecap="round"/>
-        <path d="M162 113 L202 91" stroke="#D5966C" stroke-width="12" stroke-linecap="round"/>
-        <path d="M163 110.5 L201 89.5" stroke="#F8D2AF" stroke-width="6" stroke-linecap="round"/>
-
-        <!-- Legs and shoes -->
-        <rect x="106" y="158" width="9" height="24" rx="4.5" fill="url(#hx-leg)"/>
-        <rect x="125" y="158" width="9" height="24" rx="4.5" fill="url(#hx-leg)"/>
-        <ellipse cx="110" cy="184" rx="10.5" ry="5.5" fill="url(#hx-shoe)"/>
-        <ellipse cx="130" cy="184" rx="10.5" ry="5.5" fill="url(#hx-shoe)"/>
-        <ellipse cx="107" cy="182" rx="4" ry="1.6" fill="#fff" opacity=".35"/>
-        <ellipse cx="127" cy="182" rx="4" ry="1.6" fill="#fff" opacity=".35"/>
-
-        <!-- Body -->
-        <rect x="95" y="102" width="50" height="18" rx="8" fill="url(#hx-collar)"/>
-        <rect x="96" y="112" width="48" height="52" rx="14" fill="url(#hx-shirt)"/>
-        <rect x="102" y="102" width="7" height="19" rx="3" fill="#A30A29"/>
-        <rect x="131" y="102" width="7" height="19" rx="3" fill="#A30A29"/>
-        <path d="M103 122 Q104 146 110 156" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".22"/>
-        <ellipse cx="120" cy="104" rx="20" ry="4" fill="#8A5A3C" opacity=".3" filter="url(#hx-glow)"/>
-
-        <!-- Head -->
-        <circle cx="85" cy="70" r="7" fill="#E3A87E"/>
-        <circle cx="155" cy="70" r="7" fill="#E3A87E"/>
-        <circle cx="120" cy="66" r="36" fill="url(#hx-skin)"/>
-        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="url(#hx-hair)"/>
-        <path d="M96 40 Q106 30 120 29" stroke="#C49A74" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/>
-        <circle cx="120" cy="21" r="7.5" fill="url(#hx-hair)"/>
-        <circle cx="117.5" cy="18.5" r="2.4" fill="#C49A74" opacity=".6"/>
-        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-        <ellipse cx="99" cy="75" rx="8" ry="6" fill="url(#hx-blush)"/>
-        <ellipse cx="141" cy="75" rx="8" ry="6" fill="url(#hx-blush)"/>
-        <ellipse cx="120" cy="71" rx="3" ry="2.2" fill="#E8AE86"/>
-        <ellipse cx="119.2" cy="70.2" rx="1.2" ry=".8" fill="#fff" opacity=".7"/>
-        <path d="M102 76 Q120 95 138 76 Q120 86 102 76 Z" fill="#7A3E30"/>
-        <path d="M112 85 Q120 90 128 85 Q120 83 112 85 Z" fill="#E77A7A"/>
-        <ellipse cx="106" cy="50" rx="7" ry="3" fill="#fff" opacity=".18" transform="rotate(-25 106 50)"/>
-
-        <!-- Hands -->
-        <circle cx="36" cy="88" r="9.5" fill="url(#hx-hand)"/>
-        <circle cx="204" cy="88" r="9.5" fill="url(#hx-hand)"/>
-
-        <!-- Hop -->
-        <g class="bob-a">
-          <ellipse cx="32" cy="82" rx="14" ry="3.5" fill="#8A5A3C" opacity=".35" filter="url(#hx-glow)"/>
-          <ellipse cx="21" cy="80" rx="6" ry="3.4" fill="#2E7D45"/>
-          <ellipse cx="43" cy="80" rx="6" ry="3.4" fill="#2E7D45"/>
-          <ellipse cx="32" cy="70" rx="17.5" ry="13.5" fill="url(#hx-green)"/>
-          <ellipse cx="32" cy="77" rx="10" ry="5.5" fill="#D6F2C4" opacity=".85"/>
-          <circle cx="26" cy="55" r="6.5" fill="url(#hx-green)"/><circle cx="38" cy="55" r="6.5" fill="url(#hx-green)"/>
-          <circle cx="26" cy="55" r="4" fill="url(#hx-eye)"/><circle cx="38" cy="55" r="4" fill="url(#hx-eye)"/>
-          <circle cx="26.6" cy="55.6" r="2" fill="#22303B"/><circle cx="38.6" cy="55.6" r="2" fill="#22303B"/>
-          <circle cx="25.7" cy="54.5" r=".8" fill="#fff"/><circle cx="37.7" cy="54.5" r=".8" fill="#fff"/>
-          <ellipse cx="20" cy="71" rx="3.4" ry="2.4" fill="url(#hx-blush)"/><ellipse cx="44" cy="71" rx="3.4" ry="2.4" fill="url(#hx-blush)"/>
-          <path d="M25 72 Q32 78 39 72" stroke="#1F5B36" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <ellipse cx="25" cy="63" rx="6" ry="2.6" fill="#fff" opacity=".35" transform="rotate(-20 25 63)"/>
-        </g>
-
-        <!-- Skip -->
-        <g class="bob-b">
-          <ellipse cx="208" cy="82" rx="14" ry="3.5" fill="#8A5A3C" opacity=".35" filter="url(#hx-glow)"/>
-          <ellipse cx="197" cy="80" rx="6" ry="3.4" fill="#22706D"/>
-          <ellipse cx="219" cy="80" rx="6" ry="3.4" fill="#22706D"/>
-          <ellipse cx="208" cy="70" rx="17.5" ry="13.5" fill="url(#hx-teal)"/>
-          <ellipse cx="208" cy="77" rx="10" ry="5.5" fill="#D2F3EF" opacity=".85"/>
-          <circle cx="202" cy="55" r="6.5" fill="url(#hx-teal)"/><circle cx="214" cy="55" r="6.5" fill="url(#hx-teal)"/>
-          <circle cx="202" cy="55" r="4" fill="url(#hx-eye)"/><circle cx="214" cy="55" r="4" fill="url(#hx-eye)"/>
-          <circle cx="202.6" cy="55.6" r="2" fill="#22303B"/><circle cx="214.6" cy="55.6" r="2" fill="#22303B"/>
-          <circle cx="201.7" cy="54.5" r=".8" fill="#fff"/><circle cx="213.7" cy="54.5" r=".8" fill="#fff"/>
-          <ellipse cx="196" cy="71" rx="3.4" ry="2.4" fill="url(#hx-blush)"/><ellipse cx="220" cy="71" rx="3.4" ry="2.4" fill="url(#hx-blush)"/>
-          <path d="M201 72 Q208 78 215 72" stroke="#175E5B" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <ellipse cx="201" cy="63" rx="6" ry="2.6" fill="#fff" opacity=".35" transform="rotate(-20 201 63)"/>
-        </g>
-
-        <!-- Star -->
-        <circle cx="120" cy="13" r="9" fill="#F5C84C" opacity=".45" filter="url(#hx-glow)"/>
-        <path class="twinkle" d="M120 2 L123 10 L131 13 L123 16 L120 24 L117 16 L109 13 L117 10 Z" fill="url(#hx-star)"/>
-      </svg>
+      <img class="hero-art" src="assets/characters/edie-front.webp" width="640" height="747" alt="Edie, a smiling child in red overalls, standing on a lily pad and holding up Hop the green frog and Skip the teal frog">
     </div>
   </div>
   <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
@@ -789,16 +712,51 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
     </div>
   </section>
 
+  <!-- Meet the pond friends -->
+  <section class="friends" id="friends" aria-labelledby="friendsTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="friendsTitle">Meet the pond friends</h2>
+        <p>Tap a friend to turn them around.</p>
+      </div>
+      <div class="friend-row">
+        <figure class="friend friend-frog">
+          <button class="turn" type="button" data-who="hop" data-name="Hop">
+            <img src="assets/characters/hop-front.webp" width="313" height="308" alt="Hop, the green frog, facing front">
+          </button>
+          <figcaption>
+            <h3>Hop</h3>
+            <p>The green frog. Hop is always ready to leap to the next idea, and you can find Hop exploring town in Compass Cove.</p>
+          </figcaption>
+        </figure>
+        <figure class="friend friend-edie">
+          <button class="turn" type="button" data-who="edie" data-name="Edie">
+            <img src="assets/characters/edie-front.webp" width="640" height="747" alt="Edie, facing front, holding Hop and Skip" loading="lazy">
+          </button>
+          <figcaption>
+            <h3>Edie</h3>
+            <p>Curious about everything and never without two frog friends. Edie is named after Edith Barretto Parsons, the sculptor who made Frog Baby.</p>
+          </figcaption>
+        </figure>
+        <figure class="friend friend-frog">
+          <button class="turn" type="button" data-who="skip" data-name="Skip">
+            <img src="assets/characters/skip-front.webp" width="312" height="308" alt="Skip, the teal frog, facing front">
+          </button>
+          <figcaption>
+            <h3>Skip</h3>
+            <p>The teal frog. Skip likes to count every jump along the way and is never far behind Hop.</p>
+          </figcaption>
+        </figure>
+      </div>
+      <p class="friends-origin">The pond friends come from Frog Baby, a fountain statue at Ball State University of a child holding up two frogs.</p>
+      <p class="sr-only" id="turnStatus" aria-live="polite"></p>
+    </div>
+  </section>
+
   <!-- Teacher note -->
   <section class="teacher" id="teachers">
     <div class="wrap teacher-inner">
-      <svg width="90" height="90" viewBox="0 0 60 60" aria-hidden="true">
-        <circle cx="30" cy="30" r="28" fill="#DFF2FA" stroke="#1F6E68" stroke-width="3"/>
-        <ellipse cx="30" cy="37" rx="17" ry="12" fill="#4FB06A"/>
-        <circle cx="23" cy="24" r="6" fill="#4FB06A"/><circle cx="37" cy="24" r="6" fill="#4FB06A"/>
-        <circle cx="23" cy="24" r="3.8" fill="#fff"/><circle cx="37" cy="24" r="3.8" fill="#fff"/>
-        <circle cx="23.5" cy="24.5" r="1.9" fill="#22303B"/><circle cx="37.5" cy="24.5" r="1.9" fill="#22303B"/>
-      </svg>
+      <img class="teacher-art" src="assets/characters/skip-front.webp" width="104" height="102" alt="" loading="lazy">
       <div>
         <h2>Made by Dr. Henry Yu</h2>
         <p>Wonder Pond games are built for real classrooms: one round takes about a minute, works great on interactive whiteboards, and there is nothing to set up. Perfect for the ten minutes before the bell. Have an idea for a game? I would love to hear it.</p>
@@ -950,6 +908,32 @@ function filterGames(key){
   }
   note.style.display = shown === 0 ? '' : 'none';
 }
+
+// Pond friends turnaround: front, left side, back, right side
+(function(){
+  var order=['front','side','back','side'];
+  var label={front:'facing front',side:'from the side',back:'from the back'};
+  var status=document.getElementById('turnStatus');
+  var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.turn').forEach(function(btn){
+    var who=btn.dataset.who, name=btn.dataset.name, img=btn.querySelector('img'), step=0;
+    btn.setAttribute('aria-label','Turn '+name+' around');
+    order.forEach(function(v){var p=new Image();p.src='assets/characters/'+who+'-'+v+'.webp';});
+    function show(){
+      var v=order[step];
+      img.src='assets/characters/'+who+'-'+v+'.webp';
+      img.alt=name+', '+label[v];
+      img.classList.toggle('mirror',step===3);
+      if(status) status.textContent=name+' is now shown '+label[v]+'.';
+    }
+    btn.addEventListener('click',function(){
+      step=(step+1)%order.length;
+      if(still){show();return;}
+      img.classList.add('squash');
+      setTimeout(function(){show();img.classList.remove('squash');},160);
+    });
+  });
+})();
 </script>
 </body>
 </html>
