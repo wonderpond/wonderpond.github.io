@@ -242,6 +242,23 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
   .friend-frog .turn{height:140px}
 }
 
+/* Edie poses across the page */
+.head-pose{height:110px;width:auto;margin-left:auto;align-self:flex-end;margin-bottom:-8px}
+.head-pose-point{transform:scaleX(-1)}
+.section-head:has(.head-pose){align-items:flex-end}
+.section-head:has(.head-pose) h2,.section-head:has(.head-pose) p{align-self:center}
+#showAllBtn{align-self:center}
+.empty-pose{height:72px;width:auto;vertical-align:middle;margin-right:12px}
+.teacher-art{width:150px;height:auto}
+.scard .cup.hug{width:180px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.25))}
+.foot-pose{height:48px;width:auto}
+.picker-pose{height:84px;width:auto;display:block;margin:0 0 4px}
+@media (max-width:760px){
+  .head-pose{height:70px}
+  .teacher-inner{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .teacher-art{width:130px}
+}
+
 /* Motion */
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 @keyframes twinkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.82)}}
@@ -319,6 +336,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
       <div class="section-head">
         <h2>Explore the pond</h2>
         <p>Every corner of the pond holds a different subject.</p>
+        <img class="head-pose head-pose-point" src="assets/characters/pose-point.webp" width="426" height="520" alt="" loading="lazy">
       </div>
       <div class="subject-grid">
         <a class="subject" href="#favorites" onclick="filterGames('math')">
@@ -388,9 +406,10 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
       <div class="section-head">
         <h2 id="gamesHeading">This week's favorites</h2>
         <p id="gamesSub">Fresh from the pond. More hatching soon!</p>
+        <img class="head-pose" src="assets/characters/pose-leap.webp" width="284" height="520" alt="" loading="lazy">
         <button id="showAllBtn" class="show-all hidden-btn" onclick="filterGames('all')">Show all games</button>
       </div>
-      <p id="emptyNote" style="display:none;color:var(--ink-soft);font-size:1.05rem;margin-bottom:14px;">No games in this corner of the pond yet. New games hatch all the time, check back soon!</p>
+      <p id="emptyNote" style="display:none;color:var(--ink-soft);font-size:1.05rem;margin-bottom:14px;"><img class="empty-pose" src="assets/characters/pose-wish.webp" width="466" height="520" alt="" loading="lazy">No games in this corner of the pond yet. New games hatch all the time, check back soon!</p>
       <div class="game-grid">
         <a class="game" data-subject="math" href="games/lily-pad-leap/" aria-label="Lily pad leap, a skip counting game for grades K to 2, coming soon">
           <div class="game-thumb" style="background:#BFE8F5">
@@ -756,7 +775,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
   <!-- Teacher note -->
   <section class="teacher" id="teachers">
     <div class="wrap teacher-inner">
-      <img class="teacher-art" src="assets/characters/skip-front.webp" width="104" height="102" alt="" loading="lazy">
+      <img class="teacher-art" src="assets/characters/pose-read.webp" width="520" height="489" alt="Edie reading a book called Frog Tales with Hop and Skip" loading="lazy">
       <div>
         <h2>Made by Dr. Henry Yu</h2>
         <p>Wonder Pond games are built for real classrooms: one round takes about a minute, works great on interactive whiteboards, and there is nothing to set up. Perfect for the ten minutes before the bell. Have an idea for a game? I would love to hear it.</p>
@@ -767,23 +786,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
   <section class="support" aria-labelledby="supportTitle">
     <div class="wrap">
       <div class="scard">
-        <svg class="cup" viewBox="0 0 220 200" role="img" aria-label="A cup of coffee with frog latte art">
-          <path class="steam" d="M86 50 Q76 40 86 30 Q96 20 86 8" stroke="#FBF9F0" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
-          <path class="steam" d="M110 50 Q100 40 110 30 Q120 20 110 8" stroke="#FBF9F0" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
-          <path class="steam" d="M134 50 Q124 40 134 30 Q144 20 134 8" stroke="#FBF9F0" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
-          <ellipse cx="110" cy="182" rx="92" ry="14" fill="#4FB06A" stroke="#1A1A1A" stroke-width="4"/>
-          <path d="M162 86 Q204 84 200 118 Q196 146 158 146" fill="none" stroke="#1A1A1A" stroke-width="16" stroke-linecap="round"/>
-          <path d="M162 86 Q204 84 200 118 Q196 146 158 146" fill="none" stroke="#FBF9F0" stroke-width="8" stroke-linecap="round"/>
-          <path d="M40 64 L180 64 L166 164 Q162 176 150 176 L70 176 Q58 176 54 164 Z" fill="#FBF9F0" stroke="#1A1A1A" stroke-width="5" stroke-linejoin="round"/>
-          <path d="M56 116 L164 116" stroke="#3FA7A3" stroke-width="7"/>
-          <ellipse cx="110" cy="64" rx="70" ry="14" fill="#8A5A36" stroke="#1A1A1A" stroke-width="5"/>
-          <g fill="#F3E3C3">
-            <ellipse cx="110" cy="67" rx="18" ry="7.5"/>
-            <circle cx="102" cy="60" r="5"/><circle cx="118" cy="60" r="5"/>
-          </g>
-          <circle cx="102" cy="60" r="1.9" fill="#8A5A36"/><circle cx="118" cy="60" r="1.9" fill="#8A5A36"/>
-          <path d="M104 68 Q110 72 116 68" stroke="#8A5A36" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        </svg>
+        <img class="cup hug" src="assets/characters/pose-hug.webp" width="435" height="520" alt="Edie giving Hop and Skip a big hug" loading="lazy">
         <div>
           <h2 id="supportTitle">Keep the pond free with a cup of coffee</h2>
           <p>Wonder Pond is free for every classroom, with no ads, no sign-ups, and no payments. If these games have helped your students, you can thank the maker with a coffee. Every gift goes only toward keeping the site running and hatching new games.</p>
@@ -796,6 +799,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
 
 <footer>
   <div class="wrap foot">
+    <img class="foot-pose" src="assets/characters/pose-wave.webp" width="434" height="520" alt="" loading="lazy">
     <span>Made by Dr. Henry Yu, free for every classroom.</span>
     <span class="spacer"></span>
     <a href="https://github.com/wonderpond/wonderpond.github.io" target="_blank" rel="noopener" aria-label="Wonder Pond on GitHub">Open source</a>
@@ -806,6 +810,7 @@ dialog .hint{font-size:.85rem;color:#6E8C86;margin-bottom:16px}
 <!-- Random student picker -->
 <dialog id="picker" aria-labelledby="pickerTitle">
   <button class="close-x" onclick="document.getElementById('picker').close()" aria-label="Close">&times;</button>
+  <img class="picker-pose" src="assets/characters/pose-jump.webp" width="389" height="520" alt="" loading="lazy">
   <h3 id="pickerTitle">Random picker</h3>
   <p class="hint">Numbers already picked stay out until you reset.</p>
   <div class="field">

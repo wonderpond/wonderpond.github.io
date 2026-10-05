@@ -23,7 +23,15 @@ body{
   display:grid;place-items:center;padding:32px 20px;text-align:center;
 }
 main{max-width:34rem}
-.art{width:min(56vw,230px);height:auto;display:block;margin:0 auto 8px;
+.nap{position:relative;width:min(80vw,320px);margin:0 auto 14px}
+.zzz{position:absolute;right:18%;top:-6px;font-family:"Baloo 2",sans-serif;font-weight:700;color:var(--teal);display:flex;gap:2px;align-items:flex-end}
+.zzz span{display:inline-block;animation:float 2.4s ease-in-out infinite}
+.zzz span:nth-child(1){font-size:1.1rem;animation-delay:0s}
+.zzz span:nth-child(2){font-size:1.5rem;animation-delay:.3s}
+.zzz span:nth-child(3){font-size:2rem;animation-delay:.6s}
+@keyframes float{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-8px);opacity:1}}
+@media (prefers-reduced-motion:reduce){.zzz span{animation:none;opacity:1}}
+.art{width:100%;height:auto;display:block;margin:0 auto 8px;
   filter:drop-shadow(0 10px 14px rgba(46,111,140,.22))}
 h1{font-family:"Baloo 2",system-ui,sans-serif;font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.15;margin-bottom:10px}
 p{color:var(--ink-soft);font-size:1.1rem;margin-bottom:24px}
@@ -37,9 +45,12 @@ p{color:var(--ink-soft);font-size:1.1rem;margin-bottom:24px}
 </head>
 <body>
 <main>
-  <img class="art" src="/assets/characters/edie-back.webp" width="480" height="552"
-       alt="Edie, seen from behind, holding Hop and Skip and looking out over the pond">
-  <h1>This page swam away</h1>
+  <div class="nap">
+    <span class="zzz" aria-hidden="true"><span>z</span><span>z</span><span>Z</span></span>
+    <img class="art" src="/assets/characters/pose-sleep.webp" width="520" height="341"
+         alt="Edie fast asleep on a lily pad, cuddling Hop and Skip">
+  </div>
+  <h1>Shh, this page is napping</h1>
   <p>Edie, Hop, and Skip looked all around the pond, but this page is not here. The link may be old or have a typo.</p>
   <a class="btn" href="/">Back to the pond</a>
 </main>
