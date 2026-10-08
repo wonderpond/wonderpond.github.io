@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond town - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Sort needs and wants, goods and services, then take the frog family shopping with a small budget. A free economics game for grades K to 2 social studies from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --meadow:#DDF0C8;
+  --water:#8FCDE8;
+  --amber:#F5C84C;
+  --red:#E24B4A;
+  --left:#2B6CB0;
+  --right:#9B4D8E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:980px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.25rem;
+  width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease;
+}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:110px;height:70px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:14px 40px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:660px;margin-left:auto;margin-right:auto}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 10px;
+  background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%;
+}
+
+/* Sorting */
+.sort-row{display:flex;align-items:center;justify-content:center;gap:clamp(10px,3vw,36px);flex-wrap:nowrap}
+.basket{
+  width:clamp(130px,22vw,210px);border:none;cursor:pointer;background:none;padding:0;
+  display:flex;flex-direction:column;align-items:center;transition:transform .12s ease;
+}
+.basket:hover:enabled{transform:translateY(-4px)}
+.basket:disabled{cursor:default}
+.basket .bk{width:100%;height:auto}
+.basket .bname{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.4rem,3.4vw,2rem);line-height:1}
+.basket .bdef{font-family:"Nunito",sans-serif;font-weight:700;font-size:.85rem;color:var(--ink-soft);max-width:180px;margin-top:2px}
+.basket.left .bname{color:var(--left)}
+.basket.right .bname{color:var(--right)}
+.basket .count{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1rem;background:#fff;border-radius:999px;padding:0 12px;margin-top:4px;color:var(--teal-dark)}
+.basket.good .bk{filter:drop-shadow(0 0 8px #4FB06A)}
+.basket.bad{animation:shake .35s ease}
+.item{
+  background:#fff;border-radius:26px;padding:12px 16px 14px;width:clamp(170px,26vw,240px);
+  box-shadow:0 8px 0 rgba(18,64,58,.18);transition:transform .45s ease,opacity .45s ease;
+}
+.item .pic{width:100%;height:auto;max-height:180px}
+.item .iname{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.2rem,2.8vw,1.6rem);color:var(--ink);line-height:1.1}
+.item.fly-left{transform:translateX(-160px) scale(.3);opacity:0}
+.item.fly-right{transform:translateX(160px) scale(.3);opacity:0}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{
+  margin:14px auto 0;max-width:720px;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+  background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px;min-height:2.6em;
+}
+.fact.empty{visibility:hidden}
+
+/* Shopping */
+.story{
+  display:flex;align-items:center;gap:14px;justify-content:center;max-width:760px;margin:0 auto 10px;
+  background:#fff;border-radius:22px;padding:10px 18px;box-shadow:0 6px 0 rgba(18,64,58,.15);text-align:left;
+}
+.story svg{width:84px;flex:none}
+.story p{font-weight:700;font-size:1.08rem;color:var(--ink)}
+.story p b{color:var(--teal-dark)}
+.wallet{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.wallet span{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;background:#fff;border-radius:999px;padding:4px 18px;color:var(--teal-dark)}
+.wallet .low{background:#FCE3E3;color:#9B2B2A}
+.shelf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:760px;margin:0 auto}
+.shop-item{
+  position:relative;border:none;background:#fff;border-radius:20px;cursor:pointer;padding:8px 8px 10px;
+  box-shadow:0 5px 0 rgba(18,64,58,.2);transition:transform .12s ease;color:var(--ink);
+}
+.shop-item:hover:enabled{transform:translateY(-3px)}
+.shop-item .pic{width:70%;height:auto;max-height:96px}
+.shop-item .iname{display:block;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.05rem;line-height:1.1}
+.shop-item .cost{display:inline-flex;align-items:center;gap:4px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.05rem;background:#FFF3C8;border-radius:999px;padding:0 10px;margin-top:4px}
+.shop-item.in{background:#E4F5E9;box-shadow:0 5px 0 var(--green)}
+.shop-item.in::after{
+  content:"In the cart";position:absolute;top:8px;right:8px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.8rem;
+  background:var(--green);color:#fff;border-radius:999px;padding:0 10px;
+}
+.shop-item.missing{box-shadow:0 0 0 4px var(--red),0 5px 0 rgba(18,64,58,.2)}
+.shop-actions{margin-top:6px}
+
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (max-width:620px){
+  .sort-row{flex-wrap:wrap}
+  .item{order:-1;width:70%}
+  .basket{width:44%}
+  .shelf{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:220px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond town</h1>
+      <p class="sub">The frog family lives in a busy little town by the pond. Help them make smart choices!</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="games">
+        <button class="game-btn" onclick="startSort('nw')"><span id="artNW"></span>Needs or wants<small>grades K and 1</small></button>
+        <button class="game-btn" onclick="startSort('gs')"><span id="artGS"></span>Goods or services<small>grades 1 and 2</small></button>
+        <button class="game-btn" onclick="startShop()"><span id="artShop"></span>Shopping trip<small>grades 1 and 2</small></button>
+      </div>
+      <p class="note">Needs or wants and Goods or services: tap the basket where each picture belongs. Shopping trip: the frog family has only a few shells to spend. Buy what they need first, then see if any shells are left for something fun.</p>
+    </div>
+  </section>
+
+  <!-- Sort mode -->
+  <section class="screen hidden" id="sortScreen">
+    <div class="hud">
+      <span class="chip" id="sRound">Card 1 of 10</span>
+      <span class="chip" id="sScore">First try 0</span>
+    </div>
+    <p class="prompt" id="sPrompt">Is it a need or a want?</p>
+    <div class="sort-row">
+      <button class="basket left" id="bLeft" data-key="1"></button>
+      <div class="item" id="item"></div>
+      <button class="basket right" id="bRight" data-key="2"></button>
+    </div>
+    <p class="fact empty" id="sFact" role="status">.</p>
+  </section>
+
+  <!-- Shopping -->
+  <section class="screen hidden" id="shopScreen">
+    <div class="hud">
+      <span class="chip" id="shRound">Trip 1 of 4</span>
+      <span class="chip" id="shScore">First try 0</span>
+    </div>
+    <div class="story" id="story"></div>
+    <div class="wallet" id="wallet" aria-hidden="true"></div>
+    <div class="shelf" id="shelf" role="group" aria-label="Things in the shop"></div>
+    <div class="shop-actions"><button class="big-btn" id="doneBtn" onclick="doneShopping()">Done shopping</button></div>
+    <p class="fact empty" id="shFact" role="status">.</p>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Smart choices!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+/* ---------- Pictures (100 x 100 grid) ---------- */
+var P = {
+  water: '<path d="M30 20 H70 L64 90 H36Z" fill="#DFF2FA" stroke="#6BB6DB" stroke-width="3"/><path d="M33 44 H67 L64 88 H36Z" fill="#8FCDE8"/><path d="M42 54 Q44 62 42 70" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>',
+  apple: '<path d="M50 30 Q40 18 30 22 Q14 28 16 52 Q18 78 38 88 Q46 92 50 88 Q54 92 62 88 Q82 78 84 52 Q86 28 70 22 Q60 18 50 30Z" fill="#E24B4A"/><path d="M50 30 Q52 18 58 12" stroke="#6B4A2F" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M56 20 Q68 10 76 18 Q66 26 56 20Z" fill="#4FB06A"/>',
+  bread: '<path d="M14 58 Q12 30 50 28 Q88 30 86 58 V80 Q86 84 82 84 H18 Q14 84 14 80Z" fill="#D9A25F"/><path d="M14 58 Q12 30 50 28 Q88 30 86 58" fill="#C8873F"/><path d="M34 40 L40 50 M50 38 L56 48 M66 40 L72 50" stroke="#F2D3A0" stroke-width="3" stroke-linecap="round"/>',
+  house: '<path d="M14 50 L50 18 L86 50Z" fill="#C1693C"/><rect x="22" y="48" width="56" height="40" fill="#F4E3C3"/><rect x="42" y="62" width="16" height="26" rx="2" fill="#6B4A2F"/><rect x="28" y="56" width="10" height="10" fill="#8FCDE8"/><rect x="62" y="56" width="10" height="10" fill="#8FCDE8"/><rect x="64" y="24" width="8" height="16" fill="#8E4A28"/>',
+  coat: '<path d="M36 14 L50 22 L64 14 L84 28 L76 48 L70 44 V90 H30 V44 L24 48 L16 28Z" fill="#2B6CB0"/><path d="M50 22 V90" stroke="#1F4E80" stroke-width="2.5"/><circle cx="56" cy="40" r="2.4" fill="#F5C84C"/><circle cx="56" cy="56" r="2.4" fill="#F5C84C"/><circle cx="56" cy="72" r="2.4" fill="#F5C84C"/><path d="M36 14 L50 30 L64 14" stroke="#1F4E80" stroke-width="3" fill="none"/>',
+  medicine: '<rect x="30" y="30" width="40" height="58" rx="8" fill="#F39C3D"/><rect x="34" y="16" width="32" height="16" rx="4" fill="#fff" stroke="#C9C2AC" stroke-width="2"/><rect x="34" y="46" width="32" height="26" rx="4" fill="#fff"/><path d="M50 50 V68 M41 59 H59" stroke="#E24B4A" stroke-width="5" stroke-linecap="round"/>',
+  blanket: '<path d="M14 30 H86 V78 Q70 86 50 78 Q30 70 14 78Z" fill="#9B4D8E"/><path d="M14 44 H86 M14 58 H86 M32 30 V76 M50 30 V78 M68 30 V82" stroke="#C979BB" stroke-width="3"/>',
+  kite: '<path d="M50 10 L78 42 L50 74 L22 42Z" fill="#9B4D8E"/><path d="M50 10 L50 74 M22 42 L78 42" stroke="#fff" stroke-width="2.5"/><path d="M50 74 Q40 82 52 86 Q64 90 54 96" stroke="#6B4A2F" stroke-width="2" fill="none"/>',
+  candy: '<path d="M30 50 L12 36 L14 64Z M70 50 L88 36 L86 64Z" fill="#F4A0A0"/><ellipse cx="50" cy="50" rx="22" ry="16" fill="#E24B4A"/><path d="M38 40 Q50 50 40 60 M54 36 Q64 48 56 64" stroke="#fff" stroke-width="3" fill="none"/>',
+  balloon: '<ellipse cx="50" cy="40" rx="24" ry="28" fill="#E24B4A"/><path d="M46 68 L54 68 L50 74Z" fill="#B83A39"/><path d="M50 74 Q44 84 52 92" stroke="#6B4A2F" stroke-width="2" fill="none"/><ellipse cx="40" cy="30" rx="5" ry="9" fill="#fff" opacity=".4"/>',
+  game: '<rect x="14" y="34" width="72" height="38" rx="19" fill="#4A4F55"/><path d="M30 46 V60 M23 53 H37" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="64" cy="48" r="4.5" fill="#F5C84C"/><circle cx="72" cy="57" r="4.5" fill="#E24B4A"/>',
+  robot: '<rect x="30" y="34" width="40" height="40" rx="6" fill="#B8BEC2"/><rect x="36" y="14" width="28" height="22" rx="5" fill="#B8BEC2"/><circle cx="44" cy="25" r="3.4" fill="#2E7FB8"/><circle cx="56" cy="25" r="3.4" fill="#2E7FB8"/><path d="M50 14 V6" stroke="#8C9296" stroke-width="3"/><circle cx="50" cy="5" r="3" fill="#E24B4A"/><rect x="38" y="44" width="24" height="10" rx="3" fill="#F5C84C"/><rect x="34" y="74" width="10" height="16" fill="#8C9296"/><rect x="56" y="74" width="10" height="16" fill="#8C9296"/><rect x="20" y="38" width="10" height="24" rx="4" fill="#8C9296"/><rect x="70" y="38" width="10" height="24" rx="4" fill="#8C9296"/>',
+  icecream: '<path d="M34 46 L50 92 L66 46Z" fill="#D9A25F"/><path d="M38 52 L60 74 M62 52 L42 76" stroke="#B8813F" stroke-width="2"/><circle cx="42" cy="38" r="14" fill="#F4A0A0"/><circle cx="58" cy="38" r="14" fill="#FFF3E8"/><circle cx="50" cy="24" r="13" fill="#8E4A28"/><circle cx="50" cy="12" r="4" fill="#E24B4A"/>',
+  skateboard: '<rect x="10" y="44" width="80" height="12" rx="6" fill="#F39C3D"/><path d="M22 50 H78" stroke="#fff" stroke-width="2" stroke-dasharray="6 5"/><circle cx="26" cy="64" r="7" fill="#4A4F55"/><circle cx="74" cy="64" r="7" fill="#4A4F55"/>',
+  book: '<path d="M14 26 Q32 18 50 28 V84 Q32 74 14 82Z" fill="#1F6E68"/><path d="M86 26 Q68 18 50 28 V84 Q68 74 86 82Z" fill="#2E8C84"/><path d="M22 38 Q32 34 42 38 M22 48 Q32 44 42 48 M58 38 Q68 34 78 38 M58 48 Q68 44 78 48" stroke="#BFE3DC" stroke-width="2.4" fill="none" stroke-linecap="round"/>',
+  ball: '<circle cx="50" cy="52" r="34" fill="#6BB6DB"/><path d="M16 52 Q50 36 84 52" stroke="#fff" stroke-width="6" fill="none"/><path d="M50 18 Q36 52 50 86" stroke="#F5C84C" stroke-width="6" fill="none"/>',
+  bike: '<circle cx="26" cy="64" r="16" fill="none" stroke="#4A4F55" stroke-width="5"/><circle cx="74" cy="64" r="16" fill="none" stroke="#4A4F55" stroke-width="5"/><path d="M26 64 L42 40 L66 40 L74 64 M42 40 L50 64 L66 40 M50 64 L26 64 M40 32 H50 M66 40 L62 28 H72" stroke="#E24B4A" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  hat: '<ellipse cx="50" cy="70" rx="40" ry="10" fill="#C1693C"/><path d="M26 70 Q24 30 50 28 Q76 30 74 70Z" fill="#D9824F"/><path d="M26 60 Q50 66 74 60" stroke="#F5C84C" stroke-width="6" fill="none"/>',
+  shoes: '<path d="M10 66 Q10 48 24 46 L40 44 Q46 56 62 58 Q80 60 88 66 V76 H10Z" fill="#2E8540"/><path d="M10 72 H88" stroke="#fff" stroke-width="4"/><path d="M28 50 L34 58 M36 48 L42 56" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>',
+  haircut: '<circle cx="50" cy="40" r="20" fill="#F6C9A2"/><path d="M30 38 Q30 16 50 16 Q70 16 70 38 Q62 28 50 28 Q38 28 30 38Z" fill="#6B4A2F"/><path d="M30 60 Q50 76 70 60 L76 92 H24Z" fill="#1F6E68"/><g transform="translate(70 18) rotate(35)"><circle cx="0" cy="18" r="5" fill="none" stroke="#4A4F55" stroke-width="3"/><circle cx="10" cy="18" r="5" fill="none" stroke="#4A4F55" stroke-width="3"/><path d="M2 13 L10 -8 M8 13 L0 -8" stroke="#8C9296" stroke-width="3" stroke-linecap="round"/></g><circle cx="43" cy="42" r="2" fill="#3A2A1E"/><circle cx="57" cy="42" r="2" fill="#3A2A1E"/>',
+  doctor: '<path d="M30 20 Q30 50 46 54 Q62 50 62 20" stroke="#4A4F55" stroke-width="4" fill="none"/><circle cx="30" cy="18" r="4" fill="#4A4F55"/><circle cx="62" cy="18" r="4" fill="#4A4F55"/><path d="M46 54 V70 Q46 82 60 82 Q72 82 72 70" stroke="#4A4F55" stroke-width="4" fill="none"/><circle cx="72" cy="66" r="9" fill="#B8BEC2" stroke="#4A4F55" stroke-width="3"/><rect x="12" y="66" width="22" height="22" rx="4" fill="#fff" stroke="#E24B4A" stroke-width="3"/><path d="M23 70 V84 M16 77 H30" stroke="#E24B4A" stroke-width="4"/>',
+  mail: '<rect x="16" y="30" width="58" height="40" rx="4" fill="#fff" stroke="#2B6CB0" stroke-width="3"/><path d="M16 32 L45 54 L74 32" stroke="#2B6CB0" stroke-width="3" fill="none"/><rect x="58" y="36" width="10" height="10" fill="#E24B4A"/><path d="M78 40 H92 M80 50 H94 M78 60 H90" stroke="#9EC9C2" stroke-width="3" stroke-linecap="round"/>',
+  fixcar: '<path d="M14 64 V52 L24 38 H64 L78 52 H88 V64Z" fill="#E24B4A"/><rect x="30" y="42" width="14" height="10" fill="#DFF2FA"/><rect x="48" y="42" width="14" height="10" fill="#DFF2FA"/><circle cx="30" cy="66" r="8" fill="#4A4F55"/><circle cx="72" cy="66" r="8" fill="#4A4F55"/><g transform="translate(64 14) rotate(40)"><rect x="-3" y="0" width="6" height="26" rx="3" fill="#8C9296"/><path d="M-8 -4 A9 9 0 1 0 8 -4 L4 0 L0 -6 L-4 0Z" fill="#8C9296"/></g>',
+  teacher: '<rect x="12" y="16" width="64" height="44" rx="4" fill="#2E5E4E" stroke="#8A6A45" stroke-width="4"/><path d="M22 30 H40 M22 40 H52 M22 50 H34" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><text x="58" y="44" font-family="Baloo 2,sans-serif" font-weight="700" font-size="16" fill="#F5C84C">ABC</text><circle cx="80" cy="64" r="8" fill="#F6C9A2"/><path d="M70 92 Q70 74 80 74 Q90 74 90 92Z" fill="#9B4D8E"/><path d="M74 72 L62 54" stroke="#F6C9A2" stroke-width="3" stroke-linecap="round"/>',
+  bus: '<rect x="10" y="26" width="80" height="44" rx="8" fill="#F5C84C"/><rect x="16" y="34" width="14" height="14" rx="2" fill="#DFF2FA"/><rect x="34" y="34" width="14" height="14" rx="2" fill="#DFF2FA"/><rect x="52" y="34" width="14" height="14" rx="2" fill="#DFF2FA"/><rect x="72" y="34" width="12" height="22" rx="2" fill="#DFF2FA"/><path d="M10 56 H90" stroke="#C99A17" stroke-width="3"/><circle cx="28" cy="72" r="8" fill="#4A4F55"/><circle cx="72" cy="72" r="8" fill="#4A4F55"/>',
+  dogwash: '<path d="M14 70 Q14 86 30 86 H70 Q86 86 86 70Z" fill="#8FCDE8"/><path d="M10 70 H90" stroke="#6BB6DB" stroke-width="4"/><ellipse cx="46" cy="60" rx="20" ry="12" fill="#D9A25F"/><circle cx="66" cy="48" r="10" fill="#D9A25F"/><ellipse cx="72" cy="42" rx="4" ry="8" fill="#B8813F"/><circle cx="68" cy="47" r="1.8" fill="#22303B"/><g fill="#fff" stroke="#9EC9C2" stroke-width="1.5"><circle cx="30" cy="44" r="6"/><circle cx="40" cy="36" r="5"/><circle cx="52" cy="40" r="4"/><circle cx="24" cy="56" r="5"/></g>',
+  frogs: '<ellipse cx="34" cy="62" rx="20" ry="15" fill="#4FB06A"/><circle cx="26" cy="46" r="7" fill="#4FB06A"/><circle cx="42" cy="46" r="7" fill="#4FB06A"/><circle cx="26" cy="46" r="4.4" fill="#fff"/><circle cx="42" cy="46" r="4.4" fill="#fff"/><circle cx="26.6" cy="46.6" r="2.1" fill="#22303B"/><circle cx="42.6" cy="46.6" r="2.1" fill="#22303B"/><path d="M27 64 Q34 70 41 64" stroke="#1F5B36" stroke-width="2.2" fill="none" stroke-linecap="round"/><ellipse cx="72" cy="70" rx="13" ry="10" fill="#6BC27E"/><circle cx="67" cy="59" r="5" fill="#6BC27E"/><circle cx="77" cy="59" r="5" fill="#6BC27E"/><circle cx="67" cy="59" r="3" fill="#fff"/><circle cx="77" cy="59" r="3" fill="#fff"/><circle cx="67.4" cy="59.4" r="1.5" fill="#22303B"/><circle cx="77.4" cy="59.4" r="1.5" fill="#22303B"/>',
+  shell: '<path d="M50 14 Q80 26 86 62 Q70 80 50 84 Q30 80 14 62 Q20 26 50 14Z" fill="#F7C9A8" stroke="#D99872" stroke-width="3"/><path d="M50 18 V82 M50 18 Q36 46 30 78 M50 18 Q64 46 70 78 M50 18 Q24 40 18 62 M50 18 Q76 40 82 62" stroke="#D99872" stroke-width="2.5" fill="none"/>'
+};
+function pic(k, cls){ return '<svg class="' + (cls || 'pic') + '" viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + P[k] + '</svg>'; }
+function shellIcon(size){ return '<svg viewBox="0 0 100 100" width="' + size + '" height="' + size + '" aria-hidden="true" style="vertical-align:-3px">' + P.shell + '</svg>'; }
+
+/* ---------- Sorting sets ---------- */
+var SETS = {
+  nw: {
+    q: 'Is it a need or a want?',
+    left: { key: 'need', name: 'Need', def: 'We must have it to live' },
+    right: { key: 'want', name: 'Want', def: 'Nice to have, but we can live without it' },
+    items: [
+      { p: 'water', n: 'Water', k: 'need', why: 'Every living thing needs water to stay alive.' },
+      { p: 'apple', n: 'Healthy food', k: 'need', why: 'Our bodies need food to grow and have energy.' },
+      { p: 'bread', n: 'Bread', k: 'need', why: 'Food is a need. It gives our bodies energy.' },
+      { p: 'house', n: 'A home', k: 'need', why: 'Shelter keeps us safe, warm, and dry.' },
+      { p: 'coat', n: 'Warm coat', k: 'need', why: 'Clothing is a need. It keeps us warm and protected.' },
+      { p: 'medicine', n: 'Medicine', k: 'need', why: 'When we are sick, medicine helps us get well.' },
+      { p: 'blanket', n: 'Blanket', k: 'need', why: 'A blanket keeps us warm, like clothing and shelter do.' },
+      { p: 'kite', n: 'Kite', k: 'want', why: 'A kite is fun, but we can live without it.' },
+      { p: 'candy', n: 'Candy', k: 'want', why: 'Candy tastes good, but it is not food our bodies need.' },
+      { p: 'balloon', n: 'Balloon', k: 'want', why: 'A balloon is fun to have, but we do not need it.' },
+      { p: 'game', n: 'Video game', k: 'want', why: 'Games are fun, but we can live without them.' },
+      { p: 'robot', n: 'Toy robot', k: 'want', why: 'A toy is a want. It is fun, not something we must have.' },
+      { p: 'icecream', n: 'Ice cream', k: 'want', why: 'Ice cream is a treat. It is a want, not a need.' },
+      { p: 'skateboard', n: 'Skateboard', k: 'want', why: 'A skateboard is fun, but we can live without it.' }
+    ],
+    hint: { need: 'Ask: could we live without it? If not, it is a need.', want: 'Ask: could we live without it? If yes, it is a want.' }
+  },
+  gs: {
+    q: 'Is it a good or a service?',
+    left: { key: 'good', name: 'Good', def: 'A thing you can touch and keep' },
+    right: { key: 'service', name: 'Service', def: 'Work someone does for you' },
+    items: [
+      { p: 'book', n: 'A book', k: 'good', why: 'A book is a thing you can hold and keep.' },
+      { p: 'ball', n: 'A ball', k: 'good', why: 'A ball is a thing you can touch and take home.' },
+      { p: 'apple', n: 'An apple', k: 'good', why: 'An apple is a good. A farmer grew it, and you can hold it.' },
+      { p: 'bike', n: 'A bike', k: 'good', why: 'A bike is a thing you can touch and keep.' },
+      { p: 'hat', n: 'A hat', k: 'good', why: 'A hat is a good you can wear and keep.' },
+      { p: 'shoes', n: 'Shoes', k: 'good', why: 'Shoes are goods. You can touch them and wear them.' },
+      { p: 'bread', n: 'Bread', k: 'good', why: 'Bread is a good. A baker made it, and you can hold it.' },
+      { p: 'haircut', n: 'Getting a haircut', k: 'service', why: 'A barber does the work of cutting your hair. That is a service.' },
+      { p: 'doctor', n: 'A checkup', k: 'service', why: 'A doctor does the work of checking that you are healthy.' },
+      { p: 'mail', n: 'Mail delivery', k: 'service', why: 'A mail carrier does the work of bringing letters to your home.' },
+      { p: 'fixcar', n: 'Fixing a car', k: 'service', why: 'A mechanic does the work of fixing the car. That is a service.' },
+      { p: 'teacher', n: 'Teaching a class', k: 'service', why: 'A teacher does the work of helping you learn.' },
+      { p: 'bus', n: 'A bus ride', k: 'service', why: 'A bus driver does the work of taking you where you need to go.' },
+      { p: 'dogwash', n: 'Washing a dog', k: 'service', why: 'A groomer does the work of washing the dog. That is a service.' }
+    ],
+    hint: { good: 'Ask: can you touch it and keep it? Then it is a good.', service: 'Ask: is someone doing work for you? Then it is a service.' }
+  }
+};
+var SORT_ROUNDS = 10;
+
+/* ---------- Shopping trips ---------- */
+var SHOP_NEEDS = [
+  { p: 'water', n: 'Water', cost: 2 }, { p: 'bread', n: 'Bread', cost: 2 }, { p: 'apple', n: 'Apples', cost: 3 },
+  { p: 'coat', n: 'Warm coat', cost: 4 }, { p: 'medicine', n: 'Medicine', cost: 3 }, { p: 'blanket', n: 'Blanket', cost: 3 }
+];
+var SHOP_WANTS = [
+  { p: 'kite', n: 'Kite', cost: 3 }, { p: 'candy', n: 'Candy', cost: 1 }, { p: 'balloon', n: 'Balloon', cost: 1 },
+  { p: 'game', n: 'Video game', cost: 6 }, { p: 'robot', n: 'Toy robot', cost: 5 }, { p: 'icecream', n: 'Ice cream', cost: 2 }, { p: 'skateboard', n: 'Skateboard', cost: 5 }
+];
+var STORIES = [
+  { text: 'Winter is coming! The frog family needs to stay warm and fed.', needs: ['coat', 'blanket', 'bread'] },
+  { text: 'Baby frog has a cold. The family needs to help him feel better.', needs: ['medicine', 'water', 'apple'] },
+  { text: 'The family is going on a long hike today.', needs: ['water', 'apple', 'bread'] },
+  { text: 'It is a chilly night. The family needs to stay warm and have dinner.', needs: ['blanket', 'bread', 'water'] },
+  { text: 'Grandma frog is coming to visit for a week. The pantry is empty!', needs: ['bread', 'apple', 'water'] },
+  { text: 'The weather turned cold, and little sister outgrew her coat.', needs: ['coat', 'apple', 'water'] }
+];
+var SHOP_ROUNDS = 4;
+
+var lastMode = 'nw';
+var soundOn = true;
+var audioCtx = null;
+var timer = null;
+
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.14, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndClink(){ beep([1320, 1760], 0.05, 'triangle'); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function hideAll(){ ['startScreen','sortScreen','shopScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); }); }
+function backToStart(){ clearTimeout(timer); hideAll(); $('startScreen').classList.remove('hidden'); }
+function playAgain(){ if (lastMode === 'shop') startShop(); else startSort(lastMode); }
+function showEnd(title, line, stars){
+  hideAll();
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, text){ var f = $(id); f.textContent = text || '.'; f.classList.toggle('empty', !text); }
+
+/* ---------- Sort ---------- */
+var set = null;
+var deck = [];
+var round = 0;
+var score = 0;
+var cur = null;
+var firstTry = true;
+var busy = false;
+var counts = { left: 0, right: 0 };
+
+function basketSvg(color){
+  return '<svg class="bk" viewBox="0 0 160 110" aria-hidden="true"><path d="M24 40 Q80 -6 136 40" stroke="' + color + '" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+    '<path d="M10 40 H150 L134 104 H26Z" fill="#D9A25F" stroke="#B0864F" stroke-width="4" stroke-linejoin="round"/>' +
+    '<path d="M18 58 H142 M22 76 H138 M26 94 H134 M50 40 L56 104 M80 40 V104 M110 40 L104 104" stroke="#B0864F" stroke-width="3"/>' +
+    '<rect x="6" y="34" width="148" height="12" rx="6" fill="' + color + '"/></svg>';
+}
+
+function startSort(which){
+  lastMode = which;
+  set = SETS[which];
+  var l = shuffle(set.items.filter(function(i){ return i.k === set.left.key; })).slice(0, SORT_ROUNDS / 2);
+  var r = shuffle(set.items.filter(function(i){ return i.k === set.right.key; })).slice(0, SORT_ROUNDS / 2);
+  deck = shuffle(l.concat(r));
+  round = 0;
+  score = 0;
+  counts = { left: 0, right: 0 };
+  hideAll();
+  $('sortScreen').classList.remove('hidden');
+  $('sPrompt').textContent = set.q;
+  drawBaskets();
+  nextSort();
+}
+
+function drawBaskets(){
+  $('bLeft').innerHTML = basketSvg('#2B6CB0') + '<span class="bname">' + set.left.name + '</span><span class="bdef">' + set.left.def + '</span><span class="count">' + counts.left + '</span>';
+  $('bRight').innerHTML = basketSvg('#9B4D8E') + '<span class="bname">' + set.right.name + '</span><span class="bdef">' + set.right.def + '</span><span class="count">' + counts.right + '</span>';
+  $('bLeft').setAttribute('aria-label', set.left.name + ': ' + set.left.def);
+  $('bRight').setAttribute('aria-label', set.right.name + ': ' + set.right.def);
+  $('bLeft').onclick = function(){ pickBasket('left'); };
+  $('bRight').onclick = function(){ pickBasket('right'); };
+}
+
+function nextSort(){
+  round++;
+  if (round > deck.length) {
+    var stars = score >= 9 ? 3 : score >= 7 ? 2 : 1;
+    showEnd(score >= 9 ? 'Smart sorter!' : score >= 7 ? 'Great sorting!' : 'Keep sorting!', 'You sorted ' + score + ' of ' + deck.length + ' on the first try.', stars);
+    return;
+  }
+  busy = false;
+  firstTry = true;
+  cur = deck[round - 1];
+  $('sRound').textContent = 'Card ' + round + ' of ' + deck.length;
+  $('sScore').textContent = 'First try ' + score;
+  var item = $('item');
+  item.className = 'item';
+  item.innerHTML = pic(cur.p) + '<div class="iname">' + cur.n + '</div>';
+  ['bLeft', 'bRight'].forEach(function(id){ $(id).disabled = false; $(id).classList.remove('good', 'bad'); });
+  setFact('sFact', '');
+  $('srStatus').textContent = cur.n + '. ' + set.q;
+}
+
+function pickBasket(side){
+  if (busy) return;
+  var want = cur.k === set.left.key ? 'left' : 'right';
+  var btn = side === 'left' ? $('bLeft') : $('bRight');
+  if (side === want) {
+    busy = true;
+    if (firstTry) score++;
+    counts[side]++;
+    $('sScore').textContent = 'First try ' + score;
+    $('item').classList.add(side === 'left' ? 'fly-left' : 'fly-right');
+    btn.classList.add('good');
+    var name = (side === 'left' ? set.left : set.right).name.toLowerCase();
+    var msg = 'Yes! ' + cur.n + ' is a ' + name + '. ' + cur.why;
+    setFact('sFact', msg);
+    sndPlop();
+    setTimeout(sndGood, 120);
+    $('srStatus').textContent = msg;
+    timer = setTimeout(function(){ drawBaskets(); nextSort(); }, 2600);
+  } else {
+    firstTry = false;
+    btn.classList.remove('bad');
+    void btn.offsetWidth;
+    btn.classList.add('bad');
+    btn.disabled = true;
+    var h = 'Not quite. ' + set.hint[cur.k];
+    setFact('sFact', h);
+    sndBad();
+    $('srStatus').textContent = h;
+  }
+}
+
+/* ---------- Shopping trip ---------- */
+var trips = [];
+var trip = null;
+var cart = {};
+var tRound = 0;
+var tScore = 0;
+var tFirst = true;
+var tBusy = false;
+
+function makeTrip(story){
+  var needs = story.needs.map(function(p){ return SHOP_NEEDS.filter(function(n){ return n.p === p; })[0]; });
+  var needCost = needs.reduce(function(t, n){ return t + n.cost; }, 0);
+  var extra = rand(1, 3);
+  var budget = needCost + extra;
+  /* wants: at least one that fits in the leftover shells, and some that would eat into the needs */
+  var small = shuffle(SHOP_WANTS.filter(function(w){ return w.cost <= extra; })).slice(0, 1);
+  var big = shuffle(SHOP_WANTS.filter(function(w){ return w.cost > extra && small.indexOf(w) === -1; })).slice(0, 2);
+  var items = shuffle(needs.map(function(n){ return { p: n.p, n: n.n, cost: n.cost, need: true }; })
+    .concat(small.concat(big).map(function(w){ return { p: w.p, n: w.n, cost: w.cost, need: false }; })));
+  return { text: story.text, items: items, budget: budget, extra: extra };
+}
+
+function startShop(){
+  lastMode = 'shop';
+  trips = shuffle(STORIES).slice(0, SHOP_ROUNDS).map(makeTrip);
+  tRound = 0;
+  tScore = 0;
+  hideAll();
+  $('shopScreen').classList.remove('hidden');
+  nextTrip();
+}
+
+function nextTrip(){
+  tRound++;
+  if (tRound > trips.length) {
+    var stars = tScore >= 4 ? 3 : tScore >= 3 ? 2 : 1;
+    showEnd(tScore >= 4 ? 'Smart shopper!' : tScore >= 3 ? 'Great choices!' : 'Keep shopping smart!', 'You took care of the family\'s needs on the first try ' + tScore + ' of ' + trips.length + ' times.', stars);
+    return;
+  }
+  tBusy = false;
+  tFirst = true;
+  trip = trips[tRound - 1];
+  cart = {};
+  $('shRound').textContent = 'Trip ' + tRound + ' of ' + trips.length;
+  $('shScore').textContent = 'First try ' + tScore;
+  $('story').innerHTML = pic('frogs', '') + '<p>' + trip.text + ' They have <b>' + trip.budget + ' shells</b> to spend.</p>';
+  $('doneBtn').disabled = false;
+  setFact('shFact', '');
+  drawShop();
+  $('srStatus').textContent = trip.text + ' They have ' + trip.budget + ' shells. The shop has ' + trip.items.map(function(i){ return i.n + ' for ' + i.cost; }).join(', ') + '.';
+}
+
+function spent(){ return trip.items.reduce(function(t, i){ return t + (cart[i.p] ? i.cost : 0); }, 0); }
+
+function drawShop(markMissing){
+  var left = trip.budget - spent();
+  $('wallet').innerHTML = '<span>' + shellIcon(22) + ' Shells: ' + trip.budget + '</span><span>Spent: ' + spent() + '</span><span class="' + (left === 0 ? 'low' : '') + '">Left: ' + left + '</span>';
+  var shelf = $('shelf');
+  var focusP = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.p : null;
+  shelf.innerHTML = '';
+  trip.items.forEach(function(it){
+    var b = document.createElement('button');
+    b.className = 'shop-item' + (cart[it.p] ? ' in' : '') + (markMissing && it.need && !cart[it.p] ? ' missing' : '');
+    b.dataset.p = it.p;
+    b.innerHTML = pic(it.p) + '<span class="iname">' + it.n + '</span><span class="cost">' + shellIcon(18) + ' ' + it.cost + '</span>';
+    b.setAttribute('aria-label', it.n + ', ' + it.cost + ' shells' + (cart[it.p] ? ', in the cart. Tap to put it back.' : ''));
+    b.setAttribute('aria-pressed', cart[it.p] ? 'true' : 'false');
+    b.disabled = tBusy;
+    b.onclick = function(){ toggleItem(it); };
+    shelf.appendChild(b);
+  });
+  if (focusP) { var f = shelf.querySelector('[data-p="' + focusP + '"]'); if (f) f.focus(); }
+}
+
+function toggleItem(it){
+  if (tBusy) return;
+  if (cart[it.p]) {
+    delete cart[it.p];
+    sndPlop();
+    setFact('shFact', '');
+    drawShop();
+    $('srStatus').textContent = 'Put back the ' + it.n.toLowerCase() + '. ' + (trip.budget - spent()) + ' shells left.';
+    return;
+  }
+  if (spent() + it.cost > trip.budget) {
+    var msg = 'Not enough shells! The ' + it.n.toLowerCase() + ' costs ' + it.cost + ', but only ' + (trip.budget - spent()) + ' are left. You could put something back.';
+    setFact('shFact', msg);
+    sndBad();
+    $('srStatus').textContent = msg;
+    return;
+  }
+  cart[it.p] = true;
+  sndClink();
+  setFact('shFact', '');
+  drawShop();
+  $('srStatus').textContent = 'Added the ' + it.n.toLowerCase() + '. ' + (trip.budget - spent()) + ' shells left.';
+}
+
+function doneShopping(){
+  if (tBusy) return;
+  var missing = trip.items.filter(function(i){ return i.need && !cart[i.p]; });
+  if (missing.length) {
+    tFirst = false;
+    var wants = trip.items.filter(function(i){ return !i.need && cart[i.p]; });
+    var msg = 'Oh no! The family still needs ' + missing.map(function(m){ return m.n.toLowerCase(); }).join(' and ') + '.' +
+      (wants.length ? ' Some shells went to wants. Needs come first, so try putting a want back.' : ' Buy the things they need first.');
+    setFact('shFact', msg);
+    drawShop(true);
+    sndBad();
+    $('srStatus').textContent = msg;
+    return;
+  }
+  tBusy = true;
+  if (tFirst) tScore++;
+  $('shScore').textContent = 'First try ' + tScore;
+  $('doneBtn').disabled = true;
+  drawShop();
+  var left = trip.budget - spent();
+  var gotWant = trip.items.some(function(i){ return !i.need && cart[i.p]; });
+  var msg2 = 'The family has everything they need! ' +
+    (gotWant ? 'You bought the needs first, then used the leftover shells on something fun. Smart choice!' :
+      left > 0 ? 'You saved ' + left + (left === 1 ? ' shell' : ' shells') + ' for another day. Saving is a smart choice too!' : 'You used every shell on needs. Great job!');
+  setFact('shFact', msg2);
+  sndGood();
+  $('srStatus').textContent = msg2;
+  timer = setTimeout(nextTrip, 3600);
+}
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown', function(e){
+  if ($('sortScreen').classList.contains('hidden')) return;
+  if (e.key === '1' || e.key === 'ArrowLeft') { if (!$('bLeft').disabled) pickBasket('left'); e.preventDefault(); }
+  else if (e.key === '2' || e.key === 'ArrowRight') { if (!$('bRight').disabled) pickBasket('right'); e.preventDefault(); }
+});
+
+/* Start screen art */
+$('startArt').innerHTML = '<svg viewBox="0 0 220 110" aria-hidden="true"><g transform="translate(0 4) scale(1.05)">' + P.house + '</g><g transform="translate(96 30) scale(.8)">' + P.frogs + '</g><g transform="translate(160 40) scale(.55)">' + P.shell + '</g><g transform="translate(184 58) scale(.45)">' + P.shell + '</g></svg>';
+$('artNW').innerHTML = '<svg viewBox="0 0 110 70" aria-hidden="true"><g transform="translate(4 2) scale(.66)">' + P.water + '</g><g transform="translate(52 2) scale(.66)">' + P.kite + '</g></svg>';
+$('artGS').innerHTML = '<svg viewBox="0 0 110 70" aria-hidden="true"><g transform="translate(4 2) scale(.66)">' + P.book + '</g><g transform="translate(52 2) scale(.66)">' + P.haircut + '</g></svg>';
+$('artShop').innerHTML = '<svg viewBox="0 0 110 70" aria-hidden="true"><g transform="translate(4 2) scale(.66)">' + P.bread + '</g><g transform="translate(58 10) scale(.5)">' + P.shell + '</g><g transform="translate(76 28) scale(.4)">' + P.shell + '</g></svg>';
+</script>
+</body>
+</html>
