@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word part pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Snap prefixes and suffixes like un-, re-, -ful, and -less onto base words, then figure out what the new words mean. A free vocabulary game for grades 3 and 4 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;
+  --ink-soft:#33625C;
+  --teal:#1F6E68;
+  --teal-dark:#0F5A50;
+  --green:#3F9457;
+  --green-light:#4FB06A;
+  --sky:#DFF2FA;
+  --water:#8FCDE8;
+  --water-deep:#6BB6DB;
+  --amber:#F5C84C;
+  --red:#E24B4A;
+  --pre:#2B6CB0;
+  --suf:#9B4D8E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Nunito",system-ui,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);
+  min-height:100vh;display:flex;flex-direction:column;
+}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{
+  font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);
+  text-decoration:none;background:rgba(255,255,255,.85);
+  padding:8px 16px;border-radius:999px;font-size:.95rem;
+}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{
+  background:rgba(255,255,255,.85);border:none;border-radius:999px;
+  width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark);
+}
+.icon-btn:hover{background:#fff}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:980px;text-align:center}
+.hidden{display:none !important}
+
+.card{
+  background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;
+  box-shadow:0 12px 40px rgba(18,64,58,.18);
+}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;
+  padding:14px 20px;min-width:210px;border-radius:18px;cursor:pointer;
+  border:3px solid var(--teal);background:#fff;color:var(--teal-dark);
+  transition:transform .12s ease;
+}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.big-btn{
+  font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;
+  padding:16px 42px;border-radius:999px;border:none;
+  background:var(--green-light);color:#fff;cursor:pointer;
+  box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0;
+}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.note{font-size:.9rem;color:#6E8C86;margin-top:12px;max-width:660px;margin-left:auto;margin-right:auto}
+
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+}
+.prompt{
+  font-family:"Baloo 2",sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;
+  color:var(--teal-dark);margin:4px 0 10px;
+  background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%;
+}
+.prompt .clue{color:#8A3B00;background:#FFF3C8;border-radius:12px;padding:0 10px}
+
+/* The word on its lily pad */
+.word-pad{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  min-width:min(92vw,520px);min-height:150px;margin:6px auto 12px;padding:20px 30px;
+}
+.word-pad svg.leaf{position:absolute;inset:0;width:100%;height:100%}
+.word{position:relative;display:flex;align-items:baseline;gap:2px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(2.6rem,8vw,4.4rem);line-height:1}
+.part{border-radius:14px;padding:2px 10px;background:#fff;box-shadow:0 4px 0 rgba(18,64,58,.2)}
+.part.root{color:var(--ink)}
+.part.pre{color:var(--pre);background:#E6F0FA}
+.part.suf{color:var(--suf);background:#F4E8F2}
+.part.slot{color:#9EB8B3;background:rgba(255,255,255,.55);box-shadow:none;border:3px dashed #fff;min-width:1.6em}
+@keyframes snap{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+.snap{animation:snap .35s ease}
+
+.affixes{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.affix{
+  border:none;cursor:pointer;border-radius:20px;padding:8px 18px 8px;min-width:120px;background:#fff;
+  box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;
+  display:flex;flex-direction:column;align-items:center;
+}
+.affix b{font-family:"Baloo 2",sans-serif;font-size:2rem;line-height:1.1}
+.affix.pre b{color:var(--pre)}
+.affix.suf b{color:var(--suf)}
+.affix small{font-weight:700;font-size:.85rem;color:var(--ink-soft)}
+.affix:hover:enabled{transform:translateY(-3px)}
+.affix:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.affix:disabled{opacity:.35;cursor:default}
+.affix.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.affix.wrong{background:var(--red)}
+.affix.wrong b,.affix.wrong small{color:#fff}
+
+.meanings{display:flex;flex-direction:column;gap:10px;align-items:center}
+.meaning{
+  width:min(92vw,460px);border:none;cursor:pointer;border-radius:999px;padding:10px 24px;background:#fff;
+  font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.25rem,3vw,1.6rem);color:var(--teal-dark);
+  box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;
+}
+.meaning:hover:enabled{transform:translateY(-2px)}
+.meaning.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green)}
+.meaning.wrong{background:var(--red);color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+
+.fact{
+  margin:14px auto 0;max-width:720px;font-weight:700;font-size:1.1rem;color:var(--teal-dark);
+  background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px;
+}
+.eq{font-family:"Baloo 2",sans-serif;font-size:1.25rem}
+.eq .p{color:var(--pre)} .eq .s{color:var(--suf)}
+
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <!-- Start screen -->
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div class="word" style="justify-content:center;font-size:2.4rem;margin-bottom:8px" aria-hidden="true"><span class="part pre">re</span><span class="part root">paint</span><span class="part suf" style="margin-left:14px">help</span><span class="part suf">ful</span></div>
+      <h1 id="gameTitle">Word part pond</h1>
+      <p class="sub">Snap a word part onto a base word, and you get a brand new word with a new meaning!</p>
+      <span class="choose-label" id="levelLabel">Pick your word parts</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">un-, re-, -ful, -less<small>grade 3</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Add dis-, pre-, -er, -able<small>grades 3 and 4</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startBuild()">Build the word</button>
+        <button class="big-btn alt" onclick="startMeaning()">What does it mean?</button>
+      </div>
+      <p class="note">Build the word: read the clue, then snap on the prefix or suffix that makes a word with that meaning. What does it mean: break a word into its parts and pick its meaning. A prefix goes before the base word. A suffix goes after it.</p>
+    </div>
+  </section>
+
+  <!-- Build mode -->
+  <section class="screen hidden" id="buildScreen">
+    <div class="hud">
+      <span class="chip" id="bRound">Word 1 of 10</span>
+      <span class="chip" id="bScore">First try 0</span>
+    </div>
+    <p class="prompt" id="bPrompt">Make a word that means <span class="clue">not happy</span></p>
+    <div><div class="word-pad" id="bPad"></div></div>
+    <div class="affixes" id="affixes" role="group" aria-label="Word parts"></div>
+    <p class="fact hidden" id="bFact" role="status"></p>
+  </section>
+
+  <!-- Meaning mode -->
+  <section class="screen hidden" id="meaningScreen">
+    <div class="hud">
+      <span class="chip" id="mRound">Word 1 of 10</span>
+      <span class="chip" id="mScore">First try 0</span>
+    </div>
+    <p class="prompt" id="mPrompt">What does this word mean?</p>
+    <div><div class="word-pad" id="mPad"></div></div>
+    <div class="meanings" id="meanings" role="group" aria-label="Meanings"></div>
+    <p class="fact hidden" id="mFact" role="status"></p>
+  </section>
+
+  <!-- End screen -->
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Word builder!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+/* Word parts. side: before or after the base word */
+var AFFIXES = {
+  un:   { text: 'un', side: 'pre', means: 'not', opp: 're' },
+  re:   { text: 're', side: 'pre', means: 'again', opp: 'un' },
+  ful:  { text: 'ful', side: 'suf', means: 'full of', opp: 'less' },
+  less: { text: 'less', side: 'suf', means: 'without', opp: 'ful' },
+  dis:  { text: 'dis', side: 'pre', means: 'not', opp: 're' },
+  pre:  { text: 'pre', side: 'pre', means: 'before', opp: 're' },
+  er:   { text: 'er', side: 'suf', means: 'one who', opp: 'able' },
+  able: { text: 'able', side: 'suf', means: 'can be', opp: 'er' }
+};
+var LEVEL_AFFIXES = [['un', 're', 'ful', 'less'], ['un', 're', 'ful', 'less', 'dis', 'pre', 'er', 'able']];
+
+/* Base words with the forms we need to say their meanings. t: a adjective, n noun, v verb */
+var ROOTS = {
+  happy: { t: 'a' }, kind: { t: 'a' }, safe: { t: 'a' }, fair: { t: 'a' }, wise: { t: 'a' }, honest: { t: 'a' }, loyal: { t: 'a' },
+  care: { t: 'n' }, hope: { t: 'n' }, fear: { t: 'n' }, color: { t: 'n' }, joy: { t: 'n' }, sleep: { t: 'n' }, harm: { t: 'n' }, end: { t: 'n' }, thanks: { t: 'n' },
+  paint: { t: 'v', s: 'paints', pp: 'painted' }, read: { t: 'v', s: 'reads', pp: 'read' }, fill: { t: 'v', s: 'fills', pp: 'filled' },
+  build: { t: 'v', s: 'builds', pp: 'built' }, play: { t: 'v', s: 'plays', pp: 'played' }, tell: { t: 'v', s: 'tells', pp: 'told' },
+  teach: { t: 'v', s: 'teaches', pp: 'taught' }, sing: { t: 'v', s: 'sings', pp: 'sung' }, farm: { t: 'v', s: 'farms', pp: 'farmed' },
+  like: { t: 'v', s: 'likes', pp: 'liked' }, agree: { t: 'v', s: 'agrees', pp: 'agreed' }, obey: { t: 'v', s: 'obeys', pp: 'obeyed' },
+  heat: { t: 'v', s: 'heats', pp: 'heated' }, view: { t: 'v', s: 'views', pp: 'viewed' }, wash: { t: 'v', s: 'washes', pp: 'washed' },
+  cook: { t: 'v', s: 'cooks', pp: 'cooked' }, pay: { t: 'v', s: 'pays', pp: 'paid' }, fix: { t: 'v', s: 'fixes', pp: 'fixed' },
+  bend: { t: 'v', s: 'bends', pp: 'bent' }, fold: { t: 'v', s: 'folds', pp: 'folded' }, write: { t: 'v', s: 'writes', pp: 'written' }
+};
+/* Real words this game uses: [affix, root, word]. Spelled with no changes to the base word except thanks + ful. */
+var WORDS = [
+  ['un','happy','unhappy'], ['un','kind','unkind'], ['un','safe','unsafe'], ['un','fair','unfair'], ['un','wise','unwise'],
+  ['re','paint','repaint'], ['re','read','reread'], ['re','fill','refill'], ['re','build','rebuild'], ['re','play','replay'], ['re','tell','retell'], ['re','write','rewrite'],
+  ['ful','care','careful'], ['ful','hope','hopeful'], ['ful','fear','fearful'], ['ful','color','colorful'], ['ful','joy','joyful'], ['ful','thanks','thankful'],
+  ['less','care','careless'], ['less','hope','hopeless'], ['less','fear','fearless'], ['less','color','colorless'], ['less','sleep','sleepless'], ['less','harm','harmless'], ['less','end','endless'], ['ful','harm','harmful'],
+  ['dis','like','dislike'], ['dis','agree','disagree'], ['dis','honest','dishonest'], ['dis','obey','disobey'], ['dis','loyal','disloyal'],
+  ['pre','heat','preheat'], ['pre','view','preview'], ['pre','wash','prewash'], ['pre','cook','precook'], ['pre','pay','prepay'],
+  ['er','teach','teacher'], ['er','paint','painter'], ['er','farm','farmer'], ['er','sing','singer'], ['er','read','reader'], ['er','play','player'], ['er','build','builder'],
+  ['able','wash','washable'], ['able','read','readable'], ['able','fix','fixable'], ['able','bend','bendable'], ['able','fold','foldable']
+];
+var ROUNDS = 10;
+
+function meaningOf(aff, root){
+  var r = ROOTS[root], base = root === 'thanks' ? 'thanks' : root;
+  if (aff === 'un' || aff === 'dis') return 'not ' + base;
+  if (aff === 're') return base + ' again';
+  if (aff === 'pre') return base + ' before';
+  if (aff === 'ful') return 'full of ' + base;
+  if (aff === 'less') return 'without ' + base;
+  if (aff === 'er') return 'one who ' + r.s;
+  if (aff === 'able') return 'can be ' + r.pp;
+  return base;
+}
+/* Wrong meanings that still sound like real phrases for this kind of base word */
+function wrongMeanings(aff, root){
+  var r = ROOTS[root], base = root, out = [];
+  if (r.t === 'a') out = ['very ' + base, 'a little ' + base, (aff === 'un' ? 'not ' : 'not ') + base];
+  else if (r.t === 'n') out = ['full of ' + base, 'without ' + base, 'a little ' + base];
+  else out = [base + ' again', base + ' before', 'not ' + base, 'one who ' + r.s, 'can be ' + r.pp];
+  var right = meaningOf(aff, root);
+  return shuffle(out.filter(function(m, i, a){ return m !== right && a.indexOf(m) === i; }));
+}
+
+var level = 0;
+var lastMode = 'build';
+var soundOn = true;
+var audioCtx = null;
+var timer = null;
+
+function $(id){ return document.getElementById(id); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function chooseLevel(btn){
+  document.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.16, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur);
+      o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndSnap(){ beep([660, 990], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+
+function hideAll(){ ['startScreen','buildScreen','meaningScreen','endScreen'].forEach(function(s){ $(s).classList.add('hidden'); }); }
+function backToStart(){ clearTimeout(timer); hideAll(); $('startScreen').classList.remove('hidden'); }
+function playAgain(){ if (lastMode === 'build') startBuild(); else startMeaning(); }
+function showEnd(title, line, stars){
+  hideAll();
+  $('endScreen').classList.remove('hidden');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function endTitle(s){ return s >= 9 ? 'Word builder!' : s >= 7 ? 'Great word work!' : 'Keep building!'; }
+function endStars(s){ return s >= 9 ? 3 : s >= 7 ? 2 : 1; }
+
+var LEAF = '<svg class="leaf" viewBox="0 0 520 150" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="260" cy="78" rx="256" ry="70" fill="#3F9457"/><path d="M260 76 L470 20 A254 68 0 1 1 420 10Z" fill="#7CC47F"/></svg>';
+
+/* Spelling joins: thanks + ful = thankful */
+function joined(aff, root){ return WORDS.filter(function(w){ return w[0] === aff && w[1] === root; })[0][2]; }
+function rootShown(aff, root){
+  var w = joined(aff, root), a = AFFIXES[aff].text;
+  return AFFIXES[aff].side === 'pre' ? w.slice(a.length) : w.slice(0, w.length - a.length);
+}
+
+function wordHtml(aff, root, show){
+  var A = AFFIXES[aff], base = show ? rootShown(aff, root) : root;
+  var slot = show ? '<span class="part ' + A.side + ' snap">' + A.text + '</span>' : '<span class="part slot">?</span>';
+  var r = '<span class="part root">' + base + '</span>';
+  return '<div class="word">' + (A.side === 'pre' ? slot + r : r + slot) + '</div>';
+}
+function eqHtml(aff, root){
+  var A = AFFIXES[aff];
+  var a = '<span class="' + (A.side === 'pre' ? 'p' : 's') + '">' + A.text + ' (' + A.means + ')</span>';
+  var parts = A.side === 'pre' ? a + ' + ' + root : root + ' + ' + a;
+  return '<span class="eq">' + parts + ' = ' + joined(aff, root) + '</span>';
+}
+
+function pool(){
+  var allowed = LEVEL_AFFIXES[level];
+  return WORDS.filter(function(w){ return allowed.indexOf(w[0]) !== -1; });
+}
+/* Spread the round across every word part in the level */
+function makeDeck(){
+  var allowed = LEVEL_AFFIXES[level], byAff = {}, out = [];
+  pool().forEach(function(w){ (byAff[w[0]] = byAff[w[0]] || []).push(w); });
+  Object.keys(byAff).forEach(function(k){ byAff[k] = shuffle(byAff[k]); });
+  var order = [];
+  while (order.length < ROUNDS) order = order.concat(shuffle(allowed));
+  var usedRoot = {};
+  order.slice(0, ROUNDS).forEach(function(a){
+    var w = byAff[a].filter(function(x){ return !usedRoot[x[1]]; })[0] || byAff[a][0];
+    byAff[a] = byAff[a].filter(function(x){ return x !== w; }).concat([w]);
+    usedRoot[w[1]] = 1;
+    out.push(w);
+  });
+  return shuffle(out);
+}
+
+/* ---------- Build the word ---------- */
+var deck = [];
+var round = 0;
+var score = 0;
+var cur = null;
+var firstTry = true;
+var busy = false;
+
+function startBuild(){
+  lastMode = 'build';
+  deck = makeDeck();
+  round = 0;
+  score = 0;
+  hideAll();
+  $('buildScreen').classList.remove('hidden');
+  nextBuild();
+}
+
+function affixChoices(aff, root){
+  var allowed = LEVEL_AFFIXES[level];
+  if (allowed.length <= 4) return allowed.slice();
+  var opts = [aff];
+  var opp = AFFIXES[aff].opp;
+  if (allowed.indexOf(opp) !== -1) opts.push(opp);
+  shuffle(allowed).forEach(function(a){ if (opts.length < 4 && opts.indexOf(a) === -1) opts.push(a); });
+  /* prefixes first, then suffixes, so the layout matches where they go */
+  return opts.sort(function(x, y){ return (AFFIXES[x].side === 'pre' ? 0 : 1) - (AFFIXES[y].side === 'pre' ? 0 : 1); });
+}
+
+function nextBuild(){
+  round++;
+  if (round > deck.length) {
+    showEnd(endTitle(score), 'You built ' + score + ' of ' + deck.length + ' words on the first try.', endStars(score));
+    return;
+  }
+  busy = false;
+  firstTry = true;
+  cur = deck[round - 1];
+  var aff = cur[0], root = cur[1];
+  $('bRound').textContent = 'Word ' + round + ' of ' + deck.length;
+  $('bScore').textContent = 'First try ' + score;
+  $('bPrompt').innerHTML = 'Make a word that means <span class="clue">' + meaningOf(aff, root) + '</span>';
+  $('bFact').classList.add('hidden');
+  /* the slot sits on whichever side the right answer goes, so kids also see where prefixes and suffixes attach */
+  $('bPad').innerHTML = LEAF + wordHtml(aff, root, false);
+  var box = $('affixes');
+  box.innerHTML = '';
+  affixChoices(aff, root).forEach(function(a, i){
+    var A = AFFIXES[a], b = document.createElement('button');
+    b.className = 'affix ' + A.side;
+    b.dataset.key = i + 1;
+    b.innerHTML = '<b>' + (A.side === 'pre' ? A.text + '-' : '-' + A.text) + '</b><small>' + A.means + '</small>';
+    b.setAttribute('aria-label', (A.side === 'pre' ? 'prefix ' : 'suffix ') + A.text + ', means ' + A.means);
+    b.onclick = function(){ pickAffix(b, a); };
+    box.appendChild(b);
+  });
+  $('srStatus').textContent = 'The base word is ' + root + '. Make a word that means ' + meaningOf(aff, root) + '.';
+}
+
+function pickAffix(btn, a){
+  if (busy) return;
+  var aff = cur[0], root = cur[1];
+  if (a === aff) {
+    busy = true;
+    if (firstTry) score++;
+    $('bScore').textContent = 'First try ' + score;
+    btn.classList.add('right');
+    document.querySelectorAll('.affix').forEach(function(b){ b.disabled = b !== btn; });
+    $('bPad').innerHTML = LEAF + wordHtml(aff, root, true);
+    $('bPrompt').innerHTML = 'You made <span class="clue">' + joined(aff, root) + '</span>!';
+    $('bFact').innerHTML = eqHtml(aff, root) + (root === 'thanks' ? '<br>The s drops off when we add -ful.' : '');
+    $('bFact').classList.remove('hidden');
+    sndSnap();
+    setTimeout(sndGood, 120);
+    $('srStatus').textContent = 'Correct! ' + AFFIXES[aff].text + ' plus ' + root + ' makes ' + joined(aff, root) + ', which means ' + meaningOf(aff, root) + '.';
+    timer = setTimeout(nextBuild, 2800);
+  } else {
+    firstTry = false;
+    btn.classList.add('wrong', 'shake');
+    btn.disabled = true;
+    var A = AFFIXES[a];
+    var real = WORDS.filter(function(w){ return w[0] === a && w[1] === root; })[0];
+    var h = real
+      ? '"' + real[2] + '" is a real word, but it means "' + meaningOf(a, root) + '". Look at the clue again.'
+      : A.text + ' means "' + A.means + '". The clue asks for "' + meaningOf(aff, root) + '".';
+    $('bFact').textContent = h;
+    $('bFact').classList.remove('hidden');
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- What does it mean ---------- */
+var mFirst = true;
+var mBusy = false;
+
+function startMeaning(){
+  lastMode = 'meaning';
+  deck = makeDeck();
+  round = 0;
+  score = 0;
+  hideAll();
+  $('meaningScreen').classList.remove('hidden');
+  nextMeaning();
+}
+
+function nextMeaning(){
+  round++;
+  if (round > deck.length) {
+    showEnd(endTitle(score), 'You figured out ' + score + ' of ' + deck.length + ' meanings on the first try.', endStars(score));
+    return;
+  }
+  mBusy = false;
+  mFirst = true;
+  cur = deck[round - 1];
+  var aff = cur[0], root = cur[1], word = cur[2];
+  $('mRound').textContent = 'Word ' + round + ' of ' + deck.length;
+  $('mScore').textContent = 'First try ' + score;
+  $('mPrompt').innerHTML = 'What does <span class="clue">' + word + '</span> mean?';
+  $('mFact').classList.add('hidden');
+  $('mPad').innerHTML = LEAF + wordHtml(aff, root, true);
+  var right = meaningOf(aff, root);
+  var opts = shuffle([right].concat(wrongMeanings(aff, root).slice(0, 2)));
+  var box = $('meanings');
+  box.innerHTML = '';
+  opts.forEach(function(m, i){
+    var b = document.createElement('button');
+    b.className = 'meaning';
+    b.dataset.key = i + 1;
+    b.textContent = m;
+    b.onclick = function(){ pickMeaning(b, m); };
+    box.appendChild(b);
+  });
+  $('srStatus').textContent = 'The word ' + word + ' has the parts ' + (AFFIXES[aff].side === 'pre' ? AFFIXES[aff].text + ' and ' + rootShown(aff, root) : rootShown(aff, root) + ' and ' + AFFIXES[aff].text) + '. What does it mean?';
+}
+
+function pickMeaning(btn, m){
+  if (mBusy) return;
+  var aff = cur[0], root = cur[1];
+  if (m === meaningOf(aff, root)) {
+    mBusy = true;
+    if (mFirst) score++;
+    $('mScore').textContent = 'First try ' + score;
+    btn.classList.add('right');
+    document.querySelectorAll('.meaning').forEach(function(b){ b.disabled = b !== btn; });
+    $('mFact').innerHTML = eqHtml(aff, root);
+    $('mFact').classList.remove('hidden');
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + AFFIXES[aff].text + ' means ' + AFFIXES[aff].means + ', so ' + cur[2] + ' means ' + m + '.';
+    timer = setTimeout(nextMeaning, 2800);
+  } else {
+    mFirst = false;
+    btn.classList.add('wrong', 'shake');
+    btn.disabled = true;
+    var A = AFFIXES[aff];
+    var h = 'Find the ' + (A.side === 'pre' ? 'prefix at the start' : 'suffix at the end') + '. What does "' + A.text + '" mean?';
+    $('mFact').textContent = h;
+    $('mFact').classList.remove('hidden');
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown', function(e){
+  var buildOn = !$('buildScreen').classList.contains('hidden');
+  var meanOn = !$('meaningScreen').classList.contains('hidden');
+  if (!buildOn && !meanOn) return;
+  var sel = buildOn ? '.affix' : '.meaning';
+  if (/^[1-4]$/.test(e.key)) {
+    var b = document.querySelector(sel + '[data-key="' + e.key + '"]');
+    if (b && !b.disabled) b.click();
+  } else if (['ArrowRight','ArrowLeft','ArrowUp','ArrowDown'].indexOf(e.key) !== -1) {
+    var list = Array.prototype.slice.call(document.querySelectorAll(sel + ':enabled'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement), fwd = e.key === 'ArrowRight' || e.key === 'ArrowDown';
+    var n = i === -1 ? 0 : (i + (fwd ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+</script>
+</body>
+</html>
