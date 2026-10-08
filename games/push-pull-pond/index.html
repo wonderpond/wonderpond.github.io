@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Push pull pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Sort pushes and pulls, choose the right direction and strength to push a boat to a buoy, and test which things a magnet will pull. A free forces and magnets science game for grades K to 3 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.thing{background:#fff;border-radius:26px;padding:12px 16px 14px;width:clamp(200px,30vw,280px);margin:0 auto 14px;box-shadow:0 8px 0 rgba(18,64,58,.18)}
+.thing .pic{width:100%;height:auto;max-height:170px}
+.thing .tname{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.2rem,2.8vw,1.6rem);line-height:1.15}
+.say{border:none;cursor:pointer;background:#E6F0FA;color:#2B6CB0;border-radius:999px;padding:4px 14px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1rem;margin-top:6px}
+.ans.big{min-width:190px;padding:12px 22px}
+.ans.big svg{display:block;width:120px;height:56px;margin:0 auto 2px}
+
+.pondbox{background:#fff;border-radius:24px;padding:8px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%}
+.pondbox svg{display:block;width:min(92vw,720px);height:auto}
+.boat{transition:transform 1.1s cubic-bezier(.2,.7,.3,1)}
+.ctrl-row{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:12px;align-items:flex-end}
+.ctrl-group{background:rgba(255,255,255,.88);border-radius:20px;padding:8px 12px}
+.ctrl-group h3{font-family:"Baloo 2",sans-serif;font-size:1rem;color:#0F5A50;margin-bottom:4px}
+.seg{display:flex;gap:6px}
+.seg button{border:none;cursor:pointer;border-radius:14px;padding:8px 14px;background:#fff;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:#0F5A50;box-shadow:0 3px 0 rgba(18,64,58,.2)}
+.seg button[aria-pressed="true"]{background:#1F6E68;color:#fff}
+
+.magnet-stage{background:#fff;border-radius:24px;padding:8px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%;margin-bottom:12px}
+.magnet-stage svg{display:block;width:min(92vw,600px);height:auto}
+.obj{transition:transform .9s cubic-bezier(.3,.1,.3,1)}
+.mag{transition:transform .9s cubic-bezier(.3,.1,.3,1)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:240px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Push pull pond</h1>
+      <p class="sub">Things move when we push or pull them. Magnets can pull too, without even touching!</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="games">
+        <button class="game-btn" onclick="startPP()"><span id="artPP"></span>Push or pull?<small>grades K and 1</small></button>
+        <button class="game-btn" onclick="startBoat()"><span id="artBoat"></span>Push the boat<small>grades K to 2</small></button>
+        <button class="game-btn" onclick="startMag()"><span id="artMag"></span>Magnet test<small>grades 2 and 3</small></button>
+      </div>
+      <p class="note">Push or pull: decide if each action is a push or a pull. Tap Hear it to have it read aloud. Push the boat: pick a direction and a push strength to send Hop's boat to the buoy. Magnet test: predict which things a magnet will pull, then see what happens when magnets face each other.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="ppScreen">
+    <div class="hud">
+      <span class="chip" id="pRound">Card 1 of 10</span>
+      <span class="chip" id="pScore">First try 0</span>
+    </div>
+    <p class="prompt">Is it a push or a pull?</p>
+    <div class="thing" id="pThing"></div>
+    <div class="answers" id="pAnswers" role="group" aria-label="Push or pull"></div>
+    <p class="fact hidden" id="pFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="boatScreen">
+    <div class="hud">
+      <span class="chip" id="bRound">Trip 1 of 8</span>
+      <span class="chip" id="bScore">First try 0</span>
+    </div>
+    <p class="prompt" id="bPrompt">Send the boat to the buoy!</p>
+    <div><div class="pondbox" id="pond"></div></div>
+    <div class="ctrl-row">
+      <div class="ctrl-group"><h3>Which way?</h3><div class="seg" id="dirSeg" role="group" aria-label="Direction">
+        <button data-v="-1" aria-pressed="false">&#8592; Left</button><button data-v="1" aria-pressed="false">Right &#8594;</button></div></div>
+      <div class="ctrl-group"><h3>How hard?</h3><div class="seg" id="strSeg" role="group" aria-label="Push strength">
+        <button data-v="1" aria-pressed="false">Gentle</button><button data-v="2" aria-pressed="false">Medium</button><button data-v="3" aria-pressed="false">Strong</button></div></div>
+      <button class="big-btn" id="pushBtn" onclick="pushBoat()">Push!</button>
+    </div>
+    <p class="fact hidden" id="bFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="magScreen">
+    <div class="hud">
+      <span class="chip" id="mRound">Test 1 of 10</span>
+      <span class="chip" id="mScore">First try 0</span>
+    </div>
+    <p class="prompt" id="mPrompt">Will the magnet pull it?</p>
+    <div><div class="magnet-stage" id="mStage"></div></div>
+    <div class="answers" id="mAnswers" role="group" aria-label="Predictions"></div>
+    <p class="fact hidden" id="mFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+/* ---------- Pictures (100 x 100) ---------- */
+var P = {
+  kick: '<circle cx="64" cy="58" r="16" fill="#fff" stroke="#22303B" stroke-width="2.5"/><path d="M64 42 L70 52 L60 58 L56 50Z M70 66 L76 70 L68 74Z" fill="#22303B"/><path d="M10 82 L30 70 L36 76 L18 90Z" fill="#2B6CB0"/><path d="M36 70 Q44 64 48 62" stroke="#9AA3A8" stroke-width="3" stroke-dasharray="4 4" fill="none"/>',
+  drawer: '<rect x="14" y="20" width="72" height="66" rx="6" fill="#D9A25F" stroke="#B0864F" stroke-width="3"/><rect x="20" y="28" width="60" height="22" rx="3" fill="#E8C08A"/><rect x="26" y="56" width="60" height="22" rx="3" fill="#E8C08A" transform="translate(-14 0)"/><rect x="40" y="62" width="20" height="6" rx="3" fill="#8A6A45" transform="translate(-14 0)"/><rect x="40" y="36" width="20" height="6" rx="3" fill="#8A6A45"/>',
+  wagon: '<rect x="34" y="44" width="54" height="22" rx="4" fill="#E24B4A"/><circle cx="44" cy="72" r="8" fill="#4A4F55"/><circle cx="78" cy="72" r="8" fill="#4A4F55"/><path d="M34 54 L10 40" stroke="#4A4F55" stroke-width="4" stroke-linecap="round"/><rect x="4" y="34" width="10" height="8" rx="3" fill="#4A4F55"/>',
+  swing: '<path d="M10 10 H90" stroke="#8A6A45" stroke-width="6"/><path d="M40 10 L56 64 M70 10 L84 60" stroke="#9AA3A8" stroke-width="3"/><rect x="50" y="62" width="40" height="8" rx="3" fill="#F39C3D" transform="rotate(-8 70 66)"/><path d="M20 70 Q30 64 42 64" stroke="#2B6CB0" stroke-width="3" stroke-dasharray="4 4" fill="none"/>',
+  rope: '<path d="M8 50 H92" stroke="#C9A878" stroke-width="7"/><path d="M8 50 H92" stroke="#B0864F" stroke-width="7" stroke-dasharray="3 6"/><rect x="46" y="38" width="8" height="24" fill="#E24B4A"/><circle cx="12" cy="50" r="9" fill="#4FB06A"/><circle cx="88" cy="50" r="9" fill="#F5C84C"/>',
+  cart: '<path d="M20 28 H84 L76 62 H30Z" fill="#B8BEC2" stroke="#8C9296" stroke-width="3"/><path d="M30 38 H80 M32 50 H78" stroke="#8C9296" stroke-width="2"/><path d="M20 28 L10 18 H4" stroke="#4A4F55" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="36" cy="74" r="6" fill="#4A4F55"/><circle cx="70" cy="74" r="6" fill="#4A4F55"/>',
+  button: '<rect x="22" y="36" width="56" height="44" rx="10" fill="#4A4F55"/><ellipse cx="50" cy="52" rx="20" ry="10" fill="#E24B4A"/><path d="M50 8 V28 M42 20 L50 28 L58 20" stroke="#2B6CB0" stroke-width="4" fill="none" stroke-linecap="round"/>',
+  weed: '<path d="M6 76 H94" stroke="#8A6A45" stroke-width="8"/><path d="M50 74 V40" stroke="#3F9457" stroke-width="4"/><ellipse cx="40" cy="44" rx="10" ry="4" fill="#5DB35A" transform="rotate(-30 40 44)"/><ellipse cx="60" cy="40" rx="10" ry="4" fill="#5DB35A" transform="rotate(30 60 40)"/><path d="M50 74 Q44 84 40 90 M50 74 Q56 84 60 90 M50 74 V92" stroke="#B0864F" stroke-width="2" fill="none"/>',
+  door: '<rect x="24" y="8" width="52" height="84" rx="3" fill="#C1693C" stroke="#8E4A28" stroke-width="3"/><rect x="32" y="16" width="36" height="28" rx="2" fill="#D9824F"/><rect x="32" y="52" width="36" height="32" rx="2" fill="#D9824F"/><circle cx="66" cy="52" r="4" fill="#F5C84C"/>',
+  sock: '<path d="M36 10 H60 V56 Q60 62 66 64 L82 70 Q92 74 88 84 Q84 92 74 90 L44 82 Q34 78 36 66Z" fill="#9B4D8E"/><path d="M36 18 H60 M36 26 H60" stroke="#fff" stroke-width="3"/>',
+  fishing: '<path d="M10 90 L60 20" stroke="#8A6A45" stroke-width="4" stroke-linecap="round"/><path d="M60 20 Q76 30 78 60" stroke="#B8C4CC" stroke-width="1.5" fill="none"/><path d="M68 66 L78 60 L88 66 L78 72Z" fill="#4FA39A"/><path d="M60 80 Q80 76 96 80" stroke="#6BB6DB" stroke-width="3" fill="none"/>',
+  wheelbarrow: '<path d="M28 40 H80 L70 64 H34Z" fill="#3F9457"/><circle cx="76" cy="72" r="9" fill="#4A4F55"/><path d="M34 64 L28 80 M28 40 L8 34" stroke="#4A4F55" stroke-width="4" stroke-linecap="round"/>',
+  boatbtn: '<path d="M14 54 H86 L74 72 H26Z" fill="#E24B4A"/><path d="M50 20 V54" stroke="#6B4A2F" stroke-width="3"/><path d="M50 22 L74 46 H50Z" fill="#fff"/>',
+  paperclip: '<path d="M34 76 V30 Q34 18 46 18 Q58 18 58 30 V68 Q58 76 50 76 Q42 76 42 68 V34" stroke="#8C9296" stroke-width="5" fill="none" stroke-linecap="round"/>',
+  nail: '<rect x="30" y="14" width="40" height="8" rx="3" fill="#8C9296"/><path d="M46 22 H54 V78 L50 90 L46 78Z" fill="#9AA3A8"/>',
+  screw: '<path d="M38 14 H62 Q62 26 54 28 V80 L50 90 L46 80 V28 Q38 26 38 14Z" fill="#9AA3A8"/><path d="M46 36 L54 40 M46 46 L54 50 M46 56 L54 60 M46 66 L54 70" stroke="#6E7478" stroke-width="2.5"/><path d="M44 18 H56" stroke="#6E7478" stroke-width="3"/>',
+  bottlecap: '<circle cx="50" cy="50" r="26" fill="#C1693C"/><circle cx="50" cy="50" r="18" fill="#D9824F"/><g stroke="#8E4A28" stroke-width="3"><path d="M50 24 V20 M50 76 V80 M24 50 H20 M76 50 H80 M32 32 L29 29 M68 68 L71 71 M68 32 L71 29 M32 68 L29 71"/></g>',
+  penny: '<circle cx="50" cy="50" r="26" fill="#E9A879" stroke="#B8683A" stroke-width="4"/><text x="50" y="57" font-family="Baloo 2,sans-serif" font-weight="700" font-size="18" fill="#8A4B2A" text-anchor="middle">1&#162;</text>',
+  can: '<rect x="30" y="16" width="40" height="70" rx="6" fill="#C8CDD1" stroke="#9AA3A8" stroke-width="3"/><rect x="30" y="34" width="40" height="30" fill="#2B6CB0"/><path d="M40 20 H60" stroke="#9AA3A8" stroke-width="3"/>',
+  pencil: '<g transform="rotate(-35 50 50)"><rect x="18" y="42" width="54" height="16" fill="#F5C84C"/><rect x="10" y="42" width="10" height="16" rx="3" fill="#F4A0A0"/><path d="M72 42 L90 50 L72 58Z" fill="#EFD3A8"/><path d="M84 47.4 L90 50 L84 52.6Z" fill="#3A2A1E"/></g>',
+  eraser: '<rect x="20" y="34" width="60" height="32" rx="6" fill="#F4A0A0"/><rect x="20" y="34" width="22" height="32" rx="6" fill="#6BB6DB"/>',
+  block: '<rect x="24" y="30" width="52" height="40" rx="5" fill="#4FB06A"/><circle cx="38" cy="30" r="6" fill="#4FB06A"/><circle cx="62" cy="30" r="6" fill="#4FB06A"/>',
+  rubberband: '<ellipse cx="50" cy="50" rx="30" ry="18" fill="none" stroke="#E24B4A" stroke-width="5"/>',
+  foil: '<path d="M18 30 L40 24 L62 32 L84 26 L80 70 L56 76 L34 68 L16 74Z" fill="#D7DBDE" stroke="#A9B0B5" stroke-width="2"/><path d="M30 40 L44 50 M56 44 L68 56 M36 60 L50 56" stroke="#fff" stroke-width="2"/>',
+  spoon: '<ellipse cx="50" cy="24" rx="12" ry="16" fill="#D9A25F"/><rect x="46" y="38" width="8" height="52" rx="4" fill="#D9A25F"/>',
+  marble: '<circle cx="50" cy="50" r="22" fill="#8FCDE8" opacity=".85" stroke="#6BB6DB" stroke-width="2"/><path d="M38 44 Q50 36 62 50 Q50 62 40 56" stroke="#2B6CB0" stroke-width="4" fill="none"/><circle cx="42" cy="40" r="4" fill="#fff" opacity=".8"/>'
+};
+function pic(k){ return '<svg class="pic" viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + P[k] + '</svg>'; }
+
+var level = 0, lastMode = 'pp';
+function playAgain(){ if (lastMode === 'pp') startPP(); else if (lastMode === 'boat') startBoat(); else startMag(); }
+
+/* Read the card aloud for early readers */
+var enVoice = null;
+function pickVoice(){
+  if (!window.speechSynthesis) return;
+  var vs = window.speechSynthesis.getVoices(), us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); });
+  enVoice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava/i.test(v.name); })[0] || us[0] || null;
+}
+if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(t, force){
+  if (!window.speechSynthesis || (!soundOn && !force)) return;
+  try { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; if (enVoice) u.voice = enVoice; u.rate = .85; window.speechSynthesis.speak(u); } catch(e) {}
+}
+
+/* ---------- Push or pull ---------- */
+var ACTIONS = [
+  { p: 'kick', n: 'Kicking a ball', a: 'push', why: 'Your foot pushes the ball away from you.' },
+  { p: 'drawer', n: 'Opening a drawer', a: 'pull', why: 'You pull the drawer toward you to open it.' },
+  { p: 'wagon', n: 'Pulling a wagon', a: 'pull', why: 'You walk in front and pull the wagon behind you.' },
+  { p: 'swing', n: 'Pushing a friend on a swing', a: 'push', why: 'Your hands push the swing away from you.' },
+  { p: 'rope', n: 'Playing tug-of-war', a: 'pull', why: 'Each team pulls the rope toward itself.' },
+  { p: 'cart', n: 'Moving a shopping cart', a: 'push', why: 'You walk behind the cart and push it forward.' },
+  { p: 'button', n: 'Pressing an elevator button', a: 'push', why: 'Your finger pushes the button in.' },
+  { p: 'weed', n: 'Taking a weed out of the garden', a: 'pull', why: 'You pull the weed up and out of the dirt.' },
+  { p: 'door', n: 'Shutting a door', a: 'push', why: 'You push the door away from you to close it.' },
+  { p: 'sock', n: 'Putting on a sock', a: 'pull', why: 'You pull the sock up onto your foot.' },
+  { p: 'fishing', n: 'Reeling in a fish', a: 'pull', why: 'The line pulls the fish toward you.' },
+  { p: 'wheelbarrow', n: 'Moving a wheelbarrow forward', a: 'push', why: 'You hold the handles and push it in front of you.' }
+];
+var PP_ROUNDS = 10, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false;
+var PUSH_ART = '<svg viewBox="0 0 120 56" aria-hidden="true"><circle cx="26" cy="28" r="14" fill="#4FB06A"/><circle cx="21" cy="24" r="2.4" fill="#22303B"/><rect x="66" y="16" width="26" height="24" rx="4" fill="#D9A25F"/><path d="M42 28 H62 M54 20 L63 28 L54 36" stroke="#2B6CB0" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M96 28 H114 M106 21 L115 28 L106 35" stroke="#2B6CB0" stroke-width="3" fill="none" stroke-dasharray="4 3"/></svg>';
+var PULL_ART = '<svg viewBox="0 0 120 56" aria-hidden="true"><circle cx="26" cy="28" r="14" fill="#4FB06A"/><circle cx="21" cy="24" r="2.4" fill="#22303B"/><rect x="80" y="16" width="26" height="24" rx="4" fill="#D9A25F"/><path d="M76 28 H46 M54 20 L45 28 L54 36" stroke="#9B4D8E" stroke-width="4" fill="none" stroke-linecap="round"/></svg>';
+
+function startPP(){
+  lastMode = 'pp';
+  var pu = shuffle(ACTIONS.filter(function(a){ return a.a === 'push'; })).slice(0, 5);
+  var pl = shuffle(ACTIONS.filter(function(a){ return a.a === 'pull'; })).slice(0, 5);
+  deck = shuffle(pu.concat(pl));
+  round = 0; score = 0;
+  showOnly('ppScreen');
+  nextPP();
+}
+function nextPP(){
+  round++;
+  if (round > PP_ROUNDS) {
+    showEnd(score >= 9 ? 'Force expert!' : score >= 7 ? 'Great pushing and pulling!' : 'Keep moving!', 'You sorted ' + score + ' of ' + PP_ROUNDS + ' on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1);
+    return;
+  }
+  busy = false; firstTry = true;
+  cur = deck[round - 1];
+  $('pRound').textContent = 'Card ' + round + ' of ' + PP_ROUNDS;
+  $('pScore').textContent = 'First try ' + score;
+  $('pThing').innerHTML = pic(cur.p) + '<div class="tname">' + cur.n + '</div><button class="say" onclick="speak(cur.n, true)"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="vertical-align:-3px"><path d="M4 9v6h4l5 4V5L8 9Z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg> Hear it</button>';
+  hideFact('pFact');
+  answerButtons('pAnswers', [
+    { key: 'push', cls: 'big', html: PUSH_ART + 'Push<small>moves it away from you</small>', aria: 'Push: moves it away from you' },
+    { key: 'pull', cls: 'big', html: PULL_ART + 'Pull<small>moves it toward you</small>', aria: 'Pull: moves it toward you' }
+  ], pickPP);
+  speak(cur.n);
+  $('srStatus').textContent = cur.n + '. Is it a push or a pull?';
+}
+function pickPP(btn, k){
+  if (busy) return;
+  if (k === cur.a) {
+    busy = true;
+    if (firstTry) score++;
+    $('pScore').textContent = 'First try ' + score;
+    markRight('pAnswers', btn);
+    setFact('pFact', 'Yes, a ' + k + '! ' + cur.why);
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + cur.why;
+    timer = setTimeout(nextPP, 2800);
+  } else {
+    firstTry = false;
+    markWrong(btn);
+    var h = 'Think about which way it moves. Away from you is a push. Toward you is a pull.';
+    setFact('pFact', h);
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Push the boat ---------- */
+var BOAT_ROUNDS = 8, trips = [], bRound = 0, bScore = 0, trip = null, dir = 0, str = 0, bFirst = true, bBusy = false;
+var DIST = { 1: 95, 2: 190, 3: 290 }, NAMES = { 1: 'gentle', 2: 'medium', 3: 'strong' };
+var CX = 360;
+
+function pondSvg(boatX){
+  var s = '<svg viewBox="0 0 720 220" aria-hidden="true"><rect width="720" height="220" rx="18" fill="#8FCDE8"/>' +
+    '<path d="M0 40 Q180 30 360 40 T720 40" stroke="#fff" stroke-width="3" fill="none" opacity=".6"/><path d="M0 180 Q180 170 360 180 T720 180" stroke="#fff" stroke-width="3" fill="none" opacity=".5"/>';
+  [-3, -2, -1, 1, 2, 3].forEach(function(k){
+    var x = CX + Math.sign(k) * DIST[Math.abs(k)];
+    s += '<line x1="' + x + '" y1="150" x2="' + x + '" y2="162" stroke="#fff" stroke-width="3"/>';
+  });
+  var tx = CX + trip.side * DIST[trip.dist];
+  s += '<g transform="translate(' + tx + ' 120)"><path d="M-14 22 H14 L10 34 H-10Z" fill="#E24B4A"/><path d="M0 -10 V22" stroke="#4A4F55" stroke-width="3"/><path d="M0 -10 L16 -2 L0 6Z" fill="#F5C84C"/><circle cx="0" cy="-12" r="4" fill="#E24B4A"/></g>';
+  s += '<g transform="translate(' + (CX - 26) + ' 160)"><rect x="0" y="0" width="52" height="40" fill="#B0864F"/><path d="M0 0 H52 M0 13 H52 M0 26 H52" stroke="#8A6A45" stroke-width="2"/></g>';
+  s += '<g class="boat" id="boat" style="transform:translateX(' + (boatX - CX) + 'px)"><g transform="translate(' + CX + ' 112)">' +
+    '<path d="M-36 20 H36 L26 40 H-26Z" fill="#F39C3D" stroke="#C97E12" stroke-width="2"/>' +
+    '<ellipse cx="0" cy="12" rx="15" ry="11" fill="#4FB06A"/><circle cx="-6" cy="0" r="5" fill="#4FB06A"/><circle cx="6" cy="0" r="5" fill="#4FB06A"/><circle cx="-6" cy="0" r="3" fill="#fff"/><circle cx="6" cy="0" r="3" fill="#fff"/><circle cx="-5.6" cy=".4" r="1.5" fill="#22303B"/><circle cx="6.4" cy=".4" r="1.5" fill="#22303B"/>' +
+    '</g></g></svg>';
+  return s;
+}
+function makeTrips(){
+  var all = [];
+  [-1, 1].forEach(function(sd){ [1, 2, 3].forEach(function(d){ all.push({ side: sd, dist: d }); }); });
+  return shuffle(all).concat(shuffle(all)).slice(0, BOAT_ROUNDS);
+}
+function startBoat(){
+  lastMode = 'boat';
+  trips = makeTrips();
+  bRound = 0; bScore = 0;
+  showOnly('boatScreen');
+  nextBoat();
+}
+function setSeg(id, v){ $(id).querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', +b.dataset.v === v ? 'true' : 'false'); }); }
+$('dirSeg').querySelectorAll('button').forEach(function(b){ b.onclick = function(){ if (bBusy) return; dir = +b.dataset.v; setSeg('dirSeg', dir); }; });
+$('strSeg').querySelectorAll('button').forEach(function(b){ b.onclick = function(){ if (bBusy) return; str = +b.dataset.v; setSeg('strSeg', str); }; });
+function nextBoat(){
+  bRound++;
+  if (bRound > BOAT_ROUNDS) {
+    showEnd(bScore >= 7 ? 'Captain of the pond!' : bScore >= 5 ? 'Great pushing!' : 'Keep sailing!', 'You reached the buoy ' + bScore + ' of ' + BOAT_ROUNDS + ' times on the first try.', bScore >= 7 ? 3 : bScore >= 5 ? 2 : 1);
+    return;
+  }
+  bBusy = false; bFirst = true; dir = 0; str = 0;
+  setSeg('dirSeg', 0); setSeg('strSeg', 0);
+  trip = trips[bRound - 1];
+  $('bRound').textContent = 'Trip ' + bRound + ' of ' + BOAT_ROUNDS;
+  $('bScore').textContent = 'First try ' + bScore;
+  $('bPrompt').textContent = 'Send the boat to the buoy!';
+  $('pushBtn').disabled = false;
+  hideFact('bFact');
+  $('pond').innerHTML = pondSvg(CX);
+  var where = (trip.dist === 1 ? 'close by' : trip.dist === 2 ? 'a medium way' : 'far away') + ' on the ' + (trip.side < 0 ? 'left' : 'right');
+  $('srStatus').textContent = 'The buoy is ' + where + '. Pick a direction and how hard to push.';
+}
+function pushBoat(){
+  if (bBusy) return;
+  if (!dir || !str) {
+    setFact('bFact', 'Pick ' + (!dir && !str ? 'a direction and a push strength' : !dir ? 'a direction' : 'how hard to push') + ' first.');
+    return;
+  }
+  bBusy = true;
+  $('pushBtn').disabled = true;
+  var x = CX + dir * DIST[str];
+  var boat = $('boat');
+  boat.style.transform = 'translateX(' + (x - CX) + 'px)';
+  beep([200 + str * 120], 0.18, 'triangle');
+  setTimeout(function(){
+    var ok = dir === trip.side && str === trip.dist, msg;
+    if (ok) {
+      if (bFirst) bScore++;
+      $('bScore').textContent = 'First try ' + bScore;
+      msg = 'Bullseye! A ' + NAMES[str] + ' push ' + (dir < 0 ? 'to the left' : 'to the right') + ' was just right.' + (str === 3 ? ' A strong push makes the boat go farther.' : str === 1 ? ' A gentle push moves it only a little.' : '');
+      setFact('bFact', msg);
+      sndGood();
+      $('srStatus').textContent = msg;
+      timer = setTimeout(nextBoat, 2800);
+    } else {
+      bFirst = false;
+      if (dir !== trip.side) msg = 'Oops, the boat went the wrong way! The direction of a push decides which way things move. Push toward the buoy.';
+      else if (str > trip.dist) msg = 'Too far! A stronger push sends the boat farther. Try a gentler push.';
+      else msg = 'Not far enough! A gentle push only moves it a little. Try a stronger push.';
+      setFact('bFact', msg);
+      sndBad();
+      $('srStatus').textContent = msg;
+      timer = setTimeout(function(){
+        $('boat').style.transform = 'translateX(0px)';
+        bBusy = false;
+        $('pushBtn').disabled = false;
+      }, 1500);
+    }
+  }, 1150);
+}
+
+/* ---------- Magnet test ---------- */
+var OBJECTS = [
+  { p: 'paperclip', n: 'A steel paper clip', yes: true, why: 'Steel has iron in it, and magnets pull on iron.' },
+  { p: 'nail', n: 'An iron nail', yes: true, why: 'Magnets pull on things made of iron.' },
+  { p: 'screw', n: 'A steel screw', yes: true, why: 'Steel has iron in it, so the magnet pulls the screw.' },
+  { p: 'bottlecap', n: 'A steel bottle cap', yes: true, why: 'Most bottle caps are steel, which has iron in it.' },
+  { p: 'penny', n: 'A penny', yes: false, why: 'Pennies are metal, but they are made of copper and zinc. Magnets do not pull them. Not all metals stick to magnets!' },
+  { p: 'can', n: 'A soda can', yes: false, why: 'Soda cans are aluminum. Aluminum is a metal, but magnets do not pull it.' },
+  { p: 'foil', n: 'Aluminum foil', yes: false, why: 'Foil is shiny metal, but it is aluminum, so the magnet does not pull it.' },
+  { p: 'pencil', n: 'A pencil', yes: false, why: 'Wood and graphite are not pulled by magnets.' },
+  { p: 'eraser', n: 'An eraser', yes: false, why: 'Rubber is not pulled by magnets.' },
+  { p: 'block', n: 'A plastic toy block', yes: false, why: 'Plastic is not pulled by magnets.' },
+  { p: 'spoon', n: 'A wooden spoon', yes: false, why: 'Wood is not pulled by magnets.' },
+  { p: 'marble', n: 'A glass marble', yes: false, why: 'Glass is not pulled by magnets.' },
+  { p: 'rubberband', n: 'A rubber band', yes: false, why: 'Rubber is not pulled by magnets.' }
+];
+var POLES = [
+  { a: 'N', b: 'S', ans: 'attract', why: 'Opposite poles attract. North and south pull toward each other.' },
+  { a: 'S', b: 'N', ans: 'attract', why: 'Opposite poles attract. South and north pull toward each other.' },
+  { a: 'N', b: 'N', ans: 'repel', why: 'Like poles repel. Two north poles push each other away.' },
+  { a: 'S', b: 'S', ans: 'repel', why: 'Like poles repel. Two south poles push each other away.' }
+];
+var MAG_ROUNDS = 10, mDeck = [], mRound = 0, mScore = 0, mq = null, mFirst = true, mBusy = false;
+
+function horseshoe(x){
+  return '<g class="mag" id="magL" transform="translate(' + x + ' 50)"><path d="M70 10 H30 Q6 10 6 60 Q6 110 30 110 H70 V86 H32 Q30 86 30 60 Q30 34 32 34 H70Z" fill="#E24B4A"/>' +
+    '<rect x="56" y="10" width="20" height="24" fill="#B8BEC2"/><rect x="56" y="86" width="20" height="24" fill="#B8BEC2"/></g>';
+}
+function barMag(x, left, right, id){
+  function col(l){ return l === 'N' ? '#E24B4A' : '#2B6CB0'; }
+  return '<g class="mag" id="' + id + '" transform="translate(' + x + ' 70)"><rect x="0" y="0" width="80" height="40" fill="' + col(left) + '" rx="3"/><rect x="80" y="0" width="80" height="40" fill="' + col(right) + '" rx="3"/>' +
+    '<text x="40" y="28" font-family="Baloo 2,sans-serif" font-weight="700" font-size="24" fill="#fff" text-anchor="middle">' + left + '</text>' +
+    '<text x="120" y="28" font-family="Baloo 2,sans-serif" font-weight="700" font-size="24" fill="#fff" text-anchor="middle">' + right + '</text></g>';
+}
+function stageObject(q){
+  return '<svg viewBox="0 0 600 180" aria-hidden="true"><rect width="600" height="180" rx="16" fill="#F2F8F6"/><path d="M20 160 H580" stroke="#C9C2AC" stroke-width="4"/>' +
+    horseshoe(40) + '<g class="obj" id="obj"><g transform="translate(400 40) scale(1.1)">' + P[q.o.p] + '</g></g></svg>';
+}
+function stagePoles(q){
+  /* the left magnet's right end and the right magnet's left end face each other */
+  var lLeft = q.p.a === 'N' ? 'S' : 'N', rRight = q.p.b === 'N' ? 'S' : 'N';
+  return '<svg viewBox="0 0 600 180" aria-hidden="true"><rect width="600" height="180" rx="16" fill="#F2F8F6"/>' +
+    barMag(40, lLeft, q.p.a, 'magL') + barMag(400, q.p.b, rRight, 'magR') + '</svg>';
+}
+function startMag(){
+  lastMode = 'mag';
+  var yes = shuffle(OBJECTS.filter(function(o){ return o.yes; })).slice(0, 3);
+  var metalNo = shuffle(OBJECTS.filter(function(o){ return !o.yes && /penny|can|foil/.test(o.p); })).slice(0, 2);
+  var otherNo = shuffle(OBJECTS.filter(function(o){ return !o.yes && !/penny|can|foil/.test(o.p); })).slice(0, 2);
+  var objs = shuffle(yes.concat(metalNo, otherNo)).map(function(o){ return { kind: 'obj', o: o }; });
+  var poles = shuffle(POLES).slice(0, 3).map(function(p){ return { kind: 'poles', p: p }; });
+  mDeck = objs.concat(poles);
+  mRound = 0; mScore = 0;
+  showOnly('magScreen');
+  nextMag();
+}
+function nextMag(){
+  mRound++;
+  if (mRound > MAG_ROUNDS) {
+    showEnd(mScore >= 9 ? 'Magnet master!' : mScore >= 7 ? 'Great predictions!' : 'Keep testing!', 'You predicted ' + mScore + ' of ' + MAG_ROUNDS + ' on the first try.', mScore >= 9 ? 3 : mScore >= 7 ? 2 : 1);
+    return;
+  }
+  mBusy = false; mFirst = true;
+  mq = mDeck[mRound - 1];
+  $('mRound').textContent = 'Test ' + mRound + ' of ' + MAG_ROUNDS;
+  $('mScore').textContent = 'First try ' + mScore;
+  hideFact('mFact');
+  if (mq.kind === 'obj') {
+    $('mPrompt').textContent = mq.o.n + ': will the magnet pull it?';
+    $('mStage').innerHTML = stageObject(mq);
+    answerButtons('mAnswers', [{ key: true, html: 'Yes<small>the magnet pulls it</small>' }, { key: false, html: 'No<small>it stays put</small>' }], pickMag);
+    $('srStatus').textContent = mq.o.n + '. Will the magnet pull it?';
+  } else {
+    $('mPrompt').textContent = 'The ' + (mq.p.a === 'N' ? 'north' : 'south') + ' pole faces the ' + (mq.p.b === 'N' ? 'north' : 'south') + ' pole. What will happen?';
+    $('mStage').innerHTML = stagePoles(mq);
+    answerButtons('mAnswers', [{ key: 'attract', html: 'Attract<small>pull together</small>' }, { key: 'repel', html: 'Repel<small>push apart</small>' }], pickMag);
+    $('srStatus').textContent = $('mPrompt').textContent;
+  }
+}
+function pickMag(btn, k){
+  if (mBusy) return;
+  var right = mq.kind === 'obj' ? mq.o.yes : mq.p.ans;
+  if (k === right) {
+    mBusy = true;
+    if (mFirst) mScore++;
+    $('mScore').textContent = 'First try ' + mScore;
+    markRight('mAnswers', btn);
+    animateMag();
+    var why = mq.kind === 'obj' ? mq.o.why : mq.p.why;
+    setFact('mFact', why);
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + why;
+    timer = setTimeout(nextMag, 3400);
+  } else {
+    mFirst = false;
+    markWrong(btn);
+    var h = mq.kind === 'obj'
+      ? (mq.o.yes ? 'Is it made of iron or steel? Magnets pull those.' : /penny|can|foil/.test(mq.o.p) ? 'It is metal, but not every metal sticks to a magnet. Magnets pull iron and steel.' : 'Magnets only pull certain metals, like iron and steel.')
+      : 'Check the letters that face each other. Opposites attract. The same letters repel.';
+    setFact('mFact', h);
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+function animateMag(){
+  if (mq.kind === 'obj') {
+    if (mq.o.yes) { beep([300, 600], 0.08); $('obj').style.transform = 'translateX(-280px)'; }
+  } else if (mq.p.ans === 'attract') {
+    $('magL').setAttribute('transform', 'translate(115 70)'); $('magR').setAttribute('transform', 'translate(275 70)');
+    beep([300, 600], 0.08);
+  } else {
+    $('magL').setAttribute('transform', 'translate(10 70)'); $('magR').setAttribute('transform', 'translate(430 70)');
+    beep([600, 300], 0.08);
+  }
+}
+
+/* Start art */
+$('startArt').innerHTML = '<svg viewBox="0 0 240 90" aria-hidden="true"><g transform="translate(0 6) scale(.7)">' + horseshoe(0).replace(' class="mag" id="magL"', '') + '</g>' +
+  '<g transform="translate(80 18) scale(.6)">' + P.paperclip + '</g><path d="M120 46 H104 M110 40 L103 46 L110 52" stroke="#9B4D8E" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+  '<g transform="translate(140 6) scale(.9)">' + P.cart + '</g></svg>';
+$('artPP').innerHTML = '<svg viewBox="0 0 120 66" aria-hidden="true"><g transform="translate(4 2) scale(.62)">' + P.cart + '</g><g transform="translate(60 2) scale(.62)">' + P.wagon + '</g></svg>';
+$('artBoat').innerHTML = '<svg viewBox="0 0 120 66" aria-hidden="true"><rect width="120" height="66" rx="10" fill="#8FCDE8"/><path d="M20 40 H52 L46 52 H26Z" fill="#F39C3D"/><path d="M56 44 H80 M74 38 L81 44 L74 50" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M96 36 V50" stroke="#4A4F55" stroke-width="2.4"/><path d="M96 36 L106 41 L96 46Z" fill="#F5C84C"/><path d="M90 50 H102 L100 56 H92Z" fill="#E24B4A"/></svg>';
+$('artMag').innerHTML = '<svg viewBox="0 0 120 66" aria-hidden="true"><g transform="translate(4 3) scale(.5)">' + horseshoe(0).replace(' class="mag" id="magL"', '').replace('translate(0 50)', 'translate(0 0)') + '</g><g transform="translate(58 6) scale(.55)">' + P.nail + '</g><g transform="translate(80 10) scale(.45)">' + P.penny + '</g></svg>';
+</script>
+</body>
+</html>

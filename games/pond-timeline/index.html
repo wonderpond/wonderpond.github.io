@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond timeline - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Put the events of Pond town in order, from first to last, then read timelines with years: what came first, what came next, and how many years apart. A free social studies game for grades 1 to 4 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.tl-wrap{overflow-x:auto;margin:0 auto 10px;max-width:960px;padding-bottom:4px}
+.timeline{position:relative;min-width:680px;height:300px;background:rgba(255,255,255,.92);border-radius:24px;box-shadow:0 8px 0 rgba(18,64,58,.15)}
+.timeline svg{position:absolute;inset:0;width:100%;height:100%}
+.tl-title{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:20px;fill:#0F5A50;text-anchor:middle}
+.tl-year{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:15px;fill:#33625C;text-anchor:middle}
+.ev{position:absolute;transform:translateX(-50%);width:15%;min-width:96px;background:#FFF3C8;border:2px solid #E7C65B;border-radius:12px;padding:4px 6px;
+  font-weight:700;font-size:.82rem;line-height:1.15;color:#12403A}
+.ev b{display:block;font-family:"Baloo 2",sans-serif;font-size:1.05rem;color:#8A5A00}
+.ev.hl{background:#E4F5E9;border-color:#3F9457;box-shadow:0 0 0 4px rgba(79,176,106,.35)}
+.ev.dim{opacity:.35}
+
+.slots{display:flex;gap:8px;justify-content:center;align-items:stretch;flex-wrap:nowrap;margin:6px auto 0;max-width:980px;position:relative}
+.slots::before{content:"";position:absolute;left:4%;right:4%;top:50%;height:6px;background:#1F6E68;border-radius:3px;z-index:0}
+.slot{position:relative;z-index:1;flex:1 1 0;min-height:118px;border-radius:18px;border:4px dashed #fff;background:rgba(255,255,255,.45);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;cursor:pointer;color:#12403A}
+.slot .num{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:#0F5A50}
+.slot.filled{border-style:solid;border-color:#E7C65B;background:#FFF8DE;box-shadow:0 4px 0 rgba(18,64,58,.18)}
+.slot.right{border-color:#3F9457;background:#E4F5E9}
+.slot.wrong{border-color:#E24B4A;background:#E24B4A;color:#fff}
+.slot:disabled{cursor:default}
+.ecard b,.slot b{display:block;font-family:"Baloo 2",sans-serif;font-size:1.25rem;color:#8A5A00;line-height:1.1}
+.slot.wrong b{color:#fff}
+.ecard span,.slot span.t{font-weight:700;font-size:.95rem;line-height:1.2}
+.ecard .ico,.slot .ico{width:44px;height:44px;margin:0 auto 2px;display:block}
+.arrow-note{font-family:"Baloo 2",sans-serif;font-weight:700;color:#fff;display:flex;justify-content:space-between;max-width:960px;margin:4px auto 0;font-size:1.05rem}
+.tray{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px auto 0;padding:12px;max-width:960px;background:rgba(255,255,255,.35);border-radius:24px}
+.ecard{border:none;cursor:pointer;background:#fff;border-radius:16px;padding:8px 10px;width:170px;box-shadow:0 4px 0 rgba(18,64,58,.2);transition:transform .12s ease;color:#12403A}
+.ecard:hover:enabled{transform:translateY(-3px)}
+.ecard:disabled{opacity:.2;cursor:default;box-shadow:none}
+@media (max-width:700px){
+  .slots{flex-direction:column}
+  .slots::before{left:50%;right:auto;top:0;bottom:0;width:6px;height:auto;transform:translateX(-50%)}
+  .arrow-note{display:none}
+  .ecard{width:46%}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:260px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond timeline</h1>
+      <p class="sub">Every town has a story. Put Pond town's events in order, then read its timelines like a history detective!</p>
+      <span class="choose-label" id="levelLabel">Pick your timelines</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">First, next, last<small>steps in order, grades 1 and 2</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Years<small>dates on a timeline, grades 2 to 4</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startOrder()">Put it in order</button>
+        <button class="big-btn alt" onclick="startRead()">Read the timeline</button>
+      </div>
+      <p class="note">Put it in order: tap the cards to place them on the timeline from first to last. Read the timeline: answer questions like which came first, what happened next, and how many years apart. Read the timeline always uses years.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="orderScreen">
+    <div class="hud">
+      <span class="chip" id="oRound">Timeline 1 of 5</span>
+      <span class="chip" id="oScore">First try 0</span>
+    </div>
+    <p class="prompt" id="oPrompt">Put the events in order</p>
+    <div class="slots" id="slots" role="group" aria-label="Timeline spots"></div>
+    <div class="arrow-note" aria-hidden="true"><span>&#8592; first (earlier)</span><span>last (later) &#8594;</span></div>
+    <p class="fact hidden" id="oFact" role="status"></p>
+    <div class="tray" id="tray" role="group" aria-label="Event cards"></div>
+  </section>
+
+  <section class="screen hidden" id="readScreen">
+    <div class="hud">
+      <span class="chip" id="rRound">Question 1 of 10</span>
+      <span class="chip" id="rScore">First try 0</span>
+    </div>
+    <p class="prompt" id="rPrompt">Which happened first?</p>
+    <div class="tl-wrap"><div class="timeline" id="timeline"></div></div>
+    <div class="answers" id="rAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="rFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+/* Small step icons for the first, next, last timelines (40 x 40) */
+var ICO = {
+  sunrise: '<path d="M4 30 H36" stroke="#3F9457" stroke-width="3"/><path d="M10 30 A10 10 0 0 1 30 30Z" fill="#F5C84C"/><path d="M20 12 V16 M8 18 L11 21 M32 18 L29 21" stroke="#F5B82E" stroke-width="2.5" stroke-linecap="round"/>',
+  bowl: '<path d="M6 18 H34 Q32 32 20 32 Q8 32 6 18Z" fill="#E4C9A0"/><path d="M14 14 Q16 8 14 4 M22 14 Q24 8 22 4" stroke="#B8C4CC" stroke-width="2" fill="none" stroke-linecap="round"/>',
+  bus: '<rect x="4" y="10" width="32" height="18" rx="4" fill="#F5C84C"/><rect x="8" y="14" width="7" height="6" fill="#DFF2FA"/><rect x="18" y="14" width="7" height="6" fill="#DFF2FA"/><circle cx="12" cy="30" r="4" fill="#4A4F55"/><circle cx="28" cy="30" r="4" fill="#4A4F55"/>',
+  lunch: '<circle cx="20" cy="20" r="14" fill="#fff" stroke="#B8C4CC" stroke-width="2"/><path d="M12 18 H28 V24 H12Z" fill="#D9A25F"/><path d="M12 18 H28" stroke="#4FB06A" stroke-width="3"/>',
+  swim: '<path d="M2 28 Q8 24 14 28 T26 28 T38 28" stroke="#6BB6DB" stroke-width="3" fill="none"/><circle cx="20" cy="16" r="6" fill="#4FB06A"/><circle cx="17" cy="14" r="1.6" fill="#22303B"/><circle cx="23" cy="14" r="1.6" fill="#22303B"/>',
+  moon: '<path d="M26 6 A14 14 0 1 0 34 28 A11 11 0 1 1 26 6Z" fill="#F5C84C"/><circle cx="10" cy="10" r="1.6" fill="#F5C84C"/><circle cx="32" cy="12" r="1.2" fill="#F5C84C"/>',
+  dig: '<path d="M4 30 H36" stroke="#8A6A45" stroke-width="4"/><path d="M14 30 Q20 22 26 30Z" fill="#6E5236"/><path d="M26 6 L20 24" stroke="#9AA3A8" stroke-width="3"/><path d="M16 22 L24 26 L22 30 L14 26Z" fill="#9AA3A8"/>',
+  seed: '<path d="M4 30 H36" stroke="#8A6A45" stroke-width="4"/><ellipse cx="20" cy="22" rx="5" ry="3.4" fill="#C9844A"/><path d="M20 6 V14 M16 10 L20 14 L24 10" stroke="#1F6E68" stroke-width="2.4" fill="none" stroke-linecap="round"/>',
+  watercan: '<rect x="8" y="16" width="16" height="14" rx="3" fill="#6BB6DB"/><path d="M24 20 L34 12" stroke="#6BB6DB" stroke-width="3"/><path d="M33 16 V20 M36 15 V19 M30 18 V22" stroke="#2B6CB0" stroke-width="1.6"/>',
+  sprout: '<path d="M4 32 H36" stroke="#8A6A45" stroke-width="4"/><path d="M20 30 V16" stroke="#3F9457" stroke-width="3"/><ellipse cx="14" cy="16" rx="6" ry="3" fill="#5DB35A"/><ellipse cx="26" cy="14" rx="6" ry="3" fill="#5DB35A"/>',
+  flower: '<path d="M20 34 V18" stroke="#3F9457" stroke-width="3"/><circle cx="20" cy="12" r="4" fill="#F5C84C"/><g fill="#D9C2F0"><circle cx="13" cy="12" r="4"/><circle cx="27" cy="12" r="4"/><circle cx="20" cy="5" r="4"/><circle cx="20" cy="19" r="4"/></g><circle cx="20" cy="12" r="3.4" fill="#F5C84C"/>',
+  bigball: '<circle cx="20" cy="26" r="11" fill="#fff" stroke="#9EC9D9" stroke-width="2"/>',
+  twoball: '<circle cx="20" cy="28" r="9" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><circle cx="20" cy="13" r="7" fill="#fff" stroke="#9EC9D9" stroke-width="2"/>',
+  threeball: '<circle cx="20" cy="30" r="7" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><circle cx="20" cy="18" r="6" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><circle cx="20" cy="8" r="5" fill="#fff" stroke="#9EC9D9" stroke-width="2"/>',
+  face: '<circle cx="20" cy="30" r="7" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><circle cx="20" cy="15" r="9" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><circle cx="17" cy="13" r="1.4" fill="#22303B"/><circle cx="23" cy="13" r="1.4" fill="#22303B"/><path d="M20 15 L26 16 L20 17Z" fill="#F39C3D"/>',
+  hat: '<circle cx="20" cy="30" r="7" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><circle cx="20" cy="18" r="8" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><rect x="13" y="4" width="14" height="8" fill="#22303B"/><rect x="10" y="11" width="20" height="2.6" fill="#22303B"/><circle cx="17" cy="17" r="1.3" fill="#22303B"/><circle cx="23" cy="17" r="1.3" fill="#22303B"/>',
+  mix: '<path d="M6 16 H34 Q32 32 20 32 Q8 32 6 16Z" fill="#E4C9A0"/><path d="M26 4 L18 22" stroke="#B0864F" stroke-width="3"/>',
+  pour: '<circle cx="20" cy="26" r="11" fill="#4A4F55"/><circle cx="20" cy="25" r="7" fill="#F2D3A0"/><path d="M28 6 L22 16" stroke="#E4C9A0" stroke-width="4" stroke-linecap="round"/>',
+  flip: '<path d="M6 30 H24" stroke="#4A4F55" stroke-width="4" stroke-linecap="round"/><ellipse cx="22" cy="12" rx="8" ry="4" fill="#D9A25F" transform="rotate(-20 22 12)"/><path d="M10 22 Q14 10 26 6" stroke="#B8C4CC" stroke-width="2" fill="none" stroke-dasharray="3 3"/>',
+  stack: '<ellipse cx="20" cy="30" rx="13" ry="4" fill="#D9A25F"/><ellipse cx="20" cy="25" rx="13" ry="4" fill="#D9A25F"/><ellipse cx="20" cy="20" rx="13" ry="4" fill="#E0AE6E"/>',
+  syrup: '<ellipse cx="20" cy="30" rx="13" ry="4" fill="#D9A25F"/><ellipse cx="20" cy="25" rx="13" ry="4" fill="#E0AE6E"/><path d="M14 24 Q16 30 18 24 M24 24 Q26 30 28 24" stroke="#8E4A28" stroke-width="2.4" fill="none"/><rect x="16" y="4" width="8" height="12" rx="2" fill="#8E4A28"/>'
+};
+function ico(k){ return '<svg class="ico" viewBox="0 0 40 40" aria-hidden="true">' + ICO[k] + '</svg>'; }
+
+/* First, next, last: steps with a natural order */
+var STEPS = [
+  { title: "Hop's day", items: [['sunrise','Hop wakes up'], ['bowl','Hop eats breakfast'], ['bus','Hop rides the bus to school'], ['lunch','Hop eats lunch at school'], ['swim','Hop swims after school'], ['moon','Hop goes to sleep']] },
+  { title: 'Growing a flower', items: [['dig','Dig a little hole'], ['seed','Drop in a seed'], ['watercan','Water the seed'], ['sprout','A sprout pops up'], ['flower','The flower blooms']] },
+  { title: 'Building a snowman', items: [['bigball','Roll a big snowball'], ['twoball','Add a middle snowball'], ['threeball','Put a small snowball on top'], ['face','Add eyes and a carrot nose'], ['hat','Put a hat on top']] },
+  { title: 'Making pancakes', items: [['mix','Mix the batter'], ['pour','Pour batter in the pan'], ['flip','Flip the pancake'], ['stack','Stack the pancakes'], ['syrup','Add syrup and eat']] }
+];
+var STEP_WORDS = ['First', 'Next', 'Then', 'After that', 'Last'];
+
+/* Years: made-up histories of Pond town */
+var HISTORIES = [
+  { title: 'Pond town history', items: [[1950,'Pond town is founded'], [1962,'The first school opens'], [1978,'The library is built'], [1991,'A bridge is built over the creek'], [2004,'The Lily Festival begins'], [2017,'A new playground opens']] },
+  { title: "Grandma Frog's life", items: [[1958,'Grandma Frog is born'], [1964,'She starts school'], [1976,'She swims across the pond'], [1983,'She becomes a teacher'], [1990,'Her first tadpole hatches'], [2015,'She retires and plants a garden']] },
+  { title: 'The pond library', items: [[1978,'The library opens with 500 books'], [1985,'A reading corner is added'], [1996,'The first computers arrive'], [2008,'The library gets a new roof'], [2020,'Story time moves outside']] },
+  { title: 'The Lilypad family', items: [[1995,'The family moves to Pond town'], [2000,'They open a bakery'], [2009,'Their son Leo is born'], [2015,'Leo starts kindergarten'], [2022,'Leo wins the science fair']] },
+  { title: 'How the pond formed', items: [[1930,'Beavers build a dam on the creek'], [1946,'The pond fills with water'], [1960,'Frogs move into the pond'], [1981,'Ducks start visiting each spring'], [2012,'Students plant cattails on the shore']] }
+];
+
+var level = 0, lastMode = 'order';
+function playAgain(){ if (lastMode === 'order') startOrder(); else startRead(); }
+
+/* ---------- Put it in order ---------- */
+var ORDER_ROUNDS = 5, oDeck = [], oRound = 0, oScore = 0, cur = null, cards = [], slots = [], firstTry = true, busy = false;
+
+function makeOrderDeck(){
+  if (level === 0) {
+    return shuffle(STEPS).concat(shuffle(STEPS)).slice(0, ORDER_ROUNDS).map(function(s){
+      var drop = rand(1, s.items.length - 2);
+      var items = s.items.length > 5 ? s.items.filter(function(_, i){ return i !== drop; }).slice(0, 5) : s.items;
+      return { title: s.title, items: items.map(function(it, i){ return { key: i, icon: it[0], text: it[1] }; }) };
+    });
+  }
+  return shuffle(HISTORIES).slice(0, ORDER_ROUNDS).map(function(h){
+    var items = h.items.length > 5 ? shuffle(h.items).slice(0, 5).sort(function(a, b){ return a[0] - b[0]; }) : h.items;
+    return { title: h.title, items: items.map(function(it, i){ return { key: i, year: it[0], text: it[1] }; }) };
+  });
+}
+
+function startOrder(){
+  lastMode = 'order';
+  oDeck = makeOrderDeck();
+  oRound = 0; oScore = 0;
+  showOnly('orderScreen');
+  nextOrder();
+}
+
+function cardInner(it){ return (it.icon ? ico(it.icon) : '<b>' + it.year + '</b>') + '<span class="t">' + it.text + '</span>'; }
+
+function nextOrder(){
+  oRound++;
+  if (oRound > oDeck.length) {
+    var st = oScore >= 5 ? 3 : oScore >= 4 ? 2 : 1;
+    showEnd(oScore >= 5 ? 'History detective!' : oScore >= 4 ? 'Great timelines!' : 'Keep ordering!', 'You built ' + oScore + ' of ' + oDeck.length + ' timelines on the first try.', st);
+    return;
+  }
+  busy = false; firstTry = true;
+  cur = oDeck[oRound - 1];
+  var mixed;
+  do { mixed = shuffle(cur.items); } while (mixed.map(function(x){ return x.key; }).join() === cur.items.map(function(x){ return x.key; }).join());
+  cards = mixed.map(function(it){ return { it: it, used: false }; });
+  slots = cur.items.map(function(){ return null; });
+  $('oRound').textContent = 'Timeline ' + oRound + ' of ' + oDeck.length;
+  $('oScore').textContent = 'First try ' + oScore;
+  $('oPrompt').textContent = cur.title + ': ' + (level === 0 ? 'what happens first, next, and last?' : 'put the years in order');
+  hideFact('oFact');
+  drawOrder(false);
+  $('srStatus').textContent = cur.title + '. Put these in order: ' + mixed.map(function(c){ return (c.year ? c.year + ', ' : '') + c.text; }).join('. ') + '.';
+}
+
+function drawOrder(done){
+  var html = '';
+  slots.forEach(function(ci, i){
+    var label = level === 0 ? STEP_WORDS[i] : 'Spot ' + (i + 1);
+    var inner = ci === null ? '<span class="num">' + label + '</span>' : (level === 0 ? '<span class="num">' + label + '</span>' : '') + cardInner(cards[ci].it);
+    html += '<button class="slot' + (ci !== null ? ' filled' : '') + (done ? ' right' : '') + '"' + (busy || ci === null ? ' disabled' : '') +
+      ' aria-label="' + label + (ci === null ? ', empty' : ', ' + cards[ci].it.text + '. Tap to take it back.') + '" onclick="unplace(' + i + ')">' + inner + '</button>';
+  });
+  $('slots').innerHTML = html;
+  var hadFocus = document.activeElement && document.activeElement.classList.contains('ecard');
+  var tray = $('tray');
+  tray.innerHTML = '';
+  cards.forEach(function(c, i){
+    var b = document.createElement('button');
+    b.className = 'ecard pickable';
+    b.innerHTML = cardInner(c.it);
+    b.setAttribute('aria-label', (c.it.year ? c.it.year + ', ' : '') + c.it.text);
+    b.disabled = busy || c.used;
+    b.onclick = function(){ place(i); };
+    tray.appendChild(b);
+  });
+  if (hadFocus) { var f = tray.querySelector('.ecard:enabled'); if (f) f.focus(); }
+}
+function place(ci){
+  if (busy || cards[ci].used) return;
+  var s = slots.indexOf(null);
+  if (s === -1) return;
+  slots[s] = ci; cards[ci].used = true;
+  sndPlop();
+  drawOrder(false);
+  if (slots.indexOf(null) === -1) checkOrder();
+}
+function unplace(s){
+  if (busy || slots[s] === null) return;
+  cards[slots[s]].used = false; slots[s] = null;
+  drawOrder(false);
+}
+function checkOrder(){
+  var wrong = [];
+  slots.forEach(function(ci, i){ if (cards[ci].it.key !== i) wrong.push(i); });
+  busy = true;
+  if (!wrong.length) {
+    if (firstTry) oScore++;
+    $('oScore').textContent = 'First try ' + oScore;
+    drawOrder(true);
+    var msg = level === 0
+      ? 'In order! ' + cur.items.map(function(it, i){ return STEP_WORDS[i] + ', ' + lc(it.text); }).join('. ') + '.'
+      : 'In order! From ' + cur.items[0].year + ' to ' + cur.items[cur.items.length - 1].year + ' is ' + (cur.items[cur.items.length - 1].year - cur.items[0].year) + ' years of history.';
+    setFact('oFact', msg);
+    $('oPrompt').textContent = 'Your timeline is complete!';
+    sndGood();
+    $('srStatus').textContent = msg;
+    timer = setTimeout(nextOrder, level === 0 ? 4200 : 3200);
+  } else {
+    firstTry = false;
+    var els = $('slots').querySelectorAll('.slot');
+    wrong.forEach(function(i){ els[i].classList.add('wrong', 'shake'); });
+    var h = level === 0 ? 'Some steps are mixed up. Think: what has to happen before the next step can happen?' : 'Some years are out of order. On a timeline, smaller (earlier) years go on the left.';
+    setFact('oFact', h);
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+    timer = setTimeout(function(){
+      busy = false;
+      wrong.forEach(function(i){ cards[slots[i]].used = false; slots[i] = null; });
+      drawOrder(false);
+    }, 1100);
+  }
+}
+
+/* ---------- Read the timeline ---------- */
+var READ_ROUNDS = 10, rDeck = [], rRound = 0, rScore = 0, rq = null, rFirst = true, rBusy = false;
+
+function drawTimeline(h, hl){
+  hl = hl || {};
+  var items = h.items, y0 = items[0][0], y1 = items[items.length - 1][0];
+  var start = Math.floor(y0 / 10) * 10, end = Math.ceil(y1 / 10) * 10;
+  if (end === start) end += 10;
+  function x(y){ return 10 + (y - start) / (end - start) * 80; }
+  var s = '<svg viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"><text class="tl-title" x="500" y="30">' + h.title + '</text>' +
+    '<line x1="60" y1="160" x2="940" y2="160" stroke="#1F6E68" stroke-width="6" stroke-linecap="round"/>';
+  for (var yy = start; yy <= end; yy += 10) {
+    var px = 10 * x(yy);
+    s += '<line x1="' + px + '" y1="150" x2="' + px + '" y2="170" stroke="#1F6E68" stroke-width="3"/><text class="tl-year" x="' + px + '" y="192">' + yy + '</text>';
+  }
+  items.forEach(function(it, i){
+    var px = 10 * x(it[0]), up = i % 2 === 0;
+    s += '<line x1="' + px + '" y1="160" x2="' + px + '" y2="' + (up ? 118 : 210) + '" stroke="#C99A17" stroke-width="2.5"/><circle cx="' + px + '" cy="160" r="8" fill="#F5C84C" stroke="#C99A17" stroke-width="2"/>';
+  });
+  s += '</svg>';
+  var html = s;
+  items.forEach(function(it, i){
+    var up = i % 2 === 0, cls = hl.on ? (hl.on.indexOf(i) !== -1 ? ' hl' : ' dim') : '';
+    html += '<div class="ev' + cls + '" style="left:' + x(it[0]) + '%;' + (up ? 'top:46px' : 'top:210px') + '"><b>' + it[0] + '</b>' + it[1] + '</div>';
+  });
+  $('timeline').innerHTML = html;
+}
+
+function makeReadDeck(){
+  var types = shuffle(['first', 'last', 'year', 'event', 'after', 'before', 'between', 'between', 'count', 'decade']);
+  return types.map(function(t){
+    var h = HISTORIES[rand(0, HISTORIES.length - 1)];
+    var full = h.items.length > 5 ? shuffle(h.items).slice(0, 5).sort(function(a, b){ return a[0] - b[0]; }) : h.items;
+    return makeQ(t, { title: h.title, items: full });
+  });
+}
+
+function evName(it){ return it[1]; }
+/* lowercase the first letter unless the sentence starts with a name */
+function lc(t){ return /^(Pond town|Grandma Frog|Leo|Hop|Her first)/.test(t) && !/^Her/.test(t) ? t : t.charAt(0).toLowerCase() + t.slice(1); }
+function makeQ(t, h){
+  var it = h.items, n = it.length, q = { t: t, h: h };
+  var i = rand(0, n - 1), j;
+  function evOpts(ans){
+    var others = shuffle(it.filter(function(x){ return x !== ans; })).slice(0, 2);
+    return { answer: ans[1], options: shuffle([ans].concat(others)).map(evName), hl: [it.indexOf(ans)] };
+  }
+  if (t === 'first') { q.text = 'Which event happened first?'; Object.assign(q, evOpts(it[0])); q.why = it[0][1] + ' happened in ' + it[0][0] + ', the earliest year on this timeline. The earliest event is on the far left.'; }
+  else if (t === 'last') { q.text = 'Which event happened most recently?'; Object.assign(q, evOpts(it[n - 1])); q.why = it[n - 1][1] + ' happened in ' + it[n - 1][0] + '. The latest event is on the far right.'; }
+  else if (t === 'year') {
+    q.text = 'In what year did this happen: ' + lc(it[i][1]) + '?';
+    var others = shuffle(it.filter(function(_, k){ return k !== i; }).map(function(x){ return x[0]; })).slice(0, 2);
+    q.answer = String(it[i][0]); q.options = shuffle([it[i][0]].concat(others)).map(String); q.hl = [i];
+    q.why = 'Find the event on the timeline, then read the year above it: ' + it[i][0] + '.';
+  }
+  else if (t === 'event') { q.text = 'What happened in ' + it[i][0] + '?'; Object.assign(q, evOpts(it[i])); q.why = 'In ' + it[i][0] + ', ' + lc(it[i][1]) + '.'; }
+  else if (t === 'after') {
+    i = rand(0, n - 2);
+    q.text = 'What happened right after this: ' + lc(it[i][1]) + '?';
+    Object.assign(q, evOpts(it[i + 1])); q.hl = [i, i + 1];
+    q.why = 'Move one step to the right on the timeline: ' + it[i + 1][0] + ', ' + lc(it[i + 1][1]) + '.';
+  }
+  else if (t === 'before') {
+    i = rand(1, n - 1);
+    q.text = 'What happened right before this: ' + lc(it[i][1]) + '?';
+    Object.assign(q, evOpts(it[i - 1])); q.hl = [i - 1, i];
+    q.why = 'Move one step to the left on the timeline: ' + it[i - 1][0] + ', ' + lc(it[i - 1][1]) + '.';
+  }
+  else if (t === 'between') {
+    i = rand(0, n - 2); j = rand(i + 1, n - 1);
+    var d = it[j][0] - it[i][0];
+    q.text = 'How many years passed between ' + it[i][0] + ' and ' + it[j][0] + '?';
+    var c = shuffle([d + 10, d - 10]).concat(shuffle([d + 1, d - 1])).filter(function(x){ return x > 0 && x !== d; });
+    var wrong = []; c.forEach(function(x){ if (wrong.length < 2 && wrong.indexOf(x) === -1) wrong.push(x); });
+    q.answer = String(d); q.options = shuffle([d].concat(wrong)).map(String); q.hl = [i, j];
+    q.why = 'Subtract the earlier year from the later year: ' + it[j][0] + ' \u2212 ' + it[i][0] + ' = ' + d + ' years.';
+  }
+  else if (t === 'count') {
+    i = rand(1, n - 2);
+    q.text = 'How many events on this timeline happened before ' + it[i][0] + '?';
+    var opts = [i, i + 1, i - 1 >= 0 ? i - 1 : i + 2];
+    q.answer = String(i); q.options = shuffle(opts).map(String);
+    q.hl = it.map(function(_, k){ return k; }).filter(function(k){ return k < i; });
+    q.why = 'Count the events to the left of ' + it[i][0] + ': there ' + (i === 1 ? 'is 1' : 'are ' + i) + '.';
+  }
+  else {
+    i = rand(0, n - 1);
+    var dec = Math.floor(it[i][0] / 10) * 10;
+    q.text = 'In which decade (group of ten years) did this happen: ' + lc(it[i][1]) + '?';
+    var ds = [dec, dec - 10, dec + 10];
+    q.answer = dec + 's'; q.options = shuffle(ds).map(function(x){ return x + 's'; }); q.hl = [i];
+    q.why = it[i][0] + ' is between ' + dec + ' and ' + (dec + 9) + ', so it is in the ' + dec + 's.';
+  }
+  return q;
+}
+
+function startRead(){
+  lastMode = 'read';
+  rDeck = makeReadDeck();
+  rRound = 0; rScore = 0;
+  showOnly('readScreen');
+  nextRead();
+}
+function nextRead(){
+  rRound++;
+  if (rRound > READ_ROUNDS) {
+    showEnd(rScore >= 9 ? 'History detective!' : rScore >= 7 ? 'Great timeline reading!' : 'Keep reading timelines!', 'You answered ' + rScore + ' of ' + READ_ROUNDS + ' on the first try.', rScore >= 9 ? 3 : rScore >= 7 ? 2 : 1);
+    return;
+  }
+  rBusy = false; rFirst = true;
+  rq = rDeck[rRound - 1];
+  $('rRound').textContent = 'Question ' + rRound + ' of ' + READ_ROUNDS;
+  $('rScore').textContent = 'First try ' + rScore;
+  $('rPrompt').textContent = rq.text;
+  hideFact('rFact');
+  drawTimeline(rq.h);
+  var isNum = /^(between|count)$/.test(rq.t);
+  answerButtons('rAnswers', rq.options.map(function(o){
+    return { key: o, html: o + (isNum ? '<small>' + (rq.t === 'count' ? 'events' : 'years') + '</small>' : '') };
+  }), pickRead);
+  $('srStatus').textContent = 'Timeline: ' + rq.h.title + '. ' + rq.h.items.map(function(x){ return x[0] + ', ' + x[1]; }).join('. ') + '. ' + rq.text;
+}
+function pickRead(btn, o){
+  if (rBusy) return;
+  if (o === rq.answer) {
+    rBusy = true;
+    if (rFirst) rScore++;
+    $('rScore').textContent = 'First try ' + rScore;
+    markRight('rAnswers', btn);
+    drawTimeline(rq.h, { on: rq.hl });
+    setFact('rFact', rq.why);
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + rq.why;
+    timer = setTimeout(nextRead, 3200);
+  } else {
+    rFirst = false;
+    markWrong(btn);
+    var h = {
+      first: 'The earliest year is on the left side of the timeline.', last: 'The most recent year is on the right side.',
+      year: 'Find the event card, then read the year at the top of it.', event: 'Find that year on the timeline, then read its event.',
+      after: 'Right after means the next event to the right.', before: 'Right before means the next event to the left.',
+      between: 'Subtract: later year minus earlier year.', count: 'Count only the events to the left of that year.',
+      decade: 'Look at the first three digits. 1978 is in the 1970s.'
+    }[rq.t];
+    setFact('rFact', h);
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* Start art */
+(function(){
+  var s = '<svg viewBox="0 0 260 90" aria-hidden="true"><line x1="10" y1="56" x2="250" y2="56" stroke="#1F6E68" stroke-width="5" stroke-linecap="round"/>';
+  [[40,'1950'],[110,'1978'],[180,'2004'],[230,'2017']].forEach(function(p, i){
+    s += '<circle cx="' + p[0] + '" cy="56" r="7" fill="#F5C84C" stroke="#C99A17" stroke-width="2"/><text x="' + p[0] + '" y="' + (i % 2 ? 84 : 36) + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="15" fill="#8A5A00" text-anchor="middle">' + p[1] + '</text>';
+  });
+  $('startArt').innerHTML = s + '</svg>';
+})();
+</script>
+</body>
+</html>

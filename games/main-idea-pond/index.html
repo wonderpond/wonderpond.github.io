@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main idea pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Read short pond paragraphs and find the main idea, the best title, and the details that support it. Then build a main idea umbrella. A free reading comprehension game for grades 3 to 5 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.passage{background:#fff;border-radius:24px;padding:18px 24px;max-width:760px;margin:0 auto 14px;box-shadow:0 8px 0 rgba(18,64,58,.15);text-align:left}
+.passage h3{font-family:"Baloo 2",sans-serif;font-size:1.2rem;color:#0F5A50;margin-bottom:4px}
+.passage p{font-size:clamp(1.1rem,2.4vw,1.35rem);line-height:1.6;color:#12403A}
+.passage .s{border-radius:6px;padding:1px 2px;transition:background .2s ease}
+.passage .s.topic{background:#FFF3C8;box-shadow:inset 0 -3px 0 #F5C84C}
+.passage .s.detail{background:#E6F0FA}
+.mc{display:flex;flex-direction:column;gap:10px;align-items:center}
+.mc .ans{width:min(94vw,640px);text-align:left;font-size:clamp(1.05rem,2.3vw,1.25rem);border-radius:18px}
+
+/* Umbrella */
+.umb{position:relative;max-width:760px;margin:0 auto}
+.umb svg{display:block;width:100%;height:auto}
+.umb .top{position:absolute;left:18%;right:18%;top:12%;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(.95rem,2.3vw,1.3rem);color:#fff;line-height:1.15}
+.umb .top small{display:block;font-family:"Nunito",sans-serif;font-size:.68em;opacity:.9}
+.ubox{display:flex;gap:10px;justify-content:center;margin-top:-6px}
+.uslot{flex:1 1 0;max-width:240px;min-height:96px;border-radius:16px;border:4px dashed #fff;background:rgba(255,255,255,.45);
+  display:flex;align-items:center;justify-content:center;padding:8px;font-weight:700;font-size:.98rem;line-height:1.3;color:#12403A}
+.uslot.filled{border-style:solid;border-color:#3F9457;background:#E4F5E9}
+.uslot .lab{font-family:"Baloo 2",sans-serif;color:#0F5A50;font-size:1rem}
+.cards{display:flex;flex-direction:column;gap:8px;align-items:center;margin-top:14px}
+.scard{width:min(94vw,640px);border:none;cursor:pointer;text-align:left;background:#fff;border-radius:16px;padding:10px 16px;
+  font-weight:700;font-size:clamp(1rem,2.2vw,1.15rem);color:#12403A;box-shadow:0 4px 0 rgba(18,64,58,.2);transition:transform .12s ease}
+.scard:hover:enabled{transform:translateY(-2px)}
+.scard:disabled{opacity:.25;cursor:default;box-shadow:none}
+.scard.no{background:#FCE3E3;opacity:.6;text-decoration:line-through;box-shadow:none}
+@media (max-width:620px){ .ubox{flex-direction:column;align-items:stretch} .uslot{max-width:none;min-height:60px} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:190px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Main idea pond</h1>
+      <p class="sub">Every paragraph has one big idea, like an umbrella. The details are the drops that fit under it.</p>
+      <span class="choose-label" id="levelLabel">Pick your paragraphs</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Main idea is stated<small>it is in a sentence, grade 3</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Figure it out<small>you put it together, grades 4 and 5</small></button>
+        <button class="pick-btn" data-level="2" aria-pressed="false" onclick="chooseLevel(this)">Mix of both<small>grades 3 to 5</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startFind()">Find the main idea</button>
+        <button class="big-btn alt" onclick="startUmbrella()">Build the umbrella</button>
+      </div>
+      <p class="note">Find the main idea: read a short paragraph, then pick its main idea, its best title, or a detail that supports it. Build the umbrella: the main idea is the umbrella. Pick the three details that belong under it and skip the ones that do not.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="findScreen">
+    <div class="hud">
+      <span class="chip" id="fRound">Paragraph 1 of 8</span>
+      <span class="chip" id="fScore">First try 0</span>
+    </div>
+    <div class="passage" id="fPassage"></div>
+    <p class="prompt" id="fPrompt">What is the main idea?</p>
+    <div class="mc" id="fAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="fFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="umbScreen">
+    <div class="hud">
+      <span class="chip" id="uRound">Umbrella 1 of 5</span>
+      <span class="chip" id="uScore">First try 0</span>
+    </div>
+    <p class="prompt" id="uPrompt">Which details fit under the umbrella?</p>
+    <div class="umb" id="umb"></div>
+    <p class="fact hidden" id="uFact" role="status"></p>
+    <div class="cards" id="uCards" role="group" aria-label="Detail sentences"></div>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+/* Short pond paragraphs. stated: the first sentence is the main idea. */
+var PASSAGES = [
+  { stated: true, s: ['Beavers are amazing builders.', 'They cut down small trees with their strong front teeth.', 'They pile up sticks and mud to make dams across streams.', 'Behind the dam, they build a cozy home called a lodge.'],
+    main: 'Beavers are amazing builders.', wrongMain: ['Beavers have strong front teeth.', 'Streams are full of sticks and mud.'],
+    off: ['Some beavers live in zoos.', 'Ducks like to paddle in streams.'], title: 'Busy Beaver Builders', wrongTitles: ["A Beaver's Teeth", 'A Day at the Zoo'] },
+  { stated: true, s: ['Frogs use their tongues to catch food.', "A frog's tongue is long and sticky.", 'It can shoot out faster than you can blink.', 'Then the frog pulls the bug back into its mouth.'],
+    main: 'Frogs use their tongues to catch food.', wrongMain: ["A frog's tongue is sticky.", 'Bugs live near the pond.'],
+    off: ['Frogs lay their eggs in water.', 'Some frogs are bright green.'], title: "Snap! A Frog's Sticky Tongue", wrongTitles: ['Frog Eggs', 'All About Bugs'] },
+  { stated: true, s: ['A pond changes a lot in winter.', 'The top of the water freezes into ice.', 'Many frogs sleep in the mud at the bottom.', 'Fish swim slowly in the cold water under the ice.'],
+    main: 'A pond changes a lot in winter.', wrongMain: ['Frogs sleep in the mud.', 'Ice is cold and slippery.'],
+    off: ['Kids love to swim in the summer.', 'Ducks have orange feet.'], title: 'Winter at the Pond', wrongTitles: ['Sleepy Frogs', 'Summer Fun'] },
+  { stated: true, s: ['Dragonflies are excellent fliers.', 'They can fly forward, backward, and even upside down.', 'They can hover in one spot like a helicopter.', 'Some dragonflies fly all the way across an ocean.'],
+    main: 'Dragonflies are excellent fliers.', wrongMain: ['Some dragonflies cross the ocean.', 'Helicopters can hover in one spot.'],
+    off: ['Baby dragonflies live underwater.', 'Butterflies drink nectar from flowers.'], title: 'Amazing Flying Dragonflies', wrongTitles: ['Upside Down', 'Pretty Butterflies'] },
+  { stated: true, s: ['Cattails are useful plants.', 'Red-winged blackbirds build nests in them.', 'Muskrats eat their roots.', 'Long ago, people wove their long leaves into mats and baskets.'],
+    main: 'Cattails are useful plants.', wrongMain: ['Muskrats eat roots.', 'Baskets can be made from leaves.'],
+    off: ['Roses have sharp thorns.', 'The pond is very deep in the middle.'], title: 'Cattails Help Everyone', wrongTitles: ["A Muskrat's Lunch", 'Roses in the Garden'] },
+  { stated: false, s: ['The turtle crawled onto the warm rock.', 'It stretched out its legs and its long neck.', 'It closed its eyes in the bright sun.', 'It stayed there for hours without moving.'],
+    main: 'The turtle is warming itself in the sun.', wrongMain: ['The turtle closed its eyes.', 'The turtle is hunting for food.'],
+    off: ['Turtles can live a very long time.', 'A frog splashed into the water.'], title: 'A Turtle Soaks Up the Sun', wrongTitles: ["The Turtle's Shell", 'The Great Turtle Race'] },
+  { stated: false, s: ['Mia packed a net, a jar, and a notebook.', 'She walked to the edge of the pond and knelt down.', 'She scooped up some water and looked at it closely.', 'Then she wrote down every tiny creature she saw.'],
+    main: 'Mia is studying the creatures that live in the pond.', wrongMain: ['Mia packed a net and a jar.', 'Mia is going fishing for dinner.'],
+    off: ["Mia's favorite color is purple.", 'The pond is next to a busy road.'], title: 'Mia the Pond Scientist', wrongTitles: ["Mia's Notebook", 'Fishing for Dinner'] },
+  { stated: false, s: ['In spring, the ducks return to the pond.', 'In summer, fuzzy ducklings follow their mothers.', 'In fall, the ducks gather in big groups.', 'In winter, they fly south to warmer places.'],
+    main: 'The ducks do different things in each season.', wrongMain: ['Ducklings follow their mothers.', 'Ducks like warm weather best.'],
+    off: ['Ducks have waterproof feathers.', 'Geese honk very loudly.'], title: 'A Year with the Ducks', wrongTitles: ['Fuzzy Ducklings', 'Loud Geese'] },
+  { stated: false, s: ['Leo looked up at the dark clouds.', 'He heard thunder rumbling far away.', 'He quickly pulled his boat onto the shore and tied it up.', 'Then he ran toward the cabin.'],
+    main: 'A storm is coming, so Leo is getting to safety.', wrongMain: ['Leo heard thunder far away.', 'Leo is racing a friend to the cabin.'],
+    off: ["Leo's boat is painted red.", 'Leo had pancakes for breakfast.'], title: 'Racing the Storm', wrongTitles: ["Leo's Red Boat", 'A Sunny Day on the Lake'] },
+  { stated: false, s: ['After the festival, the pond was covered in trash.', 'The class brought bags and gloves.', 'They picked up cups, wrappers, and bottles.', 'By lunchtime, the shore was clean again.'],
+    main: 'The class worked together to clean up the pond.', wrongMain: ['The class brought bags and gloves.', 'The festival was a lot of fun.'],
+    off: ['The festival had a frog-jumping contest.', 'Lunch was peanut butter sandwiches.'], title: 'The Big Pond Cleanup', wrongTitles: ['Festival Fun', 'Lunchtime'] }
+];
+
+var level = 0, lastMode = 'find';
+function playAgain(){ if (lastMode === 'find') startFind(); else startUmbrella(); }
+function pool(){ return PASSAGES.filter(function(p){ return level === 2 || p.stated === (level === 0); }); }
+function details(p){ return p.stated ? p.s.slice(1) : p.s.slice(); }
+
+function passageHtml(p, mark){
+  return '<h3>Read the paragraph</h3><p>' + p.s.map(function(x, i){
+    var cls = 's';
+    if (mark && p.stated && i === 0) cls += ' topic';
+    else if (mark) cls += ' detail';
+    return '<span class="' + cls + '">' + x + '</span>';
+  }).join(' ') + '</p>';
+}
+
+/* ---------- Find the main idea ---------- */
+var FIND_ROUNDS = 8, deck = [], round = 0, score = 0, q = null, firstTry = true, busy = false;
+
+function startFind(){
+  lastMode = 'find';
+  var ps = shuffle(pool());
+  var types = shuffle(['main', 'main', 'main', 'title', 'title', 'detail', 'detail', 'main']);
+  deck = types.map(function(t, i){ return { p: ps[i % ps.length], t: t }; });
+  round = 0; score = 0;
+  showOnly('findScreen');
+  nextFind();
+}
+
+function nextFind(){
+  round++;
+  if (round > FIND_ROUNDS) {
+    showEnd(score >= 7 ? 'Main idea master!' : score >= 5 ? 'Great reading!' : 'Keep reading!', 'You answered ' + score + ' of ' + FIND_ROUNDS + ' on the first try.', score >= 7 ? 3 : score >= 5 ? 2 : 1);
+    return;
+  }
+  busy = false; firstTry = true;
+  q = deck[round - 1];
+  var p = q.p, opts;
+  if (q.t === 'main') { q.answer = p.main; opts = [p.main].concat(p.wrongMain); q.text = 'What is the main idea of this paragraph?'; }
+  else if (q.t === 'title') { q.answer = p.title; opts = [p.title].concat(p.wrongTitles); q.text = 'Which is the best title for this paragraph?'; }
+  else { q.answer = shuffle(details(p))[0]; opts = [q.answer].concat(p.off); q.text = 'Which detail from the paragraph supports the main idea?'; }
+  $('fRound').textContent = 'Paragraph ' + round + ' of ' + FIND_ROUNDS;
+  $('fScore').textContent = 'First try ' + score;
+  $('fPassage').innerHTML = passageHtml(p, false);
+  $('fPrompt').textContent = q.text;
+  hideFact('fFact');
+  answerButtons('fAnswers', shuffle(opts).map(function(o){ return { key: o, label: o }; }), pickFind);
+  $('srStatus').textContent = p.s.join(' ') + ' ' + q.text;
+}
+
+function whyRight(q){
+  var p = q.p;
+  if (q.t === 'main') return p.stated ? 'The first sentence tells the main idea, and every other sentence tells more about it.' : 'No single sentence says it, but every sentence adds up to this idea.';
+  if (q.t === 'title') return 'A good title fits the whole paragraph, not just one part of it.';
+  return 'This detail is in the paragraph, and it tells more about the main idea: ' + p.main.charAt(0).toLowerCase() + p.main.slice(1);
+}
+function hintWrong(q, o){
+  var p = q.p;
+  if (q.t === 'main') return o === p.wrongMain[0]
+    ? 'That is only one small detail. The main idea is what the WHOLE paragraph is about.'
+    : 'The paragraph does not really say that. Which idea does every sentence tell about?';
+  if (q.t === 'title') return 'That title only fits part of the paragraph, or something it does not talk about. Pick the one that fits every sentence.';
+  return 'That sentence is not in the paragraph, or it does not tell about the main idea. Look for a detail the paragraph really says.';
+}
+
+function pickFind(btn, o){
+  if (busy) return;
+  if (o === q.answer) {
+    busy = true;
+    if (firstTry) score++;
+    $('fScore').textContent = 'First try ' + score;
+    markRight('fAnswers', btn);
+    $('fPassage').innerHTML = passageHtml(q.p, true);
+    setFact('fFact', whyRight(q));
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + whyRight(q);
+    timer = setTimeout(nextFind, 3600);
+  } else {
+    firstTry = false;
+    markWrong(btn);
+    var h = hintWrong(q, o);
+    setFact('fFact', h);
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Build the umbrella ---------- */
+var UMB_ROUNDS = 5, uDeck = [], uRound = 0, uScore = 0, up = null, uCards = [], placed = [], uFirst = true;
+
+var UMB_SVG = '<svg viewBox="0 0 760 200" aria-hidden="true"><path d="M60 170 Q80 20 380 14 Q680 20 700 170 Q640 140 580 170 Q520 140 460 170 Q420 140 380 170 Q340 140 300 170 Q240 140 180 170 Q120 140 60 170Z" fill="#1F6E68"/>' +
+  '<path d="M380 14 Q300 90 300 170 M380 14 Q460 90 460 170 M380 14 Q170 80 180 170 M380 14 Q590 80 580 170" stroke="#2E8C84" stroke-width="4" fill="none"/>' +
+  '<path d="M380 170 V196" stroke="#6B4A2F" stroke-width="6"/><circle cx="380" cy="10" r="7" fill="#F5C84C"/></svg>';
+
+function startUmbrella(){
+  lastMode = 'umb';
+  uDeck = shuffle(pool()).slice(0, UMB_ROUNDS);
+  uRound = 0; uScore = 0;
+  showOnly('umbScreen');
+  nextUmb();
+}
+function nextUmb(){
+  uRound++;
+  if (uRound > uDeck.length) {
+    showEnd(uScore >= 5 ? 'Main idea master!' : uScore >= 4 ? 'Great reading!' : 'Keep reading!', 'You filled ' + uScore + ' of ' + uDeck.length + ' umbrellas with no misses.', uScore >= 5 ? 3 : uScore >= 4 ? 2 : 1);
+    return;
+  }
+  busy = false; uFirst = true;
+  up = uDeck[uRound - 1];
+  var good = shuffle(details(up)).slice(0, 3);
+  uCards = shuffle(good.map(function(t){ return { t: t, ok: true }; }).concat(up.off.map(function(t){ return { t: t, ok: false }; })))
+    .map(function(c){ c.state = 'open'; return c; });
+  placed = [];
+  $('uRound').textContent = 'Umbrella ' + uRound + ' of ' + uDeck.length;
+  $('uScore').textContent = 'First try ' + uScore;
+  $('uPrompt').textContent = 'Which details fit under the umbrella?';
+  hideFact('uFact');
+  drawUmb();
+  $('srStatus').textContent = 'Main idea: ' + up.main + ' Pick the three details that support it.';
+}
+function drawUmb(){
+  var slots = '';
+  for (var i = 0; i < 3; i++) slots += '<div class="uslot' + (placed[i] ? ' filled' : '') + '">' + (placed[i] ? placed[i] : '<span class="lab">Detail ' + (i + 1) + '</span>') + '</div>';
+  $('umb').innerHTML = UMB_SVG + '<div class="top"><small>Main idea</small>' + up.main + '</div><div class="ubox">' + slots + '</div>';
+  var box = $('uCards');
+  box.innerHTML = '';
+  uCards.forEach(function(c, i){
+    var b = document.createElement('button');
+    b.className = 'scard pickable' + (c.state === 'no' ? ' no' : '');
+    b.textContent = c.t;
+    b.disabled = c.state !== 'open' || busy;
+    b.dataset.key = i + 1;
+    b.onclick = function(){ pickCard(i); };
+    box.appendChild(b);
+  });
+}
+function pickCard(i){
+  if (busy) return;
+  var c = uCards[i];
+  if (c.ok) {
+    c.state = 'used';
+    placed.push(c.t);
+    sndPlop();
+    drawUmb();
+    if (placed.length === 3) {
+      busy = true;
+      if (uFirst) uScore++;
+      $('uScore').textContent = 'First try ' + uScore;
+      drawUmb();
+      $('uPrompt').textContent = 'The umbrella is full!';
+      var msg = 'All three details tell more about the main idea. The other sentences may be true, but they are about something else.';
+      setFact('uFact', msg);
+      sndGood();
+      $('srStatus').textContent = msg;
+      timer = setTimeout(nextUmb, 3600);
+    } else {
+      setFact('uFact', 'Yes! That detail fits under the umbrella. ' + (3 - placed.length) + ' more to go.');
+      $('srStatus').textContent = 'Yes, that fits. ' + (3 - placed.length) + ' more.';
+    }
+  } else {
+    uFirst = false;
+    c.state = 'no';
+    drawUmb();
+    var h = 'That sentence does not tell about the main idea, so it stays out from under the umbrella.';
+    setFact('uFact', h);
+    sndBad();
+    $('srStatus').textContent = h;
+  }
+}
+
+/* Number keys also pick sentence cards in the umbrella game */
+document.addEventListener('keydown', function(e){
+  if ($('umbScreen').classList.contains('hidden')) return;
+  if (/^[1-5]$/.test(e.key)) { var b = document.querySelector('.scard[data-key="' + e.key + '"]'); if (b && !b.disabled) b.click(); }
+});
+
+$('startArt').innerHTML = '<svg viewBox="0 0 190 120" aria-hidden="true"><path d="M10 80 Q20 10 95 8 Q170 10 180 80 Q160 66 140 80 Q118 66 95 80 Q72 66 50 80 Q30 66 10 80Z" fill="#1F6E68"/><path d="M95 80 V104 Q95 112 87 112 Q80 112 80 105" stroke="#6B4A2F" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+  '<g fill="#6BB6DB"><path d="M30 92 Q34 100 30 104 Q26 100 30 92Z"/><path d="M140 94 Q144 102 140 106 Q136 102 140 94Z"/><path d="M164 90 Q168 98 164 102 Q160 98 164 90Z"/></g>' +
+  '<text x="95" y="52" font-family="Baloo 2,sans-serif" font-weight="700" font-size="20" fill="#fff" text-anchor="middle">Main idea</text></svg>';
+</script>
+</body>
+</html>
