@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond sky - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Move the sun across the sky to explore shadows, sunrise, and sunset, then learn the patterns of day and night, the seasons, and the phases of the moon. A free earth and space science game for grades 1 to 5 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#CFE6F7 0%,var(--water) 34%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.scene{background:#fff;border-radius:24px;padding:8px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%}
+.scene svg{display:block;height:min(46vh,360px);width:auto;max-width:92vw}
+.slider-row{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.slider-row input{width:min(70vw,420px);accent-color:#F5C84C;height:28px}
+.clock{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.5rem;background:#fff;border-radius:999px;padding:2px 18px;color:#0F5A50;min-width:120px}
+.ans.moon{min-width:110px;padding:6px 10px}
+.ans.moon svg{display:block;width:56px;height:56px;margin:0 auto 2px}
+.qpic{display:flex;justify-content:center;gap:16px;align-items:center;margin-bottom:10px}
+.qpic svg{width:96px;height:96px;background:#1B2A4A;border-radius:20px;padding:8px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:260px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond sky</h1>
+      <p class="sub">The sky over the pond keeps changing. Move the sun, watch the shadows, and learn the patterns of the sun and moon.</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startShadow()">Shadow lab</button>
+        <button class="big-btn alt" onclick="startQuiz()">Sun and moon patterns</button>
+      </div>
+      <p class="note">Shadow lab: slide the time of day to move the sun across the sky, and make Hop's shadow match each challenge. Sun and moon patterns: answer questions about day and night, sunrise and sunset, the seasons, and the phases of the moon. Grades 1 to 5.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="shadowScreen">
+    <div class="hud"><span class="chip" id="sRound">Challenge 1 of 6</span><span class="chip" id="sScore">First try 0</span></div>
+    <p class="prompt" id="sPrompt">Make Hop's shadow as short as you can</p>
+    <div><div class="scene" id="scene"></div></div>
+    <div class="slider-row">
+      <label for="time" class="sr-only">Time of day</label>
+      <input type="range" id="time" min="6" max="18" step="0.25" value="9" oninput="drawScene()">
+      <span class="clock" id="clock">9:00 AM</span>
+    </div>
+    <div><button class="big-btn" id="checkBtn" onclick="checkShadow()">Check</button></div>
+    <p class="fact hidden" id="sFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="quizScreen">
+    <div class="hud"><span class="chip" id="qRound">Question 1 of 10</span><span class="chip" id="qScore">First try 0</span></div>
+    <div class="qpic" id="qPic"></div>
+    <p class="prompt" id="qPrompt">What makes day and night?</p>
+    <div class="answers" id="qAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="qFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var lastMode = 'shadow', level = 0;
+function playAgain(){ if (lastMode === 'shadow') startShadow(); else startQuiz(); }
+
+/* We look south, so east is on the left and west is on the right. */
+function sunAt(h){
+  var t = (h - 6) / 12;                 /* 0 at 6 AM, 1 at 6 PM */
+  var x = 60 + t * 600, elev = Math.sin(t * Math.PI) * 62 + 2; /* degrees */
+  var y = 300 - Math.sin(t * Math.PI) * 240;
+  return { x: x, y: y, elev: elev };
+}
+function clockText(h){
+  var hh = Math.floor(h), mm = Math.round((h - hh) * 60), ap = hh < 12 ? 'AM' : 'PM', h12 = hh % 12 === 0 ? 12 : hh % 12;
+  return h12 + ':' + (mm < 10 ? '0' : '') + mm + ' ' + ap;
+}
+var FROGX = 360, GROUND = 300, FROGH = 56;
+function sceneSvg(h){
+  var sun = sunAt(h), sky = sun.elev < 12 ? '#F7C9A0' : '#BFE3F5';
+  var len = Math.min(300, FROGH / Math.tan(sun.elev * Math.PI / 180)), dir = sun.x < FROGX ? 1 : -1;
+  var s = '<svg viewBox="0 0 720 380" aria-hidden="true"><rect width="720" height="380" rx="16" fill="' + sky + '"/>';
+  s += '<path d="M60 300 Q360 -180 660 300" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="6 8" opacity=".8"/>';
+  s += '<rect y="300" width="720" height="80" fill="#9CCB74"/><ellipse cx="120" cy="336" rx="80" ry="16" fill="#6BB6DB"/>';
+  s += '<polygon points="' + (FROGX - 18) + ',' + GROUND + ' ' + (FROGX + 18) + ',' + GROUND + ' ' + (FROGX + dir * len + 10 * dir) + ',' + (GROUND + 14) + ' ' + (FROGX + dir * len - 4 * dir) + ',' + (GROUND + 2) + '" fill="rgba(30,50,40,.45)"/>';
+  s += '<g transform="translate(' + FROGX + ' ' + (GROUND - 20) + ') scale(1.6)"><ellipse cx="0" cy="0" rx="17" ry="13" fill="#4FB06A"/><circle cx="-6" cy="-15" r="6" fill="#4FB06A"/><circle cx="6" cy="-15" r="6" fill="#4FB06A"/><circle cx="-6" cy="-15" r="3.6" fill="#fff"/><circle cx="6" cy="-15" r="3.6" fill="#fff"/><circle cx="-6" cy="-14.5" r="1.7" fill="#22303B"/><circle cx="6" cy="-14.5" r="1.7" fill="#22303B"/><path d="M-7 2 Q0 8 7 2" stroke="#1F5B36" stroke-width="2" fill="none" stroke-linecap="round"/></g>';
+  s += '<circle cx="' + sun.x.toFixed(1) + '" cy="' + sun.y.toFixed(1) + '" r="26" fill="#F5C84C" stroke="#F5B82E" stroke-width="4"/>';
+  s += '<text x="40" y="360" font-family="Baloo 2,sans-serif" font-weight="700" font-size="22" fill="#0F5A50">East</text><text x="680" y="360" font-family="Baloo 2,sans-serif" font-weight="700" font-size="22" fill="#0F5A50" text-anchor="end">West</text>';
+  return s + '</svg>';
+}
+function drawScene(){ var h = +$('time').value; $('scene').innerHTML = sceneSvg(h); $('clock').textContent = clockText(h); }
+
+var CHALLENGES = [
+  { t: "Make Hop's shadow as short as you can.", ok: function(h){ return Math.abs(h - 12) <= .5; }, why: 'At noon the sun is highest in the sky, so shadows are the shortest.', hint: function(h){ return 'The higher the sun, the shorter the shadow. Where is the sun highest?'; } },
+  { t: 'Make the shadow point toward the West.', ok: function(h){ return h < 11.5; }, why: 'In the morning the sun is in the east, so shadows point the other way, toward the west.', hint: function(){ return 'A shadow always points away from the sun.'; } },
+  { t: 'Make the shadow point toward the East.', ok: function(h){ return h > 12.5; }, why: 'In the afternoon the sun is in the west, so shadows point east.', hint: function(){ return 'A shadow always points away from the sun.'; } },
+  { t: 'Make a really long shadow in the morning.', ok: function(h){ return h <= 8; }, why: 'Early in the morning the sun is low, so shadows stretch out long.', hint: function(){ return 'Low sun makes long shadows. When is the morning sun lowest?'; } },
+  { t: 'Move the sun to where it rises.', ok: function(h){ return h <= 7; }, why: 'The sun rises in the east every morning.', hint: function(){ return 'The sun rises on the east side of the sky.'; } },
+  { t: 'Move the sun to where it sets.', ok: function(h){ return h >= 17; }, why: 'The sun sets in the west every evening.', hint: function(){ return 'The sun sets on the west side of the sky.'; } }
+];
+var S_ROUNDS = 6, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false;
+function startShadow(){ lastMode = 'shadow'; deck = shuffle(CHALLENGES); round = 0; score = 0; showOnly('shadowScreen'); nextShadow(); }
+function nextShadow(){
+  round++;
+  if (round > S_ROUNDS) { showEnd(score >= 5 ? 'Shadow scientist!' : score >= 4 ? 'Great work!' : 'Keep exploring!', 'You solved ' + score + ' of ' + S_ROUNDS + ' challenges on the first try.', score >= 5 ? 3 : score >= 4 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('sRound').textContent = 'Challenge ' + round + ' of ' + S_ROUNDS;
+  $('sScore').textContent = 'First try ' + score;
+  $('sPrompt').textContent = cur.t;
+  $('time').value = cur.ok(9) ? 15 : 9;
+  $('time').disabled = false; $('checkBtn').disabled = false;
+  hideFact('sFact');
+  drawScene();
+  $('srStatus').textContent = cur.t + ' Use the time slider to move the sun, then press Check.';
+}
+function checkShadow(){
+  if (busy) return;
+  var h = +$('time').value;
+  if (cur.ok(h)) {
+    busy = true; if (firstTry) score++;
+    $('sScore').textContent = 'First try ' + score;
+    $('checkBtn').disabled = true; $('time').disabled = true;
+    setFact('sFact', 'Yes! ' + cur.why); sndGood(); $('srStatus').textContent = 'Correct! ' + cur.why;
+    timer = setTimeout(nextShadow, 3200);
+  } else {
+    firstTry = false;
+    var hn = cur.hint(h);
+    setFact('sFact', 'Not yet. ' + hn); sndBad(); $('srStatus').textContent = 'Not yet. ' + hn;
+  }
+}
+
+/* ---------- Moon phases (as seen from the Northern Hemisphere) ---------- */
+var PHASES = ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'];
+function moonSvg(i){
+  var r = 40, c = 50, s = '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="' + r + '" fill="#3A4766"/>';
+  if (i === 0) return s + '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="#56658A" stroke-width="2"/></svg>';
+  if (i === 4) return s + '<circle cx="50" cy="50" r="' + r + '" fill="#F2E9C9"/></svg>';
+  var waxing = i < 4, frac = [0, .25, .5, .75, 1, .75, .5, .25][i];
+  var rx = Math.abs(1 - 2 * frac) * r, sweepLit = waxing ? 1 : 0;
+  /* lit half on the right when waxing, on the left when waning */
+  var d = 'M50 10 A40 40 0 0 ' + sweepLit + ' 50 90';
+  /* the inner edge: bulges toward the lit side for a crescent, away for a gibbous */
+  var gib = frac > .5;
+  d += ' A' + rx.toFixed(1) + ' 40 0 0 ' + (gib ? sweepLit : 1 - sweepLit) + ' 50 10Z';
+  return s + '<path d="' + d + '" fill="#F2E9C9"/></svg>';
+}
+var FACTS = [
+  { q: 'What makes day and night?', a: 'Earth spinning around', w: ['The sun moving around Earth', 'Clouds covering the sun'], why: 'Earth spins once every day. The side facing the sun has day, and the side facing away has night.' },
+  { q: 'Where does the sun rise in the morning?', a: 'In the east', w: ['In the west', 'Straight overhead'], why: 'The sun always rises in the east.' },
+  { q: 'Where does the sun set in the evening?', a: 'In the west', w: ['In the east', 'Under the pond'], why: 'The sun always sets in the west.' },
+  { q: 'When are shadows the shortest?', a: 'Around noon', w: ['Early morning', 'Just before sunset'], why: 'At noon the sun is highest in the sky, so shadows are shortest.' },
+  { q: 'Why does the sun seem to move across the sky?', a: 'Because Earth is spinning', w: ['Because the sun is rolling', 'Because the wind pushes it'], why: 'The sun stays put. Earth turns, so the sun looks like it moves from east to west.' },
+  { q: 'Compared to winter, summer days have...', a: 'More hours of daylight', w: ['Fewer hours of daylight', 'The same hours of daylight'], why: 'In summer the sun rises earlier and sets later, so there are more hours of daylight.' },
+  { q: 'At noon in winter, the sun is...', a: 'Lower in the sky than in summer', w: ['Higher in the sky than in summer', 'Exactly overhead'], why: 'In winter the sun stays lower in the sky, so noon shadows are longer than in summer.' },
+  { q: 'Where does moonlight come from?', a: 'Sunlight bouncing off the moon', w: ['The moon makes its own light', 'Light from the stars'], why: 'The moon does not make light. It reflects light from the sun.' },
+  { q: 'About how long does the moon take to go through all its phases?', a: 'About a month', w: ['About a day', 'About a year'], why: 'The moon goes from new moon to full moon and back in about 29 and a half days.' },
+  { q: 'What is the sun?', a: 'A star', w: ['A planet', 'A moon'], why: 'The sun is a star. It looks bigger and brighter than other stars because it is so much closer to us.' },
+  { q: 'Why can we only see stars at night?', a: 'The sun is too bright in the day', w: ['Stars go away in the day', 'Stars only shine at night'], why: 'Stars are always there, but the bright sun hides them during the day.' }
+];
+var Q_ROUNDS = 10, qdeck = [], q = null;
+function makePhaseQ(){
+  var i = rand(0, 7), dir = rand(0, 1) ? 'next' : 'before', ans = dir === 'next' ? (i + 1) % 8 : (i + 7) % 8;
+  var others = shuffle([0,1,2,3,4,5,6,7].filter(function(x){ return x !== i && x !== ans; })).slice(0, 2);
+  return { kind: 'phase', i: i, dir: dir, answer: ans, options: shuffle([ans].concat(others)),
+    text: 'This is a ' + PHASES[i].toLowerCase() + '. Which phase comes ' + (dir === 'next' ? 'next' : 'right before') + '?',
+    why: PHASES[i] + (dir === 'next' ? ' is followed by ' : ' comes right after ') + PHASES[ans].toLowerCase() + '. Waxing means the lit part is growing. Waning means it is shrinking.' };
+}
+function startQuiz(){
+  lastMode = 'quiz';
+  qdeck = shuffle(shuffle(FACTS).slice(0, 7).map(function(f){ return { kind: 'fact', f: f }; }).concat([makePhaseQ(), makePhaseQ(), makePhaseQ()]));
+  round = 0; score = 0; showOnly('quizScreen'); nextQuiz();
+}
+function nextQuiz(){
+  round++;
+  if (round > Q_ROUNDS) { showEnd(score >= 9 ? 'Sky expert!' : score >= 7 ? 'Great stargazing!' : 'Keep looking up!', 'You answered ' + score + ' of ' + Q_ROUNDS + ' on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; q = qdeck[round - 1];
+  $('qRound').textContent = 'Question ' + round + ' of ' + Q_ROUNDS;
+  $('qScore').textContent = 'First try ' + score;
+  hideFact('qFact');
+  if (q.kind === 'phase') {
+    $('qPic').innerHTML = moonSvg(q.i);
+    $('qPrompt').textContent = q.text;
+    answerButtons('qAnswers', q.options.map(function(k){ return { key: k, cls: 'moon', html: moonSvg(k).replace('<svg ', '<svg style="background:#1B2A4A;border-radius:12px" ') + PHASES[k], aria: PHASES[k] }; }), pickQuiz);
+  } else {
+    $('qPic').innerHTML = '';
+    $('qPrompt').textContent = q.f.q;
+    answerButtons('qAnswers', shuffle([q.f.a].concat(q.f.w)).map(function(o){ return { key: o, label: o }; }), pickQuiz);
+  }
+  $('srStatus').textContent = $('qPrompt').textContent;
+}
+function pickQuiz(btn, k){
+  if (busy) return;
+  var right = q.kind === 'phase' ? q.answer : q.f.a;
+  if (k === right) {
+    busy = true; if (firstTry) score++;
+    $('qScore').textContent = 'First try ' + score;
+    markRight('qAnswers', btn);
+    var why = q.kind === 'phase' ? q.why : q.f.why;
+    setFact('qFact', why); sndGood(); $('srStatus').textContent = 'Correct! ' + why;
+    timer = setTimeout(nextQuiz, 3200);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = q.kind === 'phase' ? 'Watch the lit part. Before full moon it grows on the right side. After full moon it shrinks from the right.' : 'Think about what really happens in the sky.';
+    setFact('qFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+$('startArt').innerHTML = sceneSvg(9.5).replace('viewBox="0 0 720 380"', 'viewBox="0 20 720 360"');
+</script>
+</body>
+</html>

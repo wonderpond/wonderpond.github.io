@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clue pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Be a word detective! Use context clues (definitions, synonyms, antonyms, and examples) to figure out tricky words like famished, murky, and nocturnal, then find the clue words yourself. A free vocabulary game for grades 3 to 5 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.sent{background:#fff;border-radius:24px;padding:18px 24px;max-width:780px;margin:0 auto 12px;box-shadow:0 8px 0 rgba(18,64,58,.15);
+  font-size:clamp(1.25rem,3vw,1.7rem);line-height:1.7;font-weight:700;color:#12403A}
+.sent .tw{background:#FFF3C8;color:#8A3B00;border-radius:8px;padding:0 6px;box-shadow:inset 0 -3px 0 #F5C84C}
+.sent .cl{background:#E6F0FA;color:#2B6CB0;border-radius:6px}
+.sent button.wd{border:none;background:transparent;font:inherit;color:inherit;cursor:pointer;border-radius:6px;padding:0 2px}
+.sent button.wd:hover:enabled{background:#F2F7F6}
+.sent button.wd.no{background:#FCE3E3}
+.sent button.wd.yes{background:#E6F0FA;color:#2B6CB0}
+.mc{display:flex;flex-direction:column;gap:8px;align-items:center}
+.mc .ans{width:min(94vw,560px);font-size:clamp(1.05rem,2.4vw,1.3rem);border-radius:16px}
+.types{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.types .ans{min-width:160px}
+.step{font-weight:700;color:#0F5A50;background:rgba(255,255,255,.85);border-radius:999px;display:inline-block;padding:2px 14px;margin-bottom:6px;font-size:.95rem}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:300px;margin:0 auto 6px" aria-hidden="true"></div>
+      <h1 id="gameTitle">Clue pond</h1>
+      <p class="sub">Don't know a word? Be a word detective! The words around it often hold the clue.</p>
+      <span class="choose-label" id="levelLabel">Pick your clues</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Definition and synonym clues<small>grade 3</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Add antonym and example clues<small>grades 4 and 5</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startMean()">What does it mean?</button>
+        <button class="big-btn alt" onclick="startFind()">Find the clue</button>
+      </div>
+      <p class="note">What does it mean: use the sentence to figure out the yellow word, then name the kind of clue that helped. Find the clue: tap the words in the sentence that give away the meaning. Clue kinds: a definition explains the word, a synonym means the same, an antonym means the opposite, and examples show what it is.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="meanScreen">
+    <div class="hud"><span class="chip" id="mRound">Word 1 of 8</span><span class="chip" id="mScore">First try 0</span></div>
+    <div class="sent" id="mSent"></div>
+    <div><span class="step" id="mStep">Step 1 of 2</span></div>
+    <p class="prompt" id="mPrompt">What does the yellow word mean?</p>
+    <div class="mc" id="mAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="mFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="findScreen">
+    <div class="hud"><span class="chip" id="fRound">Word 1 of 8</span><span class="chip" id="fScore">First try 0</span></div>
+    <p class="prompt" id="fPrompt">Tap a clue word that helps you know what the yellow word means</p>
+    <div class="sent" id="fSent" role="group" aria-label="Sentence words"></div>
+    <p class="fact hidden" id="fFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'mean';
+function playAgain(){ if (lastMode === 'mean') startMean(); else startFind(); }
+
+/* w: the word. clue: the exact words in the sentence that give it away. type: definition, synonym, antonym, example */
+var ITEMS = [
+  { s: 'After swimming all day, Hop was famished, or very hungry.', w: 'famished', clue: 'or very hungry', type: 'definition', m: 'very hungry', x: ['very sleepy', 'very happy'] },
+  { s: 'The pond was murky, which means the water was cloudy and hard to see through.', w: 'murky', clue: 'cloudy and hard to see through', type: 'definition', m: 'cloudy and hard to see through', x: ['clean and clear', 'very deep'] },
+  { s: 'Hop was elated, so happy that he jumped for joy.', w: 'elated', clue: 'so happy that he jumped for joy', type: 'definition', m: 'very happy', x: ['very scared', 'very tired'] },
+  { s: 'Grandpa is frugal. He never wastes money and saves every penny.', w: 'frugal', clue: 'never wastes money and saves every penny', type: 'definition', m: 'careful about spending money', x: ['very rich', 'grumpy and mean'] },
+  { s: 'Leo was reluctant to touch the slimy frog eggs. He did not want to do it at all.', w: 'reluctant', clue: 'did not want to do it at all', type: 'definition', m: 'not wanting to do something', x: ['excited to do something', 'too small to do something'] },
+  { s: 'The heron was enormous. It looked huge next to the little frog.', w: 'enormous', clue: 'huge', type: 'synonym', m: 'very big', x: ['very fast', 'very loud'] },
+  { s: 'Mia felt weary after the long hike. She was so tired she fell asleep in the car.', w: 'weary', clue: 'so tired', type: 'synonym', m: 'tired', x: ['hungry', 'angry'] },
+  { s: 'Hop gave a sincere apology. He was truly and honestly sorry.', w: 'sincere', clue: 'truly and honestly', type: 'synonym', m: 'honest and real', x: ['quick and quiet', 'silly and funny'] },
+  { s: 'The tadpole was minuscule, so tiny that we needed a magnifying glass to see it.', w: 'minuscule', clue: 'so tiny', type: 'synonym', m: 'very small', x: ['very slimy', 'very slow'] },
+  { s: 'Unlike his timid sister, Leo was bold and jumped right into the cold pond.', w: 'timid', clue: 'Unlike his ... Leo was bold', type: 'antonym', m: 'shy and easily scared', x: ['brave and daring', 'tall and strong'] },
+  { s: 'The water near the shore is shallow, but the middle of the pond is deep.', w: 'shallow', clue: 'but the middle of the pond is deep', type: 'antonym', m: 'not deep', x: ['very cold', 'very muddy'] },
+  { s: 'The cattails were abundant, but the water lilies were scarce and hard to find.', w: 'abundant', clue: 'but the water lilies were scarce and hard to find', type: 'antonym', m: 'in large amounts, plenty', x: ['missing, hard to find', 'tall and brown'] },
+  { s: 'In the morning the turtle was sluggish, not quick and lively like it was at noon.', w: 'sluggish', clue: 'not quick and lively', type: 'antonym', m: 'slow and low on energy', x: ['hungry and grumpy', 'fast and full of energy'] },
+  { s: 'Many amphibians, such as frogs, toads, and salamanders, live near the pond.', w: 'amphibians', clue: 'such as frogs, toads, and salamanders', type: 'example', m: 'animals that live both in water and on land', x: ['kinds of water plants', 'kinds of birds'] },
+  { s: 'After the storm we saw debris everywhere, like broken branches, soggy leaves, and trash.', w: 'debris', clue: 'like broken branches, soggy leaves, and trash', type: 'example', m: 'scattered pieces of broken or leftover things', x: ['puddles of rainwater', 'new plants growing'] },
+  { s: 'The pond has many nocturnal animals, such as owls and bats, that wake up when the sun goes down.', w: 'nocturnal', clue: 'such as owls and bats, that wake up when the sun goes down', type: 'example', m: 'awake and active at night', x: ['living underwater', 'very noisy'] }
+];
+var TYPES = { definition: 'Definition', synonym: 'Synonym', antonym: 'Antonym', example: 'Example' };
+var TYPE_DEF = { definition: 'the sentence explains what the word means', synonym: 'a word nearby means the same thing', antonym: 'a word nearby means the opposite', example: 'the sentence gives examples of it' };
+function pool(){ return ITEMS.filter(function(it){ return level === 1 || it.type === 'definition' || it.type === 'synonym'; }); }
+function types(){ return level === 1 ? ['definition', 'synonym', 'antonym', 'example'] : ['definition', 'synonym']; }
+function makeDeck(){
+  var p = pool(), by = {}, out = [];
+  p.forEach(function(it){ (by[it.type] = by[it.type] || []).push(it); });
+  Object.keys(by).forEach(function(k){ by[k] = shuffle(by[k]); });
+  var ks = types(), i = 0;
+  while (out.length < ROUNDS) { var k = ks[i % ks.length]; if (by[k].length) out.push(by[k].shift()); i++; if (i > 100) break; }
+  return shuffle(out);
+}
+
+/* Words in the sentence: mark the target word and the clue words */
+function tokens(it){
+  var clueParts = it.clue.split(' ... ');
+  var lower = it.s, marks = [];
+  clueParts.forEach(function(cp){ var at = lower.indexOf(cp); if (at !== -1) marks.push([at, at + cp.length]); });
+  var tw = lower.indexOf(it.w);
+  var out = [], re = /\S+/g, m;
+  while ((m = re.exec(lower))) {
+    var st = m.index, en = st + m[0].length;
+    var isClue = marks.some(function(r){ return st >= r[0] && en <= r[1] + 1; });
+    out.push({ t: m[0], tw: st <= tw && en >= tw + it.w.length, clue: isClue });
+  }
+  return out;
+}
+function sentHtml(it, showClue){
+  return tokens(it).map(function(k){
+    var cls = k.tw ? 'tw' : (showClue && k.clue ? 'cl' : '');
+    return cls ? '<span class="' + cls + '">' + k.t + '</span>' : k.t;
+  }).join(' ');
+}
+
+/* ---------- What does it mean ---------- */
+var ROUNDS = 8, deck = [], round = 0, score = 0, cur = null, step = 0, firstTry = true, busy = false;
+function startMean(){ lastMode = 'mean'; deck = makeDeck(); round = 0; score = 0; showOnly('meanScreen'); nextMean(); }
+function nextMean(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 7 ? 'Word detective!' : score >= 5 ? 'Great sleuthing!' : 'Keep looking for clues!', 'You solved ' + score + ' of ' + ROUNDS + ' words with no misses.', score >= 7 ? 3 : score >= 5 ? 2 : 1); return; }
+  cur = deck[round - 1]; step = 0; firstTry = true;
+  $('mRound').textContent = 'Word ' + round + ' of ' + ROUNDS;
+  $('mScore').textContent = 'First try ' + score;
+  $('mSent').innerHTML = sentHtml(cur, false);
+  stepMean();
+}
+function stepMean(){
+  busy = false;
+  hideFact('mFact');
+  $('mStep').textContent = 'Step ' + (step + 1) + ' of 2';
+  if (step === 0) {
+    $('mPrompt').innerHTML = 'What does <b>' + cur.w + '</b> mean?';
+    answerButtons('mAnswers', shuffle([cur.m].concat(cur.x)).map(function(o){ return { key: o, label: o }; }), pickMean);
+    $('mAnswers').className = 'mc';
+    $('srStatus').textContent = cur.s + ' What does ' + cur.w + ' mean?';
+  } else {
+    $('mPrompt').textContent = 'What kind of clue helped you?';
+    $('mAnswers').className = 'types answers';
+    answerButtons('mAnswers', types().map(function(t){ return { key: t, html: TYPES[t] + '<small>' + TYPE_DEF[t] + '</small>', aria: TYPES[t] + ': ' + TYPE_DEF[t] }; }), pickMean);
+    $('srStatus').textContent = 'What kind of clue helped? The clue words are: ' + cur.clue.replace(' ... ', ' and ');
+  }
+}
+function pickMean(btn, o){
+  if (busy) return;
+  var right = step === 0 ? cur.m : cur.type;
+  if (o === right) {
+    busy = true;
+    markRight('mAnswers', btn);
+    if (step === 0) {
+      $('mSent').innerHTML = sentHtml(cur, true);
+      setFact('mFact', '"' + cur.w.charAt(0).toUpperCase() + cur.w.slice(1) + '" means ' + cur.m + '. The blue words are the clue.');
+      sndGood(); $('srStatus').textContent = 'Correct! ' + cur.w + ' means ' + cur.m + '.';
+      step = 1;
+      timer = setTimeout(stepMean, 2200);
+    } else {
+      if (firstTry) score++;
+      $('mScore').textContent = 'First try ' + score;
+      setFact('mFact', TYPES[cur.type] + ' clue: ' + TYPE_DEF[cur.type] + '.');
+      sndGood(); $('srStatus').textContent = 'Correct! ' + TYPES[cur.type] + ' clue.';
+      timer = setTimeout(nextMean, 2600);
+    }
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = step === 0 ? 'Read the words around ' + cur.w + '. Which meaning fits the whole sentence?' :
+      'Look at the blue clue words. Do they explain the word, mean the same, mean the opposite, or give examples?';
+    setFact('mFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Find the clue ---------- */
+var fFirst = true;
+function startFind(){ lastMode = 'find'; deck = makeDeck(); round = 0; score = 0; showOnly('findScreen'); nextFind(); }
+function nextFind(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 7 ? 'Word detective!' : score >= 5 ? 'Great sleuthing!' : 'Keep looking for clues!', 'You found ' + score + ' of ' + ROUNDS + ' clues on the first try.', score >= 7 ? 3 : score >= 5 ? 2 : 1); return; }
+  busy = false; fFirst = true; cur = deck[round - 1];
+  $('fRound').textContent = 'Word ' + round + ' of ' + ROUNDS;
+  $('fScore').textContent = 'First try ' + score;
+  $('fPrompt').innerHTML = 'Tap a clue word that helps you know what <b>' + cur.w + '</b> means';
+  hideFact('fFact');
+  var box = $('fSent'); box.innerHTML = '';
+  tokens(cur).forEach(function(k, i){
+    if (k.tw) { var sp = document.createElement('span'); sp.className = 'tw'; sp.textContent = k.t; box.appendChild(sp); }
+    else { var b = document.createElement('button'); b.className = 'wd pickable'; b.textContent = k.t; b.onclick = function(){ tapWord(b, k); }; box.appendChild(b); }
+    box.appendChild(document.createTextNode(' '));
+  });
+  $('srStatus').textContent = cur.s + ' Which words are clues to the meaning of ' + cur.w + '?';
+}
+function tapWord(b, k){
+  if (busy) return;
+  /* a small helper word inside the clue (like "and") still counts, since it is part of the clue */
+  if (k.clue) {
+    busy = true; if (fFirst) score++;
+    $('fScore').textContent = 'First try ' + score;
+    $('fSent').innerHTML = sentHtml(cur, true);
+    setFact('fFact', 'Good detective work! The blue words are a ' + TYPES[cur.type].toLowerCase() + ' clue: ' + TYPE_DEF[cur.type] + '. So ' + cur.w + ' means ' + cur.m + '.');
+    sndGood(); $('srStatus').textContent = 'Correct! ' + cur.w + ' means ' + cur.m + '.';
+    timer = setTimeout(nextFind, 3600);
+  } else {
+    fFirst = false;
+    b.classList.add('no', 'shake'); b.disabled = true;
+    var h = 'That word does not tell us much about ' + cur.w + '. Look for words that explain it, mean the same, mean the opposite, or give examples.';
+    setFact('fFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+$('startArt').innerHTML = '<svg viewBox="0 0 300 80" aria-hidden="true"><rect x="4" y="18" width="292" height="44" rx="14" fill="#fff" stroke="#DCE8E4" stroke-width="2"/><rect x="18" y="28" width="74" height="24" rx="6" fill="#FFF3C8"/><text x="55" y="46" font-family="Baloo 2,sans-serif" font-weight="700" font-size="17" fill="#8A3B00" text-anchor="middle">famished</text><rect x="148" y="28" width="132" height="24" rx="6" fill="#E6F0FA"/><text x="214" y="46" font-family="Baloo 2,sans-serif" font-weight="700" font-size="17" fill="#2B6CB0" text-anchor="middle">or very hungry</text><circle cx="120" cy="40" r="11" fill="none" stroke="#1F6E68" stroke-width="3.5"/><path d="M128 48 L138 58" stroke="#1F6E68" stroke-width="4" stroke-linecap="round"/></svg>';
+</script>
+</body>
+</html>

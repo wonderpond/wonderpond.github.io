@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond town council - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Sort rules and laws, match leaders and jobs to the legislative, executive, and judicial branches at the local, state, and national levels, and count votes to see when the majority wins. A free civics game for grades 2 to 5 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.case{background:#fff;border-radius:24px;padding:16px 22px;max-width:640px;margin:0 auto 14px;box-shadow:0 8px 0 rgba(18,64,58,.15)}
+.case .who{font-family:"Baloo 2",sans-serif;font-weight:700;color:#9B4D8E;font-size:1rem}
+.case .what{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.4rem,3.6vw,2rem);color:#12403A;line-height:1.2}
+.ans.br{min-width:180px;padding:10px 14px}
+.ans.br svg{display:block;width:70px;height:52px;margin:0 auto 2px}
+.vote{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:0 auto 12px}
+.vbox{background:#fff;border-radius:20px;padding:10px 14px;min-width:200px;box-shadow:0 6px 0 rgba(18,64,58,.15)}
+.vbox b{display:block;font-family:"Baloo 2",sans-serif;font-size:1.15rem;color:#0F5A50}
+.vbox .tally{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-top:6px;max-width:220px}
+.vbox .tally i{width:16px;height:16px;border-radius:50%;background:#4FB06A;display:block}
+.vbox.win{box-shadow:0 0 0 4px #F5C84C,0 6px 0 rgba(18,64,58,.15)}
+.vbox .n{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.4rem;color:#2E8540}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:230px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond town council</h1>
+      <p class="sub">Who makes the rules in Pond town? Help the council sort rules and laws, learn the three branches of government, and count the votes.</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="games">
+        <button class="game-btn" onclick="startRules()"><span id="artRules"></span>Rule or law?<small>grades 2 and 3</small></button>
+        <button class="game-btn" onclick="startBranch()"><span id="artBranch"></span>Three branches<small>grades 3 to 5</small></button>
+        <button class="game-btn" onclick="startVote()"><span id="artVote"></span>Town vote<small>grades 2 to 5</small></button>
+      </div>
+      <p class="note">Rule or law: decide whether each one is a rule made by a family, school, or group, or a law made by the government that everyone must follow. Three branches: match each job and leader to the legislative, executive, or judicial branch. Town vote: read the vote results and decide what happens when the majority wins.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="rulesScreen">
+    <div class="hud"><span class="chip" id="rRound">Card 1 of 10</span><span class="chip" id="rScore">First try 0</span></div>
+    <p class="prompt">Is it a rule or a law?</p>
+    <div class="case" id="rCase"></div>
+    <div class="answers" id="rAnswers" role="group" aria-label="Rule or law"></div>
+    <p class="fact hidden" id="rFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="branchScreen">
+    <div class="hud"><span class="chip" id="bRound">Card 1 of 10</span><span class="chip" id="bScore">First try 0</span></div>
+    <p class="prompt">Which branch of government is it?</p>
+    <div class="case" id="bCase"></div>
+    <div class="answers" id="bAnswers" role="group" aria-label="Branches"></div>
+    <p class="fact hidden" id="bFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="voteScreen">
+    <div class="hud"><span class="chip" id="vRound">Vote 1 of 6</span><span class="chip" id="vScore">First try 0</span></div>
+    <p class="prompt" id="vPrompt">The council voted. Which idea wins?</p>
+    <div class="case" id="vCase"></div>
+    <div class="vote" id="vBoxes" aria-hidden="true"></div>
+    <div class="answers" id="vAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="vFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'rules';
+function playAgain(){ ({ rules: startRules, branch: startBranch, vote: startVote })[lastMode](); }
+
+/* ---------- Rule or law ---------- */
+var RULES = [
+  { t: 'Raise your hand before you talk in class.', who: 'Made by: your school', k: 'rule', why: 'A teacher or school made this rule. It only applies in that classroom or school.' },
+  { t: 'Make your bed every morning.', who: 'Made by: your family', k: 'rule', why: 'Families make their own rules. Other families might have different ones.' },
+  { t: 'Each player gets three tries.', who: 'Made by: the game club', k: 'rule', why: 'This is a rule for a game. It only applies to people playing it.' },
+  { t: 'No running by the pool.', who: 'Made by: the swim club', k: 'rule', why: 'The swim club made this rule to keep swimmers safe. It applies at that pool.' },
+  { t: 'Walk quietly in the hallway.', who: 'Made by: your school', k: 'rule', why: 'A school rule keeps the school safe and calm. It applies at that school.' },
+  { t: 'Be home before dinner.', who: 'Made by: your family', k: 'rule', why: 'This is a family rule. Each family can choose its own.' },
+  { t: 'Stop the car at a red light.', who: 'Made by: the state government', k: 'law', why: 'Traffic laws are made by the government, and every driver must follow them.' },
+  { t: 'Children must go to school.', who: 'Made by: the state government', k: 'law', why: 'This is a law. It applies to every family in the state.' },
+  { t: 'Wear a seat belt in the car.', who: 'Made by: the state government', k: 'law', why: 'Seat belt laws are made by the government to protect everyone.' },
+  { t: 'Do not throw trash on the ground in the park.', who: 'Made by: the town council', k: 'law', why: 'The town council made this law for everyone who visits the park. Breaking it can mean a fine.' },
+  { t: 'Dogs must be on a leash in town.', who: 'Made by: the town council', k: 'law', why: 'This town law applies to every dog owner in town.' },
+  { t: 'Stores cannot sell spoiled food.', who: 'Made by: the national government', k: 'law', why: 'Food safety laws protect people all across the country.' }
+];
+var ROUNDS = 10, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false;
+function startRules(){
+  lastMode = 'rules';
+  deck = shuffle(shuffle(RULES.filter(function(r){ return r.k === 'rule'; })).slice(0, 5).concat(shuffle(RULES.filter(function(r){ return r.k === 'law'; })).slice(0, 5)));
+  round = 0; score = 0; showOnly('rulesScreen'); nextRule();
+}
+function nextRule(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 9 ? 'Super citizen!' : score >= 7 ? 'Great thinking!' : 'Keep learning!', 'You sorted ' + score + ' of ' + ROUNDS + ' on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('rRound').textContent = 'Card ' + round + ' of ' + ROUNDS;
+  $('rScore').textContent = 'First try ' + score;
+  $('rCase').innerHTML = '<div class="what">"' + cur.t + '"</div><div class="who">' + cur.who + '</div>';
+  hideFact('rFact');
+  answerButtons('rAnswers', [
+    { key: 'rule', html: 'Rule<small>made by a family, school, or group</small>' },
+    { key: 'law', html: 'Law<small>made by the government, for everyone</small>' }
+  ], pickRule);
+  $('srStatus').textContent = cur.t + ' ' + cur.who + '. Is it a rule or a law?';
+}
+function pickRule(btn, k){
+  if (busy) return;
+  if (k === cur.k) {
+    busy = true; if (firstTry) score++;
+    $('rScore').textContent = 'First try ' + score;
+    markRight('rAnswers', btn);
+    setFact('rFact', 'Yes, a ' + k + '. ' + cur.why);
+    sndGood(); $('srStatus').textContent = 'Correct! ' + cur.why;
+    timer = setTimeout(nextRule, 3000);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = 'Look at who made it. Laws are made by the government (town, state, or country). Rules are made by families, schools, and groups.';
+    setFact('rFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Three branches ---------- */
+var BR = {
+  leg: { name: 'Legislative', job: 'makes the laws', icon: '<rect x="10" y="20" width="50" height="30" rx="4" fill="#E6F0FA" stroke="#2B6CB0" stroke-width="3"/><path d="M18 30 H52 M18 38 H44" stroke="#2B6CB0" stroke-width="3" stroke-linecap="round"/><path d="M50 4 L60 24" stroke="#C99A17" stroke-width="4" stroke-linecap="round"/>' },
+  exe: { name: 'Executive', job: 'carries out the laws', icon: '<circle cx="35" cy="18" r="10" fill="#F6C9A2"/><path d="M18 50 Q18 30 35 30 Q52 30 52 50Z" fill="#2E8540"/><path d="M28 34 L35 44 L42 34" fill="#fff"/>' },
+  jud: { name: 'Judicial', job: 'decides what laws mean and if they were broken', icon: '<path d="M35 6 V46 M15 14 H55" stroke="#9B4D8E" stroke-width="4" stroke-linecap="round"/><path d="M15 14 L7 30 H23Z M55 14 L47 30 H63Z" fill="#F4E8F2" stroke="#9B4D8E" stroke-width="2.5"/><rect x="24" y="44" width="22" height="6" rx="2" fill="#9B4D8E"/>' }
+};
+var BCARDS = [
+  { t: 'Congress', lv: 'National', k: 'leg', why: 'Congress writes and votes on laws for the whole country.' },
+  { t: 'The President', lv: 'National', k: 'exe', why: 'The President leads the executive branch and makes sure national laws are carried out.' },
+  { t: 'The Supreme Court', lv: 'National', k: 'jud', why: 'The Supreme Court decides what laws mean and whether they follow the Constitution.' },
+  { t: 'The state legislature', lv: 'State', k: 'leg', why: 'A state legislature makes laws for its state.' },
+  { t: 'The governor', lv: 'State', k: 'exe', why: 'The governor leads the state and makes sure state laws are carried out.' },
+  { t: 'State courts and judges', lv: 'State', k: 'jud', why: 'State courts decide cases about state laws.' },
+  { t: 'The town council', lv: 'Local', k: 'leg', why: 'The town council votes on local laws, like park rules and speed limits.' },
+  { t: 'The mayor', lv: 'Local', k: 'exe', why: 'The mayor leads the town and makes sure town laws are carried out.' },
+  { t: 'A local judge', lv: 'Local', k: 'jud', why: 'A local judge decides cases in the town court.' },
+  { t: 'Voting on a new law about bike lanes', lv: 'Job', k: 'leg', why: 'Voting to make a new law is the job of the legislative branch.' },
+  { t: 'Deciding if someone broke a law', lv: 'Job', k: 'jud', why: 'Courts and judges decide whether a law was broken.' },
+  { t: 'Making sure the new park gets built', lv: 'Job', k: 'exe', why: 'Carrying out a plan the council passed is the executive branch\'s job.' },
+  { t: 'Signing a bill to make it a law', lv: 'Job', k: 'exe', why: 'Presidents, governors, and mayors sign bills to turn them into laws. That is an executive job.' },
+  { t: 'Writing a new bill', lv: 'Job', k: 'leg', why: 'Lawmakers in the legislative branch write bills, which can become laws.' }
+];
+function startBranch(){
+  lastMode = 'branch';
+  var by = { leg: [], exe: [], jud: [] };
+  BCARDS.forEach(function(c){ by[c.k].push(c); });
+  deck = shuffle(shuffle(by.leg).slice(0, 4).concat(shuffle(by.exe).slice(0, 3), shuffle(by.jud).slice(0, 3)));
+  round = 0; score = 0; showOnly('branchScreen'); nextBranch();
+}
+function nextBranch(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 9 ? 'Super citizen!' : score >= 7 ? 'Great thinking!' : 'Keep learning!', 'You matched ' + score + ' of ' + ROUNDS + ' on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('bRound').textContent = 'Card ' + round + ' of ' + ROUNDS;
+  $('bScore').textContent = 'First try ' + score;
+  $('bCase').innerHTML = '<div class="who">' + (cur.lv === 'Job' ? 'A government job' : cur.lv + ' government') + '</div><div class="what">' + cur.t + '</div>';
+  hideFact('bFact');
+  answerButtons('bAnswers', ['leg', 'exe', 'jud'].map(function(k){
+    return { key: k, cls: 'br', html: '<svg viewBox="0 0 70 52" aria-hidden="true">' + BR[k].icon + '</svg>' + BR[k].name + '<small>' + BR[k].job + '</small>', aria: BR[k].name + ': ' + BR[k].job };
+  }), pickBranch);
+  $('srStatus').textContent = cur.t + '. Which branch?';
+}
+function pickBranch(btn, k){
+  if (busy) return;
+  if (k === cur.k) {
+    busy = true; if (firstTry) score++;
+    $('bScore').textContent = 'First try ' + score;
+    markRight('bAnswers', btn);
+    setFact('bFact', BR[k].name + '! ' + cur.why);
+    sndGood(); $('srStatus').textContent = 'Correct! ' + cur.why;
+    timer = setTimeout(nextBranch, 3000);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = 'Think about the job. Legislative makes laws, executive carries them out, judicial decides what they mean.';
+    setFact('bFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Town vote ---------- */
+var IDEAS = [
+  ['Build a new playground', 'Plant a community garden', 'Fix the old bridge'],
+  ['Hold the festival in June', 'Hold the festival in September'],
+  ['Add bike lanes on Lily Lane', 'Add more benches in the park', 'Build a frog-crossing bridge'],
+  ['Make the pond a no-fishing zone', 'Allow fishing on weekends'],
+  ['Name the new park "Lily Park"', 'Name it "Hop Hill Park"', 'Name it "Reed Meadow"'],
+  ['Buy a new fire truck', 'Fix the library roof']
+];
+var V_ROUNDS = 6, votes = null, vq = null;
+function makeVote(ideas, i){
+  var total = rand(9, 21), n = ideas.length, counts, g = 0;
+  do {
+    counts = [];
+    var left = total;
+    for (var k = 0; k < n - 1; k++) { var c = rand(1, left - (n - 1 - k)); counts.push(c); left -= c; }
+    counts.push(left);
+    var mx = Math.max.apply(null, counts);
+  } while (counts.filter(function(c){ return c === mx; }).length > 1 && g++ < 200);
+  var types = ['win', 'more', i % 3 === 2 ? 'majority' : 'total'];
+  return { ideas: ideas, counts: counts, total: total, t: types[i % 3] };
+}
+function startVote(){
+  lastMode = 'vote';
+  deck = shuffle(IDEAS).map(makeVote);
+  round = 0; score = 0; showOnly('voteScreen'); nextVote();
+}
+function nextVote(){
+  round++;
+  if (round > V_ROUNDS) { showEnd(score >= 5 ? 'Super citizen!' : score >= 4 ? 'Great counting!' : 'Keep learning!', 'You answered ' + score + ' of ' + V_ROUNDS + ' on the first try.', score >= 5 ? 3 : score >= 4 ? 2 : 1); return; }
+  busy = false; firstTry = true; vq = deck[round - 1];
+  var mx = Math.max.apply(null, vq.counts), wi = vq.counts.indexOf(mx);
+  $('vRound').textContent = 'Vote ' + round + ' of ' + V_ROUNDS;
+  $('vScore').textContent = 'First try ' + score;
+  $('vCase').innerHTML = '<div class="who">The Pond town council asked ' + vq.total + ' frogs to vote</div><div class="what" style="font-size:1.3rem">Each frog gets one vote.</div>';
+  drawBoxes(false);
+  hideFact('vFact');
+  var opts;
+  if (vq.t === 'win') { vq.text = 'Which idea wins the vote?'; vq.answer = vq.ideas[wi]; opts = vq.ideas.slice(); vq.why = vq.ideas[wi] + ' got the most votes, ' + mx + '. In a vote, the choice with the most votes wins.'; }
+  else if (vq.t === 'more') {
+    var sorted = vq.counts.slice().sort(function(a, b){ return b - a; }), d = sorted[0] - sorted[1];
+    var second = vq.ideas[vq.counts.indexOf(sorted[1])];
+    vq.text = 'How many more votes did the winner get than "' + second + '"?';
+    vq.answer = String(d); opts = shuffle([d, d + 1, sorted[0] + sorted[1]].filter(function(x, i, a){ return a.indexOf(x) === i; })).map(String);
+    if (opts.length < 3) opts.push(String(d + 2));
+    vq.why = sorted[0] + ' \u2212 ' + sorted[1] + ' = ' + d + ' more votes.';
+  } else if (vq.t === 'total') {
+    vq.text = 'How many frogs voted in all?'; vq.answer = String(vq.total);
+    opts = shuffle([vq.total, vq.total - 1, mx]).map(String).filter(function(x, i, a){ return a.indexOf(x) === i; });
+    while (opts.length < 3) opts.push(String(vq.total + opts.length));
+    vq.why = vq.counts.join(' + ') + ' = ' + vq.total + ' votes in all.';
+  } else {
+    vq.text = 'A majority means MORE than half of the votes. Did "' + vq.ideas[wi] + '" win a majority?';
+    var maj = mx * 2 > vq.total;
+    vq.answer = maj ? 'Yes' : 'No'; opts = ['Yes', 'No'];
+    vq.why = 'Half of ' + vq.total + ' is ' + (vq.total / 2) + '. ' + (maj ? mx + ' is more than half, so it is a majority.' : mx + ' is not more than half. It got the most votes, but not a majority. Some towns would vote again!');
+  }
+  $('vPrompt').textContent = vq.text;
+  answerButtons('vAnswers', opts.map(function(o){ return { key: o, label: o }; }), pickVote);
+  $('srStatus').textContent = 'Votes: ' + vq.ideas.map(function(x, i){ return x + ', ' + vq.counts[i]; }).join('; ') + '. ' + vq.text;
+}
+function drawBoxes(show){
+  var mx = Math.max.apply(null, vq.counts);
+  $('vBoxes').innerHTML = vq.ideas.map(function(x, i){
+    var dots = ''; for (var k = 0; k < vq.counts[i]; k++) dots += '<i></i>';
+    return '<div class="vbox' + (show && vq.counts[i] === mx ? ' win' : '') + '"><b>' + x + '</b><div class="n">' + vq.counts[i] + ' votes</div><div class="tally">' + dots + '</div></div>';
+  }).join('');
+}
+function pickVote(btn, o){
+  if (busy) return;
+  if (o === vq.answer) {
+    busy = true; if (firstTry) score++;
+    $('vScore').textContent = 'First try ' + score;
+    markRight('vAnswers', btn); drawBoxes(true);
+    setFact('vFact', vq.why); sndGood(); $('srStatus').textContent = 'Correct! ' + vq.why;
+    timer = setTimeout(nextVote, 3400);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = vq.t === 'win' ? 'Find the idea with the biggest number of votes.' : vq.t === 'more' ? 'Subtract the smaller number from the bigger one.' : vq.t === 'total' ? 'Add up all the votes.' : 'Find half of all the votes. Is the winner more than that?';
+    setFact('vFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* Art */
+var HALL = '<path d="M20 50 L60 26 L100 50Z" fill="#C1693C"/><rect x="26" y="50" width="68" height="40" fill="#F4E3C3"/><rect x="34" y="56" width="8" height="30" fill="#fff"/><rect x="50" y="56" width="8" height="30" fill="#fff"/><rect x="66" y="56" width="8" height="30" fill="#fff"/><rect x="82" y="56" width="6" height="30" fill="#fff"/><rect x="20" y="88" width="80" height="6" fill="#B0864F"/>';
+$('startArt').innerHTML = '<svg viewBox="0 0 230 100" aria-hidden="true"><g transform="translate(55 0)">' + HALL + '</g><g transform="translate(16 54) scale(.5)">' + BR.exe.icon + '</g><g transform="translate(180 54) scale(.5)">' + BR.jud.icon + '</g></svg>';
+$('artRules').innerHTML = '<svg viewBox="0 0 120 66" aria-hidden="true"><rect x="24" y="8" width="72" height="50" rx="6" fill="#fff" stroke="#2B6CB0" stroke-width="3"/><path d="M34 22 H86 M34 32 H80 M34 42 H70" stroke="#9EC9D9" stroke-width="4" stroke-linecap="round"/></svg>';
+$('artBranch').innerHTML = '<svg viewBox="0 0 120 66" aria-hidden="true"><g transform="translate(0 6) scale(.8)">' + BR.leg.icon + '</g><g transform="translate(36 6) scale(.8)">' + BR.exe.icon + '</g><g transform="translate(72 6) scale(.8)">' + BR.jud.icon + '</g></svg>';
+$('artVote').innerHTML = '<svg viewBox="0 0 120 66" aria-hidden="true"><rect x="34" y="24" width="52" height="38" rx="4" fill="#1F6E68"/><rect x="48" y="20" width="24" height="6" fill="#0F5A50"/><path d="M52 4 H70 V22 H52Z" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><path d="M55 12 l4 4 l8 -8" stroke="#2E8540" stroke-width="2.5" fill="none"/></svg>';
+</script>
+</body>
+</html>

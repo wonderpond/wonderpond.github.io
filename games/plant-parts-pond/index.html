@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant parts pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Find the roots, stem, leaves, flower, fruit, and seeds of a plant and learn what each part does, then discover what plants need to grow: sunlight, water, air, and soil. A free plant science game for grades K to 2 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.plantbox{background:#fff;border-radius:24px;padding:8px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%}
+.plantbox svg{display:block;height:min(52vh,420px);width:auto;max-width:92vw}
+.part{cursor:pointer}
+.part:hover{filter:drop-shadow(0 0 5px #F5C84C)}
+.part.hl{filter:drop-shadow(0 0 7px #F5C84C) drop-shadow(0 0 3px #F5C84C)}
+.part.right{filter:drop-shadow(0 0 8px #4FB06A) drop-shadow(0 0 3px #4FB06A)}
+.part.wrong{filter:drop-shadow(0 0 8px #E24B4A)}
+.plbl{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:20px;fill:#12403A;paint-order:stroke;stroke:#fff;stroke-width:5px;pointer-events:none}
+.pots{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.pot{background:#fff;border-radius:20px;padding:6px 10px 8px;width:150px;box-shadow:0 5px 0 rgba(18,64,58,.15)}
+.pot svg{display:block;width:100%;height:auto}
+.pot b{font-family:"Baloo 2",sans-serif;font-size:.95rem;color:#0F5A50;display:block;line-height:1.15}
+.ans.pl{min-width:150px;padding:6px 12px}
+.ans.pl svg{display:block;width:90px;height:90px;margin:0 auto}
+.say{border:none;cursor:pointer;background:#E6F0FA;color:#2B6CB0;border-radius:999px;padding:4px 14px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1rem;margin-left:8px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:150px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Plant parts pond</h1>
+      <p class="sub">Every part of a plant has a job. And every plant needs a few things to grow big and strong!</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startParts()">Plant parts</button>
+        <button class="big-btn alt" onclick="startNeeds()">What plants need</button>
+      </div>
+      <p class="note">Plant parts: tap the part of the plant that is named, and learn what job it does. What plants need: see what happens when a plant is missing sunlight, water, air, or soil, and predict which plant will grow best. Tap Hear it to have questions read aloud. Grades K to 2.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="partsScreen">
+    <div class="hud"><span class="chip" id="pRound">Part 1 of 10</span><span class="chip" id="pScore">First try 0</span></div>
+    <p class="prompt"><span id="pPrompt">Tap the roots</span><button class="say" onclick="speak($('pPrompt').textContent, true)">Hear it</button></p>
+    <div><div class="plantbox" id="plant"></div></div>
+    <p class="fact hidden" id="pFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="needsScreen">
+    <div class="hud"><span class="chip" id="nRound">Question 1 of 8</span><span class="chip" id="nScore">First try 0</span></div>
+    <p class="prompt"><span id="nPrompt">What happened?</span><button class="say" onclick="speak($('nPrompt').textContent, true)">Hear it</button></p>
+    <div class="pots" id="pots"></div>
+    <div class="answers" id="nAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="nFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var lastMode = 'parts', level = 0;
+function playAgain(){ if (lastMode === 'parts') startParts(); else startNeeds(); }
+var enVoice = null;
+function pickVoice(){ if (!window.speechSynthesis) return; var vs = speechSynthesis.getVoices(), us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); }); enVoice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava/i.test(v.name); })[0] || us[0] || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(t, force){ if (!window.speechSynthesis || (!soundOn && !force)) return; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; if (enVoice) u.voice = enVoice; u.rate = .85; speechSynthesis.speak(u); } catch(e) {} }
+
+var PARTS = {
+  roots: { name: 'Roots', job: 'drink up water from the soil and hold the plant in the ground.', at: [200, 455] },
+  stem: { name: 'Stem', job: 'holds the plant up and carries water from the roots to the leaves.', at: [228, 300] },
+  leaf: { name: 'Leaf', job: 'uses sunlight, air, and water to make food for the plant.', at: [310, 250] },
+  flower: { name: 'Flower', job: 'makes seeds. Bees visit flowers and help them make seeds.', at: [200, 70] },
+  fruit: { name: 'Fruit', job: 'grows from the flower and keeps the seeds safe inside.', at: [100, 200] },
+  seed: { name: 'Seed', job: 'can grow into a brand new plant.', at: [330, 380] }
+};
+function plantSvg(st){
+  st = st || {};
+  function c(id){ return 'part' + (st.hl === id ? ' hl' : '') + (st.right === id ? ' right' : '') + (st.wrong === id ? ' wrong' : ''); }
+  var s = '<svg viewBox="0 0 400 500" aria-hidden="true"><rect width="400" height="500" rx="16" fill="#E6F4FB"/><rect y="340" width="400" height="160" fill="#8A6A45"/><path d="M0 340 H400" stroke="#6E5236" stroke-width="4"/>';
+  s += '<g class="' + c('roots') + '" data-id="roots"><path d="M200 340 Q196 380 170 420 M200 350 Q206 392 236 440 M200 360 Q190 410 196 470 M186 380 Q160 390 140 400 M214 392 Q240 400 262 420" stroke="#E8D5B0" stroke-width="7" fill="none" stroke-linecap="round"/><rect x="130" y="340" width="140" height="140" fill="transparent"/></g>';
+  s += '<g class="' + c('stem') + '" data-id="stem"><path d="M200 340 Q206 260 196 180 Q192 130 200 100" stroke="#3F9457" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M200 340 Q206 260 196 180 Q192 130 200 100" stroke="transparent" stroke-width="34" fill="none"/></g>';
+  s += '<g class="' + c('leaf') + '" data-id="leaf"><path d="M202 250 Q260 200 330 230 Q280 290 202 250Z" fill="#5DB35A"/><path d="M202 250 Q270 236 320 232" stroke="#3F9457" stroke-width="3" fill="none"/><path d="M198 290 Q150 250 92 276 Q140 326 198 290Z" fill="#5DB35A"/><path d="M198 290 Q140 280 100 278" stroke="#3F9457" stroke-width="3" fill="none"/></g>';
+  s += '<g class="' + c('fruit') + '" data-id="fruit"><path d="M196 180 Q150 170 128 186" stroke="#3F9457" stroke-width="6" fill="none"/><circle cx="110" cy="200" r="28" fill="#E24B4A"/><path d="M104 176 Q110 168 118 172" stroke="#3F9457" stroke-width="4" fill="none"/><ellipse cx="100" cy="192" rx="5" ry="9" fill="#fff" opacity=".35"/></g>';
+  s += '<g class="' + c('flower') + '" data-id="flower"><g fill="#F4A0A0"><circle cx="200" cy="56" r="18"/><circle cx="174" cy="76" r="18"/><circle cx="226" cy="76" r="18"/><circle cx="184" cy="104" r="18"/><circle cx="216" cy="104" r="18"/></g><circle cx="200" cy="84" r="15" fill="#F5C84C"/></g>';
+  s += '<g class="' + c('seed') + '" data-id="seed"><ellipse cx="330" cy="380" rx="14" ry="9" fill="#C9844A" stroke="#8A5530" stroke-width="2"/><ellipse cx="358" cy="400" rx="12" ry="8" fill="#C9844A" stroke="#8A5530" stroke-width="2"/><rect x="300" y="360" width="80" height="60" fill="transparent"/></g>';
+  if (st.labels) st.labels.forEach(function(id){ var a = PARTS[id].at; s += '<text class="plbl" x="' + a[0] + '" y="' + a[1] + '" text-anchor="middle">' + PARTS[id].name + '</text>'; });
+  return s + '</svg>';
+}
+
+/* ---------- Plant parts ---------- */
+var ROUNDS = 10, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false, known = [];
+function startParts(){
+  lastMode = 'parts';
+  var ids = Object.keys(PARTS), d = [];
+  while (d.length < ROUNDS) d = d.concat(shuffle(ids));
+  for (var i = 1; i < d.length; i++) if (d[i] === d[i - 1]) { var t = d[i]; d[i] = d[(i + 1) % d.length]; d[(i + 1) % d.length] = t; }
+  deck = d.slice(0, ROUNDS); round = 0; score = 0; known = [];
+  showOnly('partsScreen'); nextPart();
+}
+function bindPlant(){ $('plant').querySelectorAll('.part').forEach(function(g){ g.addEventListener('click', function(){ tapPart(g.dataset.id); }); }); }
+function nextPart(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 9 ? 'Plant expert!' : score >= 7 ? 'Great growing!' : 'Keep growing!', 'You found ' + score + ' of ' + ROUNDS + ' parts on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('pRound').textContent = 'Part ' + round + ' of ' + ROUNDS;
+  $('pScore').textContent = 'First try ' + score;
+  $('pPrompt').textContent = 'Tap the ' + (cur === 'roots' ? 'roots' : PARTS[cur].name.toLowerCase());
+  hideFact('pFact');
+  $('plant').innerHTML = plantSvg({ labels: known }); bindPlant();
+  speak($('pPrompt').textContent);
+  $('srStatus').textContent = $('pPrompt').textContent + '. The plant has roots, a stem, leaves, a flower, a fruit, and seeds.';
+}
+function tapPart(id){
+  if (busy) return;
+  if (id === cur) {
+    busy = true; if (firstTry) score++;
+    $('pScore').textContent = 'First try ' + score;
+    if (known.indexOf(id) === -1) known.push(id);
+    $('plant').innerHTML = plantSvg({ right: id, labels: known });
+    var msg = (id === 'roots' ? 'The roots ' : 'The ' + PARTS[id].name.toLowerCase() + ' ') + PARTS[id].job;
+    setFact('pFact', 'Yes! ' + msg); sndGood(); speak(msg); $('srStatus').textContent = msg;
+    timer = setTimeout(nextPart, 3600);
+  } else {
+    firstTry = false;
+    $('plant').innerHTML = plantSvg({ wrong: id, labels: known }); bindPlant();
+    var h = 'That is the ' + PARTS[id].name.toLowerCase() + '. The ' + (cur === 'roots' ? 'roots ' : PARTS[cur].name.toLowerCase() + ' ') + PARTS[cur].job;
+    setFact('pFact', h); sndBad(); $('srStatus').textContent = h;
+  }
+}
+
+/* ---------- What plants need ---------- */
+/* Small pot drawings: healthy, wilted, pale, dead, sprout in a sealed jar */
+function potSvg(kind){
+  var s = '<svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="12" fill="' + (kind === 'dark' || kind === 'closet' ? '#3A4766' : '#EAF6FB') + '"/>';
+  s += '<path d="M36 82 H84 L78 112 H42Z" fill="#C1693C"/><rect x="32" y="76" width="56" height="10" rx="3" fill="#D9824F"/>';
+  if (kind === 'healthy') s += '<path d="M60 78 V36" stroke="#3F9457" stroke-width="5"/><ellipse cx="46" cy="54" rx="14" ry="7" fill="#4FB06A" transform="rotate(-25 46 54)"/><ellipse cx="74" cy="46" rx="14" ry="7" fill="#4FB06A" transform="rotate(25 74 46)"/><circle cx="60" cy="30" r="8" fill="#F4A0A0"/><circle cx="60" cy="30" r="3.5" fill="#F5C84C"/>';
+  if (kind === 'wilted') s += '<path d="M60 78 Q60 56 70 48 Q80 44 82 56" stroke="#8FA65A" stroke-width="5" fill="none"/><ellipse cx="48" cy="66" rx="12" ry="5" fill="#B5A65A" transform="rotate(40 48 66)"/><ellipse cx="84" cy="62" rx="10" ry="5" fill="#B5A65A" transform="rotate(70 84 62)"/>';
+  if (kind === 'pale' || kind === 'dark') s += '<path d="M60 78 Q58 44 62 20" stroke="#D8DE9C" stroke-width="4" fill="none"/><ellipse cx="52" cy="40" rx="8" ry="4" fill="#E8EBA8" transform="rotate(-25 52 40)"/><ellipse cx="70" cy="32" rx="8" ry="4" fill="#E8EBA8" transform="rotate(25 70 32)"/>';
+  if (kind === 'jar') s += '<path d="M60 78 Q58 64 54 58" stroke="#8FA65A" stroke-width="4" fill="none"/><ellipse cx="50" cy="60" rx="8" ry="4" fill="#B5A65A"/><path d="M26 112 V30 Q26 16 40 16 H80 Q94 16 94 30 V112" fill="rgba(200,230,245,.35)" stroke="#9EC9D9" stroke-width="3"/><rect x="34" y="8" width="52" height="10" rx="3" fill="#9AA3A8"/>';
+  if (kind === 'nosoil') s = s.replace('<rect x="32" y="76" width="56" height="10" rx="3" fill="#D9824F"/>', '<rect x="32" y="76" width="56" height="10" rx="3" fill="#D9824F"/><circle cx="50" cy="96" r="5" fill="#9AA3A8"/><circle cx="66" cy="100" r="5" fill="#9AA3A8"/>') + '<ellipse cx="60" cy="74" rx="9" ry="6" fill="#C9844A" stroke="#8A5530" stroke-width="2"/>';
+  if (kind === 'seedonly' || kind === 'closet') s += '<ellipse cx="60" cy="76" rx="9" ry="6" fill="#C9844A" stroke="#8A5530" stroke-width="2"/>';
+  return s + '</svg>';
+}
+var NEEDS = [
+  { setup: [['closet', 'Kept in a dark closet for two weeks']], q: 'This plant was kept in a dark closet. What will it look like?', a: 'pale', opts: ['pale', 'healthy', 'wilted'],
+    names: { pale: 'Pale and weak', healthy: 'Green and strong', wilted: 'Dry and droopy' }, why: 'Plants need sunlight to make their food. Without light, the plant turns pale and weak.' },
+  { setup: [['seedonly', 'No water for two weeks']], q: 'This plant got no water for two weeks. What will happen?', a: 'wilted', opts: ['wilted', 'healthy', 'pale'],
+    names: { pale: 'Pale and stretched', healthy: 'Green and strong', wilted: 'Dry and droopy' }, why: 'Plants need water. Without it, the leaves dry out and droop.' },
+  { setup: [['jar', 'Sealed tight in a jar with no air']], q: 'This plant was sealed in a jar with no fresh air. Will it grow well?', a: 'no', opts: ['no', 'yes'],
+    names: { no: 'No, it needs air', yes: 'Yes, it will grow fine' }, why: 'Plants need air, just like us. Leaves take in air to help make food.' },
+  { setup: [['nosoil', 'Planted in rocks with no soil']], q: 'This plant was put in a pot of rocks with no soil. What will happen?', a: 'wilted', opts: ['wilted', 'healthy'],
+    names: { wilted: 'It will struggle and wilt', healthy: 'It will grow big' }, why: 'Most plants need soil. It holds the roots and gives the plant nutrients, like vitamins for plants.' },
+  { setup: [['healthy', 'Plant A: sun, water, air, soil'], ['wilted', 'Plant B: sun, air, soil, no water'], ['dark', 'Plant C: water, air, soil, no sun']], q: 'Which plant will grow the best?', a: 'A', opts: ['A', 'B', 'C'],
+    names: { A: 'Plant A', B: 'Plant B', C: 'Plant C' }, why: 'Plant A has everything it needs: sunlight, water, air, and soil.' },
+  { setup: [['healthy', 'Plant A: water every day'], ['wilted', 'Plant B: water once a month']], q: 'Which plant got the water it needs?', a: 'A', opts: ['A', 'B'],
+    names: { A: 'Plant A', B: 'Plant B' }, why: 'Plant A got water regularly, so it stayed green and strong.' },
+  { setup: [['healthy', 'A plant by a sunny window']], q: 'Which of these does a plant NOT need to grow?', a: 'toys', opts: ['toys', 'sun', 'water', 'air'],
+    names: { toys: 'Toys', sun: 'Sunlight', water: 'Water', air: 'Air' }, why: 'Plants need sunlight, water, air, and soil (or nutrients). They do not need toys!' },
+  { setup: [['healthy', 'Leaves reaching toward the light']], q: 'Why do plant leaves turn toward a sunny window?', a: 'sun', opts: ['sun', 'warm', 'see'],
+    names: { sun: 'To get more sunlight', warm: 'To stay warm', see: 'To look outside' }, why: 'Leaves turn toward the light to catch as much sunlight as they can for making food.' }
+];
+var N_ROUNDS = 8, nq = null;
+function startNeeds(){ lastMode = 'needs'; deck = shuffle(NEEDS); round = 0; score = 0; showOnly('needsScreen'); nextNeed(); }
+function nextNeed(){
+  round++;
+  if (round > N_ROUNDS) { showEnd(score >= 7 ? 'Plant expert!' : score >= 5 ? 'Great growing!' : 'Keep growing!', 'You answered ' + score + ' of ' + N_ROUNDS + ' on the first try.', score >= 7 ? 3 : score >= 5 ? 2 : 1); return; }
+  busy = false; firstTry = true; nq = deck[round - 1];
+  $('nRound').textContent = 'Question ' + round + ' of ' + N_ROUNDS;
+  $('nScore').textContent = 'First try ' + score;
+  $('nPrompt').textContent = nq.q;
+  hideFact('nFact');
+  $('pots').innerHTML = nq.setup.map(function(p){ return '<div class="pot">' + potSvg(p[0] === 'seedonly' ? 'seedonly' : p[0]) + '<b>' + p[1] + '</b></div>'; }).join('');
+  var picOpts = nq.opts.every(function(o){ return ['pale', 'healthy', 'wilted'].indexOf(o) !== -1; });
+  answerButtons('nAnswers', shuffle(nq.opts).map(function(o){ return { key: o, cls: picOpts ? 'pl' : '', html: (picOpts ? potSvg(o) : '') + nq.names[o], aria: nq.names[o] }; }), pickNeed);
+  speak(nq.q);
+  $('srStatus').textContent = nq.setup.map(function(p){ return p[1]; }).join('. ') + '. ' + nq.q;
+}
+function pickNeed(btn, o){
+  if (busy) return;
+  if (o === nq.a) {
+    busy = true; if (firstTry) score++;
+    $('nScore').textContent = 'First try ' + score;
+    markRight('nAnswers', btn);
+    setFact('nFact', nq.why); sndGood(); speak(nq.why); $('srStatus').textContent = 'Correct! ' + nq.why;
+    timer = setTimeout(nextNeed, 4200);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = 'Think about what is missing. Plants need sunlight, water, air, and soil to grow well.';
+    setFact('nFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+function onLeave(){ if (window.speechSynthesis) speechSynthesis.cancel(); }
+$('startArt').innerHTML = plantSvg({}).replace('viewBox="0 0 400 500"', 'viewBox="40 20 340 470"');
+</script>
+</body>
+</html>

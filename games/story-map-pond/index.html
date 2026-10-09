@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Story map pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Read short pond stories and map the characters, setting, problem, and solution, then put the beginning, middle, and end in order. Stories can be read aloud. A free reading comprehension game for grades K to 3 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.story{background:#fff;border-radius:24px;padding:16px 22px;max-width:760px;margin:0 auto 12px;box-shadow:0 8px 0 rgba(18,64,58,.15);text-align:left}
+.story h3{font-family:"Baloo 2",sans-serif;color:#0F5A50;font-size:1.25rem;margin-bottom:4px}
+.story p{font-size:clamp(1.05rem,2.3vw,1.3rem);line-height:1.6}
+.say{border:none;cursor:pointer;background:#E6F0FA;color:#2B6CB0;border-radius:999px;padding:3px 12px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.95rem;margin-left:8px;vertical-align:middle}
+.smap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:760px;margin:0 auto 12px}
+.sbox{background:rgba(255,255,255,.55);border:3px dashed #fff;border-radius:16px;padding:8px;min-height:84px;text-align:left}
+.sbox b{display:block;font-family:"Baloo 2",sans-serif;font-size:1rem}
+.sbox span{font-weight:700;font-size:.92rem;line-height:1.25;display:block;margin-top:2px}
+.sbox.c b{color:#2B6CB0}.sbox.s b{color:#2E8540}.sbox.p b{color:#B83A39}.sbox.so b{color:#9B4D8E}
+.sbox.filled{border-style:solid;background:#fff}
+.sbox.now{border-color:#F5C84C;background:#FFF8DE}
+.mc{display:flex;flex-direction:column;gap:8px;align-items:center}
+.mc .ans{width:min(94vw,620px);text-align:left;font-size:clamp(1rem,2.2vw,1.2rem);border-radius:16px}
+.order{display:flex;gap:8px;justify-content:center;max-width:820px;margin:0 auto 10px}
+.oslot{flex:1;min-height:96px;border:3px dashed #fff;border-radius:16px;background:rgba(255,255,255,.5);padding:8px;font-weight:700;font-size:.95rem;text-align:left;cursor:pointer;color:#12403A}
+.oslot b{display:block;font-family:"Baloo 2",sans-serif;color:#0F5A50}
+.oslot.filled{border-style:solid;background:#fff}
+.oslot.right{border-color:#3F9457;background:#E4F5E9}
+.oslot.wrong{border-color:#E24B4A;background:#FCE3E3}
+.ocards{display:flex;flex-direction:column;gap:8px;align-items:center}
+.ocard{width:min(94vw,620px);border:none;cursor:pointer;text-align:left;background:#fff;border-radius:14px;padding:10px 14px;font-weight:700;font-size:1.05rem;color:#12403A;box-shadow:0 4px 0 rgba(18,64,58,.2)}
+.ocard:disabled{opacity:.25;cursor:default;box-shadow:none}
+@media (max-width:640px){ .smap{grid-template-columns:repeat(2,minmax(0,1fr))} .order{flex-direction:column} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:260px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Story map pond</h1>
+      <p class="sub">Every story has characters, a setting, a problem, and a solution. Read the pond stories and map them out!</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startMap()">Build the story map</button>
+        <button class="big-btn alt" onclick="startOrder()">Beginning, middle, end</button>
+      </div>
+      <p class="note">Build the story map: read a short story, then pick its character, setting, problem, and solution. Beginning, middle, end: put three parts of the story in order. Tap Read to me to hear each story. Grades K to 3.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="mapScreen">
+    <div class="hud"><span class="chip" id="mRound">Story 1 of 4</span><span class="chip" id="mScore">First try 0</span></div>
+    <div class="story" id="mStory"></div>
+    <div class="smap" id="smap"></div>
+    <p class="prompt" id="mPrompt">Who is the main character?</p>
+    <div class="mc" id="mAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="mFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="orderScreen">
+    <div class="hud"><span class="chip" id="oRound">Story 1 of 6</span><span class="chip" id="oScore">First try 0</span></div>
+    <div class="story" id="oStory"></div>
+    <p class="prompt">Put the story in order</p>
+    <div class="order" id="oslots"></div>
+    <p class="fact hidden" id="oFact" role="status"></p>
+    <div class="ocards" id="ocards" role="group" aria-label="Story parts"></div>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var lastMode = 'map', level = 0;
+function playAgain(){ if (lastMode === 'map') startMap(); else startOrder(); }
+var enVoice = null;
+function pickVoice(){ if (!window.speechSynthesis) return; var vs = speechSynthesis.getVoices(), us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); }); enVoice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava/i.test(v.name); })[0] || us[0] || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(t){ if (!window.speechSynthesis) return; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; if (enVoice) u.voice = enVoice; u.rate = .9; speechSynthesis.speak(u); } catch(e) {} }
+function onLeave(){ if (window.speechSynthesis) speechSynthesis.cancel(); }
+
+var STORIES = [
+  { title: 'The Lost Lily Pad', text: "One windy morning at the pond, Hop's favorite lily pad blew away. Hop looked everywhere, but he could not find it. Then his friend Duck swam over and pointed with her wing. The lily pad was stuck in the reeds! Duck pushed it back, and Hop hopped on with a big smile.",
+    c: ['Hop the frog', 'Finn the fish', 'Tess the turtle'], s: ['The pond on a windy morning', 'A snowy forest at night', 'A busy city street'],
+    p: ["Hop's lily pad blew away", 'Hop was too hungry to play', 'Duck could not swim'], so: ['Duck found it in the reeds and pushed it back', 'Hop bought a new lily pad', 'The wind blew it back by itself'],
+    bme: ["Hop's lily pad blew away in the wind.", 'Hop looked everywhere, and Duck pointed to the reeds.', 'Duck pushed the lily pad back, and Hop smiled.'] },
+  { title: 'The Too-Big Backpack', text: "Mia carried her new backpack to school on Monday. It was so big that it bumped into everyone in the hallway! Mia felt embarrassed. Her teacher helped her tighten the straps until it fit just right. Now Mia walks down the hall without bumping anyone.",
+    c: ['Mia', 'The bus driver', 'A puppy'], s: ['The school hallway on Monday', 'A beach in the summer', 'A farm on Saturday'],
+    p: ['Her backpack was so big it bumped into people', 'She forgot her lunch', 'She lost her shoes'], so: ['Her teacher tightened the straps', 'She bought a smaller backpack', 'She stayed home from school'],
+    bme: ['Mia brought her big new backpack to school.', 'The backpack kept bumping into everyone.', 'Her teacher tightened the straps so it fit.'] },
+  { title: "Tess's Slow Race", text: "Tess the turtle wanted to win the race around the pond. The other animals ran far ahead, and Tess felt sad. But she kept going, one slow step at a time. The rabbit got tired and stopped to nap under a tree. Tess walked right past him and crossed the finish line first!",
+    c: ['Tess the turtle', 'Mia', 'A sleepy owl'], s: ['A race around the pond', 'A classroom', 'A spaceship'],
+    p: ['Tess was slow, and the others ran far ahead', 'Tess lost her shell', 'It started to snow'], so: ['She kept going while the rabbit napped, and she won', 'She rode on the rabbit\'s back', 'She stopped the race'],
+    bme: ['Tess wanted to win the race, but the others ran far ahead.', 'The rabbit stopped to take a nap under a tree.', 'Tess passed the rabbit and won the race.'] },
+  { title: 'The Rainy Picnic', text: "Leo and his grandma packed sandwiches for a picnic at the park. Just as they sat down, dark clouds rolled in and it began to rain. Leo was disappointed. Grandma smiled and spread the blanket on the living room floor. They had an indoor picnic and watched the rain through the window.",
+    c: ['Leo and his grandma', 'Hop and Duck', 'A park ranger'], s: ['A park, and then their home', 'A school bus', 'A mountain top'],
+    p: ['It started to rain during their picnic', 'They forgot the sandwiches', 'Grandma got lost'], so: ['They had an indoor picnic on the living room floor', 'They sat in the rain anyway', 'They went to a restaurant'],
+    bme: ['Leo and Grandma packed a picnic for the park.', 'Dark clouds rolled in, and it began to rain.', 'They had an indoor picnic on the living room floor.'] },
+  { title: 'Duckling Is Scared', text: "Little Duckling stood at the edge of the pond. Her brothers and sisters were all swimming, but she was scared of the water. Mama Duck swam beside her and said, \"I will stay right next to you.\" Duckling took a deep breath and paddled out. Soon she was splashing with everyone!",
+    c: ['Little Duckling', 'A big fish', 'Tess the turtle'], s: ['The edge of the pond', 'A library', 'A desert'],
+    p: ['Duckling was scared to swim', 'Duckling was too cold', 'The pond dried up'], so: ['Mama Duck stayed close, so Duckling was brave enough to try', 'Duckling walked home', 'Her brothers carried her'],
+    bme: ['Duckling was scared to go in the water.', 'Mama Duck promised to stay right next to her.', 'Duckling paddled out and splashed with everyone.'] },
+  { title: 'The Broken Kite', text: "On a sunny afternoon at the beach, Ava's kite crashed into the sand, and its tail snapped. Ava wanted to cry. Her big brother Ben found some string in his pocket. Together they tied the tail back on, and soon the kite was flying high again.",
+    c: ['Ava and her brother Ben', 'Hop the frog', 'A seagull'], s: ['The beach on a sunny afternoon', 'A dark cave', 'A snowy backyard'],
+    p: ["Ava's kite crashed and its tail snapped", 'Ava lost her sandals', 'The sun was too hot'], so: ['Ben found string, and they tied the tail back on', 'They threw the kite away', 'Ava bought ice cream instead'],
+    bme: ["Ava's kite crashed, and its tail broke.", 'Ben found some string in his pocket.', 'They fixed the kite, and it flew high again.'] }
+];
+var EL = [
+  { k: 'c', name: 'Character', q: 'Who is the main character?', why: 'The characters are the people or animals the story is about.' },
+  { k: 's', name: 'Setting', q: 'What is the setting? (Where and when does it happen?)', why: 'The setting is where and when the story happens.' },
+  { k: 'p', name: 'Problem', q: 'What is the problem in the story?', why: 'The problem is what goes wrong, or what the character needs to fix.' },
+  { k: 'so', name: 'Solution', q: 'How is the problem solved?', why: 'The solution is how the problem gets fixed at the end.' }
+];
+function storyHtml(st){ return '<h3>' + st.title + '<button class="say" onclick="speak(cur.text)">Read to me</button></h3><p>' + st.text + '</p>'; }
+
+/* ---------- Story map ---------- */
+var M_STORIES = 4, deck = [], round = 0, score = 0, total = 0, cur = null, step = 0, firstTry = true, busy = false, filled = {};
+function startMap(){ lastMode = 'map'; deck = shuffle(STORIES).slice(0, M_STORIES); round = 0; score = 0; total = 0; showOnly('mapScreen'); nextStory(); }
+function nextStory(){
+  round++;
+  if (round > M_STORIES) { var pct = score / total; showEnd(pct >= .9 ? 'Story expert!' : pct >= .7 ? 'Great reading!' : 'Keep reading!', 'You got ' + score + ' of ' + total + ' story parts on the first try.', pct >= .9 ? 3 : pct >= .7 ? 2 : 1); return; }
+  cur = deck[round - 1]; step = 0; filled = {};
+  $('mRound').textContent = 'Story ' + round + ' of ' + M_STORIES;
+  $('mStory').innerHTML = storyHtml(cur);
+  nextStep();
+}
+function drawMap(){
+  $('smap').innerHTML = EL.map(function(e, i){
+    return '<div class="sbox ' + e.k + (filled[e.k] ? ' filled' : '') + (i === step && !filled[e.k] ? ' now' : '') + '"><b>' + e.name + '</b><span>' + (filled[e.k] || '') + '</span></div>';
+  }).join('');
+}
+function nextStep(){
+  if (step >= EL.length) { timer = setTimeout(nextStory, 2200); setFact('mFact', 'Your story map is complete!'); $('mAnswers').innerHTML = ''; $('mPrompt').textContent = 'Story map done!'; return; }
+  busy = false; firstTry = true;
+  var e = EL[step];
+  $('mScore').textContent = 'First try ' + score;
+  $('mPrompt').textContent = e.q;
+  hideFact('mFact');
+  drawMap();
+  answerButtons('mAnswers', shuffle(cur[e.k]).map(function(o){ return { key: o, label: o }; }), pickEl);
+  $('srStatus').textContent = e.q;
+}
+function pickEl(btn, o){
+  if (busy) return;
+  var e = EL[step];
+  if (o === cur[e.k][0]) {
+    busy = true; total++; if (firstTry) score++;
+    $('mScore').textContent = 'First try ' + score;
+    markRight('mAnswers', btn);
+    filled[e.k] = o; drawMap();
+    setFact('mFact', e.why); sndGood(); $('srStatus').textContent = 'Correct! ' + e.why;
+    step++;
+    timer = setTimeout(nextStep, 1800);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = 'Look back at the story. ' + e.why;
+    setFact('mFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Beginning, middle, end ---------- */
+var O_ROUNDS = 6, cards = [], slots = [], oFirst = true;
+var POS = ['Beginning', 'Middle', 'End'];
+function startOrder(){ lastMode = 'order'; deck = shuffle(STORIES); round = 0; score = 0; showOnly('orderScreen'); nextOrder(); }
+function nextOrder(){
+  round++;
+  if (round > O_ROUNDS) { showEnd(score >= 5 ? 'Story expert!' : score >= 4 ? 'Great reading!' : 'Keep reading!', 'You put ' + score + ' of ' + O_ROUNDS + ' stories in order on the first try.', score >= 5 ? 3 : score >= 4 ? 2 : 1); return; }
+  busy = false; oFirst = true; cur = deck[round - 1];
+  var idx = [0, 1, 2], mixed;
+  do { mixed = shuffle(idx); } while (mixed.join() === '0,1,2');
+  cards = mixed.map(function(i){ return { i: i, used: false }; });
+  slots = [null, null, null];
+  $('oRound').textContent = 'Story ' + round + ' of ' + O_ROUNDS;
+  $('oScore').textContent = 'First try ' + score;
+  $('oStory').innerHTML = storyHtml(cur);
+  hideFact('oFact');
+  drawOrder(false);
+  $('srStatus').textContent = cur.title + '. Put the three parts in order: beginning, middle, end.';
+}
+function drawOrder(done){
+  $('oslots').innerHTML = slots.map(function(ci, s){
+    return '<button class="oslot' + (ci !== null ? ' filled' : '') + (done ? ' right' : '') + '"' + (busy || ci === null ? ' disabled' : '') + ' onclick="unplace(' + s + ')"><b>' + POS[s] + '</b>' + (ci !== null ? cur.bme[cards[ci].i] : '') + '</button>';
+  }).join('');
+  var box = $('ocards'); box.innerHTML = '';
+  cards.forEach(function(c, i){
+    var b = document.createElement('button');
+    b.className = 'ocard pickable'; b.textContent = cur.bme[c.i]; b.disabled = busy || c.used;
+    b.onclick = function(){ place(i); };
+    box.appendChild(b);
+  });
+}
+function place(ci){
+  if (busy || cards[ci].used) return;
+  var s = slots.indexOf(null); if (s === -1) return;
+  slots[s] = ci; cards[ci].used = true; sndPlop(); drawOrder(false);
+  if (slots.indexOf(null) === -1) checkOrder();
+}
+function unplace(s){ if (busy || slots[s] === null) return; cards[slots[s]].used = false; slots[s] = null; drawOrder(false); }
+function checkOrder(){
+  var wrong = []; slots.forEach(function(ci, s){ if (cards[ci].i !== s) wrong.push(s); });
+  busy = true;
+  if (!wrong.length) {
+    if (oFirst) score++;
+    $('oScore').textContent = 'First try ' + score;
+    drawOrder(true);
+    setFact('oFact', 'In order! The beginning sets up the problem, the middle is what happens, and the end shows how it is solved.');
+    sndGood(); $('srStatus').textContent = 'Correct order!';
+    timer = setTimeout(nextOrder, 3200);
+  } else {
+    oFirst = false;
+    var els = $('oslots').querySelectorAll('.oslot'); wrong.forEach(function(s){ els[s].classList.add('wrong', 'shake'); });
+    setFact('oFact', 'Some parts are mixed up. What happened first in the story? How did it end?');
+    sndBad();
+    timer = setTimeout(function(){ busy = false; wrong.forEach(function(s){ cards[slots[s]].used = false; slots[s] = null; }); drawOrder(false); }, 1100);
+  }
+}
+
+$('startArt').innerHTML = '<svg viewBox="0 0 260 90" aria-hidden="true">' + ['#2B6CB0', '#2E8540', '#B83A39', '#9B4D8E'].map(function(c, i){ return '<rect x="' + (6 + i * 63) + '" y="14" width="56" height="62" rx="10" fill="#fff" stroke="' + c + '" stroke-width="3"/><rect x="' + (14 + i * 63) + '" y="24" width="40" height="8" rx="4" fill="' + c + '"/><path d="M' + (14 + i * 63) + ' 44 H' + (54 + i * 63) + ' M' + (14 + i * 63) + ' 56 H' + (46 + i * 63) + '" stroke="#C7DCD8" stroke-width="4" stroke-linecap="round"/>'; }).join('') + '</svg>';
+</script>
+</body>
+</html>
