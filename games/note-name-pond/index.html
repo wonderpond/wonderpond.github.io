@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Note name pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Read note names on the treble clef staff, lines and spaces and middle C, then spell words like FACE and BADGE with notes and hear them played. A free music reading game for grades 3 to 5 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.staffbox{background:#fff;border-radius:24px;padding:10px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%}
+.staffbox svg{display:block;width:min(92vw,640px);height:auto}
+.staffbox svg.clickable{cursor:pointer;touch-action:none}
+.letters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.letters .ans{min-width:64px;font-size:1.8rem;padding:8px 12px}
+.word{display:flex;gap:8px;justify-content:center;margin:4px 0 10px}
+.word span{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:2.2rem;width:56px;height:62px;line-height:62px;border-radius:14px;background:rgba(255,255,255,.6);color:#9EB8B3}
+.word span.cur{background:#FFF3C8;color:#8A5A00;box-shadow:0 0 0 3px #F5C84C}
+.word span.done{background:#E4F5E9;color:#2E8540}
+.tip{font-weight:700;color:#0F5A50;background:rgba(255,255,255,.85);border-radius:999px;display:inline-block;padding:3px 14px;margin-top:8px;font-size:.95rem}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:280px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Note name pond</h1>
+      <p class="sub">Five lines, four spaces, and a lot of notes. Learn the names, then spell words with music!</p>
+      <span class="choose-label" id="levelLabel">Pick your notes</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Line notes<small>E G B D F</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Space notes<small>F A C E</small></button>
+        <button class="pick-btn" data-level="2" aria-pressed="false" onclick="chooseLevel(this)">All notes<small>with middle C and D</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startName()">Name the note</button>
+        <button class="big-btn alt" onclick="startSpell()">Spell the word</button>
+      </div>
+      <p class="note">Name the note: read the note on the treble clef staff and tap its letter. Spell the word: tap the staff to place a note for each letter of a word, then hear your word played as a tune. Remember: Every Green Bullfrog Dives Fast for the lines, and the spaces spell FACE.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="nameScreen">
+    <div class="hud"><span class="chip" id="nRound">Note 1 of 10</span><span class="chip" id="nScore">First try 0</span></div>
+    <p class="prompt">What is the name of this note?</p>
+    <div><div class="staffbox" id="nStaff"></div></div>
+    <div class="letters answers" id="nAnswers" role="group" aria-label="Note letters"></div>
+    <p class="fact hidden" id="nFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="spellScreen">
+    <div class="hud"><span class="chip" id="sRound">Word 1 of 6</span><span class="chip" id="sScore">First try 0</span></div>
+    <p class="prompt" id="sPrompt">Spell the word with notes</p>
+    <div class="word" id="word" aria-hidden="true"></div>
+    <div><div class="staffbox" id="sStaff"></div></div>
+    <div><span class="tip" id="sTip">Tap a line or a space to place the next note. Arrow keys and Enter work too.</span></div>
+    <p class="fact hidden" id="sFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'name';
+function playAgain(){ if (lastMode === 'name') startName(); else startSpell(); }
+
+/* Pitches by staff step. step 0 is bottom line E4. Lines are even steps. */
+var PITCH = [
+  { s: -2, n: 'C', o: 4, f: 261.63 }, { s: -1, n: 'D', o: 4, f: 293.66 },
+  { s: 0, n: 'E', o: 4, f: 329.63 }, { s: 1, n: 'F', o: 4, f: 349.23 }, { s: 2, n: 'G', o: 4, f: 392.00 }, { s: 3, n: 'A', o: 4, f: 440.00 },
+  { s: 4, n: 'B', o: 4, f: 493.88 }, { s: 5, n: 'C', o: 5, f: 523.25 }, { s: 6, n: 'D', o: 5, f: 587.33 }, { s: 7, n: 'E', o: 5, f: 659.25 },
+  { s: 8, n: 'F', o: 5, f: 698.46 }, { s: 9, n: 'G', o: 5, f: 783.99 }
+];
+function byStep(s){ return PITCH.filter(function(p){ return p.s === s; })[0]; }
+function pool(){
+  if (level === 0) return PITCH.filter(function(p){ return p.s >= 0 && p.s <= 8 && p.s % 2 === 0; });
+  if (level === 1) return PITCH.filter(function(p){ return p.s >= 1 && p.s <= 7 && p.s % 2 === 1; });
+  return PITCH.slice();
+}
+var TOP = 70, GAP = 20, X0 = 120;
+function yOf(s){ return TOP + (8 - s) * (GAP / 2) + 40; }
+
+var CLEF = '<path d="M62 168 C50 176 38 170 40 158 C42 148 56 146 58 158 L48 40 C46 24 54 12 62 14 C72 16 70 38 58 52 C40 72 26 86 28 110 C30 134 54 142 68 132 C82 122 78 98 60 98 C46 98 40 112 50 120" fill="none" stroke="#22303B" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>';
+function staffSvg(notes, opts){
+  opts = opts || {};
+  var W = 620, s = '<svg viewBox="0 0 ' + W + ' 230" aria-hidden="true"' + (opts.clickable ? ' class="clickable"' : '') + '><rect width="' + W + '" height="230" rx="16" fill="#fff"/>';
+  for (var i = 0; i < 5; i++) { var y = yOf(i * 2); s += '<line x1="20" y1="' + y + '" x2="' + (W - 20) + '" y2="' + y + '" stroke="#33625C" stroke-width="2.4"/>'; }
+  s += '<g transform="translate(12 50)">' + CLEF + '</g>';
+  if (opts.hover != null) s += noteSvg(opts.hoverX, opts.hover, '#9EC9C2', true);
+  notes.forEach(function(nt){ s += noteSvg(nt.x, nt.s, nt.col || '#22303B'); if (nt.label) s += '<text x="' + nt.x + '" y="222" font-family="Baloo 2,sans-serif" font-weight="700" font-size="22" fill="' + (nt.col || '#0F5A50') + '" text-anchor="middle">' + nt.label + '</text>'; });
+  return s + '</svg>';
+}
+function noteSvg(x, st, col, ghost){
+  var y = yOf(st), s = '';
+  for (var l = -2; l >= st; l -= 2) s += '<line x1="' + (x - 22) + '" y1="' + yOf(l) + '" x2="' + (x + 22) + '" y2="' + yOf(l) + '" stroke="' + (ghost ? '#C7DCD8' : '#33625C') + '" stroke-width="2.4"/>';
+  for (var u = 10; u <= st; u += 2) s += '<line x1="' + (x - 22) + '" y1="' + yOf(u) + '" x2="' + (x + 22) + '" y2="' + yOf(u) + '" stroke="#33625C" stroke-width="2.4"/>';
+  var up = st < 4;
+  s += '<ellipse cx="' + x + '" cy="' + y + '" rx="12" ry="9" transform="rotate(-22 ' + x + ' ' + y + ')" fill="' + col + '"' + (ghost ? ' opacity=".6"' : '') + '/>';
+  s += '<line x1="' + (up ? x + 11 : x - 11) + '" y1="' + y + '" x2="' + (up ? x + 11 : x - 11) + '" y2="' + (up ? y - 60 : y + 60) + '" stroke="' + col + '" stroke-width="3"' + (ghost ? ' opacity=".6"' : '') + '/>';
+  return s;
+}
+function tone(f, at, d){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime + (at || 0);
+    [1, 2].forEach(function(m, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = i ? 'sine' : 'triangle'; o.frequency.value = f * m;
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(i ? .05 : .22, t + .02); g.gain.exponentialRampToValueAtTime(0.0001, t + (d || .7));
+      o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t + (d || .7) + .05);
+    });
+  } catch(e) {}
+}
+function placeTip(p){
+  var line = p.s % 2 === 0, ledger = p.s < 0 || p.s > 8;
+  if (ledger) return p.s === -2 ? 'Middle C sits on its own little line below the staff.' : p.s === -1 ? 'D sits just under the bottom line.' : 'G sits on top of the staff, above the F line.';
+  return line ? 'Lines, bottom to top: Every Green Bullfrog Dives Fast (E G B D F).' : 'Spaces, bottom to top, spell FACE.';
+}
+
+/* ---------- Name the note ---------- */
+var N_ROUNDS = 10, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false;
+function startName(){
+  lastMode = 'name';
+  var p = pool(), d = [];
+  while (d.length < N_ROUNDS) d = d.concat(shuffle(p));
+  /* no same note twice in a row */
+  for (var i = 1; i < d.length; i++) if (d[i] === d[i - 1]) { var j = (i + 1) % d.length; var t = d[i]; d[i] = d[j]; d[j] = t; }
+  deck = d.slice(0, N_ROUNDS);
+  round = 0; score = 0;
+  showOnly('nameScreen'); nextName();
+}
+function nextName(){
+  round++;
+  if (round > N_ROUNDS) { showEnd(score >= 9 ? 'Note reader!' : score >= 7 ? 'Great reading!' : 'Keep practicing!', 'You named ' + score + ' of ' + N_ROUNDS + ' notes on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('nRound').textContent = 'Note ' + round + ' of ' + N_ROUNDS;
+  $('nScore').textContent = 'First try ' + score;
+  hideFact('nFact');
+  $('nStaff').innerHTML = staffSvg([{ x: 360, s: cur.s }]);
+  answerButtons('nAnswers', ['A','B','C','D','E','F','G'].map(function(l){ return { key: l, label: l }; }), pickName);
+  var where = cur.s < 0 ? 'below the staff' : cur.s > 8 ? 'above the staff' : (cur.s % 2 === 0 ? 'on line ' + (cur.s / 2 + 1) : 'in space ' + ((cur.s + 1) / 2)) + ' counting from the bottom';
+  $('srStatus').textContent = 'A note ' + where + '. What is its name?';
+}
+function pickName(btn, l){
+  if (busy) return;
+  if (l === cur.n) {
+    busy = true;
+    if (firstTry) score++;
+    $('nScore').textContent = 'First try ' + score;
+    markRight('nAnswers', btn);
+    $('nStaff').innerHTML = staffSvg([{ x: 360, s: cur.s, col: '#2E8540', label: cur.n }]);
+    tone(cur.f);
+    setFact('nFact', 'It is ' + cur.n + '! ' + placeTip(cur));
+    $('srStatus').textContent = 'Correct, ' + cur.n + '. ' + placeTip(cur);
+    timer = setTimeout(nextName, 2400);
+  } else {
+    firstTry = false;
+    markWrong(btn);
+    setFact('nFact', 'Not quite. ' + placeTip(cur));
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + placeTip(cur);
+  }
+}
+
+/* ---------- Spell the word ---------- */
+var WORDS = [
+  ['BED', 0], ['EGG', 0], ['FED', 0], ['BEG', 0], ['GEE', 0],
+  ['FACE', 1], ['CAFE', 1], ['ACE', 1], ['FEE', 1],
+  ['BAG', 2], ['CAB', 2], ['DAD', 2], ['CAGE', 2], ['BEAD', 2], ['ADD', 2], ['AGE', 2], ['BEE', 2], ['FEED', 2], ['BADGE', 2], ['FADE', 2]
+];
+var S_ROUNDS = 6, words = [], w = null, placed = [], cursor = 4, sFirst = true;
+function startSpell(){
+  lastMode = 'spell';
+  var p = WORDS.filter(function(x){ return level === 2 ? true : x[1] === level; }).map(function(x){ return x[0]; });
+  words = shuffle(p).concat(shuffle(p)).slice(0, S_ROUNDS);
+  round = 0; score = 0;
+  showOnly('spellScreen'); nextSpell();
+}
+function noteX(i){ return 150 + i * 80; }
+function nextSpell(){
+  round++;
+  if (round > S_ROUNDS) { showEnd(score >= 5 ? 'Music speller!' : score >= 4 ? 'Great spelling!' : 'Keep spelling!', 'You spelled ' + score + ' of ' + S_ROUNDS + ' words with no misses.', score >= 5 ? 3 : score >= 4 ? 2 : 1); return; }
+  busy = false; sFirst = true; w = words[round - 1]; placed = []; cursor = 4;
+  $('sRound').textContent = 'Word ' + round + ' of ' + S_ROUNDS;
+  $('sScore').textContent = 'First try ' + score;
+  $('sPrompt').textContent = 'Spell "' + w + '" with notes';
+  hideFact('sFact');
+  drawSpell();
+  $('srStatus').textContent = 'Spell ' + w.split('').join(' ') + ' with notes. Use up and down arrows to pick a line or space, and Enter to place the note.';
+}
+function drawSpell(hover){
+  $('word').innerHTML = w.split('').map(function(c, i){ return '<span class="' + (i < placed.length ? 'done' : i === placed.length ? 'cur' : '') + '">' + c + '</span>'; }).join('');
+  var notes = placed.map(function(st, i){ return { x: noteX(i), s: st, col: '#2E8540', label: byStep(st).n }; });
+  var showHover = !busy && placed.length < w.length;
+  $('sStaff').innerHTML = staffSvg(notes, { clickable: true, hover: showHover ? (hover != null ? hover : cursor) : null, hoverX: noteX(placed.length) });
+  var svg = $('sStaff').querySelector('svg');
+  svg.setAttribute('tabindex', '0');
+  svg.setAttribute('role', 'application');
+  svg.setAttribute('aria-label', 'Music staff. Use up and down arrows to move the note, Enter to place it.');
+  svg.addEventListener('pointermove', function(e){ if (e.pointerType !== 'mouse') return; var st = stepAt(svg, e); if (st != null && !busy && st !== cursor) { cursor = st; drawSpell(); } });
+  svg.addEventListener('pointerdown', function(e){ var st = stepAt(svg, e); if (st != null) { e.preventDefault(); cursor = st; placeNote(st); } });
+  svg.addEventListener('keydown', onStaffKey);
+}
+function stepAt(svg, e){
+  var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+  var p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  var st = Math.round(8 - (p.y - TOP - 40) / (GAP / 2));
+  return st >= -2 && st <= 9 ? st : null;
+}
+function onStaffKey(e){
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { cursor = Math.max(-2, Math.min(9, cursor + (e.key === 'ArrowUp' ? 1 : -1))); drawSpell(); $('sStaff').querySelector('svg').focus(); $('srStatus').textContent = byStep(cursor).n; e.preventDefault(); }
+  else if (e.key === 'Enter' || e.key === ' ') { placeNote(cursor); var sv = $('sStaff').querySelector('svg'); if (sv) sv.focus(); e.preventDefault(); }
+}
+function placeNote(st){
+  if (busy || placed.length >= w.length) return;
+  var want = w.charAt(placed.length), p = byStep(st);
+  if (p.n === want) {
+    placed.push(st);
+    tone(p.f, 0, .5);
+    hideFact('sFact');
+    drawSpell();
+    if (placed.length === w.length) {
+      busy = true;
+      if (sFirst) score++;
+      $('sScore').textContent = 'First try ' + score;
+      drawSpell();
+      setFact('sFact', 'You spelled ' + w + '! Listen to your word as a tune.');
+      placed.forEach(function(s2, i){ tone(byStep(s2).f, .6 + i * .45, .5); });
+      $('srStatus').textContent = 'You spelled ' + w + '.';
+      timer = setTimeout(nextSpell, 1600 + placed.length * 450);
+    } else $('srStatus').textContent = 'Yes, ' + want + '. Next letter ' + w.charAt(placed.length) + '.';
+  } else {
+    sFirst = false;
+    var target = PITCH.filter(function(q){ return q.n === want; })[0];
+    var h = 'That note is ' + p.n + '. You need ' + want + '. ' + placeTip(target);
+    setFact('sFact', h);
+    sndBad();
+    $('srStatus').textContent = h;
+  }
+}
+
+$('startArt').innerHTML = staffSvg([{ x: 200, s: 6 }, { x: 300, s: 3 }, { x: 400, s: 7 }]).replace('viewBox="0 0 620 230"', 'viewBox="0 20 520 200"');
+</script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angle pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Sort acute, right, obtuse, and straight angles, read a protractor with two scales, and add or subtract angles that sit side by side. A free geometry game for grade 4 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.board{background:#fff;border-radius:24px;padding:10px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%}
+.board svg{display:block;height:min(46vh,340px);width:auto;max-width:90vw}
+.ans.kind{min-width:150px}
+.ans.kind svg{display:block;width:70px;height:44px;margin:0 auto}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:200px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Angle pond</h1>
+      <p class="sub">Hop sticks out a long tongue to catch flies. Every catch makes an angle!</p>
+      <span class="choose-label" id="levelLabel">Pick your angles</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Tens<small>10, 20, 30... degrees</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Fives<small>5, 15, 25... degrees</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startKind()">Acute, right, or obtuse?</button>
+        <button class="big-btn alt" onclick="startMeasure()">Measure and add</button>
+      </div>
+      <p class="note">Acute, right, or obtuse: sort each angle by comparing it to a square corner. Measure and add: read the protractor (watch out for the two scales!), and add or subtract angles that sit side by side.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="kindScreen">
+    <div class="hud"><span class="chip" id="kRound">Angle 1 of 10</span><span class="chip" id="kScore">First try 0</span></div>
+    <p class="prompt">What kind of angle is this?</p>
+    <div><div class="board" id="kBoard"></div></div>
+    <div class="answers" id="kAnswers" style="margin-top:12px" role="group" aria-label="Angle types"></div>
+    <p class="fact hidden" id="kFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="measureScreen">
+    <div class="hud"><span class="chip" id="mRound">Question 1 of 10</span><span class="chip" id="mScore">First try 0</span></div>
+    <p class="prompt" id="mPrompt">How many degrees is the angle?</p>
+    <div><div class="board" id="mBoard"></div></div>
+    <div class="answers" id="mAnswers" style="margin-top:12px" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="mFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'kind';
+function playAgain(){ if (lastMode === 'kind') startKind(); else startMeasure(); }
+var VX = 310, VY = 300, RAD = 230;
+function pt(deg, r){ var a = deg * Math.PI / 180; return [VX + r * Math.cos(a), VY - r * Math.sin(a)]; }
+function f1(n){ return n.toFixed(1); }
+
+var FROG = '<g transform="translate(' + VX + ' ' + (VY + 6) + ')"><ellipse cx="0" cy="8" rx="22" ry="14" fill="#4FB06A"/><circle cx="-9" cy="-6" r="7" fill="#4FB06A"/><circle cx="9" cy="-6" r="7" fill="#4FB06A"/><circle cx="-9" cy="-6" r="4.4" fill="#fff"/><circle cx="9" cy="-6" r="4.4" fill="#fff"/><circle cx="-8.4" cy="-5.4" r="2.1" fill="#22303B"/><circle cx="9.6" cy="-5.4" r="2.1" fill="#22303B"/></g>';
+function fly(deg){ var p = pt(deg, RAD + 14); return '<g transform="translate(' + f1(p[0]) + ' ' + f1(p[1]) + ')"><ellipse cx="-6" cy="-6" rx="7" ry="4" fill="#DFF2FA" stroke="#9EC9D9"/><ellipse cx="6" cy="-6" rx="7" ry="4" fill="#DFF2FA" stroke="#9EC9D9"/><circle r="6" fill="#4A4F55"/></g>'; }
+function ray(deg, color, w){ var p = pt(deg, RAD); return '<line x1="' + VX + '" y1="' + VY + '" x2="' + f1(p[0]) + '" y2="' + f1(p[1]) + '" stroke="' + (color || '#E24B4A') + '" stroke-width="' + (w || 7) + '" stroke-linecap="round"/>'; }
+function arc(d1, d2, r, color, fill){
+  var a = pt(d1, r), b = pt(d2, r), large = d2 - d1 > 180 ? 1 : 0;
+  return '<path d="M' + VX + ' ' + VY + ' L' + f1(a[0]) + ' ' + f1(a[1]) + ' A' + r + ' ' + r + ' 0 ' + large + ' 0 ' + f1(b[0]) + ' ' + f1(b[1]) + 'Z" fill="' + (fill || 'rgba(245,200,76,.35)') + '" stroke="' + (color || '#C99A17') + '" stroke-width="2"/>';
+}
+function rightMark(){ return '<path d="M' + (VX + 26) + ' ' + VY + ' V' + (VY - 26) + ' H' + VX + '" fill="none" stroke="#0F5A50" stroke-width="3"/>'; }
+function base(){ return '<svg viewBox="0 0 620 340" aria-hidden="true"><rect width="620" height="340" rx="16" fill="#EAF6FB"/><path d="M0 330 H620" stroke="#8FCDE8" stroke-width="20"/>'; }
+
+function protractor(){
+  var s = '<path d="M' + (VX - RAD - 10) + ' ' + VY + ' A' + (RAD + 10) + ' ' + (RAD + 10) + ' 0 0 1 ' + (VX + RAD + 10) + ' ' + VY + 'Z" fill="rgba(255,255,255,.75)" stroke="#9AA3A8" stroke-width="2"/>';
+  for (var d = 0; d <= 180; d += 5) {
+    var long = d % 10 === 0, a = pt(d, RAD + 10), b = pt(d, RAD + 10 - (long ? 18 : 9));
+    s += '<line x1="' + f1(a[0]) + '" y1="' + f1(a[1]) + '" x2="' + f1(b[0]) + '" y2="' + f1(b[1]) + '" stroke="#6E7478" stroke-width="' + (long ? 2 : 1) + '"/>';
+    if (d % 10 === 0) {
+      var o = pt(d, RAD - 18), i2 = pt(d, RAD - 40);
+      /* inner scale starts at 0 on the right, outer scale starts at 0 on the left */
+      s += '<text x="' + f1(o[0]) + '" y="' + f1(o[1] + 4) + '" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="#9B4D8E" text-anchor="middle">' + (180 - d) + '</text>';
+      s += '<text x="' + f1(i2[0]) + '" y="' + f1(i2[1] + 4) + '" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="#1F6E68" text-anchor="middle">' + d + '</text>';
+    }
+  }
+  return s + '<circle cx="' + VX + '" cy="' + VY + '" r="4" fill="#4A4F55"/>';
+}
+function angleTypeIcon(k){
+  var d = { acute: 45, right: 90, obtuse: 135, straight: 180 }[k];
+  var x = 35 + 26 * Math.cos(d * Math.PI / 180), y = 38 - 26 * Math.sin(d * Math.PI / 180);
+  return '<svg viewBox="0 0 70 44" aria-hidden="true"><line x1="35" y1="38" x2="61" y2="38" stroke="#E24B4A" stroke-width="4" stroke-linecap="round"/><line x1="35" y1="38" x2="' + f1(x) + '" y2="' + f1(y) + '" stroke="#E24B4A" stroke-width="4" stroke-linecap="round"/>' +
+    (k === 'right' ? '<path d="M45 38 V28 H35" fill="none" stroke="#0F5A50" stroke-width="2"/>' : '') + '</svg>';
+}
+
+/* ---------- Acute, right, obtuse ---------- */
+var K_ROUNDS = 10, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false;
+var KINDS = { acute: 'less than a right angle (under 90\u00B0)', right: 'a square corner (exactly 90\u00B0)', obtuse: 'more than a right angle, less than a straight line', straight: 'a straight line (180\u00B0)' };
+function kindOf(d){ return d < 90 ? 'acute' : d === 90 ? 'right' : d < 180 ? 'obtuse' : 'straight'; }
+function startKind(){
+  lastMode = 'kind';
+  var step = level === 0 ? 10 : 5;
+  var ac = [], ob = [];
+  for (var d = step; d < 90; d += step) ac.push(d);
+  for (var e = 90 + step; e < 180; e += step) ob.push(e);
+  /* keep away from 90 a little at the easy level so the corner check is clear */
+  if (level === 0) { ac = ac.filter(function(x){ return x <= 70; }); ob = ob.filter(function(x){ return x >= 110; }); }
+  var list = shuffle(ac).slice(0, 4).concat(shuffle(ob).slice(0, 4), [90, 180]);
+  deck = shuffle(list).map(function(d){ return { d: d, rot: rand(0, 1) ? 0 : rand(-1, 1) * 20 }; });
+  round = 0; score = 0;
+  showOnly('kindScreen'); nextKind();
+}
+function kindSvg(c, showCorner){
+  var r0 = Math.max(0, Math.min(c.rot, 180 - c.d));
+  var s = base() + FROG + ray(r0, '#E24B4A') + ray(r0 + c.d, '#E24B4A') + fly(r0 + c.d) + arc(r0, r0 + c.d, 46);
+  if (showCorner) s += '<g opacity=".8">' + ray(r0, '#2B6CB0', 3).replace('<line', '<line stroke-dasharray="8 6"') + ray(r0 + 90, '#2B6CB0', 3).replace('<line', '<line stroke-dasharray="8 6"') + '</g>';
+  return s + '</svg>';
+}
+function nextKind(){
+  round++;
+  if (round > K_ROUNDS) { showEnd(score >= 9 ? 'Angle ace!' : score >= 7 ? 'Great sorting!' : 'Keep practicing!', 'You sorted ' + score + ' of ' + K_ROUNDS + ' angles on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('kRound').textContent = 'Angle ' + round + ' of ' + K_ROUNDS;
+  $('kScore').textContent = 'First try ' + score;
+  hideFact('kFact');
+  $('kBoard').innerHTML = kindSvg(cur, false);
+  answerButtons('kAnswers', ['acute', 'right', 'obtuse', 'straight'].map(function(k){
+    return { key: k, cls: 'kind', html: angleTypeIcon(k) + k.charAt(0).toUpperCase() + k.slice(1) + '<small>' + KINDS[k] + '</small>', aria: k + ': ' + KINDS[k] };
+  }), pickKind);
+  $('srStatus').textContent = 'An angle of ' + cur.d + ' degrees. Is it acute, right, obtuse, or straight?';
+}
+function pickKind(btn, k){
+  if (busy) return;
+  var want = kindOf(cur.d);
+  if (k === want) {
+    busy = true;
+    if (firstTry) score++;
+    $('kScore').textContent = 'First try ' + score;
+    markRight('kAnswers', btn);
+    $('kBoard').innerHTML = kindSvg(cur, cur.d !== 180).replace('</svg>', (cur.d === 90 ? rightMark() : '') + '</svg>');
+    var msg = 'It is ' + (want === 'acute' || want === 'obtuse' ? 'an ' : 'a ') + want + ' angle: ' + cur.d + '\u00B0. ' +
+      (want === 'acute' ? 'It fits inside the square corner (the blue lines).' : want === 'obtuse' ? 'It opens wider than the square corner (the blue lines).' : want === 'right' ? 'It matches the square corner exactly.' : 'The two rays make a straight line.');
+    setFact('kFact', msg);
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + msg;
+    timer = setTimeout(nextKind, 3000);
+  } else {
+    firstTry = false;
+    markWrong(btn);
+    var h = 'Imagine the corner of a piece of paper. Does the angle fit inside it, match it, or open wider?';
+    $('kBoard').innerHTML = kindSvg(cur, cur.d !== 180);
+    setFact('kFact', h + ' The blue lines show a square corner.');
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Measure and add ---------- */
+var M_ROUNDS = 10, mdeck = [], q = null;
+function makeMQ(t){
+  var step = level === 0 ? 10 : 5;
+  var q = { t: t };
+  if (t === 'read') {
+    q.d = rand(Math.ceil(10 / step), Math.floor(175 / step)) * step; if (q.d === 90) q.d += step;
+    q.text = 'Read the protractor. How many degrees is the angle?';
+    q.answer = q.d;
+    q.cand = [180 - q.d, q.d + 10, q.d - 10, q.d + step];
+    q.why = 'The angle starts at 0 on the green inner scale, so read that scale: ' + q.d + '\u00B0.';
+  } else if (t === 'add') {
+    q.a = rand(2, 9) * step; q.b = rand(2, 9) * step;
+    if (q.a + q.b >= 180) q.b = 180 - q.a - step * 2;
+    if (q.b < step) q.b = step * 2;
+    q.text = 'Two angles sit side by side. What is the whole angle?';
+    q.answer = q.a + q.b;
+    q.cand = [Math.abs(q.a - q.b), q.a + q.b + 10, q.a + q.b - 10];
+    q.why = 'Angles that sit side by side add up: ' + q.a + '\u00B0 + ' + q.b + '\u00B0 = ' + (q.a + q.b) + '\u00B0.';
+  } else if (t === 'missing') {
+    q.a = rand(2, 9) * step; var tot = rand(q.a / step + 3, 17) * step; if (tot > 170) tot = 170; q.b = tot - q.a; q.tot = tot;
+    if (q.b <= 0) { q.b = 3 * step; q.tot = q.a + q.b; }
+    q.text = 'The whole angle is ' + q.tot + '\u00B0. One part is ' + q.a + '\u00B0. How big is the other part?';
+    q.answer = q.b;
+    q.cand = [q.tot + q.a, q.b + 10, q.b - 10];
+    q.why = q.tot + '\u00B0 \u2212 ' + q.a + '\u00B0 = ' + q.b + '\u00B0.';
+  } else {
+    q.a = rand(3, 13) * step; if (q.a === 90) q.a += step; q.b = 180 - q.a;
+    q.text = 'These two angles make a straight line. One is ' + q.a + '\u00B0. What is the other one?';
+    q.answer = q.b;
+    q.cand = [360 - q.a, 90 - q.a > 0 ? 90 - q.a : q.b + 10, q.b - 10];
+    q.why = 'A straight line is 180\u00B0. 180\u00B0 \u2212 ' + q.a + '\u00B0 = ' + q.b + '\u00B0.';
+  }
+  var out = [];
+  q.cand.forEach(function(x){ if (out.length < 2 && x > 0 && x <= 360 && x !== q.answer && out.indexOf(x) === -1) out.push(x); });
+  while (out.length < 2) { var y = q.answer + step * rand(1, 3); if (out.indexOf(y) === -1) out.push(y); }
+  q.options = shuffle([q.answer].concat(out));
+  return q;
+}
+function measureSvg(q, done){
+  var s = base();
+  if (q.t === 'read') {
+    s += protractor() + ray(0, '#E24B4A', 5) + ray(q.d, '#E24B4A', 5) + fly(q.d);
+    if (done) s += arc(0, q.d, 60);
+  } else {
+    var a = q.a, b = q.b;
+    s += arc(0, a, 90, '#2E8540', 'rgba(79,176,106,.3)') + arc(a, a + b, 110, '#9B4D8E', 'rgba(176,127,192,.3)');
+    s += ray(0, '#4A4F55', 5) + ray(a, '#4A4F55', 5) + ray(a + b, '#4A4F55', 5);
+    var la = pt(a / 2, 130), lb = pt(a + b / 2, 150);
+    var showA = true, showB = q.t === 'add' || done;
+    s += '<text x="' + f1(la[0]) + '" y="' + f1(la[1]) + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="24" fill="#2E8540" text-anchor="middle">' + a + '\u00B0</text>';
+    s += '<text x="' + f1(lb[0]) + '" y="' + f1(lb[1]) + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="24" fill="#9B4D8E" text-anchor="middle">' + (showB ? b + '\u00B0' : '?') + '</text>';
+    if (q.t === 'missing') { var lt = pt((a + b) / 2, 200); s += '<text x="' + f1(lt[0]) + '" y="' + f1(lt[1]) + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="20" fill="#0F5A50" text-anchor="middle">whole: ' + q.tot + '\u00B0</text>'; }
+    if (q.t === 'add' && done) { var lw = pt((a + b) / 2, 200); s += '<text x="' + f1(lw[0]) + '" y="' + f1(lw[1]) + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="22" fill="#0F5A50" text-anchor="middle">' + (a + b) + '\u00B0</text>'; }
+    s += FROG;
+  }
+  return s + '</svg>';
+}
+function startMeasure(){
+  lastMode = 'measure';
+  mdeck = shuffle(['read','read','read','read','add','add','missing','missing','straight','straight']).map(makeMQ);
+  round = 0; score = 0;
+  showOnly('measureScreen'); nextMeasure();
+}
+function nextMeasure(){
+  round++;
+  if (round > M_ROUNDS) { showEnd(score >= 9 ? 'Angle ace!' : score >= 7 ? 'Great measuring!' : 'Keep measuring!', 'You answered ' + score + ' of ' + M_ROUNDS + ' on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; q = mdeck[round - 1];
+  $('mRound').textContent = 'Question ' + round + ' of ' + M_ROUNDS;
+  $('mScore').textContent = 'First try ' + score;
+  $('mPrompt').textContent = q.text;
+  hideFact('mFact');
+  $('mBoard').innerHTML = measureSvg(q, false);
+  answerButtons('mAnswers', q.options.map(function(o){ return { key: o, html: o + '\u00B0' }; }), pickMeasure);
+  $('srStatus').textContent = q.text;
+}
+function pickMeasure(btn, o){
+  if (busy) return;
+  if (o === q.answer) {
+    busy = true;
+    if (firstTry) score++;
+    $('mScore').textContent = 'First try ' + score;
+    markRight('mAnswers', btn);
+    $('mBoard').innerHTML = measureSvg(q, true);
+    setFact('mFact', q.why);
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + q.why;
+    timer = setTimeout(nextMeasure, 3200);
+  } else {
+    firstTry = false;
+    markWrong(btn);
+    var h = q.t === 'read' && o === 180 - q.d ? 'That is the other scale! The angle starts at 0 on the right, so use the green numbers that start at 0 there.'
+      : q.t === 'read' ? 'Find where the red ray crosses the green scale.'
+      : q.t === 'add' ? 'The whole angle is both parts together. Add them.'
+      : q.t === 'missing' ? 'Take the part you know away from the whole angle.'
+      : 'A straight line is 180\u00B0, not 360\u00B0 or 90\u00B0. Subtract from 180.';
+    setFact('mFact', h);
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+$('startArt').innerHTML = base().replace('viewBox="0 0 620 340"', 'viewBox="60 40 500 300"') + arc(0, 60, 80) + ray(0) + ray(60) + fly(60) + FROG + '</svg>';
+</script>
+</body>
+</html>

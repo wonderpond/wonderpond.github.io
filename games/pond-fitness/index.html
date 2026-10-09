@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond fitness circuit - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="A timed classroom fitness circuit that rotates cardio, strength, and flexibility exercises, with a coach that reads each move aloud and quick check-in questions during rests. A free PE game for grades 3 to 5 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.cmd{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(2rem,6vw,3.6rem);line-height:1.1;color:#0F5A50;background:rgba(255,255,255,.92);border-radius:28px;padding:10px 26px;display:inline-block;max-width:96%}
+.cmd .fs{display:block;font-size:.5em;color:#2E8540}
+.cmd.trick .fs{color:#9EB8B3}
+.bar{height:14px;background:rgba(255,255,255,.5);border-radius:999px;overflow:hidden;max-width:520px;margin:12px auto 0}
+.bar i{display:block;height:100%;width:100%;background:#F5C84C;transform-origin:left center}
+.ctl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.ctl .big-btn{font-size:1.1rem;padding:10px 24px}
+.reveal{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.3rem,3.4vw,2rem);border-radius:22px;padding:10px 22px;display:inline-block;margin-top:10px}
+.reveal.ok{background:#E4F5E9;color:#2E8540}.reveal.no{background:#FFF3C8;color:#8A3B00}
+.cat{display:inline-block;border-radius:999px;padding:2px 12px;font-weight:700;font-size:.9rem;margin-top:4px}
+.cat.loco{background:#E6F0FA;color:#2B6CB0}.cat.non{background:#F4E8F2;color:#9B4D8E}
+.cat.cardio{background:#FCE3E3;color:#B83A39}.cat.strength{background:#E6F0FA;color:#2B6CB0}.cat.flex{background:#F4E8F2;color:#9B4D8E}.cat.warm{background:#FFF3C8;color:#8A5A00}
+
+.figwrap{width:min(60vw,260px);margin:0 auto}
+#startFig .figwrap,#cFig .figwrap{width:100%}
+.figwrap svg{display:block;width:100%;height:auto;overflow:visible}
+.fig,.fig *{transform-box:fill-box}
+.fig .armL{transform-origin:100% 0}.fig .armR{transform-origin:0 0}
+.fig .legL{transform-origin:50% 0}.fig .legR{transform-origin:50% 0}
+.fig .whole{transform-origin:50% 100%}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+@keyframes bigbob{0%,100%{transform:translateY(0) scaleY(1)}15%{transform:translateY(4px) scaleY(.92)}55%{transform:translateY(-48px) scaleY(1.04)}}
+@keyframes slide{0%,100%{transform:translateX(-46px)}50%{transform:translateX(46px)}}
+@keyframes gallop{0%,100%{transform:translate(-20px,0)}25%{transform:translate(0,-18px)}50%{transform:translate(20px,0)}75%{transform:translate(0,-10px)}}
+@keyframes legswing{0%,100%{transform:rotate(-25deg)}50%{transform:rotate(25deg)}}
+@keyframes legswing2{0%,100%{transform:rotate(25deg)}50%{transform:rotate(-25deg)}}
+@keyframes armswing{0%,100%{transform:rotate(-40deg)}50%{transform:rotate(40deg)}}
+@keyframes armswing2{0%,100%{transform:rotate(40deg)}50%{transform:rotate(-40deg)}}
+@keyframes armsup{0%,100%{transform:rotate(0)}50%{transform:rotate(-150deg)}}
+@keyframes armsup2{0%,100%{transform:rotate(0)}50%{transform:rotate(150deg)}}
+@keyframes twist{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+@keyframes lean{0%,100%{transform:rotate(0)}50%{transform:rotate(-18deg)}}
+@keyframes squat{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(16px) scaleY(.84)}}
+@keyframes wiggle{0%,100%{transform:rotate(-8deg) translateX(-8px)}50%{transform:rotate(8deg) translateX(8px)}}
+@keyframes tiptoe{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes jack{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-160deg)}}
+@keyframes jack2{0%,100%{transform:rotate(20deg)}50%{transform:rotate(160deg)}}
+@keyframes legout{0%,100%{transform:rotate(0)}50%{transform:rotate(22deg)}}
+@keyframes legout2{0%,100%{transform:rotate(0)}50%{transform:rotate(-22deg)}}
+@keyframes hold{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+.mv-hop .whole{animation:bob .5s ease-in-out infinite}.mv-hop .legR{transform:rotate(-70deg)}
+.mv-jump .whole,.mv-frogjump .whole{animation:bigbob .9s ease-in-out infinite}
+.mv-frogjump .armL{animation:armsup .9s ease-in-out infinite}.mv-frogjump .armR{animation:armsup2 .9s ease-in-out infinite}
+.mv-skip .whole{animation:bob .45s ease-in-out infinite}.mv-skip .legL{animation:legswing .9s ease-in-out infinite}.mv-skip .legR{animation:legswing2 .9s ease-in-out infinite}.mv-skip .armL{animation:armswing .9s infinite}.mv-skip .armR{animation:armswing .9s infinite}
+.mv-gallop .whole{animation:gallop .7s ease-in-out infinite}.mv-gallop .legR{transform:rotate(-30deg)}
+.mv-slide .whole{animation:slide 1.4s ease-in-out infinite}.mv-slide .armL{transform:rotate(60deg)}.mv-slide .armR{transform:rotate(-60deg)}
+.mv-march .legL{animation:legswing .8s ease-in-out infinite}.mv-march .legR{animation:legswing2 .8s ease-in-out infinite}.mv-march .armL{animation:armswing .8s infinite}.mv-march .armR{animation:armswing2 .8s infinite}
+.mv-run .whole{animation:bob .3s ease-in-out infinite}.mv-run .legL{animation:legswing .4s infinite}.mv-run .legR{animation:legswing2 .4s infinite}.mv-run .armL{animation:armswing .4s infinite}.mv-run .armR{animation:armswing2 .4s infinite}
+.mv-tiptoe .whole{animation:tiptoe .6s ease-in-out infinite}
+.mv-leap .whole{animation:gallop 1s ease-in-out infinite}.mv-leap .legL{transform:rotate(35deg)}.mv-leap .legR{transform:rotate(-35deg)}
+.mv-stretch .armL{animation:armsup 2.4s ease-in-out infinite}.mv-stretch .armR{animation:armsup2 2.4s ease-in-out infinite}.mv-stretch .whole{animation:tiptoe 2.4s ease-in-out infinite}
+.mv-twist .whole{animation:twist 1.4s ease-in-out infinite}
+.mv-balance .legR{transform:rotate(-80deg)}.mv-balance .armL{transform:rotate(70deg)}.mv-balance .armR{transform:rotate(-70deg)}.mv-balance .whole{animation:twist 3s ease-in-out infinite}
+.mv-wiggle .whole{animation:wiggle .5s ease-in-out infinite}
+.mv-freeze .whole{filter:saturate(.3)}
+.mv-jacks .armL{animation:jack .7s ease-in-out infinite}.mv-jacks .armR{animation:jack2 .7s ease-in-out infinite}.mv-jacks .legL{animation:legout .7s infinite}.mv-jacks .legR{animation:legout2 .7s infinite}.mv-jacks .whole{animation:bob .7s infinite}
+.mv-knees .legL{animation:legswing .5s infinite}.mv-knees .legR{animation:legswing2 .5s infinite}.mv-knees .whole{animation:bob .25s infinite}
+.mv-squat .whole{animation:squat 1.6s ease-in-out infinite}.mv-squat .armL{transform:rotate(-80deg)}.mv-squat .armR{transform:rotate(80deg)}
+.mv-hold .whole{animation:hold 1.6s ease-in-out infinite}.mv-hold .armL{transform:rotate(-80deg)}.mv-hold .armR{transform:rotate(80deg)}
+.mv-lean .whole{animation:lean 2.4s ease-in-out infinite}.mv-lean .armL{transform:rotate(-150deg)}.mv-lean .armR{transform:rotate(150deg)}
+.mv-circles .armL{animation:armsup 1.2s linear infinite}.mv-circles .armR{animation:armsup2 1.2s linear infinite}
+@media (prefers-reduced-motion:reduce){.fig *{animation:none !important}}
+
+.ring{position:relative;width:min(56vw,230px);margin:6px auto 0}
+.ring svg{display:block;width:100%;height:auto}
+.ring .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(2.6rem,9vw,4rem);color:#0F5A50}
+.stage-row{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap}
+.how{font-weight:700;color:#33625C;max-width:520px;margin:6px auto 0;font-size:1.05rem}
+.next{display:inline-block;background:rgba(255,255,255,.85);border-radius:999px;padding:4px 16px;font-weight:700;margin-top:10px;color:#0F5A50}
+.quiz{background:#fff;border-radius:22px;padding:12px 16px;max-width:640px;margin:10px auto 0;box-shadow:0 6px 0 rgba(18,64,58,.15)}
+.quiz h3{font-family:"Baloo 2",sans-serif;color:#0F5A50;font-size:1.2rem;margin-bottom:8px}
+.summary{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:6px 0 14px}
+.summary span{font-family:"Baloo 2",sans-serif;font-weight:700;border-radius:999px;padding:4px 14px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startFig" style="width:140px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond fitness circuit</h1>
+      <p class="sub">A strong frog has a strong heart, strong muscles, and a bendy body. Let's train all three!</p>
+      <span class="choose-label" id="lenLabel">How long?</span>
+      <div class="row" role="group" aria-labelledby="lenLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="false" onclick="chooseLevel(this)">Short<small>about 5 minutes</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="true" onclick="chooseLevel(this)">Medium<small>about 8 minutes</small></button>
+        <button class="pick-btn" data-level="2" aria-pressed="false" onclick="chooseLevel(this)">Long<small>about 12 minutes</small></button>
+      </div>
+      <span class="choose-label" id="spaceLabel">Where are you?</span>
+      <div class="row" role="group" aria-labelledby="spaceLabel">
+        <button class="pick-btn" data-space="room" aria-pressed="true" onclick="chooseSpace(this)">Classroom<small>no moves on the floor</small></button>
+        <button class="pick-btn" data-space="gym" aria-pressed="false" onclick="chooseSpace(this)">Gym or mats<small>floor moves included</small></button>
+      </div>
+      <div class="row"><button class="big-btn" onclick="startCircuit()">Start the circuit</button></div>
+      <p class="note">Each exercise lasts 30 seconds, with a 15 second rest. Exercises rotate through the three parts of fitness: cardio (heart and lungs), strength (muscles), and flexibility (stretching). During each rest, answer a quick question about what you just did. Turn the sound on to hear the coach.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="circuitScreen">
+    <div class="hud"><span class="chip" id="cCount">Exercise 1 of 10</span><span class="chip" id="cPhase">Go!</span></div>
+    <div class="cmd" id="cName">Jumping jacks</div>
+    <div><span class="cat" id="cCat"></span></div>
+    <div class="stage-row">
+      <div id="cFig" style="width:min(44vw,220px)"></div>
+      <div class="ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="#fff" stroke="#DCE8E4" stroke-width="10"/><circle id="ringArc" cx="60" cy="60" r="52" fill="none" stroke="#4FB06A" stroke-width="10" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg><div class="num" id="cNum">30</div></div>
+    </div>
+    <p class="how" id="cHow"></p>
+    <div id="cQuiz"></div>
+    <div><span class="next" id="cNext"></span></div>
+    <div class="ctl">
+      <button class="big-btn alt" id="pauseBtn" onclick="togglePause()">Pause</button>
+      <button class="big-btn alt" onclick="skipPhase()">Skip</button>
+      <button class="big-btn alt" onclick="backToStart()">Stop</button>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var FIG = '<svg viewBox="-80 -30 160 230" aria-hidden="true"><g class="fig"><g class="whole">' +
+  '<g class="legL"><rect x="-24" y="118" width="16" height="58" rx="8" fill="#3F9457"/><ellipse cx="-20" cy="178" rx="13" ry="6" fill="#3F9457"/></g>' +
+  '<g class="legR"><rect x="8" y="118" width="16" height="58" rx="8" fill="#3F9457"/><ellipse cx="20" cy="178" rx="13" ry="6" fill="#3F9457"/></g>' +
+  '<ellipse cx="0" cy="90" rx="38" ry="40" fill="#4FB06A"/><ellipse cx="0" cy="98" rx="24" ry="26" fill="#BFE8C8"/>' +
+  '<rect class="armL" x="-58" y="62" width="24" height="13" rx="6.5" fill="#4FB06A"/>' +
+  '<rect class="armR" x="34" y="62" width="24" height="13" rx="6.5" fill="#4FB06A"/>' +
+  '<ellipse cx="0" cy="34" rx="34" ry="26" fill="#4FB06A"/>' +
+  '<circle cx="-15" cy="12" r="12" fill="#4FB06A"/><circle cx="15" cy="12" r="12" fill="#4FB06A"/>' +
+  '<circle cx="-15" cy="12" r="8" fill="#fff"/><circle cx="15" cy="12" r="8" fill="#fff"/><circle cx="-14" cy="13" r="4" fill="#22303B"/><circle cx="16" cy="13" r="4" fill="#22303B"/>' +
+  '<path d="M-14 40 Q0 52 14 40" stroke="#1F5B36" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+  '<circle cx="-24" cy="38" r="5" fill="#F4A0A0" opacity=".55"/><circle cx="24" cy="38" r="5" fill="#F4A0A0" opacity=".55"/>' +
+  '</g></g></svg>';
+function figure(id, mv){ $(id).innerHTML = '<div class="figwrap mv-' + mv + '">' + FIG + '</div>'; }
+var enVoice = null;
+function pickVoice(){
+  if (!window.speechSynthesis) return;
+  var vs = window.speechSynthesis.getVoices(), us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); });
+  enVoice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava/i.test(v.name); })[0] || us[0] || null;
+}
+if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(t){
+  if (!soundOn || !window.speechSynthesis) return;
+  try { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; if (enVoice) u.voice = enVoice; u.rate = .95; window.speechSynthesis.speak(u); } catch(e) {}
+}
+var space = 'room';
+function chooseSpace(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  space = btn.dataset.space;
+}
+
+var level = 1, lastMode = 'circuit';
+function playAgain(){ startCircuit(); }
+var CATS = { warm: 'Warm-up', cardio: 'Cardio: heart and lungs', strength: 'Strength: muscles', flex: 'Flexibility: stretching' };
+/* floor: needs a mat, so it is left out in classroom mode */
+var EX = [
+  { n: 'Arm circles', c: 'warm', mv: 'circles', how: 'Hold your arms out and make small circles, then big circles.' },
+  { n: 'March in place', c: 'warm', mv: 'march', how: 'Lift your knees and swing your arms. Get your body ready.' },
+  { n: 'Jumping jacks', c: 'cardio', mv: 'jacks', how: 'Jump your feet out and clap your hands up high, then jump back in.' },
+  { n: 'High knees', c: 'cardio', mv: 'knees', how: 'Run in place and bring your knees up as high as your belly.' },
+  { n: 'Frog jumps', c: 'cardio', mv: 'frogjump', how: 'Squat low like a frog, then jump up high. Land softly.' },
+  { n: 'Run in place', c: 'cardio', mv: 'run', how: 'Pump your arms and keep your feet quick and light.' },
+  { n: 'Side shuffles', c: 'cardio', mv: 'slide', how: 'Stay low and shuffle side to side without crossing your feet.' },
+  { n: 'Squats', c: 'strength', mv: 'squat', how: 'Sit back like there is a chair behind you, then stand up tall.' },
+  { n: 'Frog squat hold', c: 'strength', mv: 'hold', how: 'Squat halfway down and hold it. Keep your back straight.' },
+  { n: 'Lunges', c: 'strength', mv: 'march', how: 'Step forward and bend both knees, then step back. Switch legs.' },
+  { n: 'Calf raises', c: 'strength', mv: 'tiptoe', how: 'Rise up on your toes, then slowly lower down.' },
+  { n: 'Plank', c: 'strength', mv: 'hold', how: 'Hold your body straight like a board on your hands or elbows.', floor: true },
+  { n: 'Knee push-ups', c: 'strength', mv: 'squat', how: 'On your knees, lower your chest toward the floor and push back up.', floor: true },
+  { n: 'Reach for the sky', c: 'flex', mv: 'stretch', how: 'Reach both arms up high and stretch tall. Breathe slowly.' },
+  { n: 'Side stretch', c: 'flex', mv: 'lean', how: 'Reach one arm over your head and lean to the side. Then switch.' },
+  { n: 'Toe touch', c: 'flex', mv: 'squat', how: 'Slowly reach down toward your toes. Bend your knees a little if you need to.' },
+  { n: 'Body twist', c: 'flex', mv: 'twist', how: 'Keep your feet still and gently turn side to side.' },
+  { n: 'Butterfly stretch', c: 'flex', mv: 'hold', how: 'Sit with the bottoms of your feet together and gently press your knees down.', floor: true }
+];
+var WORK = 30, REST = 15;
+function exPool(c){ return EX.filter(function(e){ return e.c === c && (space === 'gym' || !e.floor); }); }
+
+/* Quick check-in questions for the rests */
+function quizFor(ex, i){
+  if (ex.c === 'warm') return { q: 'Why do we warm up before we exercise?', opts: ['To get our muscles ready', 'To get tired faster', 'To skip the hard part'], ans: 'To get our muscles ready',
+    why: 'A warm-up slowly gets your heart pumping and your muscles warm, which helps keep you from getting hurt.' };
+  if (i % 3 === 2) return { q: 'Put your hand on your heart. Is it beating faster than at the start?', opts: ['Yes, faster', 'About the same'], any: true,
+    why: 'Cardio moves make your heart beat faster to send more oxygen to your muscles. That is how your heart gets stronger.' };
+  return { q: 'Which part of fitness did ' + ex.n.toLowerCase() + ' work on?', opts: ['Cardio', 'Strength', 'Flexibility'], ans: { cardio: 'Cardio', strength: 'Strength', flex: 'Flexibility' }[ex.c],
+    why: { cardio: 'Cardio moves get your heart and lungs working hard.', strength: 'Strength moves make your muscles work against your body weight.', flex: 'Stretching keeps your muscles and joints bendy so you can move easily.' }[ex.c] };
+}
+
+var plan = [], pi = 0, phase = 'work', tLeft = 0, tTotal = 0, tick = null, paused = false, quizRight = 0, quizCount = 0;
+function startCircuit(){
+  lastMode = 'circuit';
+  var n = [7, 11, 16][level];
+  var cardio = shuffle(exPool('cardio')), strength = shuffle(exPool('strength')), flex = shuffle(exPool('flex'));
+  plan = [shuffle(exPool('warm'))[0]];
+  var order = ['cardio', 'strength', 'cardio', 'flex'];
+  var idx = { cardio: 0, strength: 0, flex: 0 }, src = { cardio: cardio, strength: strength, flex: flex };
+  for (var i = 0; plan.length < n - 1; i++) {
+    var c = order[i % order.length], list = src[c];
+    plan.push(list[idx[c]++ % list.length]);
+  }
+  plan.push(flex[(idx.flex++) % flex.length]);
+  pi = 0; paused = false; quizRight = 0; quizCount = 0;
+  $('pauseBtn').textContent = 'Pause';
+  showOnly('circuitScreen');
+  startWork();
+}
+function onLeave(){ clearInterval(tick); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+function startWork(){
+  var ex = plan[pi];
+  phase = 'work';
+  $('cCount').textContent = 'Exercise ' + (pi + 1) + ' of ' + plan.length;
+  $('cPhase').textContent = 'Go!';
+  $('cName').textContent = ex.n;
+  $('cCat').className = 'cat ' + ex.c;
+  $('cCat').textContent = CATS[ex.c];
+  $('cHow').textContent = ex.how;
+  $('cQuiz').innerHTML = '';
+  figure('cFig', ex.mv);
+  $('cNext').textContent = pi + 1 < plan.length ? 'Next up: ' + plan[pi + 1].n : 'Last one!';
+  $('ringArc').style.stroke = '#4FB06A';
+  speak(ex.n + '. ' + ex.how);
+  $('srStatus').textContent = ex.n + ', 30 seconds. ' + ex.how;
+  run(WORK, function(){
+    if (pi + 1 >= plan.length) { finish(); return; }
+    startRest();
+  });
+}
+function startRest(){
+  var ex = plan[pi];
+  phase = 'rest';
+  $('cPhase').textContent = 'Rest';
+  $('cName').textContent = 'Rest and breathe';
+  $('cCat').className = 'cat warm';
+  $('cCat').textContent = 'Shake out your arms and legs';
+  $('cHow').textContent = '';
+  figure('cFig', 'stretch');
+  $('ringArc').style.stroke = '#6BB6DB';
+  var qz = quizFor(ex, pi);
+  quizCount++;
+  $('cQuiz').innerHTML = '<div class="quiz"><h3>' + qz.q + '</h3><div class="answers" id="qAns"></div><p class="fact hidden" id="qFact"></p></div>';
+  var answered = false, qFirst = true;
+  answerButtons('qAns', qz.opts.map(function(o){ return { key: o, label: o }; }), function(btn, o){
+    if (answered) return;
+    if (qz.any || o === qz.ans) {
+      answered = true;
+      if (qFirst) quizRight++;
+      markRight('qAns', btn); setFact('qFact', qz.why); sndGood();
+    } else { qFirst = false; markWrong(btn); setFact('qFact', 'Not quite. Think about what that move did for your body.'); sndBad(); }
+  });
+  speak('Rest. ' + qz.q);
+  $('srStatus').textContent = 'Rest for 15 seconds. ' + qz.q;
+  run(REST, function(){ pi++; startWork(); });
+}
+function run(sec, done){
+  clearInterval(tick);
+  tTotal = sec; tLeft = sec; draw();
+  tick = setInterval(function(){
+    if (paused) return;
+    var before = Math.ceil(tLeft);
+    tLeft -= .1;
+    var now = Math.ceil(tLeft);
+    if (now !== before && now <= 3 && now > 0) beep([now === 1 ? 880 : 660], .08, 'triangle');
+    draw();
+    if (tLeft <= 0) { clearInterval(tick); beep([988, 1319], .1); done(); }
+  }, 100);
+}
+function draw(){
+  $('cNum').textContent = Math.max(0, Math.ceil(tLeft));
+  $('ringArc').setAttribute('stroke-dashoffset', (326.7 * (1 - Math.max(0, tLeft) / tTotal)).toFixed(1));
+}
+function togglePause(){ paused = !paused; $('pauseBtn').textContent = paused ? 'Resume' : 'Pause'; if (paused && window.speechSynthesis) window.speechSynthesis.cancel(); }
+function skipPhase(){ tLeft = 0.05; }
+function finish(){
+  onLeave();
+  var counts = { cardio: 0, strength: 0, flex: 0 };
+  plan.forEach(function(e){ if (counts[e.c] != null) counts[e.c]++; });
+  var mins = Math.round((plan.length * WORK + (plan.length - 1) * REST) / 60);
+  var right = quizRight;
+  showEnd('Circuit complete!', 'About ' + mins + ' minutes of exercise: ' + counts.cardio + ' cardio, ' + counts.strength + ' strength, and ' + counts.flex + ' flexibility moves. You answered ' + right + ' of ' + quizCount + ' check-ins.', 3);
+  speak('Circuit complete! Great job, everyone.');
+}
+figure('startFig', 'jacks');
+</script>
+</body>
+</html>

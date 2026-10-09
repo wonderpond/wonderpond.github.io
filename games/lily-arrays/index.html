@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lily arrays - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Build and read multiplication arrays with rows of lily pads, skip count, turn arrays sideways, and split big arrays into easier facts. A free multiplication meaning game for grade 3 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.board{background:#fff;border-radius:24px;padding:10px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%}
+.board svg{display:block;height:min(50vh,420px);width:auto;max-width:88vw}
+.steppers{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.stp{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border-radius:999px;padding:6px 10px}
+.stp span{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.15rem;min-width:110px}
+.stp b{font-family:"Baloo 2",sans-serif;font-size:1.6rem;min-width:30px;color:#0F5A50}
+.stp button{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.7rem;line-height:1;background:#fff;color:#0F5A50;box-shadow:0 3px 0 rgba(18,64,58,.22)}
+.stp button.plus{background:#4FB06A;color:#fff;box-shadow:0 3px 0 #3F9457}
+.stp button:disabled{opacity:.35;cursor:default}
+.eq{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.3rem,3.2vw,1.9rem);color:#0F5A50;background:rgba(255,255,255,.94);border-radius:18px;padding:6px 20px;display:inline-block;margin-top:10px}
+.eq .a{color:#2E8540}.eq .b{color:#9B4D8E}
+.mc{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:220px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Lily arrays</h1>
+      <p class="sub">Frogs line up their lily pads in neat rows. Rows and columns show how multiplication works!</p>
+      <span class="choose-label" id="levelLabel">Pick your facts</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Factors up to 5<small>getting started</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Factors up to 10<small>with splitting arrays</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startBuild()">Build the array</button>
+        <button class="big-btn alt" onclick="startRead()">Read the array</button>
+      </div>
+      <p class="note">Build the array: use the buttons to make the right number of rows and columns, then watch the frogs skip count it. Read the array: match arrays to multiplication, find totals, turn arrays sideways, and split big arrays into two easier facts.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="buildScreen">
+    <div class="hud"><span class="chip" id="bRound">Array 1 of 8</span><span class="chip" id="bScore">First try 0</span></div>
+    <p class="prompt" id="bPrompt">Make 3 rows of 4</p>
+    <div><div class="board" id="bBoard"></div></div>
+    <div class="steppers">
+      <div class="stp"><button onclick="step('r',-1)" aria-label="One less row">&#8722;</button><span>Rows</span><b id="rVal">1</b><button class="plus" onclick="step('r',1)" aria-label="One more row">+</button></div>
+      <div class="stp"><button onclick="step('c',-1)" aria-label="One less column">&#8722;</button><span>In each row</span><b id="cVal">1</b><button class="plus" onclick="step('c',1)" aria-label="One more in each row">+</button></div>
+    </div>
+    <div><button class="big-btn" id="checkBtn" onclick="checkBuild()">Check</button></div>
+    <div id="bEq" class="hidden"></div>
+    <p class="fact hidden" id="bFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="readScreen">
+    <div class="hud"><span class="chip" id="rRound">Question 1 of 10</span><span class="chip" id="rScore">First try 0</span></div>
+    <p class="prompt" id="rPrompt">Which multiplication matches this array?</p>
+    <div><div class="board" id="rBoard"></div></div>
+    <div class="mc answers" id="rAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="rFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'build';
+function playAgain(){ if (lastMode === 'build') startBuild(); else startRead(); }
+function maxF(){ return level === 0 ? 5 : 10; }
+
+/* Draw an array of lily pads. opts: split (row index to cut after), glowRow (count rows lit so far), turned */
+function arraySvg(r, c, opts){
+  opts = opts || {};
+  var S = 46, pad = 16, W = 10 * S + pad * 2 + 40, H = 10 * S + pad * 2;
+  var rows = r, cols = c;
+  var w = cols * S, h = rows * S, x0 = (W - w) / 2, y0 = (H - h) / 2;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true"><rect width="' + W + '" height="' + H + '" rx="16" fill="#DFF2FA"/>';
+  for (var i = 0; i < rows; i++) {
+    var part = opts.split != null ? (i < opts.split ? 'a' : 'b') : null;
+    var lit = opts.glowRow != null && i < opts.glowRow;
+    for (var j = 0; j < cols; j++) {
+      var cx = x0 + j * S + S / 2, cy = y0 + i * S + S / 2;
+      var fill = part === 'a' ? '#4FB06A' : part === 'b' ? '#B07FC0' : lit ? '#3F9457' : '#7CC47F';
+      s += '<g transform="translate(' + cx + ' ' + cy + ')"><circle r="19" fill="' + fill + '"/><path d="M0 0 L17 -9 A19 19 0 0 1 19 -2Z" fill="#DFF2FA"/></g>';
+    }
+    if (opts.glowRow != null && i < opts.glowRow) s += '<text x="' + (x0 + w + 12) + '" y="' + (y0 + i * S + S / 2 + 7) + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="20" fill="#0F5A50">' + ((i + 1) * cols) + '</text>';
+  }
+  if (opts.split != null) {
+    var yc = y0 + opts.split * S;
+    s += '<line x1="' + (x0 - 14) + '" y1="' + yc + '" x2="' + (x0 + w + 14) + '" y2="' + yc + '" stroke="#E24B4A" stroke-width="4" stroke-dasharray="10 6"/>';
+  }
+  if (opts.labels) {
+    s += '<text x="' + (x0 - 12) + '" y="' + (y0 + h / 2 + 6) + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="18" fill="#0F5A50" text-anchor="end">' + rows + ' rows</text>';
+    s += '<text x="' + (x0 + w / 2) + '" y="' + (y0 - 8) + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="18" fill="#0F5A50" text-anchor="middle">' + cols + ' in each row</text>';
+  }
+  return s + '</svg>';
+}
+
+/* ---------- Build the array ---------- */
+var B_ROUNDS = 8, targets = [], round = 0, score = 0, tgt = null, R = 1, C = 1, firstTry = true, busy = false, anim = [];
+function onLeave(){ anim.forEach(clearTimeout); anim = []; }
+function makeTargets(){
+  var out = [], seen = {}, g = 0;
+  while (out.length < B_ROUNDS && g++ < 300) {
+    var r = rand(2, maxF()), c = rand(2, maxF());
+    if (seen[r + 'x' + c]) continue;
+    seen[r + 'x' + c] = 1;
+    out.push({ r: r, c: c, words: out.length % 2 === 0 });
+  }
+  return out;
+}
+function startBuild(){ lastMode = 'build'; targets = makeTargets(); round = 0; score = 0; showOnly('buildScreen'); nextBuild(); }
+function nextBuild(){
+  onLeave();
+  round++;
+  if (round > B_ROUNDS) { showEnd(score >= 7 ? 'Array ace!' : score >= 5 ? 'Great arrays!' : 'Keep building!', 'You built ' + score + ' of ' + B_ROUNDS + ' arrays on the first try.', score >= 7 ? 3 : score >= 5 ? 2 : 1); return; }
+  busy = false; firstTry = true; tgt = targets[round - 1]; R = 1; C = 1;
+  $('bRound').textContent = 'Array ' + round + ' of ' + B_ROUNDS;
+  $('bScore').textContent = 'First try ' + score;
+  $('bPrompt').innerHTML = tgt.words ? 'Make <b>' + tgt.r + ' rows</b> with <b>' + tgt.c + ' in each row</b>' : 'Make an array for <b>' + tgt.r + ' \u00D7 ' + tgt.c + '</b> (' + tgt.r + ' rows of ' + tgt.c + ')';
+  $('checkBtn').disabled = false;
+  $('bEq').classList.add('hidden');
+  hideFact('bFact');
+  drawBuild();
+  $('srStatus').textContent = $('bPrompt').textContent;
+}
+function drawBuild(){ $('bBoard').innerHTML = arraySvg(R, C, { labels: true }); $('rVal').textContent = R; $('cVal').textContent = C; }
+function step(k, d){
+  if (busy) return;
+  if (k === 'r') R = Math.max(1, Math.min(10, R + d)); else C = Math.max(1, Math.min(10, C + d));
+  sndPlop(); hideFact('bFact'); drawBuild();
+  $('srStatus').textContent = R + ' rows, ' + C + ' in each row.';
+}
+function checkBuild(){
+  if (busy) return;
+  if (R === tgt.r && C === tgt.c) {
+    busy = true;
+    if (firstTry) score++;
+    $('bScore').textContent = 'First try ' + score;
+    $('checkBtn').disabled = true;
+    /* skip count row by row */
+    for (var i = 1; i <= R; i++) (function(i){ anim.push(setTimeout(function(){ $('bBoard').innerHTML = arraySvg(R, C, { glowRow: i }); beep([400 + i * 40], .05, 'triangle'); }, i * 380)); })(i);
+    var counts = []; for (var k = 1; k <= R; k++) counts.push(k * C);
+    anim.push(setTimeout(function(){
+      $('bEq').innerHTML = '<span class="eq">' + R + ' \u00D7 ' + C + ' = ' + (R * C) + '</span>';
+      $('bEq').classList.remove('hidden');
+      setFact('bFact', 'Skip count by ' + C + 's, one row at a time: ' + counts.join(', ') + '.');
+      sndGood();
+      $('srStatus').textContent = 'Correct! ' + R + ' times ' + C + ' equals ' + (R * C) + '.';
+    }, R * 380 + 200));
+    timer = setTimeout(nextBuild, R * 380 + 3000);
+  } else {
+    firstTry = false;
+    var h = R === tgt.c && C === tgt.r ? 'Almost! You made ' + R + ' rows of ' + C + '. Turn it around: rows go across, and you need ' + tgt.r + ' of them.'
+      : R !== tgt.r ? 'Count the rows going down. You need ' + tgt.r + '.' : 'Count how many are in each row. You need ' + tgt.c + '.';
+    setFact('bFact', h);
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Read the array ---------- */
+var R_ROUNDS = 10, deck = [], q = null, rFirst = true, rBusy = false;
+function makeQ(type){
+  var r = rand(2, maxF()), c = rand(2, maxF());
+  if (r === c) c = c < maxF() ? c + 1 : c - 1;
+  var q = { t: type, r: r, c: c };
+  function nums(ans, cand){ var out = []; cand.forEach(function(x){ if (out.length < 2 && x > 0 && x !== ans && out.indexOf(x) === -1) out.push(x); }); while (out.length < 2) { var y = ans + rand(1, 5); if (out.indexOf(y) === -1) out.push(y); } return out; }
+  if (type === 'match') {
+    q.text = 'Which multiplication matches this array?';
+    q.answer = r + ' \u00D7 ' + c;
+    q.options = shuffle([q.answer, r + ' + ' + c, r + ' \u00D7 ' + (c + 1)]);
+    q.why = r + ' rows with ' + c + ' in each row is ' + r + ' \u00D7 ' + c + '.';
+  } else if (type === 'total') {
+    q.text = 'How many lily pads are in this array?';
+    q.answer = String(r * c);
+    q.options = shuffle([r * c].concat(nums(r * c, [r + c, r * c + c, r * c - r]))).map(String);
+    q.why = r + ' rows of ' + c + ': ' + r + ' \u00D7 ' + c + ' = ' + (r * c) + '.';
+  } else if (type === 'turn') {
+    q.text = 'This array shows ' + r + ' \u00D7 ' + c + '. If we turn it sideways, which fact does it show?';
+    q.answer = c + ' \u00D7 ' + r;
+    q.options = shuffle([q.answer, (r + 1) + ' \u00D7 ' + c, c + ' + ' + r]);
+    q.why = 'Turning it gives ' + c + ' rows of ' + r + '. The total stays ' + (r * c) + ', so ' + r + ' \u00D7 ' + c + ' = ' + c + ' \u00D7 ' + r + '.';
+  } else if (type === 'missing') {
+    q.text = 'There are ' + (r * c) + ' lily pads in ' + r + ' equal rows. How many are in each row?';
+    q.answer = String(c);
+    q.options = shuffle([c].concat(nums(c, [c + 1, c - 1, r * c - r]))).map(String);
+    q.hideCols = true;
+    q.why = r + ' \u00D7 ? = ' + (r * c) + '. ' + (r * c) + ' \u00F7 ' + r + ' = ' + c + ' in each row.';
+  } else {
+    /* split: r rows cut into a + b rows */
+    if (r < 6) r = rand(6, maxF());
+    q.r = r;
+    var a = r >= 6 ? 5 : r - 1, b = r - a;
+    q.a = a; q.b = b;
+    q.text = 'The red line splits ' + r + ' \u00D7 ' + c + ' into two easier facts. Which matches?';
+    q.answer = a + ' \u00D7 ' + c + ' + ' + b + ' \u00D7 ' + c;
+    q.options = shuffle([q.answer, a + ' \u00D7 ' + c + ' + ' + b + ' \u00D7 ' + (c + 1), a + ' + ' + c + ' + ' + b + ' + ' + c]);
+    q.why = a + ' \u00D7 ' + c + ' = ' + (a * c) + ' and ' + b + ' \u00D7 ' + c + ' = ' + (b * c) + '. Together that is ' + (a * c + b * c) + ', the same as ' + r + ' \u00D7 ' + c + '.';
+  }
+  return q;
+}
+function startRead(){
+  lastMode = 'read';
+  var types = level === 0 ? ['match','match','total','total','turn','turn','missing','missing','total','match'] : ['match','total','turn','missing','split','split','split','total','missing','turn'];
+  deck = shuffle(types).map(makeQ);
+  round = 0; score = 0;
+  showOnly('readScreen'); nextRead();
+}
+function nextRead(){
+  round++;
+  if (round > R_ROUNDS) { showEnd(score >= 9 ? 'Array ace!' : score >= 7 ? 'Great array reading!' : 'Keep practicing!', 'You answered ' + score + ' of ' + R_ROUNDS + ' on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  rBusy = false; rFirst = true; q = deck[round - 1];
+  $('rRound').textContent = 'Question ' + round + ' of ' + R_ROUNDS;
+  $('rScore').textContent = 'First try ' + score;
+  $('rPrompt').textContent = q.text;
+  hideFact('rFact');
+  $('rBoard').innerHTML = q.hideCols ? '<svg viewBox="0 0 532 492" aria-hidden="true"><rect width="532" height="492" rx="16" fill="#DFF2FA"/>' + rowsOnly(q) + '</svg>' : arraySvg(q.r, q.c, q.t === 'split' ? { split: q.a } : {});
+  answerButtons('rAnswers', q.options.map(function(o){ return { key: o, label: o }; }), pickRead);
+  $('srStatus').textContent = 'An array with ' + q.r + ' rows' + (q.hideCols ? '' : ' of ' + q.c) + '. ' + q.text;
+}
+/* For "how many in each row": show the rows as empty boxes with the total */
+function rowsOnly(q){
+  var S = 46, W = 10 * S + 72, H = 10 * S + 32, h = q.r * S, y0 = (H - h) / 2, s = '';
+  for (var i = 0; i < q.r; i++) s += '<rect x="' + (W / 2 - 150) + '" y="' + (y0 + i * S + 4) + '" width="300" height="' + (S - 8) + '" rx="12" fill="#fff" stroke="#7CC47F" stroke-width="3" stroke-dasharray="8 6"/>';
+  return s + '<text x="' + (W / 2) + '" y="' + (y0 - 14) + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="22" fill="#0F5A50" text-anchor="middle">' + (q.r * q.c) + ' lily pads in ' + q.r + ' rows</text>';
+}
+function pickRead(btn, o){
+  if (rBusy) return;
+  if (o === q.answer) {
+    rBusy = true;
+    if (rFirst) score++;
+    $('rScore').textContent = 'First try ' + score;
+    markRight('rAnswers', btn);
+    if (q.t === 'turn') $('rBoard').innerHTML = arraySvg(q.c, q.r, { labels: true });
+    if (q.t === 'missing') $('rBoard').innerHTML = arraySvg(q.r, q.c, { labels: true });
+    setFact('rFact', q.why);
+    sndGood();
+    $('srStatus').textContent = 'Correct! ' + q.why;
+    timer = setTimeout(nextRead, 3200);
+  } else {
+    rFirst = false;
+    markWrong(btn);
+    var h = /\+/.test(o) && q.t !== 'split' ? 'Adding the rows and columns does not count every lily pad. Multiply rows times how many in each row.'
+      : q.t === 'split' ? 'Both parts still have ' + q.c + ' in each row. Count the rows above and below the red line.'
+      : q.t === 'missing' ? 'Share ' + (q.r * q.c) + ' equally into ' + q.r + ' rows. What number times ' + q.r + ' makes ' + (q.r * q.c) + '?'
+      : 'Count the rows going down, then how many in each row going across.';
+    setFact('rFact', h);
+    sndBad();
+    $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+$('startArt').innerHTML = arraySvg(3, 4, {}).replace('viewBox="0 0 532 492"', 'viewBox="160 165 212 162"').replace('rx="16" fill="#DFF2FA"', 'rx="16" fill="#fff"');
+</script>
+</body>
+</html>
