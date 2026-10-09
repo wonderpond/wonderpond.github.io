@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color mix pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Mix red, yellow, and blue paint to make secondary colors, add white and black for tints and shades, and sort warm and cool colors. A free art game for grades K to 3 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.easel{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap}
+.canvas{background:#fff;border-radius:24px;padding:10px;box-shadow:0 8px 0 rgba(18,64,58,.15)}
+.canvas svg{display:block;height:min(36vh,280px);width:auto}
+.bowl{display:flex;flex-direction:column;align-items:center;gap:6px}
+.bowl svg{width:150px;height:110px}
+.bowl b{font-family:"Baloo 2",sans-serif;color:#0F5A50;font-size:1.1rem}
+.paints{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.paint{border:none;cursor:pointer;background:#fff;border-radius:18px;padding:6px 10px 8px;min-width:86px;box-shadow:0 4px 0 rgba(18,64,58,.2);transition:transform .12s ease}
+.paint i{display:block;width:52px;height:52px;border-radius:50%;margin:0 auto 4px;border:3px solid rgba(0,0,0,.12)}
+.paint b{font-family:"Baloo 2",sans-serif;font-size:1rem;color:#12403A}
+.paint:hover:enabled{transform:translateY(-3px)}
+.paint.on{box-shadow:0 0 0 4px #F5C84C,0 4px 0 rgba(18,64,58,.2)}
+.paint:disabled{opacity:.4;cursor:default}
+.swatch{width:min(50vw,220px);height:min(30vh,170px);border-radius:24px;margin:0 auto 12px;box-shadow:0 8px 0 rgba(18,64,58,.15);border:6px solid #fff}
+.ans.temp{min-width:180px}
+.ans.temp svg{display:block;width:60px;height:40px;margin:0 auto}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:240px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Color mix pond</h1>
+      <p class="sub">Pablo the painter frog only has a few paints. Mix them to make every color in the pond!</p>
+      <span class="choose-label" id="levelLabel">Pick your colors</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Primary colors<small>red, yellow, blue</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Add white and black<small>light and dark colors too</small></button>
+      </div>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startMix()">Mix the paint</button>
+        <button class="big-btn alt" onclick="startTemp()">Warm or cool?</button>
+      </div>
+      <p class="note">Mix the paint: pick two paints to mix the color Pablo needs, and watch the picture fill in. Red, yellow, and blue are primary colors. Mixing two of them makes a secondary color. Warm or cool: sort colors that feel warm like the sun, or cool like the water. Grades K to 3.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="mixScreen">
+    <div class="hud"><span class="chip" id="mRound">Painting 1 of 8</span><span class="chip" id="mScore">First try 0</span></div>
+    <p class="prompt" id="mPrompt">Pablo needs orange</p>
+    <div class="easel">
+      <div class="canvas" id="canvas"></div>
+      <div class="bowl"><span id="bowl"></span><b id="bowlName">Pick two paints</b></div>
+    </div>
+    <div class="paints" id="paints" role="group" aria-label="Paints"></div>
+    <p class="fact hidden" id="mFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="tempScreen">
+    <div class="hud"><span class="chip" id="tRound">Color 1 of 10</span><span class="chip" id="tScore">First try 0</span></div>
+    <p class="prompt" id="tPrompt">Is this a warm color or a cool color?</p>
+    <div class="swatch" id="swatch"></div>
+    <div class="answers" id="tAnswers" role="group" aria-label="Warm or cool"></div>
+    <p class="fact hidden" id="tFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'mix';
+function playAgain(){ if (lastMode === 'mix') startMix(); else startTemp(); }
+var PAINT = { red: ['Red', '#E0362B'], yellow: ['Yellow', '#F7CF2E'], blue: ['Blue', '#2560C9'], white: ['White', '#FFFFFF'], black: ['Black', '#222222'] };
+/* Two paints mixed together. Keys are sorted names joined with + */
+var MIX = {
+  'red+yellow': ['orange', 'Orange', '#F28B1E'], 'blue+yellow': ['green', 'Green', '#3D9A3A'], 'blue+red': ['purple', 'Purple', '#7A3FA0'],
+  'red+white': ['pink', 'Pink', '#F4A0B4'], 'blue+white': ['lightblue', 'Light blue', '#8EC3F0'], 'black+white': ['gray', 'Gray', '#9A9A9A'],
+  'black+red': ['darkred', 'Dark red', '#7A1C17'], 'black+blue': ['navy', 'Dark blue', '#152F66'], 'white+yellow': ['lightyellow', 'Light yellow', '#FBE89A'],
+  'black+yellow': ['olive', 'Olive green', '#6E6A1A']
+};
+function mixOf(a, b){ return MIX[[a, b].sort().join('+')]; }
+var TARGETS = [
+  { c: 'orange', pic: 'pumpkin', name: 'the pumpkin' }, { c: 'green', pic: 'frog', name: 'Hop the frog' }, { c: 'purple', pic: 'flower', name: 'the flower' },
+  { c: 'orange', pic: 'fish', name: 'the goldfish' }, { c: 'green', pic: 'leaf', name: 'the lily pad' }, { c: 'purple', pic: 'grapes', name: 'the grapes' },
+  { c: 'pink', pic: 'flower', name: 'the flower', lv: 1 }, { c: 'lightblue', pic: 'sky', name: 'the sky', lv: 1 }, { c: 'gray', pic: 'rock', name: 'the rock', lv: 1 },
+  { c: 'navy', pic: 'night', name: 'the night sky', lv: 1 }, { c: 'darkred', pic: 'apple', name: 'the apple', lv: 1 }, { c: 'lightyellow', pic: 'sun', name: 'the sunny sky', lv: 1 }
+];
+function colorHex(c){ for (var k in MIX) if (MIX[k][0] === c) return MIX[k][2]; return '#ccc'; }
+function colorName(c){ for (var k in MIX) if (MIX[k][0] === c) return MIX[k][1]; return c; }
+function recipe(c){ for (var k in MIX) if (MIX[k][0] === c) return k.split('+'); }
+
+function picSvg(pic, fill){
+  var f = fill || '#fff', o = 'stroke="#33625C" stroke-width="4" stroke-linejoin="round"';
+  var inner = {
+    pumpkin: '<ellipse cx="100" cy="120" rx="70" ry="56" fill="' + f + '" ' + o + '/><path d="M100 64 V176 M66 70 Q56 120 66 170 M134 70 Q144 120 134 170" fill="none" ' + o + '/><path d="M100 64 Q100 44 114 36" fill="none" stroke="#3F9457" stroke-width="7" stroke-linecap="round"/>',
+    frog: '<ellipse cx="100" cy="130" rx="66" ry="46" fill="' + f + '" ' + o + '/><circle cx="74" cy="80" r="22" fill="' + f + '" ' + o + '/><circle cx="126" cy="80" r="22" fill="' + f + '" ' + o + '/><circle cx="74" cy="80" r="11" fill="#fff" ' + o + '/><circle cx="126" cy="80" r="11" fill="#fff" ' + o + '/><circle cx="76" cy="82" r="5" fill="#22303B"/><circle cx="128" cy="82" r="5" fill="#22303B"/><path d="M78 140 Q100 156 122 140" fill="none" ' + o + '/>',
+    flower: '<path d="M100 120 V190" stroke="#3F9457" stroke-width="7"/>' + [0, 72, 144, 216, 288].map(function(a){ var r = a * Math.PI / 180; return '<ellipse cx="' + (100 + 34 * Math.cos(r)).toFixed(1) + '" cy="' + (90 + 34 * Math.sin(r)).toFixed(1) + '" rx="26" ry="18" transform="rotate(' + a + ' ' + (100 + 34 * Math.cos(r)).toFixed(1) + ' ' + (90 + 34 * Math.sin(r)).toFixed(1) + ')" fill="' + f + '" ' + o + '/>'; }).join('') + '<circle cx="100" cy="90" r="18" fill="#F5C84C" ' + o + '/>',
+    fish: '<path d="M150 110 L190 80 L186 110 L190 140Z" fill="' + f + '" ' + o + '/><ellipse cx="96" cy="110" rx="62" ry="40" fill="' + f + '" ' + o + '/><circle cx="62" cy="100" r="7" fill="#22303B"/>',
+    leaf: '<path d="M100 104 L186 70 A88 66 0 1 1 168 50Z" fill="' + f + '" ' + o + '/><path d="M100 104 L40 80 M100 104 L60 160 M100 104 L150 168" stroke="#33625C" stroke-width="3" fill="none"/>',
+    grapes: '<path d="M100 40 Q104 26 120 22" fill="none" stroke="#3F9457" stroke-width="6"/>' + [[100,60],[78,72],[122,72],[88,96],[112,96],[66,96],[134,96],[100,120],[78,122],[122,122],[90,146],[110,146],[100,170]].map(function(p){ return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="16" fill="' + f + '" ' + o + '/>'; }).join(''),
+    sky: '<rect x="20" y="20" width="160" height="160" rx="14" fill="' + f + '" ' + o + '/><path d="M50 70 Q50 54 68 56 Q76 42 92 48 Q110 44 112 60 Q126 62 124 74Z" fill="#fff" ' + o + '/><path d="M20 150 Q100 130 180 150 V180 H20Z" fill="#9CCB74" ' + o + '/>',
+    rock: '<path d="M30 150 Q20 90 70 72 Q110 54 150 76 Q190 100 176 150 Q170 172 130 172 H70 Q34 172 30 150Z" fill="' + f + '" ' + o + '/><path d="M70 100 Q90 92 104 102 M120 128 Q140 124 150 134" fill="none" ' + o + '/>',
+    night: '<rect x="20" y="20" width="160" height="160" rx="14" fill="' + f + '" ' + o + '/><path d="M130 50 A26 26 0 1 0 150 92 A20 20 0 1 1 130 50Z" fill="#F2E9C9"/><circle cx="60" cy="60" r="3" fill="#fff"/><circle cx="84" cy="100" r="2.4" fill="#fff"/><circle cx="50" cy="130" r="2.6" fill="#fff"/>',
+    apple: '<path d="M100 66 Q86 48 70 54 Q40 64 44 110 Q48 160 84 176 Q96 182 100 174 Q104 182 116 176 Q152 160 156 110 Q160 64 130 54 Q114 48 100 66Z" fill="' + f + '" ' + o + '/><path d="M100 66 Q102 48 112 40" fill="none" stroke="#6B4A2F" stroke-width="6" stroke-linecap="round"/><path d="M110 50 Q126 34 142 44 Q128 58 110 50Z" fill="#4FB06A"/>',
+    sun: '<rect x="20" y="20" width="160" height="160" rx="14" fill="' + f + '" ' + o + '/><circle cx="100" cy="100" r="34" fill="#F5C84C" stroke="#E0A92F" stroke-width="4"/>'
+  }[pic];
+  return '<svg viewBox="0 0 200 200" aria-hidden="true">' + inner + '</svg>';
+}
+function bowlSvg(fill){ return '<svg viewBox="0 0 150 110" aria-hidden="true"><ellipse cx="75" cy="40" rx="64" ry="16" fill="' + (fill || '#F2F8F6') + '"/><path d="M11 40 Q14 104 75 104 Q136 104 139 40" fill="#fff" stroke="#9AA3A8" stroke-width="4"/><ellipse cx="75" cy="40" rx="64" ry="16" fill="none" stroke="#9AA3A8" stroke-width="4"/></svg>'; }
+
+/* ---------- Mix the paint ---------- */
+var ROUNDS = 8, deck = [], round = 0, score = 0, cur = null, picked = [], firstTry = true, busy = false;
+function paintKeys(){ return level === 0 ? ['red', 'yellow', 'blue'] : ['red', 'yellow', 'blue', 'white', 'black']; }
+function startMix(){
+  lastMode = 'mix';
+  var t = TARGETS.filter(function(x){ return level === 1 || !x.lv; });
+  if (level === 1) t = shuffle(TARGETS.filter(function(x){ return x.lv; })).slice(0, 5).concat(shuffle(TARGETS.filter(function(x){ return !x.lv; })).slice(0, 3));
+  deck = shuffle(t).concat(shuffle(t)).slice(0, ROUNDS);
+  round = 0; score = 0; showOnly('mixScreen'); nextMix();
+}
+function nextMix(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 7 ? 'Master painter!' : score >= 5 ? 'Great mixing!' : 'Keep mixing!', 'You mixed ' + score + ' of ' + ROUNDS + ' colors on the first try.', score >= 7 ? 3 : score >= 5 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1]; picked = [];
+  $('mRound').textContent = 'Painting ' + round + ' of ' + ROUNDS;
+  $('mScore').textContent = 'First try ' + score;
+  $('mPrompt').innerHTML = 'Pablo needs <b style="color:' + colorHex(cur.c) + ';text-shadow:0 0 2px #fff">' + colorName(cur.c).toLowerCase() + '</b> for ' + cur.name;
+  $('canvas').innerHTML = picSvg(cur.pic, null);
+  hideFact('mFact');
+  drawPaints();
+  $('srStatus').textContent = 'Mix ' + colorName(cur.c).toLowerCase() + ' for ' + cur.name + '. Pick two paints.';
+}
+function drawPaints(){
+  var mixed = picked.length === 2 ? mixOf(picked[0], picked[1]) : null;
+  $('bowl').innerHTML = bowlSvg(picked.length === 1 ? PAINT[picked[0]][1] : mixed ? mixed[2] : null);
+  $('bowlName').textContent = picked.length === 0 ? 'Pick two paints' : picked.length === 1 ? PAINT[picked[0]][0] + ' + ?' : PAINT[picked[0]][0] + ' + ' + PAINT[picked[1]][0] + ' = ' + (mixed ? mixed[1] : '?');
+  var box = $('paints'); box.innerHTML = '';
+  paintKeys().forEach(function(k){
+    var b = document.createElement('button');
+    b.className = 'paint pickable' + (picked.indexOf(k) !== -1 ? ' on' : '');
+    b.innerHTML = '<i style="background:' + PAINT[k][1] + '"></i><b>' + PAINT[k][0] + '</b>';
+    b.disabled = busy || picked.indexOf(k) !== -1;
+    b.setAttribute('aria-label', PAINT[k][0] + ' paint');
+    b.onclick = function(){ pickPaint(k); };
+    box.appendChild(b);
+  });
+}
+function pickPaint(k){
+  if (busy || picked.length >= 2) return;
+  picked.push(k); sndPlop(); drawPaints();
+  if (picked.length === 2) checkMix();
+}
+function checkMix(){
+  var m = mixOf(picked[0], picked[1]);
+  busy = true;
+  if (m && m[0] === cur.c) {
+    if (firstTry) score++;
+    $('mScore').textContent = 'First try ' + score;
+    $('canvas').innerHTML = picSvg(cur.pic, m[2]);
+    var r = recipe(cur.c);
+    var sec = ['orange', 'green', 'purple'].indexOf(cur.c) !== -1;
+    var msg = PAINT[r[0]][0] + ' + ' + PAINT[r[1]][0] + ' = ' + m[1] + '! ' + (sec ? m[1] + ' is a secondary color, made from two primary colors.' : (r.indexOf('white') !== -1 ? 'Adding white makes a color lighter. That is called a tint.' : 'Adding black makes a color darker. That is called a shade.'));
+    drawPaints(); setFact('mFact', msg); sndGood(); $('srStatus').textContent = 'Correct! ' + msg;
+    timer = setTimeout(nextMix, 3200);
+  } else {
+    firstTry = false;
+    var got = m ? m[1] : 'a muddy color';
+    var r2 = recipe(cur.c);
+    var h = 'You made ' + got.toLowerCase() + '. ' + colorName(cur.c) + ' needs ' + (picked.indexOf(r2[0]) !== -1 || picked.indexOf(r2[1]) !== -1 ? 'one of those, but a different partner.' : 'two different paints.') + ' Try again!';
+    setFact('mFact', h); sndBad(); $('srStatus').textContent = h;
+    timer = setTimeout(function(){ busy = false; picked = []; drawPaints(); }, 1600);
+  }
+}
+
+/* ---------- Warm or cool ---------- */
+var TEMP = [
+  ['#E0362B', 'Red', 'warm', 'like fire and strawberries'], ['#F28B1E', 'Orange', 'warm', 'like a campfire and pumpkins'], ['#F7CF2E', 'Yellow', 'warm', 'like the sun'],
+  ['#F4A0B4', 'Pink', 'warm', 'like a warm sunset'], ['#7A1C17', 'Dark red', 'warm', 'like hot cocoa and bricks'],
+  ['#2560C9', 'Blue', 'cool', 'like the ocean and the sky'], ['#3D9A3A', 'Green', 'cool', 'like grass and leaves in the shade'], ['#7A3FA0', 'Purple', 'cool', 'like a cool evening sky'],
+  ['#8EC3F0', 'Light blue', 'cool', 'like ice and cold water'], ['#152F66', 'Dark blue', 'cool', 'like deep water at night'], ['#53B7A8', 'Teal', 'cool', 'like the pond water']
+];
+var tdeck = [], tq = null;
+function startTemp(){
+  lastMode = 'temp';
+  tdeck = shuffle(shuffle(TEMP.filter(function(t){ return t[2] === 'warm'; })).slice(0, 5).concat(shuffle(TEMP.filter(function(t){ return t[2] === 'cool'; })).slice(0, 5)));
+  round = 0; score = 0; showOnly('tempScreen'); nextTemp();
+}
+function nextTemp(){
+  round++;
+  if (round > 10) { showEnd(score >= 9 ? 'Color expert!' : score >= 7 ? 'Great sorting!' : 'Keep looking!', 'You sorted ' + score + ' of 10 colors on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; tq = tdeck[round - 1];
+  $('tRound').textContent = 'Color ' + round + ' of 10';
+  $('tScore').textContent = 'First try ' + score;
+  $('swatch').style.background = tq[0];
+  $('tPrompt').textContent = 'Is ' + tq[1].toLowerCase() + ' a warm color or a cool color?';
+  hideFact('tFact');
+  answerButtons('tAnswers', [
+    { key: 'warm', cls: 'temp', html: '<svg viewBox="0 0 60 40" aria-hidden="true"><circle cx="30" cy="20" r="11" fill="#F5C84C"/><path d="M30 2 V6 M30 34 V38 M12 20 H16 M44 20 H48" stroke="#F28B1E" stroke-width="3" stroke-linecap="round"/></svg>Warm<small>reminds us of sun and fire</small>' },
+    { key: 'cool', cls: 'temp', html: '<svg viewBox="0 0 60 40" aria-hidden="true"><path d="M6 26 Q18 18 30 26 T54 26" stroke="#2560C9" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M30 4 V18 M24 8 L36 14 M36 8 L24 14" stroke="#8EC3F0" stroke-width="3" stroke-linecap="round"/></svg>Cool<small>reminds us of water and ice</small>' }
+  ], pickTemp);
+  $('srStatus').textContent = $('tPrompt').textContent;
+}
+function pickTemp(btn, k){
+  if (busy) return;
+  if (k === tq[2]) {
+    busy = true; if (firstTry) score++;
+    $('tScore').textContent = 'First try ' + score;
+    markRight('tAnswers', btn);
+    var msg = tq[1] + ' is a ' + k + ' color, ' + tq[3] + '.';
+    setFact('tFact', msg); sndGood(); $('srStatus').textContent = 'Correct! ' + msg;
+    timer = setTimeout(nextTemp, 2600);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = 'Warm colors are reds, oranges, and yellows. Cool colors are blues, greens, and purples.';
+    setFact('tFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+$('startArt').innerHTML = '<svg viewBox="0 0 240 90" aria-hidden="true"><circle cx="60" cy="40" r="28" fill="#E0362B" opacity=".85"/><circle cx="96" cy="40" r="28" fill="#F7CF2E" opacity=".85"/><circle cx="78" cy="68" r="28" fill="#2560C9" opacity=".75"/><path d="M130 50 h20 M144 44 l7 6 l-7 6" stroke="#0F5A50" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="186" cy="30" r="14" fill="#F28B1E"/><circle cx="210" cy="52" r="14" fill="#3D9A3A"/><circle cx="182" cy="70" r="14" fill="#7A3FA0"/></svg>';
+</script>
+</body>
+</html>

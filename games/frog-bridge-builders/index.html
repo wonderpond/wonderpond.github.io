@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frog bridge builders - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Be an engineer! Design a bridge from reeds, wood, stone, and posts that carries the frogs across the creek and stays inside the budget. Test it, see where it breaks, and improve your design. A free engineering design game for grades 2 to 5 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.site{background:#fff;border-radius:24px;padding:8px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%}
+.site svg{display:block;height:min(28vh,220px);width:auto;max-width:94vw}
+.goal{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.goal span{font-family:"Baloo 2",sans-serif;font-weight:700;background:#fff;border-radius:999px;padding:4px 16px;color:#0F5A50}
+.goal .over{background:#FCE3E3;color:#9B2B2A}
+.design{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px;align-items:stretch}
+.slotbox{background:rgba(255,255,255,.9);border-radius:16px;padding:6px 8px}
+.slotbox b{display:block;font-family:"Baloo 2",sans-serif;font-size:.95rem;color:#0F5A50}
+.seg{display:flex;gap:4px;margin-top:4px}
+.seg button{border:none;cursor:pointer;border-radius:10px;padding:6px 8px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.9rem;background:#F2F8F6;color:#33625C}
+.seg button[aria-pressed="true"]{background:#1F6E68;color:#fff}
+.seg button:disabled{cursor:default;opacity:.6}
+.legend{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;font-weight:700;font-size:.8rem;color:#33625C;margin-top:6px}
+.legend span{background:rgba(255,255,255,.85);border-radius:999px;padding:2px 12px}
+.ctl{margin-top:8px}
+.frogs{transition:transform 1.6s linear}
+.process{display:flex;gap:6px;justify-content:center;margin-bottom:6px;flex-wrap:wrap}
+.process span{font-weight:700;font-size:.85rem;border-radius:999px;padding:2px 10px;background:rgba(255,255,255,.6);color:#33625C}
+.process span.on{background:#F5C84C;color:#5A4300}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:280px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Frog bridge builders</h1>
+      <p class="sub">The frogs need to cross the creek, and you are the engineer! Design a bridge that is strong enough and stays inside the budget.</p>
+      <span class="choose-label" id="levelLabel">Pick your challenge</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Junior engineer<small>plenty of shells, grades 2 and 3</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Chief engineer<small>tight budgets, grades 4 and 5</small></button>
+      </div>
+      <div class="row"><button class="big-btn" onclick="startBuild()">Start designing</button></div>
+      <p class="note">Engineers follow a cycle: plan, build, test, and improve. Pick a material for each of the four planks and decide where to put posts. Then press Test. If the bridge breaks, look at where it broke and make it better. Every test teaches you something!</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="buildScreen">
+    <div class="hud"><span class="chip" id="bRound">Challenge 1 of 6</span><span class="chip" id="bTests">Tests 0</span></div>
+    <div class="process" aria-hidden="true"><span id="p1" class="on">1. Plan</span><span id="p2">2. Build</span><span id="p3">3. Test</span><span id="p4">4. Improve</span></div>
+    <p class="prompt" id="bPrompt" style="margin:2px 0 6px">Get 4 frogs across</p>
+    <div class="goal" id="goal"></div>
+    <div><div class="site" id="site"></div></div>
+    <div class="design" id="design"></div>
+    <div class="legend" aria-hidden="true"><span>Reed: 1 shell, holds 3</span><span>Wood: 3 shells, holds 6</span><span>Stone: 6 shells, holds 12</span><span>Posts 1 and 3: 2 shells</span><span>Post 2 (deep water): 8 shells</span></div>
+    <div class="ctl"><button class="big-btn" id="testBtn" onclick="test()">Test the bridge</button></div>
+    <p class="fact hidden" id="bFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'build';
+function playAgain(){ startBuild(); }
+var MAT = { reed: { name: 'Reed', cost: 1, hold: 3, col: '#C9B46A' }, wood: { name: 'Wood', cost: 3, hold: 6, col: '#B0864F' }, stone: { name: 'Stone', cost: 6, hold: 12, col: '#9AA3A8' } };
+/* the middle of the creek is deep, so a post there costs much more */
+var POSTC = [2, 8, 2], KEYS = ['reed', 'wood', 'stone'];
+/* A plank holds its full load only when both of its ends rest on a bank or a post. Otherwise it holds half. */
+function strengths(planks, posts){
+  return planks.map(function(m, i){
+    var left = i === 0 || posts[i - 1], right = i === 3 || posts[i];
+    return left && right ? MAT[m].hold : Math.floor(MAT[m].hold / 2);
+  });
+}
+function cost(planks, posts){ return planks.reduce(function(t, m){ return t + MAT[m].cost; }, 0) + posts.reduce(function(t, p, i){ return t + (p ? POSTC[i] : 0); }, 0); }
+function minCost(load){
+  var best = Infinity;
+  for (var a = 0; a < 81; a++) for (var p = 0; p < 8; p++) {
+    var planks = [0, 1, 2, 3].map(function(i){ return KEYS[Math.floor(a / Math.pow(3, i)) % 3]; });
+    var posts = [p & 1, p & 2, p & 4].map(Boolean);
+    if (strengths(planks, posts).every(function(s){ return s >= load; })) best = Math.min(best, cost(planks, posts));
+  }
+  return best;
+}
+var LOADS = [[2, 3, 4, 5, 6, 7], [3, 4, 5, 6, 7, 8]];
+var SLACK = [[8, 6, 6, 5, 5, 4], [3, 2, 1, 1, 0, 0]];
+var ROUNDS = 6, round = 0, tests = 0, totalTests = 0, ch = null, planks = [], posts = [], busy = false;
+function startBuild(){ lastMode = 'build'; round = 0; totalTests = 0; showOnly('buildScreen'); nextChallenge(); }
+function nextChallenge(){
+  round++;
+  if (round > ROUNDS) { showEnd('Bridge engineer!', 'You built all ' + ROUNDS + ' bridges using ' + totalTests + ' tests. Engineers test, learn, and improve, just like you did.', 3); return; }
+  var L = LOADS[level][round - 1], mc = minCost(L);
+  ch = { load: L, budget: mc + SLACK[level][round - 1], min: mc };
+  planks = ['reed', 'reed', 'reed', 'reed']; posts = [false, false, false]; tests = 0; busy = false;
+  $('bRound').textContent = 'Challenge ' + round + ' of ' + ROUNDS;
+  $('bPrompt').textContent = 'Get ' + L + ' frogs across the creek';
+  stage(1);
+  hideFact('bFact');
+  draw();
+  $('srStatus').textContent = 'Design a bridge that holds ' + L + ' frogs and costs ' + ch.budget + ' shells or less. Reed holds 3 and costs 1. Wood holds 6 and costs 3. Stone holds 12 and costs 6. Posts 1 and 3 cost 2, and post 2 in the deep middle costs 8. A plank holds half as much unless both of its ends rest on a bank or a post.';
+}
+function stage(n){ for (var i = 1; i <= 4; i++) $('p' + i).classList.toggle('on', i === n); }
+function siteSvg(opts){
+  opts = opts || {};
+  var s = '<svg viewBox="0 0 640 260" aria-hidden="true"><rect width="640" height="260" rx="16" fill="#CFE6F7"/><path d="M0 150 H90 V260 H0Z M550 150 H640 V260 H550Z" fill="#9CCB74"/><rect x="90" y="190" width="460" height="70" fill="#6BB6DB"/><rect x="255" y="190" width="130" height="70" fill="#4A93C0"/><text x="320" y="250" font-family="Baloo 2,sans-serif" font-weight="700" font-size="13" fill="#fff" text-anchor="middle" opacity=".85">deep water</text><path d="M100 210 Q140 202 180 210 T260 210 T340 210 T420 210 T500 210" stroke="#fff" stroke-width="3" fill="none" opacity=".6"/>';
+  var W = 115;
+  posts.forEach(function(p, i){ if (p) s += '<rect x="' + (90 + (i + 1) * W - 8) + '" y="150" width="16" height="110" fill="#8A6A45"/>'; else s += '<line x1="' + (90 + (i + 1) * W) + '" y1="160" x2="' + (90 + (i + 1) * W) + '" y2="250" stroke="#fff" stroke-width="2" stroke-dasharray="5 6" opacity=".7"/>'; });
+  planks.forEach(function(m, i){
+    var x = 90 + i * W, broken = opts.broke === i;
+    if (broken) s += '<path d="M' + (x + 2) + ' 150 L' + (x + W / 2 - 4) + ' 176 L' + (x + W / 2 - 4) + ' 186 L' + (x + 2) + ' 162Z M' + (x + W - 2) + ' 150 L' + (x + W / 2 + 4) + ' 180 L' + (x + W / 2 + 4) + ' 190 L' + (x + W - 2) + ' 162Z" fill="' + MAT[m].col + '"/>';
+    else s += '<rect x="' + (x + 2) + '" y="146" width="' + (W - 4) + '" height="14" rx="3" fill="' + MAT[m].col + '" stroke="rgba(0,0,0,.2)"/>';
+    if (opts.show) s += '<text x="' + (x + W / 2) + '" y="138" font-family="Baloo 2,sans-serif" font-weight="700" font-size="15" fill="' + (broken ? '#E24B4A' : '#0F5A50') + '" text-anchor="middle">holds ' + opts.show[i] + '</text>';
+    s += '<text x="' + (x + W / 2) + '" y="182" font-family="Baloo 2,sans-serif" font-weight="700" font-size="13" fill="#0F5A50" text-anchor="middle" opacity=".8">' + (i + 1) + '</text>';
+  });
+  var fx = opts.fx != null ? opts.fx : 20, n = ch.load, fs = '';
+  for (var k = 0; k < n; k++) fs += '<g transform="translate(' + ((k % 5) * 13) + ' ' + (-Math.floor(k / 5) * 12) + ') scale(.42)"><ellipse cx="0" cy="0" rx="17" ry="13" fill="#4FB06A"/><circle cx="-6" cy="-14" r="6" fill="#4FB06A"/><circle cx="6" cy="-14" r="6" fill="#4FB06A"/><circle cx="-6" cy="-14" r="3.4" fill="#fff"/><circle cx="6" cy="-14" r="3.4" fill="#fff"/></g>';
+  s += '<g class="frogs" id="frogs" style="transform:translate(' + fx + 'px,' + (opts.fy || 140) + 'px)">' + fs + '</g>';
+  if (opts.splash != null) s += '<g transform="translate(' + opts.splash + ' 200)"><circle r="18" fill="none" stroke="#fff" stroke-width="3"/><circle r="30" fill="none" stroke="#fff" stroke-width="2" opacity=".6"/></g>';
+  return s + '</svg>';
+}
+function draw(){
+  var c = cost(planks, posts);
+  $('goal').innerHTML = '<span>Frogs to carry: ' + ch.load + '</span><span>Budget: ' + ch.budget + ' shells</span><span class="' + (c > ch.budget ? 'over' : '') + '">Cost so far: ' + c + '</span>';
+  $('site').innerHTML = siteSvg();
+  var html = '';
+  planks.forEach(function(m, i){
+    html += '<div class="slotbox"><b>Plank ' + (i + 1) + '</b><div class="seg" role="group" aria-label="Plank ' + (i + 1) + ' material">' + KEYS.map(function(k){ return '<button aria-pressed="' + (m === k) + '"' + (busy ? ' disabled' : '') + ' onclick="setPlank(' + i + ',\'' + k + '\')">' + MAT[k].name + '</button>'; }).join('') + '</div></div>';
+  });
+  html += '<div class="slotbox"><b>Posts under the joints</b><div class="seg" role="group" aria-label="Posts">' + posts.map(function(p, i){ return '<button aria-pressed="' + p + '"' + (busy ? ' disabled' : '') + ' onclick="togglePost(' + i + ')">Post ' + (i + 1) + ' (' + POSTC[i] + ')</button>'; }).join('') + '</div></div>';
+  $('design').innerHTML = html;
+  $('testBtn').disabled = busy;
+}
+function setPlank(i, k){ if (busy) return; planks[i] = k; stage(tests ? 4 : 2); sndPlop(); hideFact('bFact'); draw(); }
+function togglePost(i){ if (busy) return; posts[i] = !posts[i]; stage(tests ? 4 : 2); sndPlop(); hideFact('bFact'); draw(); }
+function test(){
+  if (busy) return;
+  var c = cost(planks, posts);
+  if (c > ch.budget) { setFact('bFact', 'This design costs ' + c + ' shells, but the budget is ' + ch.budget + '. Find a cheaper way before you test.'); sndBad(); return; }
+  busy = true; tests++; totalTests++; stage(3);
+  $('bTests').textContent = 'Tests ' + totalTests;
+  draw();
+  var st = strengths(planks, posts), broke = st.findIndex(function(s){ return s < ch.load; });
+  var endX = broke === -1 ? 570 : 90 + broke * 115 + 40;
+  setTimeout(function(){ var f = $('frogs'); if (f) f.style.transform = 'translate(' + endX + 'px,140px)'; beep([330, 392], .2, 'triangle'); }, 60);
+  setTimeout(function(){
+    if (broke === -1) {
+      $('site').innerHTML = siteSvg({ fx: 570, show: st });
+      var msg = 'All ' + ch.load + ' frogs made it across! Your bridge cost ' + c + ' of ' + ch.budget + ' shells.' + (c === ch.min ? ' That is the cheapest design possible. Amazing engineering!' : '') + (tests === 1 ? ' It worked on the first test!' : ' It took ' + tests + ' tests to get it right, and that is how real engineers work.');
+      setFact('bFact', msg); sndGood(); $('srStatus').textContent = msg;
+      timer = setTimeout(nextChallenge, 4200);
+    } else {
+      $('site').innerHTML = siteSvg({ broke: broke, show: st, fx: endX, fy: 200, splash: endX + 20 });
+      beep([200, 140], .18);
+      var half = st[broke] < MAT[planks[broke]].hold;
+      var msg2 = 'Splash! Plank ' + (broke + 1) + ' broke. It could only hold ' + st[broke] + ' frogs, but ' + ch.load + ' were crossing. ' +
+        (half ? 'This plank has no post under one of its ends, so it only holds half. Try adding a post, or a stronger material.' : 'Try a stronger material for that plank.') + ' (The frogs are fine. They love swimming!)';
+      setFact('bFact', msg2); $('srStatus').textContent = msg2;
+      stage(4);
+      timer = setTimeout(function(){ busy = false; draw(); }, 1800);
+    }
+  }, 1800);
+}
+
+$('startArt').innerHTML = '<svg viewBox="0 0 280 100" aria-hidden="true"><rect width="280" height="100" rx="14" fill="#CFE6F7"/><path d="M0 56 H40 V100 H0Z M240 56 H280 V100 H240Z" fill="#9CCB74"/><rect x="40" y="72" width="200" height="28" fill="#6BB6DB"/><rect x="88" y="56" width="8" height="44" fill="#8A6A45"/><rect x="186" y="56" width="8" height="44" fill="#8A6A45"/><rect x="40" y="50" width="50" height="8" fill="#C9B46A"/><rect x="90" y="50" width="50" height="8" fill="#B0864F"/><rect x="140" y="50" width="50" height="8" fill="#B0864F"/><rect x="190" y="50" width="50" height="8" fill="#C9B46A"/><g transform="translate(130 40) scale(.6)"><ellipse cx="0" cy="0" rx="17" ry="13" fill="#4FB06A"/><circle cx="-6" cy="-14" r="6" fill="#4FB06A"/><circle cx="6" cy="-14" r="6" fill="#4FB06A"/><circle cx="-6" cy="-14" r="3.4" fill="#fff"/><circle cx="6" cy="-14" r="3.4" fill="#fff"/></g></svg>';
+</script>
+</body>
+</html>

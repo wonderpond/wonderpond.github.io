@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond plate - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Sort foods into the five food groups (fruits, vegetables, grains, protein, and dairy) to build a balanced plate, and learn the difference between everyday foods and sometimes treats. A free health game for grades K to 3 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.food{background:#fff;border-radius:24px;padding:10px 16px 12px;width:clamp(180px,26vw,240px);margin:0 auto 12px;box-shadow:0 8px 0 rgba(18,64,58,.15)}
+.food svg{display:block;width:100%;height:auto;max-height:150px}
+.food b{font-family:"Baloo 2",sans-serif;font-size:1.4rem;color:#12403A}
+.plate-row{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap}
+.plate svg{width:min(44vw,250px);height:auto;display:block}
+.ans.grp{min-width:120px;padding:8px 12px}
+.ans.grp i{display:block;width:28px;height:28px;border-radius:50%;margin:0 auto 4px}
+.say{border:none;cursor:pointer;background:#E6F0FA;color:#2B6CB0;border-radius:999px;padding:3px 12px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.95rem;margin-left:8px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:200px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond plate</h1>
+      <p class="sub">Hop needs lots of energy for jumping! Help fill his plate with foods from every group.</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startGroups()">Fill the plate</button>
+        <button class="big-btn alt" onclick="startEvery()">Everyday or sometimes?</button>
+      </div>
+      <p class="note">Fill the plate: put each food in its food group: fruits, vegetables, grains, protein, or dairy. Fill every part of the plate to make a balanced meal. Everyday or sometimes: some foods help us grow strong every day, and some are treats we enjoy once in a while. Grades K to 3.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="groupScreen">
+    <div class="hud"><span class="chip" id="gRound">Food 1 of 10</span><span class="chip" id="gScore">First try 0</span></div>
+    <p class="prompt"><span id="gPrompt">Which food group is it?</span><button class="say" onclick="speak($('gPrompt').textContent, true)">Hear it</button></p>
+    <div class="plate-row">
+      <div class="food" id="gFood"></div>
+      <div class="plate" id="plate" aria-hidden="true"></div>
+    </div>
+    <div class="answers" id="gAnswers" style="margin-top:12px" role="group" aria-label="Food groups"></div>
+    <p class="fact hidden" id="gFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="everyScreen">
+    <div class="hud"><span class="chip" id="eRound">Food 1 of 10</span><span class="chip" id="eScore">First try 0</span></div>
+    <p class="prompt"><span id="ePrompt">Everyday food or sometimes food?</span><button class="say" onclick="speak($('ePrompt').textContent, true)">Hear it</button></p>
+    <div class="food" id="eFood"></div>
+    <div class="answers" id="eAnswers" role="group" aria-label="Everyday or sometimes"></div>
+    <p class="fact hidden" id="eFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'groups';
+function playAgain(){ if (lastMode === 'groups') startGroups(); else startEvery(); }
+var enVoice = null;
+function pickVoice(){ if (!window.speechSynthesis) return; var vs = speechSynthesis.getVoices(), us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); }); enVoice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava/i.test(v.name); })[0] || us[0] || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(t, force){ if (!window.speechSynthesis || (!soundOn && !force)) return; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; if (enVoice) u.voice = enVoice; u.rate = .9; speechSynthesis.speak(u); } catch(e) {} }
+function onLeave(){ if (window.speechSynthesis) speechSynthesis.cancel(); }
+
+var GROUPS = {
+  fruit: { name: 'Fruits', col: '#E24B4A', why: 'Fruits grow from flowering plants and are full of vitamins.' },
+  veg: { name: 'Vegetables', col: '#3F9457', why: 'Vegetables are plant parts like leaves, roots, and stems. They help keep your body healthy.' },
+  grain: { name: 'Grains', col: '#C98A3F', why: 'Grains come from plants like wheat, rice, and oats. They give you energy.' },
+  protein: { name: 'Protein', col: '#7B4BA8', why: 'Protein foods help build strong muscles.' },
+  dairy: { name: 'Dairy', col: '#2B6CB0', why: 'Dairy foods come from milk. They help build strong bones and teeth.' }
+};
+var F = {
+  apple: ['An apple', 'fruit', '<path d="M50 30 Q40 18 30 22 Q14 28 16 52 Q18 78 38 88 Q46 92 50 88 Q54 92 62 88 Q82 78 84 52 Q86 28 70 22 Q60 18 50 30Z" fill="#E24B4A"/><path d="M50 30 Q52 18 58 12" stroke="#6B4A2F" stroke-width="4" fill="none"/><path d="M56 20 Q68 10 76 18 Q66 26 56 20Z" fill="#4FB06A"/>'],
+  banana: ['A banana', 'fruit', '<path d="M20 30 Q30 80 80 74 Q88 70 84 64 Q44 66 32 26Z" fill="#F7CF2E" stroke="#C99A17" stroke-width="3"/><path d="M20 30 L24 22" stroke="#6B4A2F" stroke-width="5"/>'],
+  grapes: ['Grapes', 'fruit', [[50,30],[38,40],[62,40],[44,54],[56,54],[50,68],[32,54],[68,54]].map(function(p){ return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="10" fill="#7A3FA0"/>'; }).join('') + '<path d="M50 20 Q52 10 60 8" stroke="#3F9457" stroke-width="4" fill="none"/>'],
+  orange: ['An orange', 'fruit', '<circle cx="50" cy="54" r="32" fill="#F28B1E"/><circle cx="40" cy="44" r="3" fill="#F8B866"/><circle cx="58" cy="60" r="3" fill="#F8B866"/><path d="M50 22 Q56 12 66 16 Q60 26 50 22Z" fill="#4FB06A"/>'],
+  carrot: ['A carrot', 'veg', '<path d="M44 30 L56 30 L52 90 L48 90Z" fill="#F28B1E" transform="rotate(20 50 60)"/><path d="M40 30 Q36 14 44 10 M50 30 Q50 10 56 8 M58 30 Q66 16 70 16" stroke="#3F9457" stroke-width="5" fill="none" stroke-linecap="round" transform="rotate(20 50 60)"/>'],
+  broccoli: ['Broccoli', 'veg', '<rect x="44" y="54" width="12" height="34" rx="5" fill="#8FC06A"/><circle cx="36" cy="44" r="16" fill="#3F9457"/><circle cx="64" cy="44" r="16" fill="#3F9457"/><circle cx="50" cy="30" r="18" fill="#4FA046"/>'],
+  corn: ['Corn', 'veg', '<ellipse cx="50" cy="50" rx="16" ry="34" fill="#F7CF2E"/><path d="M40 30 H60 M38 42 H62 M38 54 H62 M40 66 H60" stroke="#E0A92F" stroke-width="2"/><path d="M34 60 Q20 84 46 88 M66 60 Q80 84 54 88" fill="#4FB06A"/>'],
+  peas: ['Peas', 'veg', '<path d="M14 54 Q50 20 86 54 Q50 76 14 54Z" fill="#4FB06A"/><circle cx="34" cy="52" r="7" fill="#8FC06A"/><circle cx="50" cy="50" r="7" fill="#8FC06A"/><circle cx="66" cy="52" r="7" fill="#8FC06A"/>'],
+  bread: ['Bread', 'grain', '<path d="M18 52 Q14 26 50 26 Q86 26 82 52 V80 H18Z" fill="#D9A25F"/><path d="M22 52 Q20 32 50 32 Q80 32 78 52 V76 H22Z" fill="#F2D3A0"/>'],
+  rice: ['A bowl of rice', 'grain', '<path d="M14 48 H86 Q84 84 50 84 Q16 84 14 48Z" fill="#6BB6DB"/><ellipse cx="50" cy="48" rx="36" ry="14" fill="#fff"/><path d="M30 44 h4 M44 40 h4 M58 46 h4 M66 40 h4" stroke="#DDD" stroke-width="2"/>'],
+  oatmeal: ['Oatmeal', 'grain', '<path d="M14 50 H86 Q84 84 50 84 Q16 84 14 50Z" fill="#F4A0A0"/><ellipse cx="50" cy="50" rx="36" ry="12" fill="#E8D5B0"/><circle cx="40" cy="48" r="4" fill="#7A3FA0"/><circle cx="58" cy="50" r="4" fill="#7A3FA0"/>'],
+  egg: ['An egg', 'protein', '<ellipse cx="50" cy="56" rx="34" ry="26" fill="#fff" stroke="#E4D6BE" stroke-width="3"/><circle cx="50" cy="56" r="13" fill="#F7CF2E"/>'],
+  fish: ['Fish', 'protein', '<path d="M70 50 L90 36 L88 50 L90 64Z" fill="#E9A879"/><ellipse cx="46" cy="50" rx="30" ry="18" fill="#F2B98F"/><circle cx="26" cy="46" r="3" fill="#22303B"/>'],
+  nuts: ['Nuts', 'protein', [[34,44],[54,38],[66,56],[44,62],[30,62],[58,72]].map(function(p){ return '<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="11" ry="7" fill="#C9844A" stroke="#8A5530" stroke-width="2" transform="rotate(25 ' + p[0] + ' ' + p[1] + ')"/>'; }).join('')],
+  chicken: ['Chicken', 'protein', '<path d="M30 30 Q60 18 72 44 Q76 66 54 70 L44 78 Q38 82 34 76 L40 68 Q20 56 30 30Z" fill="#C9844A"/><rect x="34" y="72" width="10" height="16" rx="4" fill="#F4E3C3" transform="rotate(30 39 80)"/>'],
+  milk: ['Milk', 'dairy', '<path d="M32 30 L40 16 H60 L68 30 V88 H32Z" fill="#fff" stroke="#9EC9D9" stroke-width="3"/><rect x="38" y="44" width="24" height="26" rx="4" fill="#6BB6DB"/>'],
+  cheese: ['Cheese', 'dairy', '<path d="M14 70 L86 70 L86 50 L20 30Z" fill="#F7CF2E"/><circle cx="40" cy="56" r="5" fill="#E0A92F"/><circle cx="64" cy="60" r="4" fill="#E0A92F"/>'],
+  yogurt: ['Yogurt', 'dairy', '<path d="M28 36 H72 L66 86 H34Z" fill="#fff" stroke="#9EC9D9" stroke-width="3"/><rect x="24" y="28" width="52" height="10" rx="3" fill="#F4A0B4"/>'],
+  cookie: ['A cookie', 'treat', '<circle cx="50" cy="52" r="32" fill="#D9A25F"/><circle cx="38" cy="44" r="4" fill="#6B4A2F"/><circle cx="58" cy="40" r="4" fill="#6B4A2F"/><circle cx="54" cy="62" r="4" fill="#6B4A2F"/><circle cx="36" cy="62" r="3.4" fill="#6B4A2F"/>'],
+  candy: ['Candy', 'treat', '<path d="M30 50 L12 36 L14 64Z M70 50 L88 36 L86 64Z" fill="#F4A0A0"/><ellipse cx="50" cy="50" rx="22" ry="16" fill="#E24B4A"/>'],
+  chips: ['Chips', 'treat', '<path d="M26 20 H74 L70 88 H30Z" fill="#E24B4A"/><ellipse cx="50" cy="52" rx="14" ry="10" fill="#F7CF2E"/>'],
+  cake: ['Cake', 'treat', '<rect x="20" y="44" width="60" height="40" rx="4" fill="#F4A0B4"/><path d="M20 54 Q30 60 40 54 Q50 60 60 54 Q70 60 80 54" stroke="#fff" stroke-width="4" fill="none"/><rect x="47" y="26" width="6" height="18" fill="#6BB6DB"/><path d="M50 18 Q46 24 50 26 Q54 24 50 18Z" fill="#F5C84C"/>'],
+  donut: ['A donut', 'treat', '<circle cx="50" cy="52" r="32" fill="#D9A25F"/><circle cx="50" cy="52" r="26" fill="#F4A0B4"/><circle cx="50" cy="52" r="10" fill="#fff"/><path d="M34 40 l4 2 M60 36 l3 3 M64 62 l4 1 M38 64 l3 -2" stroke="#6BB6DB" stroke-width="3"/>'],
+  soda: ['Soda pop', 'treat', '<path d="M34 24 H66 L62 88 H38Z" fill="#B5651D"/><rect x="34" y="20" width="32" height="8" fill="#9AA3A8"/><circle cx="46" cy="60" r="3" fill="#fff" opacity=".7"/><circle cx="54" cy="48" r="2.4" fill="#fff" opacity=".7"/>']
+};
+function foodSvg(k){ return '<svg viewBox="0 0 100 100" aria-hidden="true">' + F[k][2] + '</svg>'; }
+
+var filledGroups = {};
+function plateSvg(){
+  var parts = [['fruit', 'M100 100 L100 14 A86 86 0 0 1 182 74Z'], ['veg', 'M100 100 L182 74 A86 86 0 0 1 132 180Z'], ['grain', 'M100 100 L132 180 A86 86 0 0 1 28 150Z'], ['protein', 'M100 100 L28 150 A86 86 0 0 1 100 14Z']];
+  var s = '<svg viewBox="0 0 240 200" aria-hidden="true"><circle cx="100" cy="100" r="92" fill="#fff" stroke="#DCE8E4" stroke-width="5"/>';
+  parts.forEach(function(p){ s += '<path d="' + p[1] + '" fill="' + (filledGroups[p[0]] ? GROUPS[p[0]].col : '#F2F8F6') + '" opacity="' + (filledGroups[p[0]] ? .85 : 1) + '" stroke="#fff" stroke-width="3"/>'; });
+  s += '<circle cx="210" cy="40" r="24" fill="' + (filledGroups.dairy ? GROUPS.dairy.col : '#F2F8F6') + '" stroke="#DCE8E4" stroke-width="3"/>';
+  [['Fruits', 132, 60], ['Veggies', 140, 132], ['Grains', 78, 148], ['Protein', 62, 76], ['Dairy', 210, 44]].forEach(function(l){ s += '<text x="' + l[1] + '" y="' + l[2] + '" font-family="Baloo 2,sans-serif" font-weight="700" font-size="14" fill="#33625C" text-anchor="middle">' + l[0] + '</text>'; });
+  return s + '</svg>';
+}
+
+/* ---------- Fill the plate ---------- */
+var ROUNDS = 10, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false;
+function startGroups(){
+  lastMode = 'groups';
+  var by = {}; Object.keys(F).forEach(function(k){ if (F[k][1] !== 'treat') (by[F[k][1]] = by[F[k][1]] || []).push(k); });
+  deck = shuffle(Object.keys(by).map(function(g){ return shuffle(by[g]).slice(0, 2); }).reduce(function(a, b){ return a.concat(b); }, []));
+  round = 0; score = 0; filledGroups = {};
+  showOnly('groupScreen'); nextGroup();
+}
+function nextGroup(){
+  round++;
+  if (round > ROUNDS) { showEnd('A balanced plate!', 'Hop has fruits, vegetables, grains, protein, and dairy. You sorted ' + score + ' of ' + ROUNDS + ' foods on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('gRound').textContent = 'Food ' + round + ' of ' + ROUNDS;
+  $('gScore').textContent = 'First try ' + score;
+  $('gPrompt').textContent = 'Which food group is ' + F[cur][0].toLowerCase() + ' in?';
+  $('gFood').innerHTML = foodSvg(cur) + '<b>' + F[cur][0] + '</b>';
+  $('plate').innerHTML = plateSvg();
+  hideFact('gFact');
+  answerButtons('gAnswers', Object.keys(GROUPS).map(function(g){ return { key: g, cls: 'grp', html: '<i style="background:' + GROUPS[g].col + '"></i>' + GROUPS[g].name }; }), pickGroup);
+  speak($('gPrompt').textContent);
+  $('srStatus').textContent = $('gPrompt').textContent;
+}
+function pickGroup(btn, g){
+  if (busy) return;
+  var want = F[cur][1];
+  if (g === want) {
+    busy = true; if (firstTry) score++;
+    $('gScore').textContent = 'First try ' + score;
+    markRight('gAnswers', btn);
+    filledGroups[g] = true; $('plate').innerHTML = plateSvg();
+    var msg = F[cur][0] + ' is in the ' + GROUPS[g].name.toLowerCase() + ' group. ' + GROUPS[g].why;
+    setFact('gFact', msg); sndGood(); speak(msg); $('srStatus').textContent = msg;
+    timer = setTimeout(nextGroup, 3600);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = { fruit: 'Is it sweet and full of seeds, from a tree or vine?', veg: 'Is it a leaf, root, or stem we eat?', grain: 'Is it made from wheat, rice, oats, or corn flour?', protein: 'Is it meat, fish, eggs, or nuts?', dairy: 'Is it made from milk?' }[want];
+    setFact('gFact', 'Not quite. ' + h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+/* ---------- Everyday or sometimes ---------- */
+var edeck = [];
+function startEvery(){
+  lastMode = 'every';
+  var every = shuffle(Object.keys(F).filter(function(k){ return F[k][1] !== 'treat'; })).slice(0, 5);
+  var some = shuffle(Object.keys(F).filter(function(k){ return F[k][1] === 'treat'; })).slice(0, 5);
+  edeck = shuffle(every.concat(some));
+  round = 0; score = 0; showOnly('everyScreen'); nextEvery();
+}
+function nextEvery(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 9 ? 'Healthy chooser!' : score >= 7 ? 'Great choices!' : 'Keep learning!', 'You sorted ' + score + ' of ' + ROUNDS + ' foods on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = edeck[round - 1];
+  $('eRound').textContent = 'Food ' + round + ' of ' + ROUNDS;
+  $('eScore').textContent = 'First try ' + score;
+  $('ePrompt').textContent = 'Is ' + F[cur][0].toLowerCase() + ' an everyday food or a sometimes food?';
+  $('eFood').innerHTML = foodSvg(cur) + '<b>' + F[cur][0] + '</b>';
+  hideFact('eFact');
+  answerButtons('eAnswers', [
+    { key: 'every', html: 'Everyday food<small>helps your body grow strong</small>' },
+    { key: 'some', html: 'Sometimes food<small>a treat to enjoy once in a while</small>' }
+  ], pickEvery);
+  speak($('ePrompt').textContent);
+  $('srStatus').textContent = $('ePrompt').textContent;
+}
+function pickEvery(btn, k){
+  if (busy) return;
+  var want = F[cur][1] === 'treat' ? 'some' : 'every';
+  if (k === want) {
+    busy = true; if (firstTry) score++;
+    $('eScore').textContent = 'First try ' + score;
+    markRight('eAnswers', btn);
+    var msg = want === 'every' ? F[cur][0] + ' is an everyday food from the ' + GROUPS[F[cur][1]].name.toLowerCase() + ' group. It gives your body what it needs to grow.' : F[cur][0] + ' is a sometimes food. It is fine to enjoy as a treat, along with lots of everyday foods.';
+    setFact('eFact', msg); sndGood(); speak(msg); $('srStatus').textContent = msg;
+    timer = setTimeout(nextEvery, 3600);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = 'Everyday foods come from the five food groups. Sometimes foods are treats with lots of added sugar or salt.';
+    setFact('eFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+
+filledGroups = { fruit: 1, veg: 1, grain: 1, protein: 1, dairy: 1 };
+$('startArt').innerHTML = plateSvg();
+filledGroups = {};
+</script>
+</body>
+</html>

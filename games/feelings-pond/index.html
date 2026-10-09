@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feelings pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Read what happened to friends at the pond, name how they feel, and choose a safe and kind way to handle big feelings. Includes a calm-down breathing tool. A free social-emotional learning game for grades K to 2 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.scene{background:#fff;border-radius:24px;padding:14px 20px;max-width:700px;margin:0 auto 12px;box-shadow:0 8px 0 rgba(18,64,58,.15);display:flex;gap:14px;align-items:center;text-align:left}
+.scene svg{width:120px;flex:none}
+.scene p{font-size:clamp(1.15rem,2.6vw,1.45rem);font-weight:700;line-height:1.45;color:#12403A}
+.say{border:none;cursor:pointer;background:#E6F0FA;color:#2B6CB0;border-radius:999px;padding:3px 12px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.95rem;margin-left:8px;vertical-align:middle}
+.ans.face{min-width:110px;padding:6px 10px 8px}
+.ans.face svg{display:block;width:64px;height:64px;margin:0 auto}
+.mc{display:flex;flex-direction:column;gap:8px;align-items:center}
+.mc .ans{width:min(94vw,560px);text-align:left;border-radius:16px;font-size:clamp(1.05rem,2.4vw,1.25rem)}
+.breathe{position:fixed;inset:0;background:rgba(18,64,58,.55);display:flex;align-items:center;justify-content:center;z-index:50}
+.breathe .box{background:#fff;border-radius:28px;padding:24px 30px;text-align:center;max-width:90vw}
+.breathe .ball{width:220px;height:220px;margin:10px auto;display:flex;align-items:center;justify-content:center}
+.breathe .ball i{display:block;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#BFE8C8,#4FB06A);transition:transform 4s ease-in-out}
+.breathe .ball i.big{transform:scale(2.6)}
+.breathe b{font-family:"Baloo 2",sans-serif;font-size:1.8rem;color:#0F5A50;display:block}
+.breathe small{font-weight:700;color:#33625C}
+.calm-btn{border:none;cursor:pointer;background:#fff;color:#0F5A50;border-radius:999px;padding:6px 16px;font-family:"Baloo 2",sans-serif;font-weight:700;box-shadow:0 3px 0 rgba(18,64,58,.2)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:280px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Feelings pond</h1>
+      <p class="sub">Everyone at the pond has big feelings sometimes. Help your friends name their feelings and find a good way to handle them.</p>
+      <div class="row">
+        <button class="big-btn" onclick="startFeel()">Help a friend</button>
+        <button class="big-btn alt" onclick="openBreathe()">Calm-down breathing</button>
+      </div>
+      <p class="note">Help a friend: read what happened, pick how the friend feels, then pick something helpful they could do. Calm-down breathing: breathe in while the ball grows and out while it shrinks. You can use it any time, even in the middle of the game. All feelings are okay. What matters is what we do with them. Grades K to 2.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="feelScreen">
+    <div class="hud"><span class="chip" id="fRound">Friend 1 of 8</span><span class="chip" id="fScore">Helped 0</span><button class="calm-btn" onclick="openBreathe()">Calm-down breathing</button></div>
+    <div class="scene" id="scene"></div>
+    <p class="prompt" id="fPrompt">How does Hop feel?</p>
+    <div class="answers" id="fAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="fFact" role="status"></p>
+  </section>
+
+  <div class="breathe hidden" id="breathe" role="dialog" aria-modal="true" aria-labelledby="bWord">
+    <div class="box">
+      <b id="bWord">Breathe in</b>
+      <div class="ball"><i id="ball"></i></div>
+      <small id="bCount">Breath 1 of 3</small>
+      <div style="margin-top:12px"><button class="big-btn alt" onclick="closeBreathe()">I feel calmer</button></div>
+    </div>
+  </div>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var lastMode = 'feel', level = 0;
+function playAgain(){ startFeel(); }
+var enVoice = null;
+function pickVoice(){ if (!window.speechSynthesis) return; var vs = speechSynthesis.getVoices(), us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); }); enVoice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava/i.test(v.name); })[0] || us[0] || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(t, force){ if (!window.speechSynthesis || (!soundOn && !force)) return; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; if (enVoice) u.voice = enVoice; u.rate = .9; speechSynthesis.speak(u); } catch(e) {} }
+
+/* A frog face for each feeling */
+function face(f){
+  var c = '#4FB06A', s = '<svg viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="62" rx="36" ry="28" fill="' + c + '"/><circle cx="34" cy="36" r="13" fill="' + c + '"/><circle cx="66" cy="36" r="13" fill="' + c + '"/>';
+  var eyes = '<circle cx="34" cy="36" r="8" fill="#fff"/><circle cx="66" cy="36" r="8" fill="#fff"/><circle cx="35" cy="37" r="4" fill="#22303B"/><circle cx="67" cy="37" r="4" fill="#22303B"/>';
+  var m = {
+    happy: eyes + '<path d="M34 64 Q50 80 66 64" stroke="#1F5B36" stroke-width="4" fill="none" stroke-linecap="round"/>',
+    sad: eyes + '<path d="M36 74 Q50 62 64 74" stroke="#1F5B36" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M68 46 Q66 54 70 56 Q74 54 72 46Z" fill="#6BB6DB"/>',
+    angry: eyes + '<path d="M24 24 L42 32 M76 24 L58 32" stroke="#1F5B36" stroke-width="4" stroke-linecap="round"/><path d="M36 72 H64" stroke="#1F5B36" stroke-width="4" stroke-linecap="round"/>',
+    scared: '<circle cx="34" cy="36" r="9" fill="#fff"/><circle cx="66" cy="36" r="9" fill="#fff"/><circle cx="34" cy="36" r="3" fill="#22303B"/><circle cx="66" cy="36" r="3" fill="#22303B"/><path d="M36 72 Q40 66 44 72 Q48 66 52 72 Q56 66 60 72 Q62 68 64 72" stroke="#1F5B36" stroke-width="3" fill="none"/>',
+    surprised: '<circle cx="34" cy="36" r="9" fill="#fff"/><circle cx="66" cy="36" r="9" fill="#fff"/><circle cx="34" cy="36" r="4.4" fill="#22303B"/><circle cx="66" cy="36" r="4.4" fill="#22303B"/><ellipse cx="50" cy="70" rx="7" ry="9" fill="#1F5B36"/>',
+    proud: '<path d="M27 38 Q34 32 41 38 M59 38 Q66 32 73 38" stroke="#22303B" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M32 62 Q50 82 68 62" stroke="#1F5B36" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M42 16 L46 6 L50 14 L54 6 L58 16Z" fill="#F5C84C"/>',
+    calm: '<path d="M27 38 Q34 42 41 38 M59 38 Q66 42 73 38" stroke="#22303B" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M38 66 Q50 74 62 66" stroke="#1F5B36" stroke-width="4" fill="none" stroke-linecap="round"/>'
+  }[f];
+  return s + m + '<circle cx="24" cy="60" r="5" fill="#F4A0A0" opacity=".5"/><circle cx="76" cy="60" r="5" fill="#F4A0A0" opacity=".5"/></svg>';
+}
+var FEEL = { happy: 'Happy', sad: 'Sad', angry: 'Angry', scared: 'Scared', surprised: 'Surprised', proud: 'Proud' };
+var SC = [
+  { who: 'Hop', t: 'Hop worked hard to build a tall block tower. Then a ball rolled into it, and it fell down.', f: 'angry', also: 'sad', help: ['Take three slow breaths, then try building again', 'Kick the blocks across the room', 'Yell at everyone nearby'], why: 'Feeling angry or frustrated is okay. Slow breaths help our bodies calm down so we can try again.' },
+  { who: 'Skip', t: 'Skip\'s best friend moved away to a new town today.', f: 'sad', help: ['Talk to a grown-up about missing his friend', 'Pretend he does not care', 'Stay alone all day and not talk to anyone'], why: 'When we feel sad, talking to someone we trust helps. Skip could also draw a picture to mail to his friend.' },
+  { who: 'Mia', t: 'Mia hears a loud clap of thunder in the middle of the night.', f: 'scared', help: ['Hug her teddy bear and tell a grown-up she is scared', 'Hide under the bed and stay quiet all night', 'Run outside into the storm'], why: 'Telling a grown-up we feel scared helps us feel safe. Hugging something soft can help too.' },
+  { who: 'Leo', t: 'Leo practiced all week and finally swam across the whole pond by himself!', f: 'proud', also: 'happy', help: ['Share the good news with his family', 'Tell everyone else they are bad swimmers', 'Keep it a secret forever'], why: 'Feeling proud is great! Sharing good news with people who care about us makes the feeling even bigger.' },
+  { who: 'Duckling', t: 'Duckling opened the door, and all her friends jumped out and yelled, "Happy birthday!"', f: 'surprised', also: 'happy', help: ['Smile and say thank you to her friends', 'Run away and hide', 'Get mad that it was a secret'], why: 'Surprises can make us jump! Taking a breath and saying thank you shows friends we liked it.' },
+  { who: 'Tess', t: 'Tess asked to play tag, but the other turtles said, "No, you are too slow."', f: 'sad', also: 'angry', help: ['Tell them how it made her feel, or find a different friend to play with', 'Call them mean names', 'Push one of the turtles'], why: 'Being left out hurts. Using words to say how we feel, or finding another friend, is a kind and safe choice.' },
+  { who: 'Ava', t: 'Ava\'s grandma is visiting for the whole weekend, and they are going to bake cookies.', f: 'happy', help: ['Help get the bowls and spoons ready', 'Hide in her room the whole time', 'Complain about the cookies'], why: 'When we feel happy, we can share that feeling by helping and having fun together.' },
+  { who: 'Ben', t: 'Ben has to give a talk in front of the whole class for the first time.', f: 'scared', help: ['Practice his talk at home and take a deep breath before he starts', 'Pretend to be sick so he can stay home', 'Laugh at the other kids\' talks'], why: 'Lots of people feel nervous about talking in front of others. Practicing and taking a deep breath help us feel brave.' },
+  { who: 'Finn', t: 'Finn\'s little brother scribbled all over Finn\'s drawing.', f: 'angry', help: ['Walk away, count to ten, then tell his brother how he feels', 'Rip up his brother\'s drawing', 'Scream as loud as he can'], why: 'When we are angry, stepping away and counting helps our bodies calm down. Then we can use words.' }
+];
+
+var ROUNDS = 8, deck = [], round = 0, cur = null, step = 0, busy = false;
+function startFeel(){ lastMode = 'feel'; deck = shuffle(SC).slice(0, ROUNDS); round = 0; showOnly('feelScreen'); nextFeel(); }
+function nextFeel(){
+  round++;
+  if (round > ROUNDS) { showEnd('What a good friend!', 'You helped ' + ROUNDS + ' friends name their feelings and make good choices.', 3); return; }
+  cur = deck[round - 1]; step = 0;
+  $('fRound').textContent = 'Friend ' + round + ' of ' + ROUNDS;
+  $('fScore').textContent = 'Helped ' + (round - 1);
+  $('scene').innerHTML = face('calm') + '<p>' + cur.t + '<button class="say" onclick="speak(cur.t, true)">Hear it</button></p>';
+  speak(cur.t);
+  feelStep();
+}
+function feelStep(){
+  busy = false; hideFact('fFact');
+  if (step === 0) {
+    $('fPrompt').textContent = 'How do you think ' + cur.who + ' feels?';
+    $('fAnswers').className = 'answers';
+    answerButtons('fAnswers', shuffle(Object.keys(FEEL)).map(function(f){ return { key: f, cls: 'face', html: face(f) + FEEL[f], aria: FEEL[f] }; }), pickFeel);
+  } else {
+    $('fPrompt').textContent = 'What is something helpful ' + cur.who + ' could do?';
+    $('fAnswers').className = 'mc';
+    answerButtons('fAnswers', shuffle(cur.help).map(function(h){ return { key: h, label: h }; }), pickFeel);
+  }
+  $('srStatus').textContent = $('fPrompt').textContent;
+}
+function pickFeel(btn, k){
+  if (busy) return;
+  if (step === 0) {
+    if (k === cur.f || k === cur.also) {
+      busy = true; markRight('fAnswers', btn);
+      $('scene').querySelector('svg').outerHTML = face(k);
+      var msg = cur.who + ' probably feels ' + FEEL[k].toLowerCase() + '.' + (cur.also ? ' ' + cur.who + ' might also feel ' + FEEL[k === cur.f ? cur.also : cur.f].toLowerCase() + '. We can have more than one feeling at once!' : '');
+      setFact('fFact', msg); sndGood(); $('srStatus').textContent = msg;
+      step = 1; timer = setTimeout(feelStep, 2800);
+    } else {
+      markWrong(btn);
+      var h = 'Hmm, think about how you would feel if that happened to you. Look at what happened again.';
+      setFact('fFact', h); sndBad(); $('srStatus').textContent = h;
+    }
+  } else {
+    if (k === cur.help[0]) {
+      busy = true; markRight('fAnswers', btn);
+      setFact('fFact', cur.why); sndGood(); speak(cur.why); $('srStatus').textContent = cur.why;
+      timer = setTimeout(nextFeel, 4200);
+    } else {
+      markWrong(btn);
+      var h2 = 'That could hurt someone or make the problem bigger. Which choice is safe and kind?';
+      setFact('fFact', h2); sndBad(); $('srStatus').textContent = h2;
+    }
+  }
+}
+
+/* ---------- Breathing ---------- */
+var bTimers = [];
+function openBreathe(){
+  $('breathe').classList.remove('hidden');
+  bTimers.forEach(clearTimeout); bTimers = [];
+  var ball = $('ball');
+  for (var i = 0; i < 3; i++) (function(i){
+    bTimers.push(setTimeout(function(){ $('bWord').textContent = 'Breathe in'; $('bCount').textContent = 'Breath ' + (i + 1) + ' of 3'; ball.classList.add('big'); speak('Breathe in'); }, i * 8000 + 100));
+    bTimers.push(setTimeout(function(){ $('bWord').textContent = 'Breathe out'; ball.classList.remove('big'); speak('Breathe out'); }, i * 8000 + 4100));
+  })(i);
+  bTimers.push(setTimeout(function(){ $('bWord').textContent = 'Nice and calm'; $('bCount').textContent = 'You did it!'; }, 24100));
+  setTimeout(function(){ $('breathe').querySelector('button').focus(); }, 50);
+}
+function closeBreathe(){ bTimers.forEach(clearTimeout); $('ball').classList.remove('big'); $('breathe').classList.add('hidden'); }
+function onLeave(){ closeBreathe(); if (window.speechSynthesis) speechSynthesis.cancel(); }
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !$('breathe').classList.contains('hidden')) closeBreathe(); });
+
+$('startArt').innerHTML = '<svg viewBox="0 0 280 80" aria-hidden="true">' + ['happy', 'sad', 'angry', 'scared', 'proud'].map(function(f, i){ return '<g transform="translate(' + (i * 56) + ' 4) scale(.7)">' + face(f).replace('<svg viewBox="0 0 100 100" aria-hidden="true">', '').replace('</svg>', '') + '</g>'; }).join('') + '</svg>';
+</script>
+</body>
+</html>
