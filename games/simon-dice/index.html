@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simón dice - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Learn Spanish words for parts of the body, tap them on a picture, and play Simón dice, Simon says in Spanish, with spoken commands like toca la cabeza and salta. A free Spanish and movement game for grades K to 3 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.figbox{background:#fff;border-radius:24px;padding:8px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15)}
+.figbox svg{display:block;height:min(52vh,400px);width:auto}
+.part{cursor:pointer}
+.part:hover .hit{fill:rgba(245,200,76,.35)}
+.hit{fill:transparent}
+.hl .hit{fill:rgba(245,200,76,.55)}
+.ok .hit{fill:rgba(79,176,106,.5)}
+.no .hit{fill:rgba(226,75,74,.45)}
+.word{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(2rem,6vw,3.2rem);color:#0F5A50;background:#fff;border-radius:22px;padding:4px 26px;display:inline-block;box-shadow:0 6px 0 rgba(18,64,58,.15);margin-bottom:6px}
+.word small{display:block;font-family:"Nunito",sans-serif;font-size:.4em;color:#33625C}
+.hear{border:none;cursor:pointer;background:#E6F0FA;color:#2B6CB0;border-radius:999px;padding:6px 18px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.05rem;margin:6px 0 8px}
+.side{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap}
+.cmd{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(2rem,6vw,3.4rem);line-height:1.1;color:#0F5A50;background:rgba(255,255,255,.92);border-radius:28px;padding:10px 26px;display:inline-block;max-width:96%}
+.cmd .fs{display:block;font-size:.5em;color:#2E8540}
+.cmd small{display:block;font-family:"Nunito",sans-serif;font-size:.36em;color:#33625C}
+.bar{height:14px;background:rgba(255,255,255,.5);border-radius:999px;overflow:hidden;max-width:520px;margin:12px auto 0}
+.bar i{display:block;height:100%;width:100%;background:#F5C84C;transform-origin:left center}
+.reveal{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.3rem,3.4vw,2rem);border-radius:22px;padding:10px 22px;display:inline-block;margin-top:10px}
+.reveal.ok{background:#E4F5E9;color:#2E8540}.reveal.no{background:#FFF3C8;color:#8A3B00}
+.ctl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.ctl .big-btn{font-size:1.1rem;padding:10px 24px}
+.voice-note{font-size:.9rem;font-weight:700;color:#8A3B00;background:#FFF3C8;border-radius:12px;padding:6px 12px;display:inline-block;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:120px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Sim&oacute;n dice</h1>
+      <p class="sub">Simon says, in Spanish! Learn the words for parts of your body, then move only when Sim&oacute;n says so.</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn alt" onclick="startLearn()">Learn the words</button>
+        <button class="big-btn alt" onclick="startQuiz()">Tap the body part</button>
+        <button class="big-btn" onclick="startPlay()">Play Sim&oacute;n dice</button>
+      </div>
+      <p class="note">Learn the words: tap through each body part and hear it in Spanish. Tap the body part: hear a word, then tap that part on the picture. Play Sim&oacute;n dice: the whole class stands up and follows the commands, but only when you hear "Sim&oacute;n dice." Turn the sound on! Grades K to 3.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="learnScreen">
+    <div class="hud"><span class="chip" id="lCount">Word 1 of 10</span></div>
+    <div class="side">
+      <div class="figbox" id="lFig"></div>
+      <div><div class="word" id="lWord"></div><div><button class="hear" onclick="sayLearn()">Hear it</button></div></div>
+    </div>
+    <div class="ctl"><button class="big-btn alt" onclick="learnStep(-1)">&#8592; Back</button><button class="big-btn" onclick="learnStep(1)">Next &#8594;</button></div>
+  </section>
+
+  <section class="screen hidden" id="quizScreen">
+    <div class="hud"><span class="chip" id="qRound">Word 1 of 10</span><span class="chip" id="qScore">First try 0</span></div>
+    <div><span class="voice-note hidden" id="noVoice">No Spanish voice on this device, so read the word instead.</span></div>
+    <div class="word" id="qWord"></div>
+    <div><button class="hear" onclick="speakEs(cur.es)">Hear it again</button></div>
+    <div><div class="figbox" id="qFig"></div></div>
+    <p class="fact hidden" id="qFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="playScreen">
+    <div class="hud"><span class="chip" id="pCount">Command 1 of 12</span></div>
+    <div class="cmd" id="pCmd"></div>
+    <div class="bar" aria-hidden="true"><i id="pBar"></i></div>
+    <div id="pReveal"></div>
+    <div class="ctl">
+      <button class="big-btn alt" id="pauseBtn" onclick="togglePause()">Pause</button>
+      <button class="big-btn alt" onclick="nextCmd()">Skip</button>
+      <button class="big-btn alt" onclick="backToStart()">Stop</button>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'quiz';
+function playAgain(){ if (lastMode === 'quiz') startQuiz(); else if (lastMode === 'play') startPlay(); else startLearn(); }
+var esVoice = null;
+function pickVoice(){ if (!window.speechSynthesis) return; var vs = speechSynthesis.getVoices(), es = vs.filter(function(v){ return /^es/i.test(v.lang); }); esVoice = es.filter(function(v){ return /es[-_](MX|US)/i.test(v.lang); })[0] || es[0] || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speakEs(t){ if (!window.speechSynthesis || !soundOn) return; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = esVoice ? esVoice.lang : 'es-MX'; if (esVoice) u.voice = esVoice; u.rate = .8; speechSynthesis.speak(u); } catch(e) {} }
+
+/* Body parts with tap areas on a 200 x 400 picture of a child */
+var PARTS = [
+  { k: 'cabeza', es: 'la cabeza', en: 'head', hit: '<ellipse cx="100" cy="46" rx="40" ry="26"/>' },
+  { k: 'ojos', es: 'los ojos', en: 'eyes', hit: '<rect x="76" y="64" width="48" height="16" rx="6"/>' },
+  { k: 'nariz', es: 'la nariz', en: 'nose', hit: '<circle cx="100" cy="88" r="7"/>' },
+  { k: 'boca', es: 'la boca', en: 'mouth', hit: '<rect x="86" y="98" width="28" height="12" rx="6"/>' },
+  { k: 'orejas', es: 'las orejas', en: 'ears', hit: '<circle cx="58" cy="84" r="10"/><circle cx="142" cy="84" r="10"/>' },
+  { k: 'hombros', es: 'los hombros', en: 'shoulders', hit: '<circle cx="66" cy="148" r="14"/><circle cx="134" cy="148" r="14"/>' },
+  { k: 'manos', es: 'las manos', en: 'hands', hit: '<circle cx="34" cy="250" r="16"/><circle cx="166" cy="250" r="16"/>' },
+  { k: 'barriga', es: 'la barriga', en: 'tummy', hit: '<rect x="76" y="186" width="48" height="44" rx="10"/>' },
+  { k: 'rodillas', es: 'las rodillas', en: 'knees', hit: '<circle cx="82" cy="320" r="13"/><circle cx="118" cy="320" r="13"/>' },
+  { k: 'pies', es: 'los pies', en: 'feet', hit: '<ellipse cx="76" cy="384" rx="20" ry="11"/><ellipse cx="124" cy="384" rx="20" ry="11"/>' }
+];
+var BODY = '<rect width="200" height="400" fill="#fff"/>' +
+  '<path d="M64 140 Q100 128 136 140 L142 250 H58Z" fill="#4FB06A"/>' +
+  '<path d="M64 146 Q44 190 36 240" stroke="#F6C9A2" stroke-width="16" fill="none" stroke-linecap="round"/><path d="M136 146 Q156 190 164 240" stroke="#F6C9A2" stroke-width="16" fill="none" stroke-linecap="round"/>' +
+  '<circle cx="34" cy="250" r="12" fill="#F6C9A2"/><circle cx="166" cy="250" r="12" fill="#F6C9A2"/>' +
+  '<rect x="62" y="246" width="76" height="40" rx="8" fill="#2B6CB0"/><path d="M80 284 V372 M120 284 V372" stroke="#F6C9A2" stroke-width="18" stroke-linecap="round"/>' +
+  '<ellipse cx="76" cy="384" rx="18" ry="9" fill="#E24B4A"/><ellipse cx="124" cy="384" rx="18" ry="9" fill="#E24B4A"/>' +
+  '<rect x="92" y="118" width="16" height="16" fill="#F6C9A2"/>' +
+  '<circle cx="58" cy="84" r="8" fill="#F6C9A2"/><circle cx="142" cy="84" r="8" fill="#F6C9A2"/><ellipse cx="100" cy="80" rx="42" ry="44" fill="#F6C9A2"/>' +
+  '<path d="M58 70 Q60 30 100 30 Q140 30 142 70 Q130 50 100 50 Q70 50 58 70Z" fill="#6B4A2F"/>' +
+  '<circle cx="86" cy="72" r="5" fill="#22303B"/><circle cx="114" cy="72" r="5" fill="#22303B"/><path d="M100 82 L96 92 H104" stroke="#C99A6B" stroke-width="2.5" fill="none"/>' +
+  '<path d="M88 102 Q100 112 112 102" stroke="#B04A3B" stroke-width="3.5" fill="none" stroke-linecap="round"/>';
+function figSvg(state){
+  state = state || {};
+  return '<svg viewBox="0 0 200 400" aria-hidden="true">' + BODY + PARTS.map(function(p){
+    var cls = 'part' + (state.hl === p.k ? ' hl' : '') + (state.ok === p.k ? ' ok' : '') + (state.no === p.k ? ' no' : '');
+    return '<g class="' + cls + '" data-k="' + p.k + '">' + p.hit.replace(/\/>/g, ' class="hit"/>') + '</g>';
+  }).join('') + '</svg>';
+}
+
+/* ---------- Learn ---------- */
+var li = 0;
+function startLearn(){ lastMode = 'learn'; li = 0; showOnly('learnScreen'); showLearn(); }
+function showLearn(){ var p = PARTS[li]; $('lCount').textContent = 'Word ' + (li + 1) + ' of ' + PARTS.length; $('lFig').innerHTML = figSvg({ hl: p.k }); $('lWord').innerHTML = p.es + '<small>' + p.en + '</small>'; sayLearn(); $('srStatus').textContent = p.es + ' means ' + p.en + '.'; }
+function sayLearn(){ speakEs(PARTS[li].es); }
+function learnStep(d){ li += d; if (li >= PARTS.length) { showEnd('\u00A1Muy bien!', 'You learned all ' + PARTS.length + ' body words. Now try the quiz or play Sim\u00F3n dice!', 3); return; } if (li < 0) li = 0; showLearn(); }
+
+/* ---------- Quiz ---------- */
+var ROUNDS = 10, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false;
+function startQuiz(){ lastMode = 'quiz'; deck = shuffle(PARTS); round = 0; score = 0; showOnly('quizScreen'); if (!esVoice) $('noVoice').classList.remove('hidden'); nextQuiz(); }
+function bindFig(){ $('qFig').querySelectorAll('.part').forEach(function(g){ g.addEventListener('click', function(){ tapPart(g.dataset.k); }); }); }
+function nextQuiz(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 9 ? '\u00A1Excelente!' : score >= 7 ? '\u00A1Muy bien!' : '\u00A1Buen trabajo!', 'You found ' + score + ' of ' + ROUNDS + ' body parts on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('qRound').textContent = 'Word ' + round + ' of ' + ROUNDS;
+  $('qScore').textContent = 'First try ' + score;
+  $('qWord').textContent = cur.es;
+  hideFact('qFact');
+  $('qFig').innerHTML = figSvg(); bindFig();
+  setTimeout(function(){ speakEs(cur.es); }, 300);
+  $('srStatus').textContent = 'Tap ' + cur.es + ' on the picture.';
+}
+function tapPart(k){
+  if (busy) return;
+  if (k === cur.k) {
+    busy = true; if (firstTry) score++;
+    $('qScore').textContent = 'First try ' + score;
+    $('qFig').innerHTML = figSvg({ ok: k });
+    setFact('qFact', '\u00A1S\u00ED! "' + cur.es + '" means ' + cur.en + '.'); speakEs(cur.es); sndGood();
+    $('srStatus').textContent = 'Correct! ' + cur.es + ' means ' + cur.en + '.';
+    timer = setTimeout(nextQuiz, 2400);
+  } else {
+    firstTry = false;
+    var w = PARTS.filter(function(p){ return p.k === k; })[0];
+    $('qFig').innerHTML = figSvg({ no: k }); bindFig();
+    setFact('qFact', 'That is ' + w.es + ' (' + w.en + '). Listen again and try another part!'); sndBad();
+    $('srStatus').textContent = 'That is ' + w.es + '. Try again.';
+  }
+}
+
+/* ---------- Play ---------- */
+var CMDS = [
+  ['toca la cabeza', 'touch your head'], ['toca la nariz', 'touch your nose'], ['toca las orejas', 'touch your ears'], ['toca los hombros', 'touch your shoulders'],
+  ['toca las rodillas', 'touch your knees'], ['toca los pies', 'touch your feet'], ['toca la barriga', 'touch your tummy'], ['cierra los ojos', 'close your eyes'],
+  ['salta', 'jump'], ['aplaude', 'clap'], ['levanta las manos', 'raise your hands'], ['gira', 'turn around'], ['abre la boca', 'open your mouth'], ['mueve los pies', 'wiggle your feet']
+];
+var P_COUNT = 12, cmds = [], ci = 0, paused = false, tLeft = 0, tTotal = 0, tick = null;
+function startPlay(){
+  lastMode = 'play';
+  var picks = shuffle(CMDS).slice(0, P_COUNT), tricks = shuffle([2, 3, 4, 5, 6, 7, 8, 9, 10, 11]).slice(0, 4);
+  cmds = picks.map(function(c, i){ return { c: c, says: tricks.indexOf(i) === -1 }; });
+  ci = -1; paused = false; $('pauseBtn').textContent = 'Pause';
+  showOnly('playScreen'); nextCmd();
+}
+function onLeave(){ clearInterval(tick); if (window.speechSynthesis) speechSynthesis.cancel(); }
+function nextCmd(){
+  clearInterval(tick);
+  ci++;
+  if (ci >= cmds.length) { onLeave(); showEnd('\u00A1Fant\u00E1stico!', 'You followed ' + cmds.length + ' Spanish commands. Did you freeze when Sim\u00F3n did not say it?', 3); return; }
+  var c = cmds[ci];
+  $('pCount').textContent = 'Command ' + (ci + 1) + ' of ' + cmds.length;
+  $('pCmd').innerHTML = (c.says ? '<span class="fs">Sim\u00F3n dice</span>' : '<span class="fs">&nbsp;</span>') + c.c[0].charAt(0).toUpperCase() + c.c[0].slice(1) + '<small>' + c.c[1] + '</small>';
+  $('pReveal').innerHTML = '';
+  speakEs((c.says ? 'Sim\u00F3n dice, ' : '') + c.c[0]);
+  $('srStatus').textContent = (c.says ? 'Sim\u00F3n dice ' : '') + c.c[0] + '. ' + c.c[1];
+  run(7, function(){
+    if (!c.says) { $('pReveal').innerHTML = '<span class="reveal no">Sim\u00F3n no dijo! Simon did not say it. Did you freeze?</span>'; speakEs('Sim\u00F3n no dijo'); }
+    else { $('pReveal').innerHTML = '<span class="reveal ok">\u00A1Muy bien!</span>'; beep([660, 880], .08); }
+    run(3, nextCmd);
+  });
+}
+function run(sec, done){
+  clearInterval(tick); tTotal = sec; tLeft = sec; $('pBar').style.transform = 'scaleX(1)';
+  tick = setInterval(function(){ if (paused) return; tLeft -= .1; $('pBar').style.transform = 'scaleX(' + Math.max(0, tLeft / tTotal) + ')'; if (tLeft <= 0) { clearInterval(tick); done(); } }, 100);
+}
+function togglePause(){ paused = !paused; $('pauseBtn').textContent = paused ? 'Resume' : 'Pause'; if (paused && window.speechSynthesis) speechSynthesis.cancel(); }
+
+$('startArt').innerHTML = '<svg viewBox="0 0 200 400" aria-hidden="true">' + BODY + '</svg>';
+</script>
+</body>
+</html>

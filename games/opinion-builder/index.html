@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opinion builder - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Build an opinion paragraph the OREO way: pick your opinion, a reason that supports it, an example, and a closing that says it again. Learn linking words like for example and that is why. A free writing game for grades 2 to 4 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.topic{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.3rem,3.2vw,1.9rem);color:#12403A;background:#fff;border-radius:22px;padding:10px 22px;display:inline-block;box-shadow:0 6px 0 rgba(18,64,58,.15);margin-bottom:10px}
+.oreo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:900px;margin:0 auto 12px}
+.ob{border-radius:16px;padding:8px 10px;min-height:92px;text-align:left;background:rgba(255,255,255,.55);border:3px dashed #fff;font-weight:700;font-size:.92rem;line-height:1.3}
+.ob b{display:block;font-family:"Baloo 2",sans-serif;font-size:1rem}
+.ob.filled{border-style:solid;background:#fff}
+.ob.now{border-color:#F5C84C;background:#FFF8DE}
+.ob.o b{color:#6B4A2F}.ob.r b{color:#2E8540}.ob.e b{color:#2B6CB0}.ob.c b{color:#6B4A2F}
+.mc{display:flex;flex-direction:column;gap:8px;align-items:center}
+.mc .ans{width:min(94vw,640px);text-align:left;border-radius:16px;font-size:clamp(1rem,2.3vw,1.2rem)}
+.para{background:#FFFDF6;border:2px solid #E9DFC4;border-radius:18px;padding:14px 20px;max-width:760px;margin:12px auto 0;text-align:left;font-size:1.15rem;line-height:1.7;font-weight:700;color:#12403A}
+.para .o{background:#F2E2CF}.para .r{background:#E4F5E9}.para .e{background:#E6F0FA}.para .c{background:#F2E2CF}
+@media (max-width:700px){ .oreo{grid-template-columns:repeat(2,minmax(0,1fr))} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:220px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Opinion builder</h1>
+      <p class="sub">Build a strong opinion paragraph, layer by layer, like an OREO cookie: Opinion, Reason, Example, Opinion again.</p>
+      <div class="row"><button class="big-btn" onclick="startBuild()">Start building</button></div>
+      <p class="note">First pick what you think. Then pick a reason that supports YOUR opinion, an example that shows the reason, and an ending that says your opinion again. There is no wrong opinion, but every part has to fit together. Grades 2 to 4.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="buildScreen">
+    <div class="hud"><span class="chip" id="bRound">Paragraph 1 of 5</span><span class="chip" id="bScore">First try 0</span></div>
+    <div class="topic" id="topic"></div>
+    <div class="oreo" id="oreo"></div>
+    <p class="prompt" id="bPrompt">What is your opinion?</p>
+    <div class="mc" id="bAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="bFact" role="status"></p>
+    <div class="para hidden" id="para"></div>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'build';
+function playAgain(){ startBuild(); }
+/* Each topic has two sides. Each side has an opinion, a reason, an example, and a closing. off: a sentence that is about something else */
+var TOPICS = [
+  { q: 'Which is the best season to visit the pond?', sides: [
+      { o: 'I think summer is the best season to visit the pond.', r: 'One reason is that the water is warm enough to splash in.', e: 'For example, we can wade in and look for tadpoles.', c: 'That is why summer is the best time for a pond visit.' },
+      { o: 'I think fall is the best season to visit the pond.', r: 'One reason is that the trees around the pond turn beautiful colors.', e: 'For example, red and orange leaves float on the water like little boats.', c: 'That is why fall is the best time for a pond visit.' } ],
+    off: 'My cousin has a red bike with a bell.' },
+  { q: 'Should our class have a pet frog?', sides: [
+      { o: 'I think our class should have a pet frog.', r: 'One reason is that we could learn about frogs up close.', e: 'For example, we could watch how it eats and grows every day.', c: 'That is why a pet frog would be great for our class.' },
+      { o: 'I think our class should not have a pet frog.', r: 'One reason is that a frog needs care every single day, even on weekends.', e: 'For example, someone would have to come feed it on Saturdays and holidays.', c: 'That is why our class should not have a pet frog.' } ],
+    off: 'Pizza is my favorite food for lunch.' },
+  { q: 'Is it better to read a book or watch a movie?', sides: [
+      { o: 'I think reading a book is better than watching a movie.', r: 'One reason is that books let you imagine the story your own way.', e: 'For example, I can picture exactly what the dragon looks like in my head.', c: 'That is why I would rather read a book.' },
+      { o: 'I think watching a movie is better than reading a book.', r: 'One reason is that movies have music and sound that make the story exciting.', e: 'For example, the music gets fast and loud right before the big chase.', c: 'That is why I would rather watch a movie.' } ],
+    off: 'Frogs can jump twenty times their body length.' },
+  { q: 'Should recess be longer?', sides: [
+      { o: 'I think recess should be longer.', r: 'One reason is that moving our bodies helps us focus in class.', e: 'For example, after we run around, it is easier to sit still and listen.', c: 'That is why recess should be longer.' },
+      { o: 'I think recess should stay the same.', r: 'One reason is that we need enough time in class to learn new things.', e: 'For example, a longer recess could mean less time for science experiments.', c: 'That is why recess should stay the same length.' } ],
+    off: 'The library has a new fish tank.' },
+  { q: 'Which pond animal would make the best friend?', sides: [
+      { o: 'I think a turtle would make the best pond friend.', r: 'One reason is that turtles are calm and patient.', e: 'For example, a turtle would sit quietly with you on a log all afternoon.', c: 'That is why a turtle would be the best pond friend.' },
+      { o: 'I think a duck would make the best pond friend.', r: 'One reason is that ducks are friendly and full of energy.', e: 'For example, a duck would waddle over to say hello every time you visit.', c: 'That is why a duck would be the best pond friend.' } ],
+    off: 'It rained for three days last week.' },
+  { q: 'Should kids have homework?', sides: [
+      { o: 'I think kids should have some homework.', r: 'One reason is that practice at home helps us remember what we learned.', e: 'For example, reading for twenty minutes every night makes us stronger readers.', c: 'That is why kids should have some homework.' },
+      { o: 'I think kids should not have homework.', r: 'One reason is that kids need time to play and rest after school.', e: 'For example, after a long day, playing outside helps us feel ready for tomorrow.', c: 'That is why kids should not have homework.' } ],
+    off: 'My grandma makes the best pancakes.' }
+];
+var PARTS = [
+  { k: 'o', name: 'Opinion', q: 'What is your opinion?' },
+  { k: 'r', name: 'Reason', q: 'Pick a reason that supports your opinion.' },
+  { k: 'e', name: 'Example', q: 'Pick an example that shows your reason.' },
+  { k: 'c', name: 'Opinion again', q: 'Pick an ending that says your opinion again.' }
+];
+var ROUNDS = 5, deck = [], round = 0, score = 0, cur = null, side = null, step = 0, firstTry = true, busy = false, built = {};
+function startBuild(){ lastMode = 'build'; deck = shuffle(TOPICS).slice(0, ROUNDS); round = 0; score = 0; showOnly('buildScreen'); nextTopic(); }
+function nextTopic(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 5 ? 'Opinion expert!' : score >= 4 ? 'Strong writing!' : 'Keep building!', 'You built ' + score + ' of ' + ROUNDS + ' paragraphs with every part fitting on the first try.', score >= 5 ? 3 : score >= 4 ? 2 : 1); return; }
+  cur = deck[round - 1]; side = null; step = 0; firstTry = true; built = {};
+  $('bRound').textContent = 'Paragraph ' + round + ' of ' + ROUNDS;
+  $('bScore').textContent = 'First try ' + score;
+  $('topic').textContent = cur.q;
+  $('para').classList.add('hidden');
+  nextStep();
+}
+function drawOreo(){
+  $('oreo').innerHTML = PARTS.map(function(p, i){ return '<div class="ob ' + p.k + (built[p.k] ? ' filled' : '') + (i === step ? ' now' : '') + '"><b>' + p.name + '</b>' + (built[p.k] || '') + '</div>'; }).join('');
+}
+function nextStep(){
+  busy = false; hideFact('bFact'); drawOreo();
+  if (step >= PARTS.length) { finishTopic(); return; }
+  var p = PARTS[step];
+  $('bPrompt').textContent = p.q;
+  var opts;
+  if (p.k === 'o') opts = cur.sides.map(function(s, i){ return { key: 'side' + i, label: s.o }; });
+  else {
+    var mine = cur.sides[side], other = cur.sides[1 - side];
+    opts = [{ key: 'good', label: mine[p.k] }, { key: 'other', label: other[p.k] }];
+    if (p.k !== 'c') opts.push({ key: 'off', label: cur.off });
+    opts = shuffle(opts);
+  }
+  answerButtons('bAnswers', opts, pick);
+  $('srStatus').textContent = cur.q + ' ' + p.q;
+}
+function pick(btn, k){
+  if (busy) return;
+  var p = PARTS[step];
+  if (p.k === 'o') { side = +k.slice(4); built.o = cur.sides[side].o; markRight('bAnswers', btn); sndPlop(); busy = true; setFact('bFact', 'Great! Every other part now has to support this opinion.'); step++; timer = setTimeout(nextStep, 1500); return; }
+  if (k === 'good') {
+    busy = true; markRight('bAnswers', btn); built[p.k] = cur.sides[side][p.k]; sndGood();
+    setFact('bFact', { r: 'Yes! That reason tells WHY you think so.', e: 'Yes! The example shows your reason in action.', c: 'Yes! The ending wraps up by saying your opinion again.' }[p.k]);
+    step++; timer = setTimeout(nextStep, 1700);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = k === 'off' ? 'That sentence is about something else. Every sentence should be about the topic.' : 'That part supports the OTHER opinion. Pick the one that matches what you said.';
+    setFact('bFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+function finishTopic(){
+  if (firstTry) score++;
+  $('bScore').textContent = 'First try ' + score;
+  var s = cur.sides[side];
+  $('bPrompt').textContent = 'Your paragraph is ready!';
+  $('bAnswers').innerHTML = '';
+  $('para').innerHTML = '<span class="o">' + s.o + '</span> <span class="r">' + s.r + '</span> <span class="e">' + s.e + '</span> <span class="c">' + s.c + '</span>';
+  $('para').classList.remove('hidden');
+  setFact('bFact', 'Read it out loud! Notice the linking words that glue it together: "One reason is," "For example," and "That is why."');
+  sndWin();
+  $('srStatus').textContent = 'Your paragraph: ' + [s.o, s.r, s.e, s.c].join(' ');
+  timer = setTimeout(nextTopic, 6500);
+}
+
+$('startArt').innerHTML = '<svg viewBox="0 0 220 120" aria-hidden="true"><ellipse cx="110" cy="30" rx="80" ry="20" fill="#5A3B26"/><rect x="34" y="40" width="152" height="16" rx="8" fill="#4FB06A"/><rect x="34" y="58" width="152" height="16" rx="8" fill="#6BB6DB"/><ellipse cx="110" cy="92" rx="80" ry="20" fill="#5A3B26"/><text x="110" y="35" font-family="Baloo 2,sans-serif" font-weight="700" font-size="14" fill="#fff" text-anchor="middle">Opinion</text><text x="110" y="52" font-family="Baloo 2,sans-serif" font-weight="700" font-size="12" fill="#fff" text-anchor="middle">Reason</text><text x="110" y="70" font-family="Baloo 2,sans-serif" font-weight="700" font-size="12" fill="#fff" text-anchor="middle">Example</text><text x="110" y="97" font-family="Baloo 2,sans-serif" font-weight="700" font-size="14" fill="#fff" text-anchor="middle">Opinion</text></svg>';
+</script>
+</body>
+</html>

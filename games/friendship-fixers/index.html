@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friendship fixers - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Help pond friends solve everyday problems in four steps: calm down, say how you feel with an I-message, listen to the other side, and find a fair fix. A free social-emotional learning game for grades 2 to 4 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.scene{background:#fff;border-radius:24px;padding:14px 20px;max-width:720px;margin:0 auto 10px;box-shadow:0 8px 0 rgba(18,64,58,.15);text-align:left}
+.scene p{font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;line-height:1.45;color:#12403A}
+.steps{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+.steps span{font-weight:700;font-size:.9rem;border-radius:999px;padding:3px 12px;background:rgba(255,255,255,.6);color:#33625C}
+.steps span.on{background:#F5C84C;color:#5A4300}
+.steps span.done{background:#E4F5E9;color:#2E8540}
+.mc{display:flex;flex-direction:column;gap:8px;align-items:center}
+.mc .ans{width:min(94vw,620px);text-align:left;border-radius:16px;font-size:clamp(1rem,2.3vw,1.2rem)}
+.say{border:none;cursor:pointer;background:#E6F0FA;color:#2B6CB0;border-radius:999px;padding:3px 12px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.95rem;margin-left:8px;vertical-align:middle}
+.imsg{display:inline-block;background:#FFF3C8;border-radius:12px;padding:4px 12px;font-weight:700;color:#8A3B00;margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:260px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Friendship fixers</h1>
+      <p class="sub">Even best friends disagree sometimes. Help the pond friends solve their problems in four steps.</p>
+      <div class="row"><button class="big-btn" onclick="startFix()">Start fixing</button></div>
+      <p class="note">The four steps: 1. Stop and calm down. 2. Say how you feel with an I-message, like "I feel sad when..." 3. Listen to the other side. 4. Find a fair fix that works for everyone. Grades 2 to 4.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="fixScreen">
+    <div class="hud"><span class="chip" id="fRound">Problem 1 of 6</span><span class="chip" id="fScore">First try 0</span></div>
+    <div class="steps" id="steps" aria-hidden="true"></div>
+    <div class="scene"><p><span id="fText"></span><button class="say" onclick="speak($('fText').textContent, true)">Hear it</button></p></div>
+    <p class="prompt" id="fPrompt">What should they do first?</p>
+    <div class="mc" id="fAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="fFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'fix';
+function playAgain(){ startFix(); }
+var enVoice = null;
+function pickVoice(){ if (!window.speechSynthesis) return; var vs = speechSynthesis.getVoices(), us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); }); enVoice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava/i.test(v.name); })[0] || us[0] || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(t, force){ if (!window.speechSynthesis || (!soundOn && !force)) return; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; if (enVoice) u.voice = enVoice; u.rate = .9; speechSynthesis.speak(u); } catch(e) {} }
+function onLeave(){ if (window.speechSynthesis) speechSynthesis.cancel(); }
+
+var STEPNAMES = ['1. Stop and calm down', '2. Say how you feel', '3. Listen', '4. Find a fair fix'];
+var CALM = ['Take three deep breaths', 'Count slowly to ten', 'Step away for a moment to cool down'];
+var CALM_BAD = ['Yell as loud as you can', 'Grab the toy back right away', 'Push the other friend'];
+/* first answer is always the good one */
+var PROBLEMS = [
+  { me: 'Hop', other: 'Skip', t: 'Hop and Skip both want to use the only red marker to finish their drawings.',
+    feel: ['I feel frustrated when I can not use the red marker, because I need it for my apple.', 'You are so selfish! Give it to me!', 'I am never sharing with you again.'],
+    listen: ['Skip, what do you need the red marker for?', 'I do not care what you need.', 'Covers ears and walks away.'],
+    fix: ['Take turns: Skip uses it for five minutes, then Hop does.', 'Hop takes the marker and hides it.', 'Throw the marker away so nobody gets it.'] },
+  { me: 'Mia', other: 'Leo', t: 'Leo keeps changing the rules of the game, and Mia thinks it is not fair.',
+    feel: ['I feel upset when the rules change, because I do not know how to win.', 'You always cheat! You are a cheater!', 'Fine, I quit. This game is dumb.'],
+    listen: ['Leo, why do you want to change the rules?', 'Stop talking, I am right.', 'Rolls her eyes and turns away.'],
+    fix: ['Agree on the rules together before the game starts.', 'Only Mia gets to make the rules now.', 'Tell everyone not to play with Leo.'] },
+  { me: 'Tess', other: 'Duck', t: 'Duck said Tess could play, but then started a new game with other friends and left Tess out.',
+    feel: ['I feel left out when you start a new game without me.', 'You are the worst friend ever!', 'Says nothing and stays mad all day.'],
+    listen: ['Duck, what happened? Did you forget I was playing?', 'I do not want to hear it.', 'Tells other friends Duck is mean.'],
+    fix: ['Ask if Tess can join the new game, or play together next recess.', 'Tess makes everyone stop playing.', 'Tess decides to never talk to Duck again.'] },
+  { me: 'Ben', other: 'Ava', t: 'Ava bumped into Ben\'s block tower by accident, and it fell down.',
+    feel: ['I feel sad when my tower falls, because I worked hard on it.', 'You did that on purpose! I will knock yours down too!', 'Kicks the blocks across the room.'],
+    listen: ['Ava, was it an accident?', 'It does not matter, you ruined it.', 'Walks away without letting Ava talk.'],
+    fix: ['Build a new tower together, even taller.', 'Make Ava clean up all the blocks alone.', 'Knock down Ava\'s tower to make it even.'] },
+  { me: 'Finn', other: 'Mia', t: 'Finn and Mia both want to sit in the seat by the window on the bus.',
+    feel: ['I feel disappointed when I do not get the window, because I like to look outside.', 'Move, that is MY seat!', 'Pushes Mia to get the seat.'],
+    listen: ['Mia, why do you want the window seat today?', 'Nobody cares why.', 'Pretends not to hear.'],
+    fix: ['Take turns: one gets the window on the way there, the other on the way back.', 'Whoever is bigger gets the seat.', 'Both stand up the whole ride.'] },
+  { me: 'Skip', other: 'Hop', t: 'Hop told a secret that Skip asked him to keep.',
+    feel: ['I feel hurt when you tell my secrets, because I trusted you.', 'I hate you! I will tell all your secrets too!', 'Ignores Hop forever without saying why.'],
+    listen: ['Hop, why did you tell?', 'There is nothing you can say.', 'Laughs at Hop.'],
+    fix: ['Hop says sorry, and they agree to keep secrets safe from now on.', 'Skip tells everyone Hop\'s secrets to get even.', 'They stop being friends forever.'] }
+];
+var ROUNDS = 6, deck = [], round = 0, score = 0, cur = null, step = 0, firstTry = true, busy = false;
+function startFix(){ lastMode = 'fix'; deck = shuffle(PROBLEMS).slice(0, ROUNDS); round = 0; score = 0; showOnly('fixScreen'); nextProblem(); }
+function drawSteps(){ $('steps').innerHTML = STEPNAMES.map(function(n, i){ return '<span class="' + (i < step ? 'done' : i === step ? 'on' : '') + '">' + n + '</span>'; }).join(''); }
+function nextProblem(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 5 ? 'Friendship fixer!' : score >= 4 ? 'Great problem solving!' : 'Keep practicing!', 'You fixed ' + score + ' of ' + ROUNDS + ' problems with no missteps. Real friends work things out!', score >= 5 ? 3 : score >= 4 ? 2 : 1); return; }
+  cur = deck[round - 1]; step = 0; firstTry = true;
+  $('fRound').textContent = 'Problem ' + round + ' of ' + ROUNDS;
+  $('fScore').textContent = 'First try ' + score;
+  $('fText').textContent = cur.t;
+  speak(cur.t);
+  nextStep();
+}
+function nextStep(){
+  busy = false; hideFact('fFact'); drawSteps();
+  if (step >= 4) {
+    if (firstTry) score++;
+    $('fScore').textContent = 'First try ' + score;
+    $('fPrompt').textContent = 'Problem solved!';
+    $('fAnswers').innerHTML = '';
+    setFact('fFact', cur.me + ' and ' + cur.other + ' worked it out together. Stop, say how you feel, listen, and find a fair fix!');
+    sndWin(); timer = setTimeout(nextProblem, 3600); return;
+  }
+  var q, good, bad;
+  if (step === 0) { q = cur.me + ' is upset. What should ' + cur.me + ' do first?'; good = CALM[rand(0, 2)]; bad = shuffle(CALM_BAD).slice(0, 2); }
+  else if (step === 1) { q = 'Which is the best way for ' + cur.me + ' to say how they feel?'; good = cur.feel[0]; bad = cur.feel.slice(1); }
+  else if (step === 2) { q = 'Now it is time to listen. What could ' + cur.me + ' say to ' + cur.other + '?'; good = cur.listen[0]; bad = cur.listen.slice(1); }
+  else { q = 'What is a fair fix that works for both friends?'; good = cur.fix[0]; bad = cur.fix.slice(1); }
+  cur.good = good;
+  $('fPrompt').textContent = q;
+  answerButtons('fAnswers', shuffle([good].concat(bad)).map(function(o){ return { key: o, label: o }; }), pick);
+  $('srStatus').textContent = q;
+}
+var WHY = [
+  'Calming down first helps our brains think clearly before we talk.',
+  'That is an I-message. It says how YOU feel without blaming or calling names, so the other person can listen.',
+  'Listening helps you understand the other side. Maybe it was an accident, or they had a reason.',
+  'A fair fix works for both friends, so nobody feels left out or treated badly.'
+];
+function pick(btn, k){
+  if (busy) return;
+  if (k === cur.good) {
+    busy = true; markRight('fAnswers', btn);
+    setFact('fFact', WHY[step] + (step === 1 ? '<br><span class="imsg">I feel ___ when ___, because ___.</span>' : ''));
+    sndGood(); speak(WHY[step]); $('srStatus').textContent = 'Correct! ' + WHY[step];
+    step++; timer = setTimeout(nextStep, 3200);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = ['That could make the problem bigger. What would help calm a body down?', 'That blames or hurts the other friend. Try a sentence that starts with "I feel."', 'That shuts the other friend out. Which choice really listens?', 'That only works for one friend, or hurts someone. Which fix is fair to both?'][step];
+    setFact('fFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+$('startArt').innerHTML = '<svg viewBox="0 0 260 90" aria-hidden="true">' + [[60, '#4FB06A'], [200, '#6BC27E']].map(function(f){ return '<g transform="translate(' + f[0] + ' 52)"><ellipse cx="0" cy="8" rx="30" ry="22" fill="' + f[1] + '"/><circle cx="-12" cy="-12" r="10" fill="' + f[1] + '"/><circle cx="12" cy="-12" r="10" fill="' + f[1] + '"/><circle cx="-12" cy="-12" r="6" fill="#fff"/><circle cx="12" cy="-12" r="6" fill="#fff"/><circle cx="-11" cy="-11" r="3" fill="#22303B"/><circle cx="13" cy="-11" r="3" fill="#22303B"/><path d="M-10 12 Q0 20 10 12" stroke="#1F5B36" stroke-width="3" fill="none"/></g>'; }).join('') + '<path d="M106 50 Q130 30 154 50" stroke="#E24B4A" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M118 34 Q130 26 142 34 Q142 46 130 54 Q118 46 118 34Z" fill="#E24B4A"/></svg>';
+</script>
+</body>
+</html>

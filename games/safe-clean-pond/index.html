@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safe and clean pond - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Put healthy habits and safety steps in order: washing hands, brushing teeth, stop drop and roll, and crossing the street. Then make safe choices, like when to call 911. Read-aloud included. A free health and safety game for grades K to 2 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.slots{display:flex;gap:8px;justify-content:center;max-width:960px;margin:6px auto 10px;flex-wrap:wrap}
+.slot{flex:1 1 150px;max-width:180px;min-height:120px;border:4px dashed #fff;border-radius:18px;background:rgba(255,255,255,.5);padding:6px;cursor:pointer;color:#12403A;font-weight:700;font-size:.95rem;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.slot b{font-family:"Baloo 2",sans-serif;color:#0F5A50}
+.slot svg{width:56px;height:56px}
+.slot.filled{border-style:solid;background:#fff}
+.slot.right{border-color:#3F9457;background:#E4F5E9}
+.slot.wrong{border-color:#E24B4A;background:#FCE3E3}
+.slot:disabled{cursor:default}
+.tray{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:960px;margin:0 auto}
+.step{border:none;cursor:pointer;background:#fff;border-radius:16px;padding:8px;width:150px;box-shadow:0 4px 0 rgba(18,64,58,.2);font-weight:700;font-size:.95rem;color:#12403A}
+.step svg{display:block;width:56px;height:56px;margin:0 auto 2px}
+.step:disabled{opacity:.25;cursor:default;box-shadow:none}
+.scene{background:#fff;border-radius:24px;padding:14px 20px;max-width:660px;margin:0 auto 12px;box-shadow:0 8px 0 rgba(18,64,58,.15);font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.25rem,3vw,1.7rem);color:#12403A}
+.mc{display:flex;flex-direction:column;gap:8px;align-items:center}
+.mc .ans{width:min(94vw,560px);text-align:left;border-radius:16px;font-size:clamp(1rem,2.3vw,1.2rem)}
+.say{border:none;cursor:pointer;background:#E6F0FA;color:#2B6CB0;border-radius:999px;padding:3px 12px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.95rem;margin-left:8px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:200px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Safe and clean pond</h1>
+      <p class="sub">Healthy frogs keep clean and stay safe. Learn the steps for washing hands, brushing teeth, and staying safe in an emergency.</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startOrder()">Put the steps in order</button>
+        <button class="big-btn alt" onclick="startChoice()">Safe choices</button>
+      </div>
+      <p class="note">Put the steps in order: tap the cards to put healthy habits and safety steps in the right order. Safe choices: decide what to do in everyday situations, and when to call 911. Tap Hear it to have it read aloud. Grades K to 2.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="orderScreen">
+    <div class="hud"><span class="chip" id="oRound">Routine 1 of 4</span><span class="chip" id="oScore">First try 0</span></div>
+    <p class="prompt" id="oPrompt">Put the steps in order</p>
+    <div class="slots" id="slots" role="group" aria-label="Steps in order"></div>
+    <p class="fact hidden" id="oFact" role="status"></p>
+    <div class="tray" id="tray" role="group" aria-label="Step cards"></div>
+  </section>
+
+  <section class="screen hidden" id="choiceScreen">
+    <div class="hud"><span class="chip" id="cRound">Question 1 of 8</span><span class="chip" id="cScore">First try 0</span></div>
+    <div class="scene"><span id="cText"></span><button class="say" onclick="speak($('cText').textContent + ' ' + $('cPrompt').textContent, true)">Hear it</button></div>
+    <p class="prompt" id="cPrompt">What should you do?</p>
+    <div class="mc" id="cAnswers" role="group" aria-label="Answer choices"></div>
+    <p class="fact hidden" id="cFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'order';
+function playAgain(){ if (lastMode === 'order') startOrder(); else startChoice(); }
+var enVoice = null;
+function pickVoice(){ if (!window.speechSynthesis) return; var vs = speechSynthesis.getVoices(), us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); }); enVoice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava/i.test(v.name); })[0] || us[0] || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(t, force){ if (!window.speechSynthesis || (!soundOn && !force)) return; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; if (enVoice) u.voice = enVoice; u.rate = .9; speechSynthesis.speak(u); } catch(e) {} }
+function onLeave(){ if (window.speechSynthesis) speechSynthesis.cancel(); }
+
+var I = {
+  wet: '<path d="M20 6 h24 v8 h-24Z" fill="#9AA3A8"/><path d="M32 14 V22" stroke="#9AA3A8" stroke-width="5"/><g fill="#6BB6DB"><path d="M26 28 q3 6 0 8 q-3 -2 0 -8Z"/><path d="M36 30 q3 6 0 8 q-3 -2 0 -8Z"/></g><ellipse cx="32" cy="50" rx="16" ry="8" fill="#F6C9A2"/>',
+  soap: '<rect x="20" y="24" width="24" height="30" rx="6" fill="#F4A0B4"/><rect x="28" y="12" width="8" height="12" fill="#9AA3A8"/><path d="M36 14 h10" stroke="#9AA3A8" stroke-width="4"/><circle cx="14" cy="20" r="4" fill="#DFF2FA" stroke="#9EC9D9"/><circle cx="50" cy="40" r="3" fill="#DFF2FA" stroke="#9EC9D9"/>',
+  scrub: '<ellipse cx="24" cy="36" rx="12" ry="16" fill="#F6C9A2"/><ellipse cx="40" cy="36" rx="12" ry="16" fill="#F6C9A2"/><g fill="#fff" stroke="#9EC9D9"><circle cx="20" cy="24" r="5"/><circle cx="44" cy="26" r="4"/><circle cx="32" cy="44" r="5"/></g><text x="32" y="62" font-family="Baloo 2,sans-serif" font-weight="700" font-size="11" fill="#1F6E68" text-anchor="middle">20 sec</text>',
+  rinse: '<path d="M20 6 h24 v8 h-24Z" fill="#9AA3A8"/><path d="M28 16 V40 M32 16 V44 M36 16 V40" stroke="#6BB6DB" stroke-width="3"/><ellipse cx="32" cy="50" rx="16" ry="8" fill="#F6C9A2"/>',
+  dry: '<rect x="14" y="10" width="36" height="44" rx="4" fill="#6BB6DB"/><path d="M14 44 H50" stroke="#fff" stroke-width="3"/><ellipse cx="32" cy="58" rx="12" ry="5" fill="#F6C9A2"/>',
+  paste: '<rect x="8" y="30" width="36" height="12" rx="6" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><rect x="40" y="32" width="8" height="8" fill="#E24B4A"/><path d="M50 36 h8" stroke="#6BB6DB" stroke-width="6" stroke-linecap="round"/>',
+  brushfront: '<rect x="10" y="30" width="44" height="6" rx="3" fill="#2B6CB0"/><rect x="40" y="22" width="14" height="8" fill="#fff" stroke="#9EC9D9"/><path d="M14 46 h36 M18 52 h28" stroke="#fff" stroke-width="6" stroke-linecap="round"/><rect x="12" y="42" width="40" height="16" rx="6" fill="none" stroke="#E24B4A" stroke-width="2"/>',
+  brushback: '<rect x="10" y="30" width="44" height="6" rx="3" fill="#2B6CB0"/><path d="M14 46 Q32 60 50 46" stroke="#fff" stroke-width="8" fill="none"/><path d="M14 46 Q32 60 50 46" stroke="#E24B4A" stroke-width="2" fill="none"/><circle cx="32" cy="16" r="6" fill="#F5C84C"/>',
+  tongue: '<ellipse cx="32" cy="40" rx="16" ry="12" fill="#F4A0A0"/><rect x="10" y="20" width="44" height="6" rx="3" fill="#2B6CB0"/>',
+  spit: '<path d="M10 40 H54 Q50 58 32 58 Q14 58 10 40Z" fill="#fff" stroke="#9EC9D9" stroke-width="2"/><circle cx="32" cy="50" r="3" fill="#9EC9D9"/><path d="M28 14 Q32 26 30 34" stroke="#6BB6DB" stroke-width="3" fill="none"/>',
+  stop: '<path d="M22 6 H42 L56 20 V40 L42 54 H22 L8 40 V20Z" fill="#E24B4A"/><text x="32" y="36" font-family="Baloo 2,sans-serif" font-weight="700" font-size="13" fill="#fff" text-anchor="middle">STOP</text>',
+  drop: '<path d="M32 8 V40 M20 28 L32 40 L44 28" stroke="#1F6E68" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 54 H56" stroke="#8A6A45" stroke-width="5"/>',
+  cover: '<circle cx="32" cy="28" r="14" fill="#F6C9A2"/><rect x="16" y="18" width="32" height="10" rx="5" fill="#F6C9A2" stroke="#C99A6B" stroke-width="2"/><path d="M8 54 H56" stroke="#8A6A45" stroke-width="5"/>',
+  roll: '<circle cx="32" cy="32" r="16" fill="none" stroke="#1F6E68" stroke-width="5" stroke-dasharray="70 30"/><path d="M44 18 l6 -2 l-1 6" stroke="#1F6E68" stroke-width="5" fill="none" stroke-linecap="round"/>',
+  curbstop: '<rect x="8" y="40" width="48" height="8" fill="#9AA3A8"/><circle cx="32" cy="20" r="8" fill="#4FB06A"/><rect x="26" y="28" width="12" height="12" rx="3" fill="#4FB06A"/>',
+  left: '<path d="M44 32 H16 M26 22 L16 32 L26 42" stroke="#1F6E68" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="32" r="6" fill="#4FB06A"/>',
+  right: '<path d="M20 32 H48 M38 22 L48 32 L38 42" stroke="#1F6E68" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14" cy="32" r="6" fill="#4FB06A"/>',
+  leftagain: '<path d="M44 32 H16 M26 22 L16 32 L26 42" stroke="#C99A17" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="46" y="20" font-family="Baloo 2,sans-serif" font-weight="700" font-size="11" fill="#C99A17">again</text>',
+  walk: '<g fill="#fff"><rect x="6" y="20" width="8" height="24"/><rect x="20" y="20" width="8" height="24"/><rect x="34" y="20" width="8" height="24"/><rect x="48" y="20" width="8" height="24"/></g><rect x="4" y="18" width="56" height="28" fill="none" stroke="#9AA3A8" stroke-width="2"/><circle cx="32" cy="10" r="6" fill="#4FB06A"/>'
+};
+function ico(k){ return '<svg viewBox="0 0 64 64" aria-hidden="true">' + I[k] + '</svg>'; }
+var ROUTINES = [
+  { name: 'Washing your hands', steps: [['wet', 'Wet your hands'], ['soap', 'Add soap'], ['scrub', 'Scrub for 20 seconds'], ['rinse', 'Rinse off the soap'], ['dry', 'Dry with a towel']], why: 'Scrubbing for 20 seconds, about as long as singing Happy Birthday two times, washes germs away.' },
+  { name: 'Brushing your teeth', steps: [['paste', 'Put a pea-sized bit of toothpaste on'], ['brushfront', 'Brush the fronts of your teeth'], ['brushback', 'Brush the backs and tops'], ['tongue', 'Gently brush your tongue'], ['spit', 'Spit and rinse']], why: 'Brush two times a day for two minutes to keep your teeth strong and your breath fresh.' },
+  { name: 'If your clothes catch fire', steps: [['stop', 'Stop where you are'], ['drop', 'Drop to the ground'], ['cover', 'Cover your face with your hands'], ['roll', 'Roll over and over']], why: 'Running makes fire bigger. Stop, drop, cover your face, and roll to put the fire out.' },
+  { name: 'Crossing the street', steps: [['curbstop', 'Stop at the curb'], ['left', 'Look left'], ['right', 'Look right'], ['leftagain', 'Look left again'], ['walk', 'Walk across when it is clear']], why: 'Always look left, right, and left again, and hold a grown-up\'s hand if you can.' }
+];
+var deck = [], round = 0, score = 0, cur = null, cards = [], slots = [], firstTry = true, busy = false;
+function startOrder(){ lastMode = 'order'; deck = shuffle(ROUTINES); round = 0; score = 0; showOnly('orderScreen'); nextOrder(); }
+function nextOrder(){
+  round++;
+  if (round > deck.length) { showEnd(score >= 4 ? 'Healthy habit hero!' : score >= 3 ? 'Great job!' : 'Keep practicing!', 'You put ' + score + ' of ' + deck.length + ' routines in order on the first try.', score >= 4 ? 3 : score >= 3 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  var idx = cur.steps.map(function(_, i){ return i; }), mixed;
+  do { mixed = shuffle(idx); } while (mixed.join() === idx.join());
+  cards = mixed.map(function(i){ return { i: i, used: false }; });
+  slots = cur.steps.map(function(){ return null; });
+  $('oRound').textContent = 'Routine ' + round + ' of ' + deck.length;
+  $('oScore').textContent = 'First try ' + score;
+  $('oPrompt').textContent = cur.name + ': put the steps in order';
+  hideFact('oFact');
+  drawOrder(false);
+  speak(cur.name + '. Put the steps in order.');
+  $('srStatus').textContent = cur.name + '. Steps: ' + mixed.map(function(i){ return cur.steps[i][1]; }).join(', ') + '.';
+}
+function drawOrder(done){
+  $('slots').innerHTML = slots.map(function(ci, s){
+    var st = ci !== null ? cur.steps[cards[ci].i] : null;
+    return '<button class="slot' + (ci !== null ? ' filled' : '') + (done ? ' right' : '') + '"' + (busy || ci === null ? ' disabled' : '') + ' onclick="unplace(' + s + ')"><b>Step ' + (s + 1) + '</b>' + (st ? ico(st[0]) + st[1] : '') + '</button>';
+  }).join('');
+  var tray = $('tray'); tray.innerHTML = '';
+  cards.forEach(function(c, i){
+    var b = document.createElement('button'), st = cur.steps[c.i];
+    b.className = 'step pickable'; b.innerHTML = ico(st[0]) + st[1]; b.disabled = busy || c.used;
+    b.onclick = function(){ place(i); };
+    tray.appendChild(b);
+  });
+}
+function place(ci){ if (busy || cards[ci].used) return; var s = slots.indexOf(null); if (s === -1) return; slots[s] = ci; cards[ci].used = true; sndPlop(); speak(cur.steps[cards[ci].i][1]); drawOrder(false); if (slots.indexOf(null) === -1) checkOrder(); }
+function unplace(s){ if (busy || slots[s] === null) return; cards[slots[s]].used = false; slots[s] = null; drawOrder(false); }
+function checkOrder(){
+  var wrong = []; slots.forEach(function(ci, s){ if (cards[ci].i !== s) wrong.push(s); });
+  busy = true;
+  if (!wrong.length) {
+    if (firstTry) score++;
+    $('oScore').textContent = 'First try ' + score;
+    drawOrder(true); setFact('oFact', 'In order! ' + cur.why); sndGood(); speak(cur.why);
+    timer = setTimeout(nextOrder, 4600);
+  } else {
+    firstTry = false;
+    var els = $('slots').querySelectorAll('.slot'); wrong.forEach(function(s){ els[s].classList.add('wrong', 'shake'); });
+    setFact('oFact', 'Some steps are mixed up. Think about what you do first, and what has to happen before the next step.'); sndBad();
+    timer = setTimeout(function(){ busy = false; wrong.forEach(function(s){ cards[slots[s]].used = false; slots[s] = null; }); drawOrder(false); }, 1100);
+  }
+}
+
+/* ---------- Safe choices ---------- */
+var CHOICES = [
+  { t: 'You see smoke coming from a kitchen at home.', q: 'What should you do?', a: 'Get out fast, then call 911 from outside', w: ['Hide under your bed', 'Go back in to get your toys'], why: 'Get out and stay out. Call 911 from a safe place outside, and never go back in.' },
+  { t: 'A grown-up falls down and will not wake up.', q: 'Is this a time to call 911?', a: 'Yes, call 911 right away', w: ['No, just wait', 'No, call a friend instead'], why: 'If someone is badly hurt or will not wake up, it is an emergency. Call 911 and tell them where you are.' },
+  { t: 'You cannot find your favorite toy.', q: 'Is this a time to call 911?', a: 'No, ask a grown-up to help you look', w: ['Yes, call 911', 'Yes, call 911 two times'], why: '911 is only for emergencies, when someone is hurt, in danger, or there is a fire.' },
+  { t: 'A stranger in a car says, "Come here, I have a puppy to show you."', q: 'What should you do?', a: 'Say no, get away, and tell a trusted grown-up', w: ['Walk over to see the puppy', 'Get in the car'], why: 'Never go anywhere with a stranger. Say no, move away, and tell a grown-up you trust right away.' },
+  { t: 'You find some pills on the floor that look like candy.', q: 'What should you do?', a: 'Do not touch or taste them, and tell a grown-up', w: ['Taste one to check', 'Share them with a friend'], why: 'Medicine can look like candy but can make you very sick. Only take medicine from a trusted grown-up.' },
+  { t: 'You are about to ride your bike.', q: 'What should you put on first?', a: 'A helmet that fits snugly', w: ['Sunglasses only', 'Nothing, you will be careful'], why: 'A helmet protects your brain. Wear one every time you ride a bike or scooter.' },
+  { t: 'You sneeze, and there is no tissue.', q: 'What should you do?', a: 'Sneeze into your elbow', w: ['Sneeze into your hand and keep playing', 'Sneeze toward your friend'], why: 'Sneezing into your elbow keeps germs off your hands and away from your friends.' },
+  { t: 'You come inside after playing in the mud.', q: 'What should you do before eating a snack?', a: 'Wash your hands with soap and water', w: ['Wipe your hands on your shirt', 'Eat right away'], why: 'Washing with soap gets rid of germs that can make you sick.' },
+  { t: 'You are at the pool and the lifeguard is on a break.', q: 'What should you do?', a: 'Stay out of the water until the lifeguard is back', w: ['Jump in the deep end', 'Swim alone'], why: 'Only swim when a lifeguard or grown-up is watching.' }
+];
+function startChoice(){ lastMode = 'choice'; deck = shuffle(CHOICES).slice(0, 8); round = 0; score = 0; showOnly('choiceScreen'); nextChoice(); }
+function nextChoice(){
+  round++;
+  if (round > 8) { showEnd(score >= 7 ? 'Safety star!' : score >= 5 ? 'Great choices!' : 'Keep learning!', 'You made ' + score + ' of 8 safe choices on the first try.', score >= 7 ? 3 : score >= 5 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('cRound').textContent = 'Question ' + round + ' of 8';
+  $('cScore').textContent = 'First try ' + score;
+  $('cText').textContent = cur.t; $('cPrompt').textContent = cur.q;
+  hideFact('cFact');
+  answerButtons('cAnswers', shuffle([cur.a].concat(cur.w)).map(function(o){ return { key: o, label: o }; }), pickChoice);
+  speak(cur.t + ' ' + cur.q);
+  $('srStatus').textContent = cur.t + ' ' + cur.q;
+}
+function pickChoice(btn, k){
+  if (busy) return;
+  if (k === cur.a) {
+    busy = true; if (firstTry) score++;
+    $('cScore').textContent = 'First try ' + score;
+    markRight('cAnswers', btn); setFact('cFact', cur.why); sndGood(); speak(cur.why); $('srStatus').textContent = 'Correct! ' + cur.why;
+    timer = setTimeout(nextChoice, 4200);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = 'Think: which choice keeps you and everyone else safe and healthy?';
+    setFact('cFact', h); sndBad(); $('srStatus').textContent = 'Not quite. ' + h;
+  }
+}
+$('startArt').innerHTML = '<svg viewBox="0 0 200 100" aria-hidden="true"><g transform="translate(10 10) scale(1.2)">' + I.scrub + '</g><g transform="translate(110 10) scale(1.2)">' + I.stop + '</g></svg>';
+</script>
+</body>
+</html>
