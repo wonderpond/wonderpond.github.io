@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Line hunt - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Learn the kinds of lines artists use: straight, curved, zigzag, wavy, spiral, and dotted. Name each line, then hunt for them in a pond picture. A free art game for grades K to 2 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.sample{background:#fff;border-radius:24px;padding:10px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);margin-bottom:12px}
+.sample svg{display:block;width:min(70vw,360px);height:auto}
+.ans.ln{min-width:120px;padding:6px 10px 8px}
+.ans.ln svg{display:block;width:90px;height:40px;margin:0 auto}
+.scene{background:#fff;border-radius:24px;padding:8px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15)}
+.scene svg{display:block;height:min(52vh,420px);width:auto;max-width:94vw}
+.el{cursor:pointer}
+.el:hover .vis{filter:drop-shadow(0 0 4px #F5C84C)}
+.el.ok .vis{filter:drop-shadow(0 0 6px #4FB06A) drop-shadow(0 0 3px #4FB06A)}
+.el.no .vis{filter:drop-shadow(0 0 6px #E24B4A)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:260px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Line hunt</h1>
+      <p class="sub">Artists use all kinds of lines. Can you name them and find them hiding in the pond picture?</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startName()">Name the line</button>
+        <button class="big-btn alt" onclick="startFind()">Find it in the picture</button>
+      </div>
+      <p class="note">Name the line: look at a line and pick its name: straight, curved, zigzag, wavy, spiral, or dotted. Find it in the picture: tap the line hiding in the pond scene. Grades K to 2.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="nameScreen">
+    <div class="hud"><span class="chip" id="nRound">Line 1 of 10</span><span class="chip" id="nScore">First try 0</span></div>
+    <p class="prompt">What kind of line is this?</p>
+    <div><div class="sample" id="sample"></div></div>
+    <div class="answers" id="nAnswers" role="group" aria-label="Line names"></div>
+    <p class="fact hidden" id="nFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="findScreen">
+    <div class="hud"><span class="chip" id="fRound">Hunt 1 of 6</span><span class="chip" id="fScore">First try 0</span></div>
+    <p class="prompt" id="fPrompt">Tap the zigzag line</p>
+    <div><div class="scene" id="scene"></div></div>
+    <p class="fact hidden" id="fFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'name';
+function playAgain(){ if (lastMode === 'name') startName(); else startFind(); }
+var LINES = {
+  straight: { name: 'Straight', d: 'M20 50 L280 50', tip: 'A straight line goes one way and never bends.', where: 'the tall reeds' },
+  curved: { name: 'Curved', d: 'M20 80 Q150 -10 280 80', tip: 'A curved line bends smoothly, like a rainbow.', where: 'the rainbow' },
+  zigzag: { name: 'Zigzag', d: 'M20 75 L60 25 L100 75 L140 25 L180 75 L220 25 L260 75', tip: 'A zigzag line goes up and down with sharp, pointy corners.', where: 'the mountain tops' },
+  wavy: { name: 'Wavy', d: 'M20 50 Q50 20 80 50 T140 50 T200 50 T260 50', tip: 'A wavy line goes up and down with smooth, round bumps, like water.', where: 'the pond water' },
+  spiral: { name: 'Spiral', d: 'M150 50 m0 -4 a4 4 0 1 1 -4 4 a10 10 0 0 1 10 -10 a16 16 0 0 1 16 16 a22 22 0 0 1 -22 22 a28 28 0 0 1 -28 -28', tip: 'A spiral line curls around and around, getting bigger, like a snail shell.', where: 'the snail shell' },
+  dotted: { name: 'Dotted', d: 'M20 50 L280 50', dash: '2 18', tip: 'A dotted line is made of little dots in a row.', where: 'the frog footprints' }
+};
+var KEYS = Object.keys(LINES);
+var COLORS = ['#E24B4A', '#2B6CB0', '#2E8540', '#9B4D8E', '#C1693C', '#0F5A50'];
+function lineSvg(k, w, h, col, sw){
+  var L = LINES[k];
+  return '<svg viewBox="0 0 300 100" aria-hidden="true"' + (w ? ' style="width:' + w + 'px;height:' + h + 'px"' : '') + '><path d="' + L.d + '" fill="none" stroke="' + (col || '#0F5A50') + '" stroke-width="' + (sw || 8) + '" stroke-linecap="round" stroke-linejoin="round"' + (L.dash ? ' stroke-dasharray="' + L.dash + '"' : '') + '/></svg>';
+}
+
+/* ---------- Name the line ---------- */
+var ROUNDS = 10, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false;
+function startName(){ lastMode = 'name'; var d = []; while (d.length < ROUNDS) d = d.concat(shuffle(KEYS)); deck = d.slice(0, ROUNDS); round = 0; score = 0; showOnly('nameScreen'); nextName(); }
+function nextName(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 9 ? 'Line expert!' : score >= 7 ? 'Great looking!' : 'Keep looking!', 'You named ' + score + ' of ' + ROUNDS + ' lines on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('nRound').textContent = 'Line ' + round + ' of ' + ROUNDS;
+  $('nScore').textContent = 'First try ' + score;
+  $('sample').innerHTML = lineSvg(cur, null, null, COLORS[rand(0, COLORS.length - 1)], 10);
+  hideFact('nFact');
+  var opts = [cur].concat(shuffle(KEYS.filter(function(k){ return k !== cur; })).slice(0, 3));
+  answerButtons('nAnswers', shuffle(opts).map(function(k){ return { key: k, cls: 'ln', html: LINES[k].name }; }), pickName);
+  $('srStatus').textContent = 'A line is shown. Is it straight, curved, zigzag, wavy, spiral, or dotted?';
+}
+function pickName(btn, k){
+  if (busy) return;
+  if (k === cur) {
+    busy = true; if (firstTry) score++;
+    $('nScore').textContent = 'First try ' + score;
+    markRight('nAnswers', btn); setFact('nFact', 'Yes! ' + LINES[k].tip); sndGood(); $('srStatus').textContent = 'Correct! ' + LINES[k].tip;
+    timer = setTimeout(nextName, 2600);
+  } else {
+    firstTry = false; markWrong(btn);
+    setFact('nFact', 'Not quite. ' + LINES[k].tip + ' Look at the line again.'); sndBad();
+  }
+}
+
+/* ---------- Find it in the picture ---------- */
+function sceneSvg(st){
+  st = st || {};
+  function g(k, vis, hit){ return '<g class="el' + (st.ok === k ? ' ok' : '') + (st.no === k ? ' no' : '') + '" data-k="' + k + '"><g class="vis">' + vis + '</g>' + hit + '</g>'; }
+  var s = '<svg viewBox="0 0 600 380" aria-hidden="true"><rect width="600" height="380" rx="16" fill="#DFF2FA"/><rect y="250" width="600" height="130" fill="#9CCB74"/>';
+  s += g('curved', '<path d="M60 230 Q250 -60 440 230" fill="none" stroke="#E24B4A" stroke-width="10"/><path d="M80 230 Q250 -30 420 230" fill="none" stroke="#F5C84C" stroke-width="10"/><path d="M100 230 Q250 0 400 230" fill="none" stroke="#2B6CB0" stroke-width="10"/>', '<path d="M80 230 Q250 -30 420 230" fill="none" stroke="transparent" stroke-width="44"/>');
+  s += g('zigzag', '<path d="M380 250 L430 150 L470 210 L520 110 L560 200 L600 140" fill="none" stroke="#6E7478" stroke-width="8" stroke-linejoin="round"/>', '<path d="M380 250 L430 150 L470 210 L520 110 L560 200 L600 140" fill="none" stroke="transparent" stroke-width="40"/>');
+  s += '<ellipse cx="260" cy="315" rx="170" ry="48" fill="#8FCDE8"/>';
+  s += g('wavy', '<path d="M120 305 Q145 290 170 305 T220 305 T270 305 T320 305 T370 305" fill="none" stroke="#2B6CB0" stroke-width="6"/><path d="M150 330 Q175 315 200 330 T250 330 T300 330 T350 330" fill="none" stroke="#2B6CB0" stroke-width="6"/>', '<rect x="110" y="280" width="270" height="65" fill="transparent"/>');
+  s += g('straight', '<path d="M40 340 V200 M58 345 V180 M76 340 V210" stroke="#3F9457" stroke-width="7" stroke-linecap="round"/><ellipse cx="58" cy="182" rx="6" ry="16" fill="#8A5A2B"/>', '<rect x="26" y="165" width="64" height="185" fill="transparent"/>');
+  s += '<ellipse cx="500" cy="330" rx="56" ry="22" fill="#9AA3A8"/>';
+  s += g('spiral', '<circle cx="500" cy="290" r="30" fill="#E8C78A"/><path d="M500 290 m0 -4 a4 4 0 1 1 -4 4 a10 10 0 0 1 10 -10 a16 16 0 0 1 16 16 a22 22 0 0 1 -22 22" fill="none" stroke="#8E4A28" stroke-width="5" stroke-linecap="round"/><path d="M470 310 Q450 312 446 300" stroke="#C9A878" stroke-width="10" stroke-linecap="round" fill="none"/>', '<circle cx="495" cy="292" r="40" fill="transparent"/>');
+  s += g('dotted', '<path d="M440 370 Q470 350 520 365 Q570 378 598 360" fill="none" stroke="#1F5B36" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 16"/>', '<path d="M440 370 Q470 350 520 365 Q570 378 598 360" fill="none" stroke="transparent" stroke-width="30"/>');
+  return s + '</svg>';
+}
+function bindScene(){ $('scene').querySelectorAll('.el').forEach(function(g){ g.addEventListener('click', function(){ tapLine(g.dataset.k); }); }); }
+function startFind(){ lastMode = 'find'; deck = shuffle(KEYS); round = 0; score = 0; showOnly('findScreen'); nextFind(); }
+function nextFind(){
+  round++;
+  if (round > deck.length) { showEnd(score >= 6 ? 'Line detective!' : score >= 4 ? 'Great hunting!' : 'Keep looking!', 'You found ' + score + ' of ' + deck.length + ' lines on the first try.', score >= 6 ? 3 : score >= 4 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('fRound').textContent = 'Hunt ' + round + ' of ' + deck.length;
+  $('fScore').textContent = 'First try ' + score;
+  $('fPrompt').textContent = 'Tap the ' + LINES[cur].name.toLowerCase() + ' line';
+  hideFact('fFact');
+  $('scene').innerHTML = sceneSvg(); bindScene();
+  $('srStatus').textContent = 'Find the ' + LINES[cur].name.toLowerCase() + ' line in the pond picture. ' + LINES[cur].tip;
+}
+function tapLine(k){
+  if (busy) return;
+  if (k === cur) {
+    busy = true; if (firstTry) score++;
+    $('fScore').textContent = 'First try ' + score;
+    $('scene').innerHTML = sceneSvg({ ok: k });
+    setFact('fFact', 'You found it! ' + LINES[k].name + ' lines make ' + LINES[k].where + '.'); sndGood();
+    $('srStatus').textContent = 'Correct! ' + LINES[k].name + ' lines make ' + LINES[k].where + '.';
+    timer = setTimeout(nextFind, 2600);
+  } else {
+    firstTry = false;
+    $('scene').innerHTML = sceneSvg({ no: k }); bindScene();
+    setFact('fFact', 'That is a ' + LINES[k].name.toLowerCase() + ' line (' + LINES[k].where + '). ' + LINES[cur].tip); sndBad();
+  }
+}
+$('startArt').innerHTML = '<svg viewBox="0 0 260 90" aria-hidden="true"><path d="M10 20 L50 20" stroke="#E24B4A" stroke-width="6" stroke-linecap="round"/><path d="M70 30 Q90 0 110 30" stroke="#2B6CB0" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M130 30 L140 10 L150 30 L160 10 L170 30" stroke="#2E8540" stroke-width="6" fill="none" stroke-linejoin="round"/><path d="M190 20 Q200 8 210 20 T230 20 T250 20" stroke="#9B4D8E" stroke-width="6" fill="none"/><path d="M60 64 m0 -3 a3 3 0 1 1 -3 3 a8 8 0 0 1 8 -8 a13 13 0 0 1 13 13 a18 18 0 0 1 -18 18" stroke="#C1693C" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M120 66 H240" stroke="#0F5A50" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 14"/></svg>';
+</script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentence stretcher - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Stretch short sentences into great ones by adding details that tell what kind, where, and when. Watch the sentence grow with every detail. A free writing game for grades 2 and 3 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.sent{background:#FFFDF6;border:2px solid #E9DFC4;border-radius:20px;padding:16px 22px;max-width:860px;margin:0 auto 12px;font-size:clamp(1.4rem,3.4vw,2.1rem);font-weight:700;line-height:1.5;color:#12403A;box-shadow:0 6px 0 rgba(18,64,58,.12)}
+.sent .k{background:#FCE3E3;border-radius:8px;padding:0 4px}
+.sent .w{background:#E4F5E9;border-radius:8px;padding:0 4px}
+.sent .t{background:#E6F0FA;border-radius:8px;padding:0 4px}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.sent .new{display:inline-block;animation:pop .3s ease}
+.qs{display:flex;gap:8px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
+.qs span{font-weight:700;border-radius:999px;padding:3px 14px;background:rgba(255,255,255,.6);color:#33625C}
+.qs span.on{background:#F5C84C;color:#5A4300}
+.qs span.done{background:#E4F5E9;color:#2E8540}
+.ruler{font-weight:700;color:#0F5A50;margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:260px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Sentence stretcher</h1>
+      <p class="sub">"The frog jumped." is a sentence, but it is a little bit boring. Stretch it by answering what kind, where, and when!</p>
+      <div class="row"><button class="big-btn" onclick="startStretch()">Start stretching</button></div>
+      <p class="note">Each sentence gets three details. What kind: a describing word that tells more about who. Where: a place. When: a time. Pick the detail that answers each question, and watch your sentence grow. Grades 2 and 3.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="stretchScreen">
+    <div class="hud"><span class="chip" id="sRound">Sentence 1 of 6</span><span class="chip" id="sScore">First try 0</span></div>
+    <div class="qs" id="qs" aria-hidden="true"></div>
+    <div class="sent" id="sent"></div>
+    <div class="ruler" id="ruler"></div>
+    <p class="prompt" id="sPrompt">What kind of frog?</p>
+    <div class="answers" id="sAnswers" role="group" aria-label="Details"></div>
+    <p class="fact hidden" id="sFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'stretch';
+function playAgain(){ startStretch(); }
+var ITEMS = [
+  { n: 'frog', v: 'jumped', k: 'tiny green', w: 'into the cool pond', t: 'after lunch' },
+  { n: 'duck', v: 'swam', k: 'fluffy yellow', w: 'across the lake', t: 'early in the morning' },
+  { n: 'turtle', v: 'slept', k: 'sleepy old', w: 'on a warm rock', t: 'all afternoon' },
+  { n: 'dragonfly', v: 'zoomed', k: 'shiny blue', w: 'over the cattails', t: 'before the storm' },
+  { n: 'children', v: 'splashed', k: 'happy', w: 'in the shallow water', t: 'on Saturday' },
+  { n: 'heron', v: 'waited', k: 'tall gray', w: 'by the edge of the pond', t: 'at sunset' },
+  { n: 'fish', v: 'hid', k: 'little orange', w: 'under a lily pad', t: 'when the heron came' },
+  { n: 'snail', v: 'crawled', k: 'slow brown', w: 'up the wet log', t: 'after the rain' }
+];
+var STEPS = [
+  { k: 'k', label: 'What kind?', q: function(it){ return 'What kind of ' + it.n + '?'; }, why: 'Describing words (adjectives) tell what kind. They help the reader picture it.' },
+  { k: 'w', label: 'Where?', q: function(it){ return 'Where?'; }, why: 'A where detail tells the place. Words like in, on, under, across, and by are clues.' },
+  { k: 't', label: 'When?', q: function(it){ return 'When?'; }, why: 'A when detail tells the time. Words like after, before, at, and on are clues.' }
+];
+var ROUNDS = 6, deck = [], round = 0, score = 0, cur = null, step = 0, firstTry = true, busy = false, have = {};
+function startStretch(){ lastMode = 'stretch'; deck = shuffle(ITEMS).slice(0, ROUNDS); round = 0; score = 0; showOnly('stretchScreen'); nextItem(); }
+function sentHtml(fresh){
+  function sp(k, txt){ return '<span class="' + k + (fresh === k ? ' new' : '') + '">' + txt + '</span>'; }
+  return 'The ' + (have.k ? sp('k', cur.k) + ' ' : '') + cur.n + ' ' + cur.v + (have.w ? ' ' + sp('w', cur.w) : '') + (have.t ? ' ' + sp('t', cur.t) : '') + '.';
+}
+function wordCount(){ return $('sent').textContent.trim().split(/\s+/).length; }
+function nextItem(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 5 ? 'Super stretcher!' : score >= 4 ? 'Great details!' : 'Keep stretching!', 'You stretched ' + score + ' of ' + ROUNDS + ' sentences with every detail right on the first try.', score >= 5 ? 3 : score >= 4 ? 2 : 1); return; }
+  cur = deck[round - 1]; step = 0; firstTry = true; have = {};
+  $('sRound').textContent = 'Sentence ' + round + ' of ' + ROUNDS;
+  $('sScore').textContent = 'First try ' + score;
+  nextStep();
+}
+function nextStep(fresh){
+  busy = false; hideFact('sFact');
+  $('sent').innerHTML = sentHtml(fresh);
+  $('ruler').textContent = 'Sentence length: ' + wordCount() + ' words';
+  $('qs').innerHTML = STEPS.map(function(s, i){ return '<span class="' + (i < step ? 'done' : i === step ? 'on' : '') + '">' + s.label + '</span>'; }).join('');
+  if (step >= STEPS.length) {
+    if (firstTry) score++;
+    $('sScore').textContent = 'First try ' + score;
+    $('sPrompt').textContent = 'What a stretch!';
+    $('sAnswers').innerHTML = '';
+    setFact('sFact', 'Your sentence grew from 3 words to ' + wordCount() + ' words. Now a reader can picture exactly what happened!');
+    sndWin(); $('srStatus').textContent = 'Your sentence: ' + $('sent').textContent;
+    timer = setTimeout(nextItem, 4200); return;
+  }
+  var s = STEPS[step];
+  $('sPrompt').textContent = s.q(cur);
+  var opts = ['k', 'w', 't'].map(function(k){ return { key: k, label: cur[k] }; });
+  answerButtons('sAnswers', shuffle(opts), pick);
+  $('srStatus').textContent = 'The sentence is: ' + $('sent').textContent + ' ' + s.q(cur);
+}
+function pick(btn, k){
+  if (busy) return;
+  var s = STEPS[step];
+  if (k === s.k) {
+    busy = true; markRight('sAnswers', btn); have[k] = true; sndGood();
+    setFact('sFact', s.why);
+    step++; timer = setTimeout(function(){ nextStep(k); }, 1700);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = '"' + cur[k] + '" tells ' + (k === 'k' ? 'what kind' : k === 'w' ? 'where' : 'when') + '. The question is ' + s.label.toLowerCase();
+    setFact('sFact', h); sndBad(); $('srStatus').textContent = h;
+  }
+}
+$('startArt').innerHTML = '<svg viewBox="0 0 260 90" aria-hidden="true"><rect x="10" y="10" width="90" height="30" rx="8" fill="#FFFDF6" stroke="#E9DFC4" stroke-width="2"/><text x="55" y="31" font-family="Baloo 2,sans-serif" font-weight="700" font-size="13" fill="#12403A" text-anchor="middle">The frog jumped.</text><path d="M108 25 h22 M124 19 l7 6 l-7 6" stroke="#1F6E68" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="138" y="4" width="116" height="80" rx="10" fill="#FFFDF6" stroke="#E9DFC4" stroke-width="2"/><text font-family="Baloo 2,sans-serif" font-weight="700" font-size="12" fill="#12403A"><tspan x="146" y="24">The <tspan fill="#B83A39">tiny green</tspan> frog</tspan><tspan x="146" y="44">jumped <tspan fill="#2E8540">into the</tspan></tspan><tspan x="146" y="64"><tspan fill="#2E8540">cool pond</tspan> <tspan fill="#2B6CB0">after</tspan></tspan><tspan x="146" y="80" fill="#2B6CB0">lunch.</tspan></text></svg>';
+</script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pond town helpers - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Meet the community helpers of Pond town: firefighters, doctors, teachers, mail carriers, farmers, and more. Match each problem and each tool to the helper who can help. Read-aloud included. A free social studies game for grades K to 2 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.scene{background:#fff;border-radius:24px;padding:14px 20px;max-width:680px;margin:0 auto 12px;box-shadow:0 8px 0 rgba(18,64,58,.15);font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.25rem,3vw,1.7rem);color:#12403A}
+.scene svg{display:block;width:120px;height:120px;margin:0 auto 4px}
+.ans.hp{min-width:130px;padding:6px 10px 8px}
+.ans.hp svg{display:block;width:80px;height:80px;margin:0 auto}
+.say{border:none;cursor:pointer;background:#E6F0FA;color:#2B6CB0;border-radius:999px;padding:3px 12px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.95rem;margin-left:8px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:280px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Pond town helpers</h1>
+      <p class="sub">Lots of people help Pond town every day. Who do you call when you need help?</p>
+      <span class="choose-label">Pick a game</span>
+      <div class="row">
+        <button class="big-btn" onclick="startWho()">Who can help?</button>
+        <button class="big-btn alt" onclick="startTool()">Whose tool is it?</button>
+      </div>
+      <p class="note">Who can help: read or listen to a problem, then pick the community helper who can help. Whose tool is it: match each tool to the helper who uses it. Tap Hear it to have it read aloud. Grades K to 2.</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="playScreen">
+    <div class="hud"><span class="chip" id="pRound">Question 1 of 10</span><span class="chip" id="pScore">First try 0</span></div>
+    <div class="scene" id="scene"></div>
+    <div class="answers" id="pAnswers" role="group" aria-label="Community helpers"></div>
+    <p class="fact hidden" id="pFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'who';
+function playAgain(){ if (lastMode === 'who') startWho(); else startTool(); }
+var enVoice = null;
+function pickVoice(){ if (!window.speechSynthesis) return; var vs = speechSynthesis.getVoices(), us = vs.filter(function(v){ return /^en[-_]US/i.test(v.lang); }); enVoice = us.filter(function(v){ return /Samantha|Google US English|Aria|Jenny|Ava/i.test(v.name); })[0] || us[0] || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(t, force){ if (!window.speechSynthesis || (!soundOn && !force)) return; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.lang = 'en-US'; if (enVoice) u.voice = enVoice; u.rate = .9; speechSynthesis.speak(u); } catch(e) {} }
+function onLeave(){ if (window.speechSynthesis) speechSynthesis.cancel(); }
+
+/* A frog dressed for each job */
+function helper(hat, shirt, extra){
+  return '<svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="16" fill="#F2F8F6"/><path d="M24 98 Q24 66 50 66 Q76 66 76 98Z" fill="' + shirt + '"/><ellipse cx="50" cy="52" rx="24" ry="18" fill="#4FB06A"/><circle cx="40" cy="38" r="8" fill="#4FB06A"/><circle cx="60" cy="38" r="8" fill="#4FB06A"/><circle cx="40" cy="38" r="4.6" fill="#fff"/><circle cx="60" cy="38" r="4.6" fill="#fff"/><circle cx="40.6" cy="38.6" r="2.3" fill="#22303B"/><circle cx="60.6" cy="38.6" r="2.3" fill="#22303B"/><path d="M42 58 Q50 64 58 58" stroke="#1F5B36" stroke-width="2.6" fill="none" stroke-linecap="round"/>' + hat + (extra || '') + '</svg>';
+}
+var H = {
+  firefighter: { name: 'Firefighter', pic: helper('<path d="M22 32 Q50 2 78 32 Z" fill="#E24B4A"/><rect x="18" y="30" width="64" height="6" rx="3" fill="#B83A39"/>', '#F5C84C'), job: 'puts out fires and rescues people' },
+  doctor: { name: 'Doctor', pic: helper('<path d="M32 26 Q50 18 68 26" stroke="#9AA3A8" stroke-width="3" fill="none"/>', '#fff', '<path d="M40 72 Q40 86 50 86 Q60 86 60 72" stroke="#4A4F55" stroke-width="3" fill="none"/><circle cx="50" cy="88" r="4" fill="#9AA3A8"/>'), job: 'helps people who are sick or hurt' },
+  teacher: { name: 'Teacher', pic: helper('', '#9B4D8E', '<rect x="62" y="70" width="22" height="16" rx="2" fill="#2E8540"/><path d="M66 76 h12 M66 81 h8" stroke="#fff" stroke-width="2"/>'), job: 'helps children learn at school' },
+  mail: { name: 'Mail carrier', pic: helper('<path d="M28 30 Q50 16 72 30 V34 H28Z" fill="#2B6CB0"/>', '#6BB6DB', '<rect x="58" y="72" width="26" height="18" rx="3" fill="#8A5A2B"/><path d="M58 72 l13 9 l13 -9" stroke="#fff" stroke-width="2" fill="none"/>'), job: 'delivers letters and packages' },
+  police: { name: 'Police officer', pic: helper('<path d="M26 30 Q50 14 74 30 V34 H26Z" fill="#152F66"/><rect x="24" y="32" width="52" height="5" fill="#0B1F45"/>', '#2B6CB0', '<path d="M50 72 l6 3 l-1 7 l-5 3 l-5 -3 l-1 -7Z" fill="#F5C84C"/>'), job: 'keeps the community safe and helps people follow the law' },
+  farmer: { name: 'Farmer', pic: helper('<ellipse cx="50" cy="30" rx="30" ry="6" fill="#E8C78A"/><path d="M36 30 Q38 16 50 16 Q62 16 64 30Z" fill="#E8C78A"/>', '#3F9457', '<rect x="30" y="66" width="8" height="32" fill="#2B6CB0"/><rect x="62" y="66" width="8" height="32" fill="#2B6CB0"/>'), job: 'grows the food we eat' },
+  baker: { name: 'Baker', pic: helper('<path d="M32 30 Q28 12 40 14 Q46 4 54 12 Q66 8 66 22 Q72 26 68 32 H32Z" fill="#fff" stroke="#DCE8E4"/>', '#fff', '<circle cx="74" cy="80" r="9" fill="#D9A25F"/>'), job: 'bakes bread and treats' },
+  dentist: { name: 'Dentist', pic: helper('', '#8EC3F0', '<path d="M66 70 Q66 64 72 66 Q78 64 78 70 Q78 78 75 86 Q73 80 72 80 Q71 80 69 86 Q66 78 66 70Z" fill="#fff" stroke="#9AA3A8"/>'), job: 'keeps our teeth clean and healthy' },
+  bus: { name: 'Bus driver', pic: helper('<path d="M28 30 Q50 18 72 30 V34 H28Z" fill="#F5C84C"/>', '#F5C84C', '<circle cx="72" cy="80" r="10" fill="none" stroke="#4A4F55" stroke-width="4"/>'), job: 'drives children safely to and from school' },
+  vet: { name: 'Veterinarian', pic: helper('', '#53B7A8', '<g fill="#8A5A2B"><ellipse cx="72" cy="84" rx="6" ry="5"/><circle cx="64" cy="76" r="2.6"/><circle cx="70" cy="72" r="2.6"/><circle cx="76" cy="72" r="2.6"/><circle cx="81" cy="76" r="2.6"/></g>'), job: 'takes care of sick and hurt animals' }
+};
+var WHO = [
+  ['A house is on fire!', 'firefighter'], ['You have a fever and a bad cough.', 'doctor'], ['You want to learn how to read.', 'teacher'],
+  ['Grandma sent you a birthday card.', 'mail'], ['You are lost at the fair.', 'police'], ['Pond town needs fresh corn and carrots.', 'farmer'],
+  ['The class needs a big cake for the party.', 'baker'], ['Your tooth hurts.', 'dentist'], ['You need a ride to school in the morning.', 'bus'],
+  ['Your puppy hurt its paw.', 'vet'], ['A cat is stuck high up in a tree.', 'firefighter'], ['You broke your arm on the playground.', 'doctor']
+];
+var TOOLS = {
+  firefighter: ['A fire hose', '<path d="M10 70 Q30 40 60 50 Q80 56 84 40" stroke="#E24B4A" stroke-width="10" fill="none" stroke-linecap="round"/><rect x="78" y="26" width="14" height="18" rx="3" fill="#9AA3A8"/><g fill="#6BB6DB"><circle cx="90" cy="18" r="3"/><circle cx="96" cy="12" r="2.4"/></g>'],
+  doctor: ['A stethoscope', '<path d="M30 20 V50 Q30 74 50 74 Q70 74 70 50 V20" stroke="#4A4F55" stroke-width="5" fill="none"/><circle cx="50" cy="86" r="9" fill="#9AA3A8"/><path d="M50 74 V78" stroke="#4A4F55" stroke-width="5"/>'],
+  teacher: ['A chalkboard', '<rect x="12" y="18" width="76" height="52" rx="4" fill="#2E8540" stroke="#8A5A2B" stroke-width="5"/><text x="50" y="52" font-family="Baloo 2,sans-serif" font-weight="700" font-size="20" fill="#fff" text-anchor="middle">A B C</text><path d="M30 80 L40 70 M70 80 L60 70" stroke="#8A5A2B" stroke-width="4"/>'],
+  mail: ['A mailbag full of letters', '<path d="M20 40 H80 L74 88 H26Z" fill="#8A5A2B"/><rect x="30" y="24" width="24" height="18" fill="#fff" stroke="#9EC9D9"/><rect x="48" y="20" width="24" height="18" fill="#fff" stroke="#9EC9D9"/><path d="M20 40 Q50 8 80 40" stroke="#6B4A2F" stroke-width="4" fill="none"/>'],
+  police: ['A police badge', '<path d="M50 12 L62 20 L78 18 L76 34 L86 46 L76 58 L78 74 L62 72 L50 84 L38 72 L22 74 L24 58 L14 46 L24 34 L22 18 L38 20Z" fill="#F5C84C" stroke="#C99A17" stroke-width="3"/><circle cx="50" cy="48" r="12" fill="#2B6CB0"/>'],
+  farmer: ['A tractor', '<rect x="30" y="40" width="40" height="24" rx="4" fill="#E24B4A"/><rect x="52" y="24" width="18" height="18" fill="#E24B4A"/><rect x="55" y="27" width="12" height="10" fill="#DFF2FA"/><circle cx="36" cy="70" r="14" fill="#4A4F55"/><circle cx="68" cy="74" r="9" fill="#4A4F55"/>'],
+  baker: ['A rolling pin', '<rect x="20" y="40" width="60" height="20" rx="10" fill="#D9A25F"/><rect x="6" y="46" width="16" height="8" rx="4" fill="#8A5A2B"/><rect x="78" y="46" width="16" height="8" rx="4" fill="#8A5A2B"/><ellipse cx="50" cy="78" rx="30" ry="8" fill="#F2D3A0"/>'],
+  dentist: ['A toothbrush and a tooth', '<rect x="10" y="44" width="50" height="8" rx="4" fill="#2B6CB0"/><rect x="50" y="34" width="14" height="10" fill="#fff" stroke="#9EC9D9"/><path d="M70 40 Q70 30 80 32 Q90 30 90 40 Q90 54 86 66 Q82 58 80 58 Q78 58 74 66 Q70 54 70 40Z" fill="#fff" stroke="#9AA3A8" stroke-width="2"/>'],
+  bus: ['A school bus', '<rect x="10" y="30" width="80" height="40" rx="6" fill="#F5C84C"/>' + [18, 36, 54].map(function(x){ return '<rect x="' + x + '" y="36" width="14" height="12" fill="#DFF2FA"/>'; }).join('') + '<rect x="72" y="36" width="12" height="28" fill="#DFF2FA"/><circle cx="28" cy="72" r="8" fill="#4A4F55"/><circle cx="72" cy="72" r="8" fill="#4A4F55"/>'],
+  vet: ['A pet carrier', '<rect x="16" y="30" width="68" height="46" rx="10" fill="#53B7A8"/><rect x="26" y="40" width="40" height="28" rx="4" fill="#DFF2FA"/><path d="M32 40 V68 M40 40 V68 M48 40 V68 M56 40 V68" stroke="#53B7A8" stroke-width="2"/><path d="M40 30 Q50 16 60 30" stroke="#3E8E86" stroke-width="5" fill="none"/>']
+};
+function toolSvg(k){ return '<svg viewBox="0 0 100 100" aria-hidden="true">' + TOOLS[k][1] + '</svg>'; }
+
+var ROUNDS = 10, deck = [], round = 0, score = 0, cur = null, firstTry = true, busy = false;
+function startWho(){ lastMode = 'who'; deck = shuffle(WHO).slice(0, ROUNDS).map(function(w){ return { text: w[0], k: w[1] }; }); begin(); }
+function startTool(){ lastMode = 'tool'; deck = shuffle(Object.keys(TOOLS)).map(function(k){ return { k: k, tool: true }; }); begin(); }
+function begin(){ round = 0; score = 0; showOnly('playScreen'); nextQ(); }
+function nextQ(){
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 9 ? 'Community expert!' : score >= 7 ? 'Great helping!' : 'Keep learning!', 'You matched ' + score + ' of ' + ROUNDS + ' helpers on the first try.', score >= 9 ? 3 : score >= 7 ? 2 : 1); return; }
+  busy = false; firstTry = true; cur = deck[round - 1];
+  $('pRound').textContent = 'Question ' + round + ' of ' + ROUNDS;
+  $('pScore').textContent = 'First try ' + score;
+  var text = cur.tool ? 'Who uses ' + TOOLS[cur.k][0].toLowerCase() + '?' : cur.text + ' Who can help?';
+  $('scene').innerHTML = (cur.tool ? toolSvg(cur.k) : '') + '<span id="qText">' + text + '</span><button class="say" onclick="speak($(\'qText\').textContent, true)">Hear it</button>';
+  hideFact('pFact');
+  var opts = [cur.k].concat(shuffle(Object.keys(H).filter(function(k){ return k !== cur.k; })).slice(0, 3));
+  answerButtons('pAnswers', shuffle(opts).map(function(k){ return { key: k, cls: 'hp', html: H[k].pic + H[k].name, aria: H[k].name }; }), pick);
+  speak(text);
+  $('srStatus').textContent = text;
+}
+function pick(btn, k){
+  if (busy) return;
+  if (k === cur.k) {
+    busy = true; if (firstTry) score++;
+    $('pScore').textContent = 'First try ' + score;
+    markRight('pAnswers', btn);
+    var msg = 'Yes! A ' + H[k].name.toLowerCase() + ' ' + H[k].job + '.';
+    setFact('pFact', msg); sndGood(); speak(msg); $('srStatus').textContent = msg;
+    timer = setTimeout(nextQ, 3200);
+  } else {
+    firstTry = false; markWrong(btn);
+    var h = 'A ' + H[k].name.toLowerCase() + ' ' + H[k].job + '. Who would help with this?';
+    setFact('pFact', h); sndBad(); $('srStatus').textContent = h;
+  }
+}
+$('startArt').innerHTML = '<svg viewBox="0 0 280 100" aria-hidden="true">' + ['firefighter', 'doctor', 'police', 'baker'].map(function(k, i){ return '<g transform="translate(' + (i * 70) + ' 0)">' + H[k].pic.replace('<svg viewBox="0 0 100 100" aria-hidden="true">', '<svg x="0" y="0" width="66" height="66" viewBox="0 0 100 100">') + '</g>'; }).join('') + '</svg>';
+</script>
+</body>
+</html>

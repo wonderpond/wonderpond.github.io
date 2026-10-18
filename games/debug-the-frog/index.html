@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debug the frog - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Find and fix the bug! Watch a buggy program send Hop the wrong way, tap the broken block, choose the fix, and test it. Practice debugging with sequences and loops. A free coding game for grades K to 4 from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,var(--water) 30%,var(--water-deep) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.board{background:#fff;border-radius:24px;padding:8px;display:inline-block;box-shadow:0 8px 0 rgba(18,64,58,.15);max-width:100%}
+.board svg{display:block;height:min(40vh,320px);width:auto;max-width:92vw}
+.frogpos{transition:transform .35s ease}
+.prog{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:66px;background:rgba(255,255,255,.45);border-radius:20px;padding:8px;max-width:760px;margin:10px auto 0}
+.pc{border:none;cursor:pointer;background:#1F6E68;color:#fff;border-radius:12px;min-width:56px;height:52px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.5rem;padding:0 8px}
+.pc small{font-size:.65em;margin-left:2px;color:#F5C84C}
+.pc.now{box-shadow:0 0 0 4px #F5C84C}
+.pc.picked{background:#9B4D8E}
+.pc.wrongpick{background:#E24B4A}
+.pc.fixed{background:#2E8540}
+.pc:disabled{cursor:default}
+.fixrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.fixrow button{border:none;cursor:pointer;background:#fff;border-radius:14px;min-width:58px;height:54px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.5rem;color:#0F5A50;box-shadow:0 4px 0 rgba(18,64,58,.2)}
+.fixrow button small{font-size:.6em}
+.ctl{display:flex;gap:10px;justify-content:center;margin-top:10px}
+.ctl .big-btn{font-size:1.1rem;padding:10px 24px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <div id="startArt" style="width:220px;margin:0 auto" aria-hidden="true"></div>
+      <h1 id="gameTitle">Debug the frog</h1>
+      <p class="sub">Someone wrote a program for Hop, but it has a bug! Watch it run, find the broken block, and fix it.</p>
+      <span class="choose-label" id="levelLabel">Pick your bugs</span>
+      <div class="row" role="group" aria-labelledby="levelLabel">
+        <button class="pick-btn" data-level="0" aria-pressed="true" onclick="chooseLevel(this)">Wrong direction<small>grades K to 2</small></button>
+        <button class="pick-btn" data-level="1" aria-pressed="false" onclick="chooseLevel(this)">Loop bugs<small>wrong direction or repeat count, grades 2 to 4</small></button>
+      </div>
+      <div class="row"><button class="big-btn" onclick="startDebug()">Start debugging</button></div>
+      <p class="note">Press Run to watch the buggy program. Then tap the block that is wrong, pick the fix, and run it again to test. Every program has exactly one bug. Real programmers debug like this every day!</p>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="debugScreen">
+    <div class="hud"><span class="chip" id="dRound">Bug 1 of 8</span><span class="chip" id="dScore">First try 0</span></div>
+    <p class="prompt" id="dPrompt">Press Run to watch the program</p>
+    <div><div class="board" id="board"></div></div>
+    <div class="prog" id="prog" role="group" aria-label="Program blocks"></div>
+    <div class="fixrow hidden" id="fixrow" role="group" aria-label="Fixes"></div>
+    <div class="ctl"><button class="big-btn" id="runBtn" onclick="run()">Run</button></div>
+    <p class="fact hidden" id="dFact" role="status"></p>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'debug';
+function playAgain(){ startDebug(); }
+var COLS = 7, ROWS = 5, S = 64;
+var ARROW = { U: '\u2191', D: '\u2193', L: '\u2190', R: '\u2192' }, NAME = { U: 'up', D: 'down', L: 'left', R: 'right' };
+var MOVE = { U: [0, -1], D: [0, 1], L: [-1, 0], R: [1, 0] };
+function path(start, moves){ var p = [start.slice()], c = start.slice(); moves.split('').forEach(function(m){ c = [c[0] + MOVE[m][0], c[1] + MOVE[m][1]]; p.push(c.slice()); }); return p; }
+var SEQ = [
+  { s: [1, 2], m: 'RRRR' }, { s: [1, 3], m: 'RRUU' }, { s: [0, 1], m: 'RRDDR' }, { s: [2, 4], m: 'UURRU' },
+  { s: [0, 0], m: 'RDRDRD' }, { s: [3, 4], m: 'ULLUUR' }, { s: [0, 4], m: 'RRUURRU' }, { s: [6, 0], m: 'LLDDLDL' }, { s: [0, 3], m: 'RURURR' }
+];
+var LOOP = [
+  { s: [0, 2], m: 'RRRRRR' }, { s: [0, 4], m: 'RRRRUUU' }, { s: [1, 0], m: 'DDDDRRR' }, { s: [0, 4], m: 'UUUURRRR' },
+  { s: [0, 0], m: 'RRRDDDDRRR' }, { s: [6, 4], m: 'LLLLUUUULL' }, { s: [0, 1], m: 'RRRRDDDRR' }, { s: [0, 4], m: 'UUURRRRDD' }
+];
+function compress(m){ var out = []; (m.match(/(.)\1*/g) || []).forEach(function(r){ var n = r.length; while (n > 0) { var k = Math.min(4, n); out.push({ d: r[0], n: k }); n -= k; } }); return out; }
+/* Make one bug: change a direction, or (loops) change a repeat count */
+function makeBug(pz){
+  var good = level === 0 ? pz.m.split('').map(function(d){ return { d: d, n: 1 }; }) : compress(pz.m);
+  var bi = rand(0, good.length - 1), prog = good.map(function(b){ return { d: b.d, n: b.n }; });
+  var kind = level === 1 && rand(0, 1) ? 'count' : 'dir';
+  if (kind === 'count') { var nn = prog[bi].n + (prog[bi].n >= 4 ? -1 : rand(0, 1) ? 1 : -1); if (nn < 1) nn = 2; prog[bi].n = nn; }
+  else { prog[bi].d = shuffle(['U', 'D', 'L', 'R'].filter(function(d){ return d !== good[bi].d; }))[0]; }
+  return { good: good, prog: prog, bi: bi, kind: kind };
+}
+var ROUNDS = 8, deck = [], round = 0, score = 0, pz = null, bug = null, firstTry = true, busy = false, stage = 'watch', runTimers = [];
+function onLeave(){ runTimers.forEach(clearTimeout); runTimers = []; }
+function startDebug(){ lastMode = 'debug'; deck = shuffle(level === 0 ? SEQ : LOOP).slice(0, ROUNDS).map(function(p){ return { s: p.s, m: p.m, pads: path(p.s, p.m) }; }); round = 0; score = 0; showOnly('debugScreen'); nextBug(); }
+function isPad(x, y){ return pz.pads.some(function(p){ return p[0] === x && p[1] === y; }); }
+function boardSvg(fx, fy, sink, crumbs){
+  var W = COLS * S, H = ROWS * S, s = '<svg viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true"><rect width="' + W + '" height="' + H + '" rx="14" fill="#8FCDE8"/>';
+  pz.pads.forEach(function(p){ var cx = p[0] * S + S / 2, cy = p[1] * S + S / 2; s += '<g transform="translate(' + cx + ' ' + cy + ')"><circle r="26" fill="#4FB06A"/><path d="M0 0 L24 -10 A26 26 0 0 1 26 -2Z" fill="#8FCDE8"/></g>'; });
+  (crumbs || []).forEach(function(c){ s += '<circle cx="' + (c[0] * S + S / 2) + '" cy="' + (c[1] * S + S / 2) + '" r="5" fill="#F5C84C" opacity=".9"/>'; });
+  var f = pz.pads[pz.pads.length - 1];
+  s += '<g transform="translate(' + (f[0] * S + S / 2) + ' ' + (f[1] * S + S / 2) + ')"><ellipse cx="-7" cy="-7" rx="8" ry="5" fill="#fff" opacity=".9"/><ellipse cx="7" cy="-7" rx="8" ry="5" fill="#fff" opacity=".9"/><circle r="7" fill="#4A4F55"/></g>';
+  s += '<g class="frogpos" style="transform:translate(' + (fx * S + S / 2) + 'px,' + (fy * S + S / 2) + 'px)"><g' + (sink ? ' opacity=".35"' : '') + '><ellipse cx="0" cy="4" rx="17" ry="13" fill="#2E8540"/><circle cx="-7" cy="-9" r="6" fill="#2E8540"/><circle cx="7" cy="-9" r="6" fill="#2E8540"/><circle cx="-7" cy="-9" r="3.6" fill="#fff"/><circle cx="7" cy="-9" r="3.6" fill="#fff"/><circle cx="-6.6" cy="-8.6" r="1.7" fill="#22303B"/><circle cx="7.4" cy="-8.6" r="1.7" fill="#22303B"/></g>' +
+    (sink ? '<circle r="22" fill="none" stroke="#fff" stroke-width="3"/>' : '') + '</g>';
+  return s + '</svg>';
+}
+function nextBug(){
+  onLeave();
+  round++;
+  if (round > ROUNDS) { showEnd(score >= 7 ? 'Bug buster!' : score >= 5 ? 'Great debugging!' : 'Keep debugging!', 'You found and fixed ' + score + ' of ' + ROUNDS + ' bugs on the first try.', score >= 7 ? 3 : score >= 5 ? 2 : 1); return; }
+  busy = false; firstTry = true; stage = 'watch'; pz = deck[round - 1]; bug = makeBug(pz);
+  $('dRound').textContent = 'Bug ' + round + ' of ' + ROUNDS;
+  $('dScore').textContent = 'First try ' + score;
+  $('dPrompt').textContent = 'Press Run to watch the buggy program';
+  $('fixrow').classList.add('hidden');
+  hideFact('dFact');
+  $('runBtn').disabled = false;
+  $('board').innerHTML = boardSvg(pz.s[0], pz.s[1], false);
+  drawProg();
+  $('srStatus').textContent = 'The program is: ' + bug.prog.map(function(b){ return NAME[b.d] + (b.n > 1 ? ' ' + b.n + ' times' : ''); }).join(', ') + '. Hop should follow the lily pads to the fly. Press Run.';
+}
+function drawProg(active, marks){
+  marks = marks || {};
+  var box = $('prog'); box.innerHTML = '';
+  bug.prog.forEach(function(b, i){
+    var el = document.createElement('button');
+    el.className = 'pc' + (i === active ? ' now' : '') + (marks[i] ? ' ' + marks[i] : '');
+    el.innerHTML = ARROW[b.d] + (b.n > 1 || level === 1 ? '<small>\u00D7' + b.n + '</small>' : '');
+    el.setAttribute('aria-label', 'Block ' + (i + 1) + ': ' + NAME[b.d] + (b.n > 1 ? ' ' + b.n + ' times' : ''));
+    el.disabled = stage !== 'find' || busy;
+    el.onclick = function(){ pickBlock(i); };
+    box.appendChild(el);
+  });
+}
+function run(){
+  if (busy) return;
+  busy = true; $('runBtn').disabled = true; drawProg();
+  var x = pz.s[0], y = pz.s[1], crumbs = [[x, y]], steps = [], goal = pz.pads[pz.pads.length - 1], done = false;
+  bug.prog.forEach(function(p, i){ for (var k = 0; k < p.n; k++) steps.push({ d: p.d, i: i }); });
+  $('board').innerHTML = boardSvg(x, y, false);
+  steps.forEach(function(st, k){
+    runTimers.push(setTimeout(function(){
+      if (done) return;
+      x += MOVE[st.d][0]; y += MOVE[st.d][1]; crumbs.push([x, y]);
+      drawProg(st.i);
+      var off = x < 0 || y < 0 || x >= COLS || y >= ROWS || !isPad(x, y);
+      $('board').innerHTML = boardSvg(Math.max(-0.3, Math.min(COLS - .7, x)), Math.max(-0.3, Math.min(ROWS - .7, y)), off, crumbs);
+      beep([off ? 200 : 500 + k * 30], .06, 'triangle');
+      if (off || k === steps.length - 1) { done = true; runTimers.push(setTimeout(function(){ afterRun(!off && x === goal[0] && y === goal[1]); }, 500)); }
+    }, 420 * (k + 1)));
+  });
+}
+function afterRun(ok){
+  busy = false;
+  if (stage === 'watch') {
+    stage = 'find';
+    $('dPrompt').textContent = 'Something went wrong! Tap the block with the bug.';
+    setFact('dFact', 'Watch where Hop left the lily pads (or stopped too soon). Which block was running then?');
+    drawProg();
+    $('srStatus').textContent = 'Hop did not reach the fly. Tap the block with the bug.';
+  } else if (stage === 'test') {
+    if (ok) {
+      if (firstTry) score++;
+      $('dScore').textContent = 'First try ' + score;
+      drawProg(null, (function(){ var m = {}; m[bug.bi] = 'fixed'; return m; })());
+      $('dPrompt').textContent = 'Bug fixed!';
+      setFact('dFact', 'Hop caught the fly! You found the bug, fixed it, and tested it. That is debugging.');
+      sndGood(); $('srStatus').textContent = 'Bug fixed! Hop caught the fly.';
+      timer = setTimeout(nextBug, 3000);
+    } else {
+      firstTry = false; stage = 'find';
+      bug.prog[bug.bi] = { d: bug.saved.d, n: bug.saved.n };
+      $('dPrompt').textContent = 'Still buggy. Tap the block with the bug again.';
+      setFact('dFact', 'That fix did not work. Look at the path again and try a different fix.'); sndBad();
+      $('board').innerHTML = boardSvg(pz.s[0], pz.s[1], false); drawProg();
+    }
+  }
+}
+function pickBlock(i){
+  if (stage !== 'find' || busy) return;
+  if (i !== bug.bi) {
+    firstTry = false;
+    var m = {}; m[i] = 'wrongpick'; drawProg(null, m);
+    setFact('dFact', 'Block ' + (i + 1) + ' is not the bug. Look for the first block where Hop went a different way than the lily pads.'); sndBad();
+    return;
+  }
+  stage = 'fix';
+  var m2 = {}; m2[i] = 'picked'; drawProg(null, m2);
+  $('dPrompt').textContent = 'Found it! Now pick the fix for block ' + (i + 1) + '.';
+  hideFact('dFact');
+  bug.saved = { d: bug.prog[i].d, n: bug.prog[i].n };
+  var opts = [];
+  if (level === 0) opts = ['U', 'D', 'L', 'R'].filter(function(d){ return d !== bug.prog[i].d; }).map(function(d){ return { d: d, n: 1 }; });
+  else ['U', 'D', 'L', 'R'].forEach(function(d){ [1, 2, 3, 4].forEach(function(n){ if (!(d === bug.prog[i].d && n === bug.prog[i].n)) opts.push({ d: d, n: n }); }); });
+  if (level === 1) opts = opts.filter(function(o){ return o.d === bug.prog[i].d || o.n === bug.prog[i].n; });
+  var row = $('fixrow'); row.innerHTML = ''; row.classList.remove('hidden');
+  shuffle(opts).slice(0, level === 0 ? 3 : 6).concat(opts.filter(function(o){ return o.d === bug.good[i].d && o.n === bug.good[i].n; })).filter(function(o, k, a){ return a.findIndex(function(z){ return z.d === o.d && z.n === o.n; }) === k; })
+    .sort(function(a, b){ return (a.d + a.n) < (b.d + b.n) ? -1 : 1; })
+    .forEach(function(o){
+      var b = document.createElement('button');
+      b.className = 'pickable';
+      b.innerHTML = ARROW[o.d] + (level === 1 ? '<small>\u00D7' + o.n + '</small>' : '');
+      b.setAttribute('aria-label', NAME[o.d] + (level === 1 ? ' ' + o.n + ' times' : ''));
+      b.onclick = function(){ applyFix(o); };
+      row.appendChild(b);
+    });
+}
+function applyFix(o){
+  if (stage !== 'fix') return;
+  bug.prog[bug.bi] = { d: o.d, n: o.n };
+  $('fixrow').classList.add('hidden');
+  stage = 'test';
+  $('dPrompt').textContent = 'Test your fix! Press Run.';
+  $('runBtn').disabled = false;
+  $('board').innerHTML = boardSvg(pz.s[0], pz.s[1], false);
+  drawProg();
+  sndPlop();
+}
+$('startArt').innerHTML = '<svg viewBox="0 0 220 100" aria-hidden="true"><rect x="10" y="30" width="200" height="50" rx="14" fill="#fff"/>' + [0, 1, 2, 3, 4].map(function(i){ return '<rect x="' + (20 + i * 38) + '" y="40" width="32" height="30" rx="8" fill="' + (i === 2 ? '#E24B4A' : '#1F6E68') + '"/><text x="' + (36 + i * 38) + '" y="62" font-family="Arial" font-weight="700" font-size="18" fill="#fff" text-anchor="middle">' + (i === 2 ? '\u2193' : '\u2192') + '</text>'; }).join('') + '<g transform="translate(112 18)"><ellipse cx="0" cy="0" rx="9" ry="6" fill="#3A2A1E"/><path d="M-6 -4 L-10 -10 M6 -4 L10 -10" stroke="#3A2A1E" stroke-width="2"/><path d="M-9 0 H-14 M9 0 H14 M-8 4 L-12 8 M8 4 L12 8" stroke="#3A2A1E" stroke-width="2"/></g></svg>';
+</script>
+</body>
+</html>
