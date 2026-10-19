@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group maker - Wonder Pond</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='28' fill='%23DFF2FA' stroke='%231F6E68' stroke-width='4'/%3E%3Cellipse cx='30' cy='39' rx='19' ry='13' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='39.5' cy='24' r='8.5' fill='%234FB06A'/%3E%3Ccircle cx='20.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='39.5' cy='24' r='5.3' fill='%23fff'/%3E%3Ccircle cx='21.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3Ccircle cx='40.2' cy='24.6' r='2.7' fill='%2322303B'/%3E%3C/svg%3E">
+<meta name="description" content="Make random, fair student groups in one tap. Choose the number of groups or people per group, and give each student a job. Names stay saved in your browser only. A free classroom tool from Wonder Pond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12403A;--ink-soft:#33625C;--teal:#1F6E68;--teal-dark:#0F5A50;--green:#3F9457;--green-light:#4FB06A;
+  --sky:#DFF2FA;--water:#8FCDE8;--water-deep:#6BB6DB;--meadow:#DDF0C8;--amber:#F5C84C;--red:#E24B4A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0%,#EAF6F0 40%,var(--meadow) 100%);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,button,.baloo{font-family:"Baloo 2",sans-serif}
+:focus-visible{outline:4px solid var(--amber);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 18px}
+.topbar a{font-family:"Baloo 2",sans-serif;font-weight:600;color:var(--teal-dark);text-decoration:none;background:rgba(255,255,255,.85);padding:8px 16px;border-radius:999px;font-size:.95rem}
+.topbar a:hover{background:#fff}
+.spacer{flex:1}
+.icon-btn{background:rgba(255,255,255,.85);border:none;border-radius:999px;width:44px;height:44px;font-size:1.2rem;cursor:pointer;color:var(--teal-dark)}
+.icon-btn:hover{background:#fff}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 16px 24px}
+.screen{width:100%;max-width:1000px;text-align:center}
+.hidden{display:none !important}
+.card{background:rgba(255,255,255,.93);border-radius:28px;padding:32px 26px;box-shadow:0 12px 40px rgba(18,64,58,.18)}
+.card h1{font-size:clamp(2rem,5vw,3rem);color:var(--teal-dark)}
+.card .sub{font-size:1.15rem;color:var(--ink-soft);margin:6px 0 22px}
+.choose-label{font-weight:700;font-size:1.05rem;margin:8px 0 10px;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.pick-btn{font-family:"Baloo 2",sans-serif;font-size:1.1rem;font-weight:700;padding:14px 20px;min-width:190px;border-radius:18px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);transition:transform .12s ease}
+.pick-btn:hover{transform:translateY(-3px)}
+.pick-btn[aria-pressed="true"]{background:var(--teal);color:#fff}
+.pick-btn small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:.78rem;opacity:.85}
+.games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.game-btn{font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.2rem;width:230px;padding:14px 16px 12px;border-radius:22px;cursor:pointer;border:3px solid var(--teal);background:#fff;color:var(--teal-dark);display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s ease}
+.game-btn:hover{transform:translateY(-3px)}
+.game-btn svg{width:120px;height:66px}
+.game-btn small{font-family:"Nunito",sans-serif;font-size:.8rem;color:var(--ink-soft);font-weight:700}
+.big-btn{font-family:"Baloo 2",sans-serif;font-size:1.4rem;font-weight:700;padding:14px 40px;border-radius:999px;border:none;background:var(--green-light);color:#fff;cursor:pointer;box-shadow:0 6px 0 var(--green);transition:transform .12s ease;margin:6px 8px 0}
+.big-btn:hover{transform:translateY(-2px)}
+.big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green)}
+.big-btn.alt{background:#fff;color:var(--teal-dark);box-shadow:0 6px 0 #C9C2AC}
+.big-btn:disabled{opacity:.5;cursor:default;transform:none}
+.note{font-size:.9rem;color:#6E8C86;margin-top:14px;max-width:680px;margin-left:auto;margin-right:auto}
+.hud{display:flex;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.92);border-radius:999px;padding:8px 20px;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal-dark)}
+.prompt{font-family:"Baloo 2",sans-serif;font-size:clamp(1.15rem,2.8vw,1.7rem);font-weight:700;color:var(--teal-dark);margin:4px 0 10px;background:rgba(255,255,255,.9);display:inline-block;padding:7px 26px;border-radius:24px;max-width:100%}
+.ans{border:none;cursor:pointer;border-radius:20px;padding:10px 18px;background:#fff;min-width:140px;box-shadow:0 5px 0 rgba(18,64,58,.22);transition:transform .12s ease;font-family:"Baloo 2",sans-serif;font-weight:700;font-size:clamp(1.15rem,2.6vw,1.5rem);color:var(--teal-dark);line-height:1.15}
+.ans small{display:block;font-family:"Nunito",sans-serif;font-size:.6em;color:var(--ink-soft)}
+.ans:hover:enabled{transform:translateY(-3px)}
+.ans:active:enabled{transform:translateY(3px);box-shadow:0 2px 0 rgba(18,64,58,.22)}
+.ans:disabled{opacity:.35;cursor:default}
+.ans.right{background:#E4F5E9;box-shadow:0 5px 0 var(--green);opacity:1}
+.ans.wrong{background:var(--red);color:#fff}
+.ans.wrong small{color:#fff}
+.answers{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s ease}
+.fact{margin:14px auto 0;max-width:740px;font-weight:700;font-size:1.08rem;color:var(--teal-dark);background:rgba(255,255,255,.94);border-radius:18px;padding:10px 18px}
+.stars{font-size:3rem;letter-spacing:8px;margin:8px 0 18px}
+.stars .on{color:var(--amber)}
+.stars .off{color:#D8D3C2}
+.end-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.score-line{font-size:1.3rem;color:var(--ink-soft);margin-bottom:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+
+.setup{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;text-align:left;max-width:860px;margin:0 auto}
+.setup textarea{width:100%;min-height:260px;border-radius:16px;border:3px solid #CFE3DE;padding:10px 12px;font:700 1.05rem "Nunito",sans-serif;color:#12403A;resize:vertical}
+.setup label{font-weight:700;color:#0F5A50;display:block;margin-bottom:6px}
+.opt{background:#F2F8F6;border-radius:16px;padding:10px 14px;margin-bottom:10px}
+.opt .seg{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.opt .seg button{border:none;cursor:pointer;border-radius:12px;padding:6px 12px;background:#fff;font-family:"Baloo 2",sans-serif;font-weight:700;color:#0F5A50;box-shadow:0 2px 0 rgba(18,64,58,.15)}
+.opt .seg button[aria-pressed="true"]{background:#1F6E68;color:#fff}
+.stepper{display:flex;align-items:center;gap:10px;margin-top:6px}
+.stepper button{width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;background:#fff;font:700 1.4rem "Baloo 2",sans-serif;color:#0F5A50;box-shadow:0 2px 0 rgba(18,64,58,.15)}
+.stepper b{font-family:"Baloo 2",sans-serif;font-size:1.6rem;min-width:30px;text-align:center}
+.count{font-weight:700;color:#33625C;font-size:.95rem}
+.groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;max-width:1100px;margin:0 auto}
+.grp{background:#fff;border-radius:26px;padding:12px 14px 14px;box-shadow:0 6px 0 rgba(18,64,58,.15);text-align:left;position:relative;overflow:hidden}
+.grp::before{content:"";position:absolute;right:-24px;top:-24px;width:90px;height:90px;border-radius:50%;background:#E4F5E9}
+.grp h3{position:relative;font-family:"Baloo 2",sans-serif;color:#0F5A50;font-size:1.3rem}
+.grp ul{list-style:none;position:relative}
+.grp li{overflow-wrap:anywhere;font-weight:700;font-size:clamp(1.05rem,2vw,1.3rem);padding:3px 0;color:#12403A;border-bottom:1px dashed #DCE8E4}
+.grp li small{font-size:.72em;color:#9B4D8E;margin-left:6px}
+@keyframes drop{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
+.grp{animation:drop .35s ease both}
+.ctl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.ctl .big-btn{font-size:1.1rem;padding:10px 24px}
+.priv{font-size:.85rem;font-weight:700;color:#0F5A50;background:#E4F5E9;border-radius:12px;padding:6px 10px;margin-top:8px}
+@media (max-width:700px){ .setup{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../">&#8592; Back to the pond</a>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="soundBtn" onclick="toggleSound()" aria-label="Turn sound off" aria-pressed="true">&#9835;</button>
+</div>
+
+<main class="stage">
+
+  <section class="screen" id="startScreen" aria-labelledby="gameTitle">
+    <div class="card">
+      <h1 id="gameTitle">Group maker</h1>
+      <p class="sub">Type your class list once, then make fair, random groups in one tap.</p>
+      <div class="setup">
+        <div>
+          <label for="names">Student names (one per line)</label>
+          <textarea id="names" placeholder="Ava&#10;Ben&#10;Carlos&#10;Dara" oninput="saveNames();countNames()"></textarea>
+          <div class="count" id="count">0 students</div>
+          <div class="priv">Names are saved only in this browser on this computer, so they are ready next time. They are never sent anywhere.</div>
+        </div>
+        <div>
+          <div class="opt"><b>Make groups by</b>
+            <div class="seg" role="group" aria-label="Group by"><button id="byNum" aria-pressed="true" onclick="setBy('num')">Number of groups</button><button id="bySize" aria-pressed="false" onclick="setBy('size')">People per group</button></div>
+            <div class="stepper"><button onclick="step(-1)" aria-label="Fewer">&#8722;</button><b id="nVal">4</b><button onclick="step(1)" aria-label="More">+</button><span class="count" id="nLabel">groups</span></div>
+          </div>
+          <div class="opt"><label style="margin:0"><input type="checkbox" id="roles"> Give each person a job</label><div class="count">Reader, Writer, Reporter, Timekeeper, Materials, Encourager</div></div>
+          <div class="ctl" style="justify-content:flex-start"><button class="big-btn" onclick="makeGroups()">Make groups</button><button class="big-btn alt" onclick="clearNames()">Clear list</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen hidden" id="groupScreen" style="max-width:1150px">
+    <div class="ctl"><button class="big-btn" onclick="makeGroups()">Shuffle again</button><button class="big-btn alt" onclick="backToStart()">Edit list</button></div>
+    <div class="groups" id="groups" role="list"></div>
+  </section>
+
+  <section class="screen hidden" id="endScreen" aria-labelledby="endTitle">
+    <div class="card">
+      <svg width="110" height="95" viewBox="0 0 240 204" aria-hidden="true" style="margin:0 auto">
+        <circle cx="120" cy="66" r="36" fill="#F6C9A2"/>
+        <path d="M84 68 Q83 24 120 22 Q157 24 158 68 Q147 48 120 47 Q93 48 84 68 Z" fill="#6B4A2F"/>
+        <circle cx="120" cy="21" r="7" fill="#6B4A2F"/>
+        <path d="M103 64 Q109 57 115 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 64 Q131 57 137 64" stroke="#3A2A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="99" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <circle cx="141" cy="74" r="5" fill="#F4A0A0" opacity="0.6"/>
+        <path d="M102 75 Q120 94 138 75 Q120 85 102 75 Z" fill="#8A4B3B"/>
+      </svg>
+      <h2 id="endTitle" style="font-size:clamp(1.8rem,4.5vw,2.6rem);color:var(--teal-dark)">Great job!</h2>
+      <p class="score-line" id="finalLine"></p>
+      <div class="stars" id="starRow" aria-hidden="true"></div>
+      <div class="end-actions">
+        <button class="big-btn" onclick="playAgain()">Play again</button>
+        <button class="big-btn alt" onclick="backToStart()">Change game</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div aria-live="polite" class="sr-only" id="srStatus"></div>
+
+<script>
+var soundOn = true, audioCtx = null, timer = null;
+function $(id){ return document.getElementById(id); }
+function rand(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  var b = $('soundBtn');
+  b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+  b.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+  b.style.opacity = soundOn ? '1' : '.45';
+}
+function beep(freqs, dur, type){
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var t = audioCtx.currentTime;
+    freqs.forEach(function(f, i){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, t + i * dur);
+      g.gain.exponentialRampToValueAtTime(0.15, t + i * dur + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + i * dur + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t + i * dur); o.stop(t + i * dur + dur + 0.05);
+    });
+  } catch(e) {}
+}
+function sndPlop(){ beep([440, 660], 0.06); }
+function sndGood(){ beep([523, 659, 784], 0.11); }
+function sndBad(){ beep([220, 180], 0.14); }
+function sndWin(){ beep([523, 659, 784, 1047], 0.13); }
+function chooseLevel(btn){
+  btn.parentNode.querySelectorAll('.pick-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+  btn.setAttribute('aria-pressed','true');
+  level = parseInt(btn.dataset.level, 10);
+}
+function showOnly(id){
+  document.querySelectorAll('main > .screen').forEach(function(s){ s.classList.add('hidden'); });
+  $(id).classList.remove('hidden');
+}
+function backToStart(){ clearTimeout(timer); if (window.onLeave) onLeave(); showOnly('startScreen'); }
+function showEnd(title, line, stars){
+  showOnly('endScreen');
+  $('endTitle').textContent = title;
+  $('finalLine').textContent = line;
+  var row = '';
+  for (var i = 0; i < 3; i++) row += '<span class="' + (i < stars ? 'on' : 'off') + '">&#9733;</span>';
+  $('starRow').innerHTML = row;
+  $('srStatus').textContent = title + ' ' + line;
+  sndWin();
+}
+function setFact(id, html){ $(id).innerHTML = html; $(id).classList.remove('hidden'); }
+function hideFact(id){ $(id).classList.add('hidden'); }
+/* Answer buttons: one right key; wrong picks are disabled and get a hint */
+function answerButtons(boxId, opts, onPick){
+  var box = $(boxId);
+  box.innerHTML = '';
+  opts.forEach(function(o, i){
+    var b = document.createElement('button');
+    b.className = 'ans ' + (o.cls || '');
+    b.dataset.key = i + 1;
+    b.innerHTML = o.html || o.label;
+    if (o.aria) b.setAttribute('aria-label', o.aria);
+    b.onclick = function(){ onPick(b, o.key); };
+    box.appendChild(b);
+  });
+}
+function markRight(boxId, btn){ btn.classList.add('right'); $(boxId).querySelectorAll('.ans').forEach(function(b){ b.disabled = b !== btn; }); }
+function markWrong(btn){ btn.classList.add('wrong', 'shake'); btn.disabled = true; }
+/* Number keys pick answers, arrow keys move between them */
+document.addEventListener('keydown', function(e){
+  var scr = document.querySelector('main > .screen:not(.hidden)');
+  if (!scr || scr.id === 'startScreen' || scr.id === 'endScreen') return;
+  if (/^[1-6]$/.test(e.key)) {
+    var b = scr.querySelector('.ans[data-key="' + e.key + '"]');
+    if (b && !b.disabled) { b.click(); e.preventDefault(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var list = Array.prototype.slice.call(scr.querySelectorAll('button:enabled.ans, button:enabled.pickable'));
+    if (!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    var n = i === -1 ? 0 : (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+    list[n].focus();
+    e.preventDefault();
+  }
+});
+
+var level = 0, lastMode = 'groups';
+function playAgain(){ makeGroups(); }
+var by = 'num', n = 4, KEY = 'wonderpond-group-maker-names';
+var GNAMES = ['Lily pads', 'Cattails', 'Tadpoles', 'Dragonflies', 'Turtles', 'Ducklings', 'Herons', 'Minnows', 'Fireflies', 'Snails', 'Water striders', 'Beavers', 'Otters', 'Salamanders'];
+var ROLES = ['Reader', 'Writer', 'Reporter', 'Timekeeper', 'Materials', 'Encourager'];
+var COLS = ['#E4F5E9', '#E6F0FA', '#FFF3C8', '#F4E8F2', '#FCE3E3', '#E8F4F8'];
+function names(){ return $('names').value.split('\n').map(function(s){ return s.trim(); }).filter(Boolean); }
+function countNames(){ var c = names().length; $('count').textContent = c + (c === 1 ? ' student' : ' students'); }
+function saveNames(){ try { localStorage.setItem(KEY, $('names').value); } catch(e) {} }
+function loadNames(){ try { var v = localStorage.getItem(KEY); if (v) $('names').value = v; } catch(e) {} countNames(); }
+function clearNames(){ $('names').value = ''; saveNames(); countNames(); }
+function setBy(b){ by = b; $('byNum').setAttribute('aria-pressed', b === 'num'); $('bySize').setAttribute('aria-pressed', b === 'size'); $('nLabel').textContent = b === 'num' ? 'groups' : 'people per group'; }
+function step(d){ n = Math.max(2, Math.min(14, n + d)); $('nVal').textContent = n; }
+function makeGroups(){
+  var list = shuffle(names());
+  if (list.length < 2) { $('count').textContent = 'Type at least 2 names first.'; showOnly('startScreen'); return; }
+  var g = by === 'num' ? Math.min(n, list.length) : Math.max(1, Math.round(list.length / n));
+  var groups = []; for (var i = 0; i < g; i++) groups.push([]);
+  /* deal names out like cards so group sizes differ by at most one */
+  list.forEach(function(name, i){ groups[i % g].push(name); });
+  var labels = shuffle(GNAMES);
+  var html = groups.map(function(m, i){
+    var roles = $('roles').checked ? shuffle(ROLES) : [];
+    return '<div class="grp" role="listitem" style="animation-delay:' + (i * .06) + 's"><h3>' + labels[i % labels.length] + '</h3><ul>' + m.map(function(name, j){ return '<li>' + escapeHtml(name) + (roles.length ? '<small>' + roles[j % roles.length] + '</small>' : '') + '</li>'; }).join('') + '</ul></div>';
+  }).join('');
+  showOnly('groupScreen');
+  $('groups').innerHTML = html;
+  sndPlop();
+  $('srStatus').textContent = groups.length + ' groups made. ' + groups.map(function(m, i){ return labels[i % labels.length] + ': ' + m.join(', '); }).join('. ');
+}
+function escapeHtml(s){ return s.replace(/[&<>"']/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+loadNames();
+</script>
+</body>
+</html>
